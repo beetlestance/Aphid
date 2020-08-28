@@ -36,6 +36,12 @@ android {
 
 dependencies {
 
+    // Local projects
+    implementation project(':base')
+    implementation project(':data')
+    implementation project(':base-android')
+    implementation project(':data-android')
+
     // Testing
     testImplementation Libs.Test.junit
     androidTestImplementation Libs.AndroidX.Test.junit

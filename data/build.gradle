@@ -12,6 +12,9 @@ java {
 
 dependencies {
 
+    // Local projects
+    implementation project(':base')
+
     // Kotlin
     implementation Libs.Kotlin.stdlib
 }
