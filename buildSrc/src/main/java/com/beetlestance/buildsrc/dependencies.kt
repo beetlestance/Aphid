@@ -134,8 +134,10 @@ object Libs {
 
     object Kotlin {
         private const val version = "1.4.0"
+        const val jdk7 = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
+        const val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
     }
 
@@ -155,7 +157,7 @@ object Libs {
     }
 
     object Coroutines {
-        private const val version = "1.3.7"
+        private const val version = "1.3.9"
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
         const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
         const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
@@ -177,7 +179,7 @@ object Libs {
     }
 
     object Lint {
-        private const val version = "27.0.1"
+        private const val version = "27.2.0-alpha08"
         const val api = "com.android.tools.lint:lint-api:$version"
         const val checks = "com.android.tools.lint:lint-checks:$version"
     }

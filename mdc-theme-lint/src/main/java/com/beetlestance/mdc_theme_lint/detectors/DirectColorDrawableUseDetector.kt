@@ -4,6 +4,7 @@ import com.android.resources.ResourceFolderType
 import com.android.tools.lint.detector.api.ResourceXmlDetector
 import com.android.tools.lint.detector.api.XmlContext
 import com.beetlestance.mdc_theme_lint.issues.DirectColorDrawableUseIssue
+import org.w3c.dom.Attr
 
 //Vector Drawables.
 private const val FILL_COLOR = "fillColor"
