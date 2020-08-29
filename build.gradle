@@ -2,6 +2,12 @@ import com.beetlestance.buildsrc.Libs
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
+    ext.buildConfig = [
+            'compileSdk': 29,
+            'minSdk'    : 21,
+            'targetSdk' : 29,
+    ]
+
     repositories {
         google()
         jcenter()
@@ -19,6 +25,27 @@ allprojects {
     repositories {
         google()
         jcenter()
+    }
+}
+
+subprojects {
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            // Treat all Kotlin warnings as errors
+            allWarningsAsErrors = true
+
+            // Enable experimental coroutines APIs, including Flow
+            freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+            freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.FlowPreview"
+            freeCompilerArgs += "-Xopt-in=kotlin.Experimental"
+
+            freeCompilerArgs += "-Xallow-jvm-ir-dependencies"
+
+            freeCompilerArgs += "-Xjvm-default=all"
+
+            // Set JVM target to 1.8
+            jvmTarget = "1.8"
+        }
     }
 }
 
