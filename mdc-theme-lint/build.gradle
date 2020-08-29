@@ -15,7 +15,6 @@ dependencies {
     // Kotlin
     implementation Libs.Kotlin.stdlib
 
-    // Co-Routines
-    api Libs.Coroutines.core
-
+    compileOnly Libs.Lint.api
+    compileOnly Libs.Lint.checks
 }

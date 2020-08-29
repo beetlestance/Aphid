@@ -176,6 +176,12 @@ object Libs {
             "com.github.beetlestance.android-extensions:navigation:0.1.1"
     }
 
+    object Lint {
+        private const val version = "27.0.1"
+        const val api = "com.android.tools.lint:lint-api:$version"
+        const val checks = "com.android.tools.lint:lint-checks:$version"
+    }
+
     object ThirdParty {
         const val youtubePlayer = "com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5"
         const val viewPagerDotsIndicator = "com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2"

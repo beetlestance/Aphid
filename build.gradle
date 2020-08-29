@@ -11,6 +11,7 @@ buildscript {
     repositories {
         google()
         jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath Libs.androidGradlePlugin
@@ -25,6 +26,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        mavenCentral()
     }
 }
 
