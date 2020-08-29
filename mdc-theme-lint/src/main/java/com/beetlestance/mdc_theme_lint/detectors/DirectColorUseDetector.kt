@@ -23,11 +23,12 @@ class DirectColorUseDetector : ResourceXmlDetector() {
     }
 
     override fun visitAttribute(context: XmlContext, attribute: Attr) {
-        if(attribute.value.startsWith("#")) {
+        if (attribute.value.startsWith("#")) {
             context.report(
                 DirectColorUseIssue.ISSUE,
                 context.getLocation(attribute),
-                DirectColorUseIssue.EXPLANATION)
+                DirectColorUseIssue.EXPLANATION
+            )
         }
     }
 }

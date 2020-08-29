@@ -18,3 +18,9 @@ dependencies {
     compileOnly Libs.Lint.api
     compileOnly Libs.Lint.checks
 }
+
+jar {
+    manifest {
+        attributes 'Lint-Registry': 'com.beetlestance.mdc_theme_lint.DarkThemeLintRegistry'
+    }
+}

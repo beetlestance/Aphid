@@ -36,9 +36,9 @@ class MissingNightColorDetector : ResourceXmlDetector() {
     }
 
     override fun visitElement(context: XmlContext, element: Element) {
-        if (context.getFolderConfiguration()!!.isDefault)
+        if ((context.getFolderConfiguration() ?: return).isDefault)
             regularColors[element.getAttribute("name")] = context.getLocation(element)
-        else if (context.getFolderConfiguration()!!.nightModeQualifier.isValid)
+        else if ((context.getFolderConfiguration() ?: return).nightModeQualifier.isValid)
             nightModeColors.add(element.getAttribute("name"))
     }
 }
