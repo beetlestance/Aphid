@@ -39,6 +39,29 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    dexOptions {
+        // Don't pre-dex on CI
+        preDexLibraries !ci
+    }
+
+    lintOptions {
+        // Disable lintVital. Not needed since lint is run on CI
+        checkReleaseBuilds false
+        // Allow lint to check dependencies
+        checkDependencies true
+        // Ignore any tests
+        ignoreTestSources true
+
+        // Lint doesn't seem to handle Kotlin int types + string format very well
+        disable 'StringFormatMatches'
+    }
+
+    buildFeatures {
+        // We need to keep this enabled because submodules use it
+        dataBinding true
+
+        viewBinding true
+    }
 }
 
 dependencies {
