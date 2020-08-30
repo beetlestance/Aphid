@@ -13,9 +13,9 @@ jobs:
 
     steps:
       - name: Generate build number
-          shell: bash
-          run: |
-            echo "::set-env name=BUILD_NUMBER::$(expr $GITHUB_RUN_NUMBER + 5200)"
+        shell: bash
+        run: |
+          echo "::set-env name=BUILD_NUMBER::$(expr $GITHUB_RUN_NUMBER + 5200)"
 
       - uses: actions/checkout@v2
       - name: Set up JDK 1.8
