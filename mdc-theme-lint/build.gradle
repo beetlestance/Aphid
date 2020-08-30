@@ -3,6 +3,15 @@ import com.beetlestance.buildsrc.Libs
 plugins {
     id 'java-library'
     id 'kotlin'
+    id 'com.android.lint'
+}
+
+lintOptions {
+    htmlReport true
+    htmlOutput file("lint-report.html")
+    textReport true
+    absolutePaths false
+    ignoreTestSources true
 }
 
 java {
@@ -13,14 +22,8 @@ java {
 dependencies {
 
     // Kotlin
-    implementation Libs.Kotlin.jdk7
+    compileOnly Libs.Kotlin.jdk7
 
     compileOnly Libs.Lint.api
     compileOnly Libs.Lint.checks
-}
-
-jar {
-    manifest {
-        attributes 'Lint-Registry': 'com.beetlestance.mdc_theme_lint.DarkThemeLintRegistry'
-    }
 }
