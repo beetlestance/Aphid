@@ -11,6 +11,10 @@ kapt {
     useBuildCache = true
 }
 
+ext {
+    ci = System.getenv("CI") == "true"
+}
+
 android {
     compileSdkVersion buildConfig.compileSdk
 

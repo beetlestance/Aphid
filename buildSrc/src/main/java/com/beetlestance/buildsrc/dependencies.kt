@@ -1,5 +1,9 @@
 package com.beetlestance.buildsrc
 
+object Versions {
+    const val ktlint = "0.37.2"
+}
+
 object Libs {
 
     const val androidGradlePlugin: String = "com.android.tools.build:gradle:4.2.0-alpha08"
@@ -29,7 +33,7 @@ object Libs {
         const val swipeToRefreshLayout: String =
             "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
         const val constraintlayout: String =
-            "androidx.constraintlayout:constraintlayout:2.0.0-beta8"
+            "androidx.constraintlayout:constraintlayout:2.0.1"
         const val recyclerview: String = "androidx.recyclerview:recyclerview:1.2.0-alpha04"
         const val cardView: String = "androidx.cardview:cardview:1.0.0"
         const val webkit: String = "androidx.webkit:webkit:1.2.0"
@@ -99,7 +103,7 @@ object Libs {
     }
 
     object Google {
-        const val material: String = "com.google.android.material:material:1.3.0-alpha01"
+        const val material: String = "com.google.android.material:material:1.3.0-alpha02"
         const val flexBox: String = "com.google.android:flexbox:2.0.1"
         const val playCore: String = "com.google.android.play:core:1.8.0"
         const val playCoreKtx: String = "com.google.android.play:core-ktx:1.8.1"
