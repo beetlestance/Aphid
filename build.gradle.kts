@@ -50,7 +50,7 @@ subprojects {
             allWarningsAsErrors = true
 
             // Enable experimental coroutines APIs, including Flow
-            freeCompilerArgs = listOf(
+            freeCompilerArgs = freeCompilerArgs + listOf(
                 "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
                 "-Xopt-in=kotlinx.coroutines.FlowPreview",
                 "-Xopt-in=kotlin.Experimental",

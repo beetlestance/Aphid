@@ -35,4 +35,7 @@ dependencies {
 
     // Kotlin
     implementation(Libs.Kotlin.stdlib)
+
+    // Co-Routines
+    implementation(Libs.Coroutines.core)
 }
