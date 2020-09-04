@@ -6,7 +6,7 @@ object Versions {
 
 object Libs {
 
-    const val androidGradlePlugin: String = "com.android.tools.build:gradle:4.2.0-alpha08"
+    const val androidGradlePlugin: String = "com.android.tools.build:gradle:4.2.0-alpha09"
 
     const val leakCanary: String = "com.squareup.leakcanary:leakcanary-android:2.2"
 
