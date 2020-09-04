@@ -1,8 +1,8 @@
 import com.beetlestance.buildsrc.Libs
 
 plugins {
-    id 'java-library'
-    id 'kotlin'
+    id("java-library")
+    id("kotlin")
 }
 
 java {
@@ -13,9 +13,9 @@ java {
 dependencies {
 
     // Kotlin
-    implementation Libs.Kotlin.stdlib
+    implementation(Libs.Kotlin.stdlib)
 
     // Co-Routines
-    api Libs.Coroutines.core
+    api(Libs.Coroutines.core)
 
 }

@@ -1,9 +1,10 @@
+import com.beetlestance.buildsrc.Aphid
 import com.beetlestance.buildsrc.Libs
 
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
+    id("com.android.application")
+    kotlin("android")
+    kotlin("kapt")
 }
 
 kapt {
@@ -11,85 +12,89 @@ kapt {
     useBuildCache = true
 }
 
-ext {
+extra {
+    var ci: Boolean by extra
     ci = System.getenv("CI") == "true"
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion(Aphid.compileSdkVersion)
 
     defaultConfig {
-        applicationId "com.beetlestance.aphid"
-        minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        applicationId = Aphid.applicationId
+        minSdkVersion(Aphid.minSdkVersion)
+        targetSdkVersion(Aphid.targetSdkVersion)
+        versionCode = Aphid.versionCode
+        versionName = Aphid.versionName
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
     }
 
     buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        getByName("release") {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_12
-        targetCompatibility JavaVersion.VERSION_12
+        sourceCompatibility = JavaVersion.VERSION_12
+        targetCompatibility = JavaVersion.VERSION_12
     }
 
     dexOptions {
-        // Don't pre-dex on CI
-        preDexLibraries !ci
+        // Don"t pre-dex on CI
+        preDexLibraries != extra.get("ci")
     }
 
     lintOptions {
         // Disable lintVital. Not needed since lint is run on CI
-        checkReleaseBuilds false
+        isCheckReleaseBuilds = false
         // Allow lint to check dependencies
-        checkDependencies true
+        isCheckDependencies = true
         // Ignore any tests
-        ignoreTestSources true
+        isIgnoreTestSources = true
 
-        // Lint doesn't seem to handle Kotlin int types + string format very well
-        disable 'StringFormatMatches'
+        // Lint doesn"t seem to handle Kotlin int types + string format very well
+        disable("StringFormatMatches")
     }
 
     buildFeatures {
         // We need to keep this enabled because submodules use it
-        dataBinding true
+        dataBinding = true
 
-        viewBinding true
+        viewBinding = true
     }
 }
 
 dependencies {
 
     // Local projects
-    implementation project(':base')
-    implementation project(':data')
-    implementation project(':base-android')
-    implementation project(':data-android')
-    implementation project(':domain')
-    implementation project(':spoonacular-kotlin')
+    implementation(project(":base"))
+    implementation(project(":data"))
+    implementation((":base-android"))
+    implementation(project(":data-android"))
+    implementation(project(":domain"))
+    implementation(project(":spoonacular-kotlin"))
 
     // Lint checks
-    lintChecks project(':mdc-theme-lint')
+    lintChecks(project(":mdc-theme-lint"))
 
     // Testing
-    testImplementation Libs.Test.junit
-    androidTestImplementation Libs.AndroidX.Test.junit
-    androidTestImplementation Libs.AndroidX.Test.espressoCore
+    testImplementation(Libs.Test.junit)
+    androidTestImplementation(Libs.AndroidX.Test.junit)
+    androidTestImplementation(Libs.AndroidX.Test.espressoCore)
 
     // AndroidX
-    implementation Libs.AndroidX.appcompat
-    implementation Libs.AndroidX.coreKtx
-    implementation Libs.AndroidX.constraintlayout
+    implementation(Libs.AndroidX.appcompat)
+    implementation(Libs.AndroidX.coreKtx)
+    implementation(Libs.AndroidX.constraintlayout)
 
     // Material Design
-    implementation Libs.Google.material
+    implementation(Libs.Google.material)
 
     // Kotlin
-    implementation Libs.Kotlin.stdlib
+    implementation(Libs.Kotlin.stdlib)
 }

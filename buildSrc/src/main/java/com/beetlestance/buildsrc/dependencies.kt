@@ -1,17 +1,17 @@
 package com.beetlestance.buildsrc
 
 object Versions {
-    const val ktlint = "0.37.2"
+    const val ktlint: String = "0.37.2"
 }
 
-object Android {
-    val buildToolsVersion = "30.0.2"
-    val minSdkVersion = 21
-    val targetSdkVersion = 29
-    val compileSdkVersion = 29
-    val applicationId = "com.beetlestance.aphid"
-    val versionCode = 1
-    val versionName = "0.1"
+object Aphid {
+    const val buildToolsVersion = "30.0.2"
+    const val minSdkVersion: Int = 21
+    const val targetSdkVersion: Int = 29
+    const val compileSdkVersion: Int = 29
+    const val applicationId: String = "com.beetlestance.aphid"
+    const val versionCode: Int = 1
+    const val versionName: String = "0.1"
 }
 
 object Libs {
