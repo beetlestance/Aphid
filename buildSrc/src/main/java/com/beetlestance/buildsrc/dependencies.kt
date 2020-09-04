@@ -198,7 +198,7 @@ object Libs {
     }
 
     object Lint {
-        private const val version = "27.2.0-alpha08"
+        private const val version = "27.2.0-alpha09"
         const val api: String = "com.android.tools.lint:lint-api:$version"
         const val checks: String = "com.android.tools.lint:lint-checks:$version"
     }

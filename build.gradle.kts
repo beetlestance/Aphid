@@ -50,13 +50,13 @@ subprojects {
             allWarningsAsErrors = true
 
             // Enable experimental coroutines APIs, including Flow
-            freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
-            freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.FlowPreview"
-            freeCompilerArgs += "-Xopt-in=kotlin.Experimental"
-
-            freeCompilerArgs += "-Xallow-jvm-ir-dependencies"
-
-            freeCompilerArgs += "-Xjvm-default=all"
+            freeCompilerArgs = listOf(
+                "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                "-Xopt-in=kotlinx.coroutines.FlowPreview",
+                "-Xopt-in=kotlin.Experimental",
+                "-Xallow-jvm-ir-dependencies",
+                "-Xjvm-default=all"
+            )
 
             // Set JVM target to 1.8
             jvmTarget = "1.8"
