@@ -1,9 +1,0 @@
-rootProject.name = "Aphid"
-include ':app'
-include ':base'
-include ':data'
-include ':base-android'
-include ':data-android'
-include ':domain'
-include ':spoonacular-kotlin'
-include ':mdc-theme-lint'
