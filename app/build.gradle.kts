@@ -62,10 +62,7 @@ android {
     }
 
     buildFeatures {
-        // We need to keep this enabled because submodules use it
         dataBinding = true
-
-        viewBinding = true
     }
 }
 
@@ -74,7 +71,7 @@ dependencies {
     // Local projects
     implementation(project(":base"))
     implementation(project(":data"))
-    implementation((":base-android"))
+    implementation(project(":base-android"))
     implementation(project(":data-android"))
     implementation(project(":domain"))
     implementation(project(":spoonacular-kotlin"))
