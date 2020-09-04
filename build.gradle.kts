@@ -1,13 +1,5 @@
-import com.beetlestance.buildsrc.Libs
-import com.beetlestance.buildsrc.Versions
-
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.buildConfig = [
-            'compileSdk': 29,
-            'minSdk'    : 21,
-            'targetSdk' : 29,
-    ]
 
     repositories {
         google()
@@ -15,9 +7,9 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath Libs.androidGradlePlugin
-        classpath Libs.Kotlin.gradlePlugin
-        classpath Libs.Kotlin.extensions
+        classpath(com.beetlestance.buildsrc.Libs.androidGradlePlugin)
+        classpath(com.beetlestance.buildsrc.Libs.Kotlin.gradlePlugin)
+        classpath(com.beetlestance.buildsrc.Libs.Kotlin.extensions)
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -25,8 +17,8 @@ buildscript {
 }
 
 plugins {
-    id 'com.diffplug.spotless' version '5.3.0'
-    id 'com.github.ben-manes.versions' version '0.29.0'
+    id("com.diffplug.spotless") version "5.3.0"
+    id("com.github.ben-manes.versions") version "0.29.0"
 }
 
 allprojects {
@@ -39,19 +31,20 @@ allprojects {
 
 subprojects {
 
-    apply plugin: 'com.diffplug.spotless'
-    spotless {
-        kotlin {
-            target '**/*.kt'
-            targetExclude("$buildDir/**/*.kt")
-            targetExclude('bin/**/*.kt')
+    plugins.apply("com.diffplug.spotless")
 
-            ktlint(Versions.ktlint)
-            licenseHeaderFile rootProject.file('spotless/copyright.kt')
+    configure<com.diffplug.gradle.spotless.SpotlessExtension>() {
+        kotlin {
+            target("**/*.kt")
+            targetExclude("$buildDir/**/*.kt")
+            targetExclude("bin/**/*.kt")
+
+            ktlint(com.beetlestance.buildsrc.Versions.ktlint)
+            licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
         }
     }
 
-    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
         kotlinOptions {
             // Treat all Kotlin warnings as errors
             allWarningsAsErrors = true

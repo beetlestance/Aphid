@@ -16,12 +16,12 @@ ext {
 }
 
 android {
-    compileSdkVersion buildConfig.compileSdk
+    compileSdkVersion 29
 
     defaultConfig {
         applicationId "com.beetlestance.aphid"
-        minSdkVersion buildConfig.minSdk
-        targetSdkVersion buildConfig.targetSdk
+        minSdkVersion 21
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 

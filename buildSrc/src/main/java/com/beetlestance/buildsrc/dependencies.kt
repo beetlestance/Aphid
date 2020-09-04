@@ -4,6 +4,16 @@ object Versions {
     const val ktlint = "0.37.2"
 }
 
+object Android {
+    val buildToolsVersion = "30.0.2"
+    val minSdkVersion = 21
+    val targetSdkVersion = 29
+    val compileSdkVersion = 29
+    val applicationId = "com.beetlestance.aphid"
+    val versionCode = 1
+    val versionName = "0.1"
+}
+
 object Libs {
 
     const val androidGradlePlugin: String = "com.android.tools.build:gradle:4.2.0-alpha09"
