@@ -2,7 +2,7 @@ import com.beetlestance.buildsrc.Aphid
 import com.beetlestance.buildsrc.Libs
 
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     kotlin("android")
     kotlin("kapt")
 }
