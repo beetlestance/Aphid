@@ -38,4 +38,18 @@ dependencies {
 
     // Co-Routines
     implementation(Libs.Coroutines.core)
+
+    // Retrofit
+    implementation(Libs.Retrofit.retrofit)
+    implementation(Libs.Retrofit.moshiConverter)
+
+    //Moshi
+    implementation(Libs.Moshi.moshi)
+    implementation(Libs.Moshi.moshiKotlin)
+    implementation(Libs.Moshi.moshiAdapters)
+
+    // Ok-Http
+    implementation(Libs.OkHttp.okhttp)
+    implementation(Libs.OkHttp.loggingInterceptor)
+    implementation(Libs.OkHttp.urlConnection)
 }

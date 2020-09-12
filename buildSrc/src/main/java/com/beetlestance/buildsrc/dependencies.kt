@@ -16,7 +16,7 @@ object Aphid {
 
 object Libs {
 
-    const val androidGradlePlugin: String = "com.android.tools.build:gradle:4.2.0-alpha09"
+    const val androidGradlePlugin: String = "com.android.tools.build:gradle:4.2.0-alpha10"
 
     const val leakCanary: String = "com.squareup.leakcanary:leakcanary-android:2.2"
 
@@ -163,9 +163,15 @@ object Libs {
     object Retrofit {
         private const val version = "2.9.0"
         const val retrofit: String = "com.squareup.retrofit2:retrofit:$version"
-        const val gsonConverter: String = "com.squareup.retrofit2:converter-gson:$version"
-        const val coroutineAdapter: String =
-            "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
+        const val moshiConverter = "com.squareup.retrofit2:converter-moshi:$version"
+    }
+
+    object Moshi {
+        private const val version = "1.10.0"
+        const val moshi = "com.squareup.moshi:moshi:$version"
+        const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:$version"
+        const val moshiAdapters = "com.squareup.moshi:moshi-adapters:$version"
+
     }
 
     object OkHttp {

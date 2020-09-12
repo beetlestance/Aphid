@@ -33,7 +33,7 @@ subprojects {
 
     plugins.apply("com.diffplug.spotless")
 
-    configure<com.diffplug.gradle.spotless.SpotlessExtension>() {
+    configure<com.diffplug.gradle.spotless.SpotlessExtension> {
         kotlin {
             target("**/*.kt")
             targetExclude("$buildDir/**/*.kt")
