@@ -1,40 +1,40 @@
 package com.beetlestance.spoonacular_kotlin.models
 
-internal enum class ResponseType {
+enum class ResponseType {
     Success, Informational, Redirection, ClientError, ServerError
 }
 
-internal abstract class ServerResponse<T>(val responseType: ResponseType) {
+abstract class SpoonacularApiResponse<T>(val responseType: ResponseType) {
     abstract val statusCode: Int
     abstract val headers: Map<String, List<String>>
 }
 
-internal class Success<T>(
+class Success<T>(
     val data: T,
     override val statusCode: Int = -1,
     override val headers: Map<String, List<String>> = mapOf()
-) : ServerResponse<T>(ResponseType.Success)
+) : SpoonacularApiResponse<T>(ResponseType.Success)
 
-internal class Informational<T>(
+class Informational<T>(
     val statusText: String,
     override val statusCode: Int = -1,
     override val headers: Map<String, List<String>> = mapOf()
-) : ServerResponse<T>(ResponseType.Informational)
+) : SpoonacularApiResponse<T>(ResponseType.Informational)
 
-internal class Redirection<T>(
+class Redirection<T>(
     override val statusCode: Int = -1,
     override val headers: Map<String, List<String>> = mapOf()
-) : ServerResponse<T>(ResponseType.Redirection)
+) : SpoonacularApiResponse<T>(ResponseType.Redirection)
 
-internal class ClientError<T>(
+class ClientError<T>(
     val body: Any? = null,
     override val statusCode: Int = -1,
     override val headers: Map<String, List<String>> = mapOf()
-) : ServerResponse<T>(ResponseType.ClientError)
+) : SpoonacularApiResponse<T>(ResponseType.ClientError)
 
-internal class ServerError<T>(
+class ServerError<T>(
     val message: String? = null,
     val body: Any? = null,
     override val statusCode: Int = -1,
     override val headers: Map<String, List<String>>
-) : ServerResponse<T>(ResponseType.ServerError)
+) : SpoonacularApiResponse<T>(ResponseType.ServerError)

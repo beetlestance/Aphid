@@ -1,6 +1,6 @@
 package com.beetlestance.spoonacular_kotlin.services
 
-import com.beetlestance.spoonacular_kotlin.models.ServerResponse
+import com.beetlestance.spoonacular_kotlin.models.SpoonacularApiResponse
 import com.beetlestance.spoonacular_kotlin.models.request.RequestAnalyzeRecipeInstructions
 import com.beetlestance.spoonacular_kotlin.models.request.RequestClassifyCuisine
 import com.beetlestance.spoonacular_kotlin.models.request.RequestCreateRecipeCard
@@ -18,7 +18,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import java.math.BigDecimal
 
-internal interface RecipesService {
+interface RecipesService {
 
     /**
      * Get Analyzed Recipe Instructions
@@ -31,7 +31,7 @@ internal interface RecipesService {
     fun getAnalyzedRecipeInstructions(
         @Path("id") id: BigDecimal,
         @Query("stepBreakdown") stepBreakdown: Boolean?
-    ): Call<ServerResponse<Any>>
+    ): Call<SpoonacularApiResponse<Any>>
 
     /**
      * Get Recipe Equipment by ID
@@ -40,7 +40,7 @@ internal interface RecipesService {
      * @return Any
      */
     @GET(Recipes.ById.GET_RECIPE_EQUIPMENT)
-    fun getRecipeEquipmentByID(@Path("id") id: BigDecimal): Call<ServerResponse<Any>>
+    fun getRecipeEquipmentByID(@Path("id") id: BigDecimal): Call<SpoonacularApiResponse<Any>>
 
     /**
      * Get Recipe Information
@@ -53,7 +53,7 @@ internal interface RecipesService {
     fun getRecipeInformation(
         @Path("id") id: BigDecimal,
         @Query("includeNutrition") includeNutrition: Boolean?
-    ): Call<ServerResponse<Any>>
+    ): Call<SpoonacularApiResponse<Any>>
 
     /**
      * Get Recipe Ingredients by ID
@@ -62,7 +62,7 @@ internal interface RecipesService {
      * @return Any
      */
     @GET(Recipes.ById.GET_RECIPE_INGREDIENTS)
-    fun getRecipeIngredientsByID(@Path("id") id: BigDecimal): Call<ServerResponse<Any>>
+    fun getRecipeIngredientsByID(@Path("id") id: BigDecimal): Call<SpoonacularApiResponse<Any>>
 
     /**
      * Get Recipe Nutrition Widget by ID
@@ -71,7 +71,7 @@ internal interface RecipesService {
      * @return Any
      */
     @GET(Recipes.ById.GET_RECIPE_NUTRITION)
-    fun getRecipeNutritionWidgetByID(@Path("id") id: BigDecimal): Call<ServerResponse<Any>>
+    fun getRecipeNutritionWidgetByID(@Path("id") id: BigDecimal): Call<SpoonacularApiResponse<Any>>
 
     /**
      * Get Recipe Price Breakdown by ID
@@ -80,7 +80,7 @@ internal interface RecipesService {
      * @return Any
      */
     @GET(Recipes.ById.GET_RECIPE_PRICE_BREAKDOWN)
-    fun getRecipePriceBreakdownByID(@Path("id") id: BigDecimal): Call<ServerResponse<Any>>
+    fun getRecipePriceBreakdownByID(@Path("id") id: BigDecimal): Call<SpoonacularApiResponse<Any>>
 
     /**
      * Get Similar Recipes
@@ -95,7 +95,7 @@ internal interface RecipesService {
         @Path("id") id: BigDecimal,
         @Query("number") number: BigDecimal?,
         @Query("limitLicense") limitLicense: Boolean?
-    ): Call<ServerResponse<Any>>
+    ): Call<SpoonacularApiResponse<Any>>
 
     /**
      * Summarize Recipe
@@ -104,7 +104,7 @@ internal interface RecipesService {
      * @return Any
      */
     @GET(Recipes.ById.SUMMARIZE_RECIPE)
-    fun summarizeRecipe(@Path("id") id: BigDecimal): Call<ServerResponse<Any>>
+    fun summarizeRecipe(@Path("id") id: BigDecimal): Call<SpoonacularApiResponse<Any>>
 
     /**
      * Visualize Recipe Equipment by ID
@@ -117,7 +117,7 @@ internal interface RecipesService {
     fun visualizeRecipeEquipmentByID(
         @Path("id") id: BigDecimal,
         @Query("defaultCss") defaultCss: Boolean?
-    ): Call<ServerResponse<String>>
+    ): Call<SpoonacularApiResponse<String>>
 
     /**
      * Visualize Recipe Ingredients by ID
@@ -130,7 +130,7 @@ internal interface RecipesService {
     fun visualizeRecipeIngredientsByID(
         @Path("id") id: BigDecimal,
         @Query("defaultCss") defaultCss: Boolean?
-    ): Call<ServerResponse<String>>
+    ): Call<SpoonacularApiResponse<String>>
 
 
     /**
@@ -144,7 +144,7 @@ internal interface RecipesService {
     fun visualizeRecipeNutritionByID(
         @Path("id") id: BigDecimal,
         @Query("defaultCss") defaultCss: Boolean?
-    ): Call<ServerResponse<String>>
+    ): Call<SpoonacularApiResponse<String>>
 
     /**
      * Visualize Recipe Price Breakdown by ID
@@ -157,7 +157,7 @@ internal interface RecipesService {
     fun visualizeRecipePriceBreakdownByID(
         @Path("id") id: BigDecimal,
         @Query("defaultCss") defaultCss: Boolean?
-    ): Call<ServerResponse<String>>
+    ): Call<SpoonacularApiResponse<String>>
 
     /**
      * Analyze a Recipe Search Query
@@ -166,7 +166,7 @@ internal interface RecipesService {
      * @return Any
      */
     @GET(Recipes.ANALYZE_A_RECIPE_SEARCH_QUERY)
-    fun analyzeARecipeSearchQuery(@Query("q") q: String): Call<ServerResponse<Any>>
+    fun analyzeARecipeSearchQuery(@Query("q") q: String): Call<SpoonacularApiResponse<Any>>
 
     /**
      * Analyze Recipe Instructions
@@ -177,7 +177,7 @@ internal interface RecipesService {
     @POST(Recipes.ANALYZE_RECIPE_INSTRUCTIONS)
     fun analyzeRecipeInstructions(
         @Body requestAnalyzeRecipeInstructions: RequestAnalyzeRecipeInstructions
-    ): Call<ServerResponse<Any>>
+    ): Call<SpoonacularApiResponse<Any>>
 
     /**
      * Autocomplete Recipe Search
@@ -190,7 +190,7 @@ internal interface RecipesService {
     fun autocompleteRecipeSearch(
         @Query("query") query: String,
         @Query("number") number: BigDecimal?
-    ): Call<ServerResponse<Any>>
+    ): Call<SpoonacularApiResponse<Any>>
 
     /**
      * Classify Cuisine
@@ -201,7 +201,7 @@ internal interface RecipesService {
     @POST(Recipes.CLASSIFY_CUISINE)
     fun classifyCuisine(
         @Body requestClassifyCuisine: RequestClassifyCuisine
-    ): Call<ServerResponse<Any>>
+    ): Call<SpoonacularApiResponse<Any>>
 
     /**
      * Convert Amounts
@@ -218,7 +218,7 @@ internal interface RecipesService {
         @Query("sourceAmount") sourceAmount: BigDecimal,
         @Query("sourceUnit") sourceUnit: String,
         @Query("targetUnit") targetUnit: String
-    ): Call<ServerResponse<Any>>
+    ): Call<SpoonacularApiResponse<Any>>
 
 
     /**
@@ -230,7 +230,7 @@ internal interface RecipesService {
     @POST(Recipes.CREATE_RECIPE_CARD)
     fun createRecipeCard(
         @Body requestCreateRecipeCard: RequestCreateRecipeCard
-    ): Call<ServerResponse<Any>>
+    ): Call<SpoonacularApiResponse<Any>>
 
     /**
      * Extract Recipe from Website
@@ -245,7 +245,7 @@ internal interface RecipesService {
         @Query("url") url: String,
         @Query("forceExtraction") forceExtraction: Boolean?,
         @Query("analyze") analyze: Boolean?
-    ): Call<ServerResponse<Any>>
+    ): Call<SpoonacularApiResponse<Any>>
 
     /**
      * Get Random Recipes
@@ -260,7 +260,7 @@ internal interface RecipesService {
         @Query("limitLicense") limitLicense: Boolean?,
         @Query("tags") tags: String?,
         @Query("number") number: BigDecimal?
-    ): Call<ServerResponse<Any>>
+    ): Call<SpoonacularApiResponse<Any>>
 
     /**
      * Get Recipe Information Bulk
@@ -273,7 +273,7 @@ internal interface RecipesService {
     fun getRecipeInformationBulk(
         @Query("ids") ids: String,
         @Query("includeNutrition") includeNutrition: Boolean?
-    ): Call<ServerResponse<Any>>
+    ): Call<SpoonacularApiResponse<Any>>
 
     /**
      * Guess Nutrition by Dish Name
@@ -284,7 +284,7 @@ internal interface RecipesService {
     @GET(Recipes.GUESS_NUTRITION_BY_DISH_NAME)
     fun guessNutritionByDishName(
         @Query("title") title: String
-    ): Call<ServerResponse<Any>>
+    ): Call<SpoonacularApiResponse<Any>>
 
     /**
      * Parse Ingredients
@@ -295,7 +295,7 @@ internal interface RecipesService {
     @POST(Recipes.PARSE_INGREDIENTS)
     fun parseIngredients(
         @Body requestParseIngredients: RequestParseIngredients
-    ): Call<ServerResponse<Any>>
+    ): Call<SpoonacularApiResponse<Any>>
 
     /**
      * Quick Answer
@@ -306,7 +306,7 @@ internal interface RecipesService {
     @GET(Recipes.QUICK_ANSWER)
     fun quickAnswer(
         @Query("q") q: String
-    ): Call<ServerResponse<Any>>
+    ): Call<SpoonacularApiResponse<Any>>
 
     /**
      * Search Recipes
@@ -333,7 +333,7 @@ internal interface RecipesService {
         @Query("number") number: BigDecimal?,
         @Query("limitLicense") limitLicense: Boolean?,
         @Query("instructionsRequired") instructionsRequired: Boolean?
-    ): Call<ServerResponse<Any>>
+    ): Call<SpoonacularApiResponse<Any>>
 
     /**
      * Search Recipes by Ingredients
@@ -352,7 +352,7 @@ internal interface RecipesService {
         @Query("limitLicense") limitLicense: Boolean?,
         @Query("ranking") ranking: BigDecimal?,
         @Query("ignorePantry") ignorePantry: Boolean?
-    ): Call<ServerResponse<Any>>
+    ): Call<SpoonacularApiResponse<Any>>
 
     /**
      * Search Recipes by Nutrients
@@ -513,7 +513,7 @@ internal interface RecipesService {
         @Query("number") number: BigDecimal?,
         @Query("random") random: Boolean?,
         @Query("limitLicense") limitLicense: Boolean?
-    ): Call<ServerResponse<Any>>
+    ): Call<SpoonacularApiResponse<Any>>
 
     /**
      * Search Recipes Complex
@@ -715,7 +715,7 @@ internal interface RecipesService {
         @Query("number") number: BigDecimal?,
         @Query("random") random: Boolean?,
         @Query("limitLicense") limitLicense: Boolean?
-    ): Call<ServerResponse<Any>>
+    ): Call<SpoonacularApiResponse<Any>>
 
     /**
      * Visualize Equipment
@@ -726,7 +726,7 @@ internal interface RecipesService {
     @POST(Recipes.VISUALIZE_EQUIPMENT)
     fun visualizeEquipment(
         @Body requestVisualizeEquipment: RequestVisualizeEquipment
-    ): Call<ServerResponse<String>>
+    ): Call<SpoonacularApiResponse<String>>
 
     /**
      * Visualize Ingredients
@@ -737,7 +737,7 @@ internal interface RecipesService {
     @POST(Recipes.VISUALIZE_INGREDIENTS)
     fun visualizeIngredients(
         @Body requestVisualizeIngredients: RequestVisualizeIngredients
-    ): Call<ServerResponse<String>>
+    ): Call<SpoonacularApiResponse<String>>
 
     /**
      * Visualize Price Breakdown
@@ -748,7 +748,7 @@ internal interface RecipesService {
     @POST(Recipes.VISUALIZE_PRICE_BREAKDOWN)
     fun visualizePriceBreakdown(
         @Body requestVisualizePrceBreakdown: RequestVisualizePrceBreakdown
-    ): Call<ServerResponse<String>>
+    ): Call<SpoonacularApiResponse<String>>
 
     /**
      * Visualize Recipe Nutrition
@@ -758,5 +758,5 @@ internal interface RecipesService {
     @POST(Recipes.VISUALIZE_RECIPE_NUTRITION)
     fun visualizeRecipeNutrition(
         @Body requestVisualizeRecipeNutrition: RequestVisualizeRecipeNutrition
-    ): Call<ServerResponse<String>>
+    ): Call<SpoonacularApiResponse<String>>
 }
