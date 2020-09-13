@@ -18,7 +18,7 @@ package com.beetlestance.spoonacular_kotlin.utils
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import java.util.*
+import java.util.Date
 
 class MoshiSerializer {
 

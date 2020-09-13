@@ -23,7 +23,7 @@ import com.beetlestance.spoonacular_kotlin.models.SpoonacularApiResponse
 import com.beetlestance.spoonacular_kotlin.models.Success
 import com.beetlestance.spoonacular_kotlin.utils.MoshiSerializer.Companion.moshi
 import okhttp3.Response
-import java.util.*
+import java.util.Locale
 
 /**
  * Provides an extension to evaluation whether the response is a 1xx code
