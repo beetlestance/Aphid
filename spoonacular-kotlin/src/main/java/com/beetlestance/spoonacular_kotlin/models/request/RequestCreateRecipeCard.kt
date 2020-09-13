@@ -1,6 +1,7 @@
 package com.beetlestance.spoonacular_kotlin.models.request
 
 import com.squareup.moshi.Json
+import java.io.File
 import java.math.BigDecimal
 
 /**
@@ -24,7 +25,7 @@ data class RequestCreateRecipeCard(
     val title: String,
 
     @Json(name = "image")
-    val image: java.io.File,
+    val image: File,
 
     @Json(name = "ingredients")
     val ingredients: String,
