@@ -52,6 +52,8 @@ internal object Recipes {
 
     const val PARSE_INGREDIENTS = "/recipes/parseIngredients"
 
+    const val QUICK_ANSWER = "/recipes/quickAnswer"
+
     const val SEARCH_RECIPES = "/recipes/search"
 
     const val SEARCH_RECIPES_BY_INGREDIENTS = "/recipes/findByIngredients"
@@ -59,8 +61,6 @@ internal object Recipes {
     const val SEARCH_RECIPES_BY_NUTRIENTS = "/recipes/findByNutrients"
 
     const val SEARCH_RECIPES_COMPLEX = "/recipes/complexSearch"
-
-    const val QUICK_ANSWER = "/recipes/quickAnswer"
 
     const val VISUALIZE_EQUIPMENT = "/recipes/visualizeEquipment"
 
