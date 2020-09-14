@@ -27,11 +27,15 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
+
 dependencies {
     // Testing
     testImplementation(Libs.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.espressoCore)
+
+    //Annotations
+    implementation(Libs.AndroidX.androidAnnotation)
 
     // Kotlin
     implementation(Libs.Kotlin.stdlib)
