@@ -152,7 +152,7 @@ object Libs {
     }
 
     object Kotlin {
-        private const val version = "1.4.0"
+        private const val version = "1.4.10"
         const val jdk7: String = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
         const val stdlib: String = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val reflect: String = "org.jetbrains.kotlin:kotlin-reflect:$version"
@@ -175,7 +175,7 @@ object Libs {
     }
 
     object OkHttp {
-        private const val version = "4.7.2"
+        private const val version = "4.9.0"
         const val okhttp: String = "com.squareup.okhttp3:okhttp:$version"
         const val loggingInterceptor: String = "com.squareup.okhttp3:logging-interceptor:$version"
         const val urlConnection: String = "com.squareup.okhttp3:okhttp-urlconnection:4.7.2"
