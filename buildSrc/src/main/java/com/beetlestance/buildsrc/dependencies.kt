@@ -178,7 +178,7 @@ object Libs {
         private const val version = "4.9.0"
         const val okhttp: String = "com.squareup.okhttp3:okhttp:$version"
         const val loggingInterceptor: String = "com.squareup.okhttp3:logging-interceptor:$version"
-        const val urlConnection: String = "com.squareup.okhttp3:okhttp-urlconnection:4.7.2"
+        const val urlConnection: String = "com.squareup.okhttp3:okhttp-urlconnection:$version"
     }
 
     object Coroutines {
