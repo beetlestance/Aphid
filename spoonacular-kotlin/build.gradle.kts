@@ -40,9 +40,6 @@ dependencies {
     // Kotlin
     implementation(Libs.Kotlin.stdlib)
 
-    // Co-Routines
-    implementation(Libs.Coroutines.core)
-
     // Retrofit
     implementation(Libs.Retrofit.retrofit)
     implementation(Libs.Retrofit.moshiConverter)
