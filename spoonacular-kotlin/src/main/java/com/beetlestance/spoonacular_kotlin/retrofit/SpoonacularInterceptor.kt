@@ -43,6 +43,6 @@ internal class SpoonacularInterceptor(private val apiKey: String) : Interceptor 
     }
 
     companion object {
-        private val PARAM_API_KEY = "apiKey"
+        private const val PARAM_API_KEY = "apiKey"
     }
 }

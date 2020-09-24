@@ -16,7 +16,7 @@ object Aphid {
 
 object Libs {
 
-    const val androidGradlePlugin: String = "com.android.tools.build:gradle:4.2.0-alpha10"
+    const val androidGradlePlugin: String = "com.android.tools.build:gradle:4.2.0-alpha12"
 
     const val leakCanary: String = "com.squareup.leakcanary:leakcanary-android:2.2"
 
@@ -29,9 +29,9 @@ object Libs {
     }
 
     object AndroidX {
-        const val androidAnnotation: String = "androidx.annotation:annotation:1.1.0"
+        const val androidAnnotation: String = "androidx.annotation:annotation:1.2.0-alpha01"
         const val appcompat: String = "androidx.appcompat:appcompat:1.3.0-alpha02"
-        const val coreKtx: String = "androidx.core:core-ktx:1.5.0-alpha02"
+        const val coreKtx: String = "androidx.core:core-ktx:1.5.0-alpha03"
         const val adsIdentifier: String = "androidx.ads:ads-identifier:1.0.0-alpha04"
         const val multidex: String = "androidx.multidex:multidex:2.0.1"
 
@@ -204,7 +204,7 @@ object Libs {
     }
 
     object Lint {
-        private const val version = "27.2.0-alpha10"
+        private const val version = "27.2.0-alpha12"
         const val api: String = "com.android.tools.lint:lint-api:$version"
         const val checks: String = "com.android.tools.lint:lint-checks:$version"
     }
