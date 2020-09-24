@@ -39,7 +39,7 @@ dependencies {
     implementation(project(":spoonacular-kotlin"))
 
     // Testing
-    testImplementation(Libs.AndroidX.Test.junit)
+    androidTestImplementation(Libs.AndroidX.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.espressoCore)
 
     // Kotlin

@@ -89,7 +89,7 @@ dependencies {
     lintChecks(project(":mdc-theme-lint"))
 
     // Testing
-    testImplementation(Libs.AndroidX.Test.junit)
+    androidTestImplementation(Libs.AndroidX.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.espressoCore)
 
     // AndroidX

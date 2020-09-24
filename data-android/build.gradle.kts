@@ -36,7 +36,7 @@ dependencies {
     implementation(project(":base-android"))
 
     // Testing
-    testImplementation(Libs.AndroidX.Test.junit)
+    androidTestImplementation(Libs.AndroidX.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.espressoCore)
 
     // Kotlin
