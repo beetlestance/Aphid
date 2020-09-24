@@ -36,8 +36,7 @@ dependencies {
     implementation(project(":data"))
 
     // Testing
-    testImplementation(Libs.Test.junit)
-    androidTestImplementation(Libs.AndroidX.Test.junit)
+    testImplementation(Libs.AndroidX.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.espressoCore)
 
     // AndroidX
