@@ -4,6 +4,7 @@ import com.beetlestance.buildsrc.Libs
 plugins {
     id("com.android.library")
     kotlin("android")
+    kotlin("android.extensions")
     kotlin("kapt")
 }
 
