@@ -59,8 +59,7 @@ object Libs {
         }
 
         object Fragment {
-            private const val version = "1.2.5"
-            const val fragment: String = "androidx.fragment:fragment:$version"
+            private const val version = "1.3.0-alpha08"
             const val fragmentKtx: String = "androidx.fragment:fragment-ktx:$version"
         }
 
@@ -204,7 +203,7 @@ object Libs {
     }
 
     object Lint {
-        private const val version = "27.2.0-alpha12"
+        private const val version = "27.2.0-alpha11"
         const val api: String = "com.android.tools.lint:lint-api:$version"
         const val checks: String = "com.android.tools.lint:lint-checks:$version"
     }

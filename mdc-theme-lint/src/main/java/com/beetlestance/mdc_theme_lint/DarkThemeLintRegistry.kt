@@ -26,7 +26,8 @@ class DarkThemeLintRegistry : IssueRegistry() {
 
     override val issues: List<Issue>
         get() = listOf(
-            DirectColorUseIssue.ISSUE, DirectColorDrawableUseIssue.ISSUE,
+            DirectColorUseIssue.ISSUE,
+            DirectColorDrawableUseIssue.ISSUE,
             MissingNightColorIssue.ISSUE
         )
 

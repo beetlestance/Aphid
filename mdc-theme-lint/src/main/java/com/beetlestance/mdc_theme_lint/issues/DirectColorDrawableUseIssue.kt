@@ -25,13 +25,13 @@ import com.beetlestance.mdc_theme_lint.detectors.DirectColorDrawableUseDetector
 object DirectColorDrawableUseIssue {
     private const val ID = "DirectColorInDrawableUse"
     private const val DESCRIPTION = "Color used directly"
-    const val EXPLANATION =
+    const val EXPLANATION: String =
         "Avoid direct use of colors in XML files. This can cause issues with different theme (dark-theme?) support"
     private val CATEGORY = Category.CORRECTNESS
     private const val PRIORITY = 4
     private val SEVERITY = Severity.WARNING
 
-    val ISSUE = Issue.create(
+    val ISSUE: Issue = Issue.create(
         ID,
         DESCRIPTION,
         EXPLANATION,

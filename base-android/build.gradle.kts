@@ -40,8 +40,6 @@ dependencies {
     androidTestImplementation(Libs.AndroidX.Test.espressoCore)
 
     // AndroidX
-    implementation(Libs.AndroidX.appcompat)
-    implementation(Libs.AndroidX.coreKtx)
     implementation(Libs.AndroidX.constraintlayout)
 
     // Material Design
