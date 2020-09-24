@@ -17,7 +17,7 @@ package com.beetlestance.spoonacular_kotlin.models.response
 
 import com.squareup.moshi.Json
 
-data class ResponseParseIngredients(
+data class ParseIngredients(
 
     @Json(name = "shoppingListUnits")
     val shoppingListUnits: List<String?>? = null,

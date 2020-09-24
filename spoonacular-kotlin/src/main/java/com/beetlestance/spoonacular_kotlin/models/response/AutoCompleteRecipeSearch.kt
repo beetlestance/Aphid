@@ -17,7 +17,7 @@ package com.beetlestance.spoonacular_kotlin.models.response
 
 import com.squareup.moshi.Json
 
-data class ResponseAutoCompleteRecipeSearch(
+data class AutoCompleteRecipeSearch(
 
     @Json(name = "id")
     val id: Int? = null,

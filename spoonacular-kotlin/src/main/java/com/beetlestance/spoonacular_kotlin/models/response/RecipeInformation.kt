@@ -17,7 +17,7 @@ package com.beetlestance.spoonacular_kotlin.models.response
 
 import com.squareup.moshi.Json
 
-data class ResponseRecipeInformation(
+data class RecipeInformation(
 
     @Json(name = "instructions")
     val instructions: String? = null,

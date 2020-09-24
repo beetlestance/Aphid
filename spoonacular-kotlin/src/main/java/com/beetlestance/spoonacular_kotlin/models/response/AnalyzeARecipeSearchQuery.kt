@@ -17,7 +17,7 @@ package com.beetlestance.spoonacular_kotlin.models.response
 
 import com.squareup.moshi.Json
 
-data class ResponseAnalyzeARecipeSearchQuery(
+data class AnalyzeARecipeSearchQuery(
 
     @Json(name = "ingredients")
     val ingredients: List<IngredientsItem?>? = null,

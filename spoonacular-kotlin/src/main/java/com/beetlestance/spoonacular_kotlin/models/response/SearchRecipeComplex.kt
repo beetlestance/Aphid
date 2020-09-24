@@ -18,7 +18,7 @@ package com.beetlestance.spoonacular_kotlin.models.response
 import com.squareup.moshi.Json
 import java.math.BigDecimal
 
-data class ResponseSearchRecipeComplex(
+data class SearchRecipeComplex(
 
     @Json(name = "number")
     val number: BigDecimal? = null,

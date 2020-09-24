@@ -17,7 +17,7 @@ package com.beetlestance.spoonacular_kotlin.models.response
 
 import com.squareup.moshi.Json
 
-data class ResponseGuessNutritionByDishName(
+data class GuessNutritionByDishName(
 
     @Json(name = "recipesUsed")
     val recipesUsed: Int? = null,

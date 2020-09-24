@@ -17,7 +17,7 @@ package com.beetlestance.spoonacular_kotlin.models.response
 
 import com.squareup.moshi.Json
 
-data class ResponseRecipeSearch(
+data class RecipeSearch(
 
     @Json(name = "number")
     val number: Int? = null,

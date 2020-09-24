@@ -17,14 +17,11 @@ package com.beetlestance.spoonacular_kotlin.models.response
 
 import com.squareup.moshi.Json
 
-data class ResponseSummarizeRecipe(
+data class QuickAnswer(
 
-    @Json(name = "summary")
-    val summary: String? = null,
+    @Json(name = "image")
+    val image: String? = null,
 
-    @Json(name = "id")
-    val id: Int? = null,
-
-    @Json(name = "title")
-    val title: String? = null
+    @Json(name = "answer")
+    val answer: String? = null
 )

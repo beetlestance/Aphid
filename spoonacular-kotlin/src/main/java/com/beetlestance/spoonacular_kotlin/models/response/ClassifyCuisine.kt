@@ -17,7 +17,7 @@ package com.beetlestance.spoonacular_kotlin.models.response
 
 import com.squareup.moshi.Json
 
-data class ResponseClassifyCuisine(
+data class ClassifyCuisine(
 
     @Json(name = "confidence")
     val confidence: Double? = null,

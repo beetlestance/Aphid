@@ -17,8 +17,14 @@ package com.beetlestance.spoonacular_kotlin.models.response
 
 import com.squareup.moshi.Json
 
-data class ResponseCreateRecipeCard(
+data class SummarizeRecipe(
 
-    @Json(name = "url")
-    val url: String? = null
+    @Json(name = "summary")
+    val summary: String? = null,
+
+    @Json(name = "id")
+    val id: Int? = null,
+
+    @Json(name = "title")
+    val title: String? = null
 )

@@ -17,7 +17,7 @@ package com.beetlestance.spoonacular_kotlin.models.response
 
 import com.squareup.moshi.Json
 
-data class ResponseSearchRecipesByIngredients(
+data class SearchRecipesByIngredients(
 
     @Json(name = "image")
     val image: String? = null,

@@ -23,26 +23,26 @@ import com.beetlestance.spoonacular_kotlin.models.request.RequestVisualizeEquipm
 import com.beetlestance.spoonacular_kotlin.models.request.RequestVisualizeIngredients
 import com.beetlestance.spoonacular_kotlin.models.request.RequestVisualizePrceBreakdown
 import com.beetlestance.spoonacular_kotlin.models.request.RequestVisualizeRecipeNutrition
-import com.beetlestance.spoonacular_kotlin.models.response.ResponseAnalyzeARecipeSearchQuery
-import com.beetlestance.spoonacular_kotlin.models.response.ResponseAnalyzeRecipeInstructions
-import com.beetlestance.spoonacular_kotlin.models.response.ResponseAnalyzedRecipeInstructions
-import com.beetlestance.spoonacular_kotlin.models.response.ResponseAutoCompleteRecipeSearch
-import com.beetlestance.spoonacular_kotlin.models.response.ResponseConvertAmount
-import com.beetlestance.spoonacular_kotlin.models.response.ResponseCreateRecipeCard
-import com.beetlestance.spoonacular_kotlin.models.response.ResponseGuessNutritionByDishName
-import com.beetlestance.spoonacular_kotlin.models.response.ResponseParseIngredients
-import com.beetlestance.spoonacular_kotlin.models.response.ResponseQuickAnswer
-import com.beetlestance.spoonacular_kotlin.models.response.ResponseRecipeEquipment
-import com.beetlestance.spoonacular_kotlin.models.response.ResponseRecipeInformation
-import com.beetlestance.spoonacular_kotlin.models.response.ResponseRecipeIngredients
-import com.beetlestance.spoonacular_kotlin.models.response.ResponseRecipeNutrients
-import com.beetlestance.spoonacular_kotlin.models.response.ResponseRecipePriceBreakdown
-import com.beetlestance.spoonacular_kotlin.models.response.ResponseRecipeSearch
-import com.beetlestance.spoonacular_kotlin.models.response.ResponseSearchRecipeComplex
-import com.beetlestance.spoonacular_kotlin.models.response.ResponseSearchRecipesByIngredients
-import com.beetlestance.spoonacular_kotlin.models.response.ResponseSearchRecipesByNutrients
-import com.beetlestance.spoonacular_kotlin.models.response.ResponseSimilarRecipes
-import com.beetlestance.spoonacular_kotlin.models.response.ResponseSummarizeRecipe
+import com.beetlestance.spoonacular_kotlin.models.response.AnalyzeARecipeSearchQuery
+import com.beetlestance.spoonacular_kotlin.models.response.AnalyzeRecipeInstructions
+import com.beetlestance.spoonacular_kotlin.models.response.AnalyzedRecipeInstructions
+import com.beetlestance.spoonacular_kotlin.models.response.AutoCompleteRecipeSearch
+import com.beetlestance.spoonacular_kotlin.models.response.ConvertAmount
+import com.beetlestance.spoonacular_kotlin.models.response.CreateRecipeCard
+import com.beetlestance.spoonacular_kotlin.models.response.GuessNutritionByDishName
+import com.beetlestance.spoonacular_kotlin.models.response.ParseIngredients
+import com.beetlestance.spoonacular_kotlin.models.response.QuickAnswer
+import com.beetlestance.spoonacular_kotlin.models.response.RecipeEquipment
+import com.beetlestance.spoonacular_kotlin.models.response.RecipeInformation
+import com.beetlestance.spoonacular_kotlin.models.response.RecipeIngredients
+import com.beetlestance.spoonacular_kotlin.models.response.RecipeNutrients
+import com.beetlestance.spoonacular_kotlin.models.response.RecipePriceBreakdown
+import com.beetlestance.spoonacular_kotlin.models.response.RecipeSearch
+import com.beetlestance.spoonacular_kotlin.models.response.SearchRecipeComplex
+import com.beetlestance.spoonacular_kotlin.models.response.SearchRecipesByIngredients
+import com.beetlestance.spoonacular_kotlin.models.response.SearchRecipesByNutrients
+import com.beetlestance.spoonacular_kotlin.models.response.SimilarRecipes
+import com.beetlestance.spoonacular_kotlin.models.response.SummarizeRecipe
 import com.beetlestance.spoonacular_kotlin.services.endpoints.Recipes
 import retrofit2.Call
 import retrofit2.http.Body
@@ -65,7 +65,7 @@ interface RecipesService {
     fun getAnalyzedRecipeInstructions(
         @Path("id") id: BigDecimal,
         @Query("stepBreakdown") stepBreakdown: Boolean? = null
-    ): Call<List<ResponseAnalyzedRecipeInstructions>>
+    ): Call<List<AnalyzedRecipeInstructions>>
 
     /**
      * Get Recipe Equipment by ID
@@ -74,7 +74,7 @@ interface RecipesService {
      * @return ResponseRecipeEquipment
      */
     @GET(Recipes.ById.GET_RECIPE_EQUIPMENT)
-    fun getRecipeEquipmentByID(@Path("id") id: BigDecimal): Call<ResponseRecipeEquipment>
+    fun getRecipeEquipmentByID(@Path("id") id: BigDecimal): Call<RecipeEquipment>
 
     /**
      * Get Recipe Information
@@ -87,7 +87,7 @@ interface RecipesService {
     fun getRecipeInformation(
         @Path("id") id: BigDecimal,
         @Query("includeNutrition") includeNutrition: Boolean? = null
-    ): Call<ResponseRecipeInformation>
+    ): Call<RecipeInformation>
 
     /**
      * Get Recipe Ingredients by ID
@@ -96,7 +96,7 @@ interface RecipesService {
      * @return ResponseRecipeIngredients
      */
     @GET(Recipes.ById.GET_RECIPE_INGREDIENTS)
-    fun getRecipeIngredientsByID(@Path("id") id: BigDecimal): Call<ResponseRecipeIngredients>
+    fun getRecipeIngredientsByID(@Path("id") id: BigDecimal): Call<RecipeIngredients>
 
     /**
      * Get Recipe Nutrition Widget by ID
@@ -105,7 +105,7 @@ interface RecipesService {
      * @return ResponseRecipeNutrients
      */
     @GET(Recipes.ById.GET_RECIPE_NUTRITION)
-    fun getRecipeNutritionWidgetByID(@Path("id") id: BigDecimal): Call<ResponseRecipeNutrients>
+    fun getRecipeNutritionWidgetByID(@Path("id") id: BigDecimal): Call<RecipeNutrients>
 
     /**
      * Get Recipe Price Breakdown by ID
@@ -114,7 +114,7 @@ interface RecipesService {
      * @return ResponseRecipePriceBreakdown
      */
     @GET(Recipes.ById.GET_RECIPE_PRICE_BREAKDOWN)
-    fun getRecipePriceBreakdownByID(@Path("id") id: BigDecimal): Call<ResponseRecipePriceBreakdown>
+    fun getRecipePriceBreakdownByID(@Path("id") id: BigDecimal): Call<RecipePriceBreakdown>
 
     /**
      * Get Similar Recipes
@@ -129,7 +129,7 @@ interface RecipesService {
         @Path("id") id: BigDecimal,
         @Query("number") number: BigDecimal? = null,
         @Query("limitLicense") limitLicense: Boolean? = null
-    ): Call<List<ResponseSimilarRecipes>>
+    ): Call<List<SimilarRecipes>>
 
     /**
      * Summarize Recipe
@@ -138,7 +138,7 @@ interface RecipesService {
      * @return ResponseSummarizeRecipe
      */
     @GET(Recipes.ById.SUMMARIZE_RECIPE)
-    fun summarizeRecipe(@Path("id") id: BigDecimal): Call<ResponseSummarizeRecipe>
+    fun summarizeRecipe(@Path("id") id: BigDecimal): Call<SummarizeRecipe>
 
     /**
      * Visualize Recipe Equipment by ID
@@ -199,7 +199,7 @@ interface RecipesService {
      * @return ResponseAnalyzeARecipeSearchQuery
      */
     @GET(Recipes.ANALYZE_A_RECIPE_SEARCH_QUERY)
-    fun analyzeARecipeSearchQuery(@Query("q") q: String): Call<ResponseAnalyzeARecipeSearchQuery>
+    fun analyzeARecipeSearchQuery(@Query("q") q: String): Call<AnalyzeARecipeSearchQuery>
 
     /**
      * Analyze Recipe Instructions
@@ -210,7 +210,7 @@ interface RecipesService {
     @POST(Recipes.ANALYZE_RECIPE_INSTRUCTIONS)
     fun analyzeRecipeInstructions(
         @Body requestAnalyzeRecipeInstructions: RequestAnalyzeRecipeInstructions
-    ): Call<ResponseAnalyzeRecipeInstructions>
+    ): Call<AnalyzeRecipeInstructions>
 
     /**
      * Autocomplete Recipe Search
@@ -223,7 +223,7 @@ interface RecipesService {
     fun autocompleteRecipeSearch(
         @Query("query") query: String,
         @Query("number") number: BigDecimal? = null
-    ): Call<List<ResponseAutoCompleteRecipeSearch>>
+    ): Call<List<AutoCompleteRecipeSearch>>
 
     /**
      * Classify Cuisine
@@ -251,7 +251,7 @@ interface RecipesService {
         @Query("sourceAmount") sourceAmount: BigDecimal,
         @Query("sourceUnit") sourceUnit: String,
         @Query("targetUnit") targetUnit: String
-    ): Call<ResponseConvertAmount>
+    ): Call<ConvertAmount>
 
     /**
      * Create Recipe Card
@@ -262,7 +262,7 @@ interface RecipesService {
     @POST(Recipes.CREATE_RECIPE_CARD)
     fun createRecipeCard(
         @Body requestCreateRecipeCard: RequestCreateRecipeCard
-    ): Call<ResponseCreateRecipeCard>
+    ): Call<CreateRecipeCard>
 
     /**
      * Extract Recipe from Website
@@ -277,7 +277,7 @@ interface RecipesService {
         @Query("url") url: String,
         @Query("forceExtraction") forceExtraction: Boolean? = null,
         @Query("analyze") analyze: Boolean? = null
-    ): Call<ResponseRecipeInformation>
+    ): Call<RecipeInformation>
 
     /**
      * Get Random Recipes
@@ -292,7 +292,7 @@ interface RecipesService {
         @Query("limitLicense") limitLicense: Boolean? = null,
         @Query("tags") tags: String? = null,
         @Query("number") number: BigDecimal? = null
-    ): Call<List<ResponseRecipeInformation>>
+    ): Call<List<RecipeInformation>>
 
     /**
      * Get Recipe Information Bulk
@@ -305,7 +305,7 @@ interface RecipesService {
     fun getRecipeInformationBulk(
         @Query("ids") ids: String,
         @Query("includeNutrition") includeNutrition: Boolean? = null
-    ): Call<List<ResponseRecipeInformation>>
+    ): Call<List<RecipeInformation>>
 
     /**
      * Guess Nutrition by Dish Name
@@ -316,7 +316,7 @@ interface RecipesService {
     @GET(Recipes.GUESS_NUTRITION_BY_DISH_NAME)
     fun guessNutritionByDishName(
         @Query("title") title: String
-    ): Call<ResponseGuessNutritionByDishName>
+    ): Call<GuessNutritionByDishName>
 
     /**
      * Parse Ingredients
@@ -327,7 +327,7 @@ interface RecipesService {
     @POST(Recipes.PARSE_INGREDIENTS)
     fun parseIngredients(
         @Body requestParseIngredients: RequestParseIngredients
-    ): Call<List<ResponseParseIngredients>>
+    ): Call<List<ParseIngredients>>
 
     /**
      * Quick Answer
@@ -338,7 +338,7 @@ interface RecipesService {
     @GET(Recipes.QUICK_ANSWER)
     fun quickAnswer(
         @Query("q") q: String
-    ): Call<ResponseQuickAnswer>
+    ): Call<QuickAnswer>
 
     /**
      * Search Recipes
@@ -365,7 +365,7 @@ interface RecipesService {
         @Query("number") number: BigDecimal? = null,
         @Query("limitLicense") limitLicense: Boolean? = null,
         @Query("instructionsRequired") instructionsRequired: Boolean? = null
-    ): Call<ResponseRecipeSearch>
+    ): Call<RecipeSearch>
 
     /**
      * Search Recipes by Ingredients
@@ -384,7 +384,7 @@ interface RecipesService {
         @Query("limitLicense") limitLicense: Boolean? = null,
         @Query("ranking") ranking: BigDecimal? = null,
         @Query("ignorePantry") ignorePantry: Boolean? = null
-    ): Call<List<ResponseSearchRecipesByIngredients>>
+    ): Call<List<SearchRecipesByIngredients>>
 
     /**
      * Search Recipes by Nutrients
@@ -545,7 +545,7 @@ interface RecipesService {
         @Query("number") number: BigDecimal? = null,
         @Query("random") random: Boolean? = null,
         @Query("limitLicense") limitLicense: Boolean? = null
-    ): Call<List<ResponseSearchRecipesByNutrients>>
+    ): Call<List<SearchRecipesByNutrients>>
 
     /**
      * Search Recipes Complex
@@ -747,7 +747,7 @@ interface RecipesService {
         @Query("number") number: BigDecimal? = null,
         @Query("random") random: Boolean? = null,
         @Query("limitLicense") limitLicense: Boolean? = null
-    ): Call<ResponseSearchRecipeComplex>
+    ): Call<SearchRecipeComplex>
 
     /**
      * Visualize Equipment

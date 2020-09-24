@@ -17,7 +17,7 @@ package com.beetlestance.spoonacular_kotlin.models.response
 
 import com.squareup.moshi.Json
 
-data class ResponseRecipePriceBreakdown(
+data class RecipePriceBreakdown(
 
     @Json(name = "totalCostPerServing")
     val totalCostPerServing: Double? = null,

@@ -17,18 +17,23 @@ package com.beetlestance.spoonacular_kotlin.models.response
 
 import com.squareup.moshi.Json
 
-data class ResponseRecipeEquipment(
+data class SimilarRecipes(
 
-    @Json(name = "equipment")
-    val equipment: List<EquipmentItem?>? = null
-) {
+    @Json(name = "readyInMinutes")
+    val readyInMinutes: Int? = null,
 
-    data class EquipmentItem(
+    @Json(name = "sourceUrl")
+    val sourceUrl: String? = null,
 
-        @Json(name = "image")
-        val image: String? = null,
+    @Json(name = "servings")
+    val servings: Int? = null,
 
-        @Json(name = "name")
-        val name: String? = null
-    )
-}
+    @Json(name = "id")
+    val id: Int? = null,
+
+    @Json(name = "title")
+    val title: String? = null,
+
+    @Json(name = "imageType")
+    val imageType: String? = null
+)

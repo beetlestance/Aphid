@@ -17,7 +17,7 @@ package com.beetlestance.spoonacular_kotlin.models.response
 
 import com.squareup.moshi.Json
 
-data class ResponseRecipeNutrients(
+data class RecipeNutrients(
 
     @Json(name = "bad")
     val bad: List<BadItem?>? = null,
