@@ -1,5 +1,6 @@
 package com.beetlestance.spoonacular_kotlin.services
 
+import com.beetlestance.spoonacular_kotlin.models.request.RequestClassifyGroceryProduct
 import com.beetlestance.spoonacular_kotlin.models.request.RequestMapIngredientsToGroceryProduct
 import com.beetlestance.spoonacular_kotlin.services.endpoints.Food
 import retrofit2.http.Body
@@ -64,11 +65,109 @@ interface FoodService {
     /**
      * Map Ingredients to Grocery Products
      * Map a set of ingredients to products you can buy in the grocery store.
-     * @param body
+     * @param requestMapIngredientsToGroceryProduct
      * @return Any
      */
     @POST(Food.Ingredients.MAP_INGREDIENTS_TO_GROCERY_PRODUCTS)
     fun mapIngredientsToGroceryProducts(
         @Body requestMapIngredientsToGroceryProduct: RequestMapIngredientsToGroceryProduct
+    ): Any
+
+    /**
+     * Get Product Information
+     * Use a product id to get full information about a product, such as ingredients, nutrition, etc. The nutritional information is per serving.
+     * @param id The id of the packaged food.
+     * @return Any
+     */
+    @GET(Food.Products.ById.GET_PRODUCT_INFORMATION)
+    fun getProductInformation(@Query("id") id: BigDecimal): Any
+
+    /**
+     * Visualize Product Nutrition by ID
+     * Visualize a product's nutritional information as HTML including CSS.
+     * @param id The id of the product.
+     * @param defaultCss Whether the default CSS should be added to the response. (optional)
+     * @return String
+     */
+    @GET(Food.Products.ById.VISUALIZE_PRODUCT_NUTRITION)
+    fun visualizeProductNutritionByID(
+        @Query("id") id: BigDecimal,
+        @Query("defaultCss") defaultCss: Boolean? = null
+    ): String
+
+    /**
+     * Get Comparable Products
+     * Find comparable products to the given one.
+     * @param upc The UPC of the product for which you want to find comparable products.
+     * @return Any
+     */
+    @GET(Food.Products.ByUPC.GET_COMPARABLE_PRODUCTS)
+    fun getComparableProducts(@Path("upc") upc: BigDecimal): Any
+
+    /**
+     * Search Grocery Products by UPC
+     * Get information about a packaged food using its UPC.
+     * @param upc The product's UPC.
+     * @return Any
+     */
+    @GET(Food.Products.ByUPC.SEARCH_GROCERY_PRODUCTS)
+    fun searchGroceryProductsByUPC(@Path("upc") upc: BigDecimal): Any
+
+    /**
+     * Search Grocery Products
+     * Search packaged food products, such as frozen pizza or Greek yogurt.
+     * @param query The search query.
+     * @param minCalories The minimum amount of calories the product must have. (optional)
+     * @param maxCalories The maximum amount of calories the product can have. (optional)
+     * @param minCarbs The minimum amount of carbohydrates in grams the product must have. (optional)
+     * @param maxCarbs The maximum amount of carbohydrates in grams the product can have. (optional)
+     * @param minProtein The minimum amount of protein in grams the product must have. (optional)
+     * @param maxProtein The maximum amount of protein in grams the product can have. (optional)
+     * @param minFat The minimum amount of fat in grams the product must have. (optional)
+     * @param maxFat The maximum amount of fat in grams the product can have. (optional)
+     * @param offset The number of results to skip (between 0 and 990). (optional)
+     * @param number The number of expected results (between 1 and 100). (optional)
+     * @return Any
+     */
+    @GET(Food.Products.SEARCH_GROCERY_PRODUCTS)
+    fun searchGroceryProducts(
+        @Query("query") query: String,
+        @Query("minCalories") minCalories: BigDecimal? = null,
+        @Query("maxCalories") maxCalories: BigDecimal? = null,
+        @Query("minCarbs") minCarbs: BigDecimal? = null,
+        @Query("maxCarbs") maxCarbs: BigDecimal? = null,
+        @Query("minProtein") minProtein: BigDecimal? = null,
+        @Query("maxProtein") maxProtein: BigDecimal? = null,
+        @Query("minFat") minFat: BigDecimal? = null,
+        @Query("maxFat") maxFat: BigDecimal? = null,
+        @Query("offset") offset: BigDecimal? = null,
+        @Query("number") number: BigDecimal? = null
+    ): Any
+
+    /**
+     * Classify Grocery Product
+     * This endpoint allows you to match a packaged food to a basic category, e.g. a specific brand of milk to the category milk.
+     * @param requestClassifyGroceryProduct A json object containing the product title.
+     * @param locale The display name of the returned category, supported is en_US
+     * (for American English) and en_GB (for British English). (optional)
+     * @return Any
+     */
+    @POST(Food.Products.CLASSIFY_GROCERY_PRODUCT)
+    fun classifyGroceryProduct(
+        @Body requestClassifyGroceryProduct: RequestClassifyGroceryProduct,
+        @Query("locale") locale: String? = null
+    ): Any
+
+    /**
+     * Classify Grocery Product Bulk
+     * Provide a set of product jsons, get back classified products.
+     * @param requestClassifyGroceryProduct
+     * @param locale The display name of the returned category, supported is en_US (for American English) and en_GB (for British English). (optional)
+     * @return Any
+     */
+    @POST(Food.Products.CLASSIFY_GROCERY_PRODUCT_BULK)
+    fun classifyGroceryProductBulk(
+        @Body requestClassifyGroceryProduct: RequestClassifyGroceryProduct,
+        @Query("locale") locale: String? = null
     ): Any
 }
