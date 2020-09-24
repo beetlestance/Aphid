@@ -31,6 +31,7 @@ android {
 
 dependencies {
     // Testing
+    testImplementation(Libs.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.espressoCore)
 
