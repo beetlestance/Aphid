@@ -2,6 +2,7 @@ package com.beetlestance.spoonacular_kotlin.services
 
 import com.beetlestance.spoonacular_kotlin.models.request.RequestClassifyGroceryProduct
 import com.beetlestance.spoonacular_kotlin.models.request.RequestMapIngredientsToGroceryProduct
+import com.beetlestance.spoonacular_kotlin.models.request.food.RequestDetectTextInFood
 import com.beetlestance.spoonacular_kotlin.services.endpoints.Food
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -344,4 +345,97 @@ interface FoodService {
         @Query("text") text: String,
         @Query("contextId") contextId: String? = null
     ): Any
+
+
+    /**
+     * Get a Random Food Joke
+     * Get a random joke that is related to food. Caution: this is an endpoint for adults!
+     * @return Any
+     */
+    @GET(Food.GET_A_RANDOM_FOOD_JOKE)
+    fun getARandomFoodJoke(): Any
+
+    /**
+     * Get Random Food Trivia
+     * Returns random food trivia.
+     * @return Any
+     */
+    @GET(Food.GET_RANDOM_FOOD_TRIVIA)
+    fun getRandomFoodTrivia(): Any
+
+    /**
+     * Detect Food in Text
+     * Take any text and find all mentions of food contained within it. This task is also called
+     * Named Entity Recognition (NER). In this case, the entities are foods. Either dishes, such as
+     * pizza or cheeseburger, or ingredients, such as cucumber or almonds.
+     * @param text The text in which food items, such as dish names and ingredients, should be
+     * detected in.
+     * @return Any
+     */
+    @POST(Food.DETECT_FOOD_IN_TEXT)
+    fun detectFoodInText(@Body requestDetectTextInFood: RequestDetectTextInFood): Any
+
+    /**
+     * Search Custom Foods
+     * Search custom foods in a user's account.
+     * @param query The search query.
+     * @param username The username.
+     * @param hash The private hash for the username.
+     * @param offset The number of results to skip (between 0 and 990). (optional)
+     * @param number The number of expected results (between 1 and 100). (optional)
+     * @return Any
+     */
+    @GET(Food.SEARCH_CUSTOM_FOODS)
+    fun searchCustomFoods(
+        @Query("query") query: String,
+        @Query("username") username: String,
+        @Query("hash") hash: String,
+        @Query("offset") offset: BigDecimal? = null,
+        @Query("number") number: BigDecimal? = null
+    ): Any
+
+    /**
+     * Search Food Videos
+     * Find recipe and other food related videos.
+     * @param query The search query.
+     * @param type The type of the recipes. See a full list of supported meal types. (optional)
+     * @param cuisine The cuisine(s) of the recipes. One or more, comma separated. See a full list
+     * of supported cuisines. (optional)
+     * @param diet The diet for which the recipes must be suitable. See a full list of supported
+     * diets. (optional)
+     * @param includeIngredients A comma-separated list of ingredients that the recipes should
+     * contain. (optional)
+     * @param excludeIngredients A comma-separated list of ingredients or ingredient types that
+     * the recipes must not contain. (optional)
+     * @param minLength Minimum video length in seconds. (optional)
+     * @param maxLength Maximum video length in seconds. (optional)
+     * @param offset The number of results to skip (between 0 and 900). (optional)
+     * @param number The number of results to return (between 1 and 100). (optional)
+     * @return Any
+     */
+    @GET(Food.SEARCH_FOOD_VIDEOS)
+    fun searchFoodVideos(
+        @Query("query") query: String,
+        @Query("type") type: String?,
+        @Query("cuisine") cuisine: String?,
+        @Query("diet") diet: String?,
+        @Query("includeIngredients") includeIngredients: String?,
+        @Query("excludeIngredients") excludeIngredients: String?,
+        @Query("minLength") minLength: BigDecimal?,
+        @Query("maxLength") maxLength: BigDecimal?,
+        @Query("offset") offset: BigDecimal?,
+        @Query("number") number: BigDecimal?
+    ): Any
+
+    /**
+     * Search Site Content
+     * Search spoonacular's site content. You'll be able to find everything that you could also find
+     * using the search suggestions on spoonacular.com. This is a suggest API so you can send
+     * partial strings as queries.
+     * @param query The query to search for. You can also use partial queries such as "spagh" to
+     * already find spaghetti recipes, articles, grocery products, and other content.
+     * @return Any
+     */
+    @GET(Food.SEARCH_SITE_CONTENT)
+    fun searchSiteContent(@Query("query") query: String): Any
 }

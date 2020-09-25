@@ -23,7 +23,7 @@ import com.beetlestance.spoonacular_kotlin.models.request.RequestCreateRecipeCar
 import com.beetlestance.spoonacular_kotlin.models.request.RequestParseIngredients
 import com.beetlestance.spoonacular_kotlin.models.request.RequestVisualizeEquipment
 import com.beetlestance.spoonacular_kotlin.models.request.RequestVisualizeIngredients
-import com.beetlestance.spoonacular_kotlin.models.request.RequestVisualizePrceBreakdown
+import com.beetlestance.spoonacular_kotlin.models.request.RequestVisualizePriceBreakdown
 import com.beetlestance.spoonacular_kotlin.models.request.RequestVisualizeRecipeNutrition
 import com.beetlestance.spoonacular_kotlin.models.response.AnalyzeARecipeSearchQuery
 import com.beetlestance.spoonacular_kotlin.models.response.AnalyzeRecipeInstructions
@@ -832,12 +832,12 @@ interface RecipesService {
     /**
      * Visualize Price Breakdown
      * Visualize the price breakdown of a recipe.
-     * @see RequestVisualizePrceBreakdown
+     * @see RequestVisualizePriceBreakdown
      * @return String
      */
     @POST(Recipes.VISUALIZE_PRICE_BREAKDOWN)
     fun visualizePriceBreakdown(
-        @Body requestVisualizePrceBreakdown: RequestVisualizePrceBreakdown
+        @Body requestVisualizePriceBreakdown: RequestVisualizePriceBreakdown
     ): Call<String>
 
     /**

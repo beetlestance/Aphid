@@ -84,4 +84,17 @@ internal object Food {
         const val TALK_TO_CHATBOT = "/food/converse"
 
     }
+
+    const val GET_A_RANDOM_FOOD_JOKE = "/food/jokes/random"
+
+    const val GET_RANDOM_FOOD_TRIVIA = "/food/trivia/random"
+
+    const val DETECT_FOOD_IN_TEXT = "/food/detect"
+
+    const val SEARCH_CUSTOM_FOODS = "/food/customFoods/search"
+
+    const val SEARCH_FOOD_VIDEOS = "/food/videos/search"
+
+    const val SEARCH_SITE_CONTENT = "/food/site/search"
+
 }

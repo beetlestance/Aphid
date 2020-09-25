@@ -26,7 +26,7 @@ import java.math.BigDecimal
  * @param showBacklink Whether to show a backlink to spoonacular. If set false, this call counts against your quota. (optional)
  * */
 
-data class RequestVisualizePrceBreakdown(
+data class RequestVisualizePriceBreakdown(
 
     @Json(name = "ingredientList")
     val ingredientList: String,
