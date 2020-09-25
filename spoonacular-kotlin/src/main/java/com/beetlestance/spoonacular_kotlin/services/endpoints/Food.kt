@@ -42,4 +42,19 @@ internal object Food {
 
         const val CLASSIFY_GROCERY_PRODUCT_BULK = "/food/products/classifyBatch"
     }
+
+    object MenuItems {
+
+        object ById {
+
+            const val GET_MENU_ITEM_INFORMATION = "/food/menuItems/{id}"
+
+            const val VISUALIZE_MENU_ITEM_NUTRITION = "/food/menuItems/{id}/nutritionWidget"
+
+        }
+
+        const val AUTOCOMPLETE_MENU_ITEM_SEARCH = "/food/menuItems/suggest"
+
+        const val SEARCH_MENU_ITEMS = "/food/menuItems/search"
+    }
 }

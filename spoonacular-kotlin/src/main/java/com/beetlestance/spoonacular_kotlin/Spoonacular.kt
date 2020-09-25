@@ -25,16 +25,16 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 open class Spoonacular(private val apiKey: String) {
 
     /**
-     * Returns the default OkHttp client instance. It is strongly recommended to override this and use your app
-     * instance.
+     * Returns the default OkHttp client instance. It is strongly recommended to override this and
+     * use your app instance.
      */
     protected open fun okHttpClient(): OkHttpClient {
         return okHttpClientBuilder().build()
     }
 
     /**
-     * Returns the default OkHttp client builder. It is strongly recommended to override this and use your app
-     * instance.
+     * Returns the default OkHttp client builder. It is strongly recommended to override this and
+     * use your app instance.
      *
      * @see setOkHttpClientInterceptors
      */
@@ -47,7 +47,8 @@ open class Spoonacular(private val apiKey: String) {
     /**
      * Return the current [Retrofit] instance.
      *
-     * When building, sets the base url and a custom client with an [SpoonacularInterceptor] which supplies authentication
+     * When building, sets the base url and a custom client with an [SpoonacularInterceptor] which
+     * supplies authentication
      * data.
      */
     protected open fun retrofit(): Retrofit {
