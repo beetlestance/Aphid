@@ -1,8 +1,8 @@
 package com.beetlestance.spoonacular_kotlin.services
 
-import com.beetlestance.spoonacular_kotlin.models.request.RequestClassifyGroceryProduct
-import com.beetlestance.spoonacular_kotlin.models.request.RequestMapIngredientsToGroceryProduct
 import com.beetlestance.spoonacular_kotlin.models.request.food.RequestDetectTextInFood
+import com.beetlestance.spoonacular_kotlin.models.request.food.RequestMapIngredientsToGroceryProduct
+import com.beetlestance.spoonacular_kotlin.models.request.recipe.RequestClassifyGroceryProduct
 import com.beetlestance.spoonacular_kotlin.services.endpoints.Food
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -368,8 +368,8 @@ interface FoodService {
      * Take any text and find all mentions of food contained within it. This task is also called
      * Named Entity Recognition (NER). In this case, the entities are foods. Either dishes, such as
      * pizza or cheeseburger, or ingredients, such as cucumber or almonds.
-     * @param text The text in which food items, such as dish names and ingredients, should be
-     * detected in.
+     * @param requestDetectTextInFood The text in which food items, such as dish names and ingredients,
+     * should be detected in.
      * @return Any
      */
     @POST(Food.DETECT_FOOD_IN_TEXT)
