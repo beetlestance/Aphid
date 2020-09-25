@@ -295,4 +295,53 @@ interface FoodService {
         @Query("minRating") minRating: BigDecimal? = null,
         @Query("number") number: BigDecimal? = null
     ): Any
+
+    /**
+     * Image Analysis by URL
+     * Analyze a food image. The API tries to classify the image, guess the nutrition, and find a
+     * matching recipes. You can play around with that endpoint!
+     * @param imageUrl The URL of the image to be analyzed.
+     * @return Any
+     */
+    @GET(Food.Images.IMAGE_ANALYSIS_BY_URL)
+    fun imageAnalysisByURL(@Query("imageUrl") imageUrl: String): Any
+
+    /**
+     * Image Classification by URL
+     * Classify a food image. You can play around with that endpoint!
+     * @param imageUrl The URL of the image to be classified.
+     * @return Any
+     */
+    @GET(Food.Images.IMAGE_CLASSIFICATION_BY_URL)
+    fun imageClassificationByURL(@Query("imageUrl") imageUrl: String): Any
+
+    /**
+     * Get Conversation Suggests
+     * This endpoint returns suggestions for things the user can say or ask the chatbot.
+     * @param query A (partial) query from the user. The endpoint will return if it matches topics
+     * it can talk about.
+     * @param number The number of suggestions to return (between 1 and 25). (optional)
+     * @return Any
+     */
+    @GET(Food.Converse.GET_CONVERSATION_SUGGESTS)
+    fun getConversationSuggests(
+        @Query("query") query: String,
+        @Query("number") number: BigDecimal? = null
+    ): Any
+
+    /**
+     * Talk to Chatbot
+     * This endpoint can be used to have a conversation about food with the spoonacular chatbot.
+     * Use the "Get Conversation Suggests" endpoint to show your user what he or she can say.
+     * @param text The request / question / answer from the user to the chatbot.
+     * @param contextId An arbitrary globally unique id for your conversation. The conversation can
+     * contain states so you should pass your context id if you want the bot to be able to remember
+     * the conversation. (optional)
+     * @return Any
+     */
+    @GET(Food.Converse.TALK_TO_CHATBOT)
+    fun talkToChatbot(
+        @Query("text") text: String,
+        @Query("contextId") contextId: String? = null
+    ): Any
 }

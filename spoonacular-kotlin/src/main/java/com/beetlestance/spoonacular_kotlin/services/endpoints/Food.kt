@@ -68,4 +68,20 @@ internal object Food {
 
         const val GET_WINE_RECOMMENDATION = "/food/wine/recommendation"
     }
+
+    object Images {
+
+        const val IMAGE_CLASSIFICATION_BY_URL = "/food/images/analyze"
+
+        const val IMAGE_ANALYSIS_BY_URL = "/food/images/classify"
+
+    }
+
+    object Converse {
+
+        const val GET_CONVERSATION_SUGGESTS = "/food/converse/suggest"
+
+        const val TALK_TO_CHATBOT = "/food/converse"
+
+    }
 }
