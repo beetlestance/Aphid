@@ -3,6 +3,31 @@ package com.beetlestance.spoonacular_kotlin.services
 import com.beetlestance.spoonacular_kotlin.models.request.food.RequestDetectTextInFood
 import com.beetlestance.spoonacular_kotlin.models.request.food.RequestMapIngredientsToGroceryProduct
 import com.beetlestance.spoonacular_kotlin.models.request.recipe.RequestClassifyGroceryProduct
+import com.beetlestance.spoonacular_kotlin.models.response.food.ARandomFoodJoke
+import com.beetlestance.spoonacular_kotlin.models.response.food.CustomFood
+import com.beetlestance.spoonacular_kotlin.models.response.food.DetectFoodInText
+import com.beetlestance.spoonacular_kotlin.models.response.food.FoodVideos
+import com.beetlestance.spoonacular_kotlin.models.response.food.RandomFoodTrivia
+import com.beetlestance.spoonacular_kotlin.models.response.food.converse.ConversationSuggests
+import com.beetlestance.spoonacular_kotlin.models.response.food.converse.TalkToChatbot
+import com.beetlestance.spoonacular_kotlin.models.response.food.images.ImageAnalysisByUrl
+import com.beetlestance.spoonacular_kotlin.models.response.food.images.ImageClassificationByUrl
+import com.beetlestance.spoonacular_kotlin.models.response.food.ingredients.AutoCompleteIngredientSearch
+import com.beetlestance.spoonacular_kotlin.models.response.food.ingredients.IngredientInformation
+import com.beetlestance.spoonacular_kotlin.models.response.food.ingredients.IngredientSubstitutes
+import com.beetlestance.spoonacular_kotlin.models.response.food.ingredients.MapIngredientsToGroceryProducts
+import com.beetlestance.spoonacular_kotlin.models.response.food.menuitem.AutoCompleteMenuItem
+import com.beetlestance.spoonacular_kotlin.models.response.food.menuitem.MenuItem
+import com.beetlestance.spoonacular_kotlin.models.response.food.menuitem.MenuItemInformation
+import com.beetlestance.spoonacular_kotlin.models.response.food.product.ClassifyGroceryProduct
+import com.beetlestance.spoonacular_kotlin.models.response.food.product.ComparableProduct
+import com.beetlestance.spoonacular_kotlin.models.response.food.product.GroceryProduct
+import com.beetlestance.spoonacular_kotlin.models.response.food.product.GroceryProductByUpc
+import com.beetlestance.spoonacular_kotlin.models.response.food.product.ProductInformation
+import com.beetlestance.spoonacular_kotlin.models.response.food.wine.DishPairingForWine
+import com.beetlestance.spoonacular_kotlin.models.response.food.wine.WineDescription
+import com.beetlestance.spoonacular_kotlin.models.response.food.wine.WinePairing
+import com.beetlestance.spoonacular_kotlin.models.response.food.wine.WineRecommendation
 import com.beetlestance.spoonacular_kotlin.services.endpoints.Food
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -20,23 +45,23 @@ interface FoodService {
      * @param id The ingredient id.
      * @param amount The amount of this ingredient. (optional)
      * @param unit The unit for the given amount. (optional)
-     * @return Any
+     * @return GetIngredientInformation
      */
     @GET(Food.Ingredients.ById.GET_INGREDIENT_INFORMATION)
     fun getIngredientInformation(
         @Path("id") id: BigDecimal,
         @Query("amount") amount: BigDecimal? = null,
         @Query("unit") unit: String? = null
-    ): Any
+    ): IngredientInformation
 
     /**
      * Get Ingredient Substitutes by ID
      * Search for substitutes for a given ingredient.
      * @param id The id of the ingredient you want substitutes for.
-     * @return Any
+     * @return IngredientSubstitutes
      */
     @GET(Food.Ingredients.ById.GET_INGREDIENT_SUBSTITUTES)
-    fun getIngredientSubstitutesByID(@Path("id") id: BigDecimal): Any
+    fun getIngredientSubstitutesByID(@Path("id") id: BigDecimal): IngredientSubstitutes
 
     /**
      * Autocomplete Ingredient Search
@@ -47,7 +72,7 @@ interface FoodService {
      * @param intolerances A comma-separated list of intolerances. All recipes returned must
      * not contain ingredients that are not suitable for people with the intolerances entered.
      * See a full list of supported intolerances. (optional)
-     * @return Any
+     * @return List<AutoCompleteIngredientSearch>
      */
     @GET(Food.Ingredients.AUTOCOMPLETE_INGREDIENT_SEARCH)
     fun autocompleteIngredientSearch(
@@ -55,37 +80,39 @@ interface FoodService {
         @Query("number") number: BigDecimal? = null,
         @Query("metaInformation") metaInformation: Boolean? = null,
         @Query("intolerances") intolerances: Boolean? = null
-    ): Any
+    ): List<AutoCompleteIngredientSearch>
 
     /**
      * Get Ingredient Substitutes
      * Search for substitutes for a given ingredient.
      * @param ingredientName The name of the ingredient you want to replace.
-     * @return Any
+     * @return IngredientSubstitutes
      */
     @GET(Food.Ingredients.GET_INGREDIENT_SUBSTITUTES)
-    fun getIngredientSubstitutes(@Query("ingredientName") ingredientName: String): Any
+    fun getIngredientSubstitutes(
+        @Query("ingredientName") ingredientName: String
+    ): IngredientSubstitutes
 
     /**
      * Map Ingredients to Grocery Products
      * Map a set of ingredients to products you can buy in the grocery store.
      * @param requestMapIngredientsToGroceryProduct
-     * @return Any
+     * @return List<MapIngredientsToGroceryProducts>
      */
     @POST(Food.Ingredients.MAP_INGREDIENTS_TO_GROCERY_PRODUCTS)
     fun mapIngredientsToGroceryProducts(
         @Body requestMapIngredientsToGroceryProduct: RequestMapIngredientsToGroceryProduct
-    ): Any
+    ): List<MapIngredientsToGroceryProducts>
 
     /**
      * Get Product Information
      * Use a product id to get full information about a product, such as ingredients, nutrition,
      * etc. The nutritional information is per serving.
      * @param id The id of the packaged food.
-     * @return Any
+     * @return ProductInformation
      */
     @GET(Food.Products.ById.GET_PRODUCT_INFORMATION)
-    fun getProductInformation(@Query("id") id: BigDecimal): Any
+    fun getProductInformation(@Query("id") id: BigDecimal): ProductInformation
 
     /**
      * Visualize Product Nutrition by ID
@@ -104,19 +131,19 @@ interface FoodService {
      * Get Comparable Products
      * Find comparable products to the given one.
      * @param upc The UPC of the product for which you want to find comparable products.
-     * @return Any
+     * @return ComparableProduct
      */
     @GET(Food.Products.ByUPC.GET_COMPARABLE_PRODUCTS)
-    fun getComparableProducts(@Path("upc") upc: BigDecimal): Any
+    fun getComparableProducts(@Path("upc") upc: BigDecimal): ComparableProduct
 
     /**
      * Search Grocery Products by UPC
      * Get information about a packaged food using its UPC.
      * @param upc The product's UPC.
-     * @return Any
+     * @return GroceryProductByUpc
      */
     @GET(Food.Products.ByUPC.SEARCH_GROCERY_PRODUCTS)
-    fun searchGroceryProductsByUPC(@Path("upc") upc: BigDecimal): Any
+    fun searchGroceryProductsByUPC(@Path("upc") upc: BigDecimal): GroceryProductByUpc
 
     /**
      * Classify Grocery Product
@@ -125,13 +152,13 @@ interface FoodService {
      * @param requestClassifyGroceryProduct A json object containing the product title.
      * @param locale The display name of the returned category, supported is en_US
      * (for American English) and en_GB (for British English). (optional)
-     * @return Any
+     * @return ClassifyGroceryProduct
      */
     @POST(Food.Products.CLASSIFY_GROCERY_PRODUCT)
     fun classifyGroceryProduct(
         @Body requestClassifyGroceryProduct: RequestClassifyGroceryProduct,
         @Query("locale") locale: String? = null
-    ): Any
+    ): ClassifyGroceryProduct
 
     /**
      * Classify Grocery Product Bulk
@@ -139,13 +166,13 @@ interface FoodService {
      * @param requestClassifyGroceryProduct
      * @param locale The display name of the returned category, supported is en_US
      * (for American English) and en_GB (for British English). (optional)
-     * @return Any
+     * @return List<ClassifyGroceryProduct>
      */
     @POST(Food.Products.CLASSIFY_GROCERY_PRODUCT_BULK)
     fun classifyGroceryProductBulk(
         @Body requestClassifyGroceryProduct: RequestClassifyGroceryProduct,
         @Query("locale") locale: String? = null
-    ): Any
+    ): List<ClassifyGroceryProduct>
 
     /**
      * Search Grocery Products
@@ -161,7 +188,7 @@ interface FoodService {
      * @param maxFat The maximum amount of fat in grams the product can have. (optional)
      * @param offset The number of results to skip (between 0 and 990). (optional)
      * @param number The number of expected results (between 1 and 100). (optional)
-     * @return Any
+     * @return GroceryProduct
      */
     @GET(Food.Products.SEARCH_GROCERY_PRODUCTS)
     fun searchGroceryProducts(
@@ -176,16 +203,16 @@ interface FoodService {
         @Query("maxFat") maxFat: BigDecimal? = null,
         @Query("offset") offset: BigDecimal? = null,
         @Query("number") number: BigDecimal? = null
-    ): Any
+    ): GroceryProduct
 
     /**
      * Get Menu Item Information
      * Use a menu item id to get all available information about a menu item, such as nutrition.
      * @param id The menu item id.
-     * @return Any
+     * @return MenuItemInformation
      */
     @GET(Food.MenuItems.ById.GET_MENU_ITEM_INFORMATION)
-    fun getMenuItemInformation(@Query("id") id: BigDecimal): Any
+    fun getMenuItemInformation(@Query("id") id: BigDecimal): MenuItemInformation
 
     /**
      * Visualize Menu Item Nutrition by ID
@@ -206,13 +233,13 @@ interface FoodService {
      * looking in the title only.
      * @param query The (partial) search query.
      * @param number The number of results to return (between 1 and 25). (optional)
-     * @return Any
+     * @return AutoCompleteMenuItem
      */
     @GET(Food.MenuItems.AUTOCOMPLETE_MENU_ITEM_SEARCH)
     fun autocompleteMenuItemSearch(
         @Query("query") query: String,
         @Query("number") number: BigDecimal? = null
-    ): Any
+    ): AutoCompleteMenuItem
 
     /**
      * Search Menu Items
@@ -229,7 +256,7 @@ interface FoodService {
      * @param maxFat The maximum amount of fat in grams the menu item can have. (optional)
      * @param offset The offset number for paging (between 0 and 990). (optional)
      * @param number The number of expected results (between 1 and 10). (optional)
-     * @return Any
+     * @return MenuItem
      */
     @GET(Food.MenuItems.SEARCH_MENU_ITEMS)
     fun searchMenuItems(
@@ -244,25 +271,25 @@ interface FoodService {
         @Query("maxFat") maxFat: BigDecimal? = null,
         @Query("offset") offset: BigDecimal? = null,
         @Query("number") number: BigDecimal? = null
-    ): Any
+    ): MenuItem
 
     /**
      * Get Dish Pairing for Wine
      * Find a dish that goes well with a given wine.
      * @param wine The type of wine that should be paired, e.g. "merlot", "riesling", or "malbec".
-     * @return Any
+     * @return DishPairingForWine
      */
     @GET(Food.Wine.GET_DISH_PAIRING_FOR_WINE)
-    fun getDishPairingForWine(@Query("wine") wine: String): Any
+    fun getDishPairingForWine(@Query("wine") wine: String): DishPairingForWine
 
     /**
      * Get Wine Description
      * Get a simple description of a certain wine, e.g. "malbec", "riesling", or "merlot".
      * @param wine The name of the wine that should be paired, e.g. "merlot", "riesling", or "malbec".
-     * @return Any
+     * @return WineDescription
      */
     @GET(Food.Wine.GET_WINE_DESCRIPTION)
-    fun getWineDescription(@Query("wine") wine: String): Any
+    fun getWineDescription(@Query("wine") wine: String): WineDescription
 
     /**
      * Get Wine Pairing
@@ -271,13 +298,13 @@ interface FoodService {
      * @param food The food to get a pairing for. This can be a dish ("steak"), an ingredient
      * ("salmon"), or a cuisine ("italian").
      * @param maxPrice The maximum price for the specific wine recommendation in USD. (optional)
-     * @return Any
+     * @return WinePairing
      */
     @GET(Food.Wine.GET_WINE_PAIRING)
     fun getWinePairing(
         @Query("food") food: String,
         @Query("maxPrice") maxPrice: BigDecimal? = null
-    ): Any
+    ): WinePairing
 
     /**
      * Get Wine Recommendation
@@ -287,7 +314,7 @@ interface FoodService {
      * @param minRating The minimum rating of the recommended wine between 0 and 1. For example,
      * 0.8 equals 4 out of 5 stars. (optional)
      * @param number The number of wine recommendations expected (between 1 and 100). (optional)
-     * @return Any
+     * @return WineRecommendation
      */
     @GET(Food.Wine.GET_WINE_RECOMMENDATION)
     fun getWineRecommendation(
@@ -295,7 +322,7 @@ interface FoodService {
         @Query("maxPrice") maxPrice: BigDecimal? = null,
         @Query("minRating") minRating: BigDecimal? = null,
         @Query("number") number: BigDecimal? = null
-    ): Any
+    ): WineRecommendation
 
     /**
      * Image Analysis by URL
@@ -305,16 +332,16 @@ interface FoodService {
      * @return Any
      */
     @GET(Food.Images.IMAGE_ANALYSIS_BY_URL)
-    fun imageAnalysisByURL(@Query("imageUrl") imageUrl: String): Any
+    fun imageAnalysisByURL(@Query("imageUrl") imageUrl: String): ImageAnalysisByUrl
 
     /**
      * Image Classification by URL
      * Classify a food image. You can play around with that endpoint!
      * @param imageUrl The URL of the image to be classified.
-     * @return Any
+     * @return ImageClassificationByUrl
      */
     @GET(Food.Images.IMAGE_CLASSIFICATION_BY_URL)
-    fun imageClassificationByURL(@Query("imageUrl") imageUrl: String): Any
+    fun imageClassificationByURL(@Query("imageUrl") imageUrl: String): ImageClassificationByUrl
 
     /**
      * Get Conversation Suggests
@@ -322,13 +349,13 @@ interface FoodService {
      * @param query A (partial) query from the user. The endpoint will return if it matches topics
      * it can talk about.
      * @param number The number of suggestions to return (between 1 and 25). (optional)
-     * @return Any
+     * @return ConversationSuggests
      */
     @GET(Food.Converse.GET_CONVERSATION_SUGGESTS)
     fun getConversationSuggests(
         @Query("query") query: String,
         @Query("number") number: BigDecimal? = null
-    ): Any
+    ): ConversationSuggests
 
     /**
      * Talk to Chatbot
@@ -338,30 +365,30 @@ interface FoodService {
      * @param contextId An arbitrary globally unique id for your conversation. The conversation can
      * contain states so you should pass your context id if you want the bot to be able to remember
      * the conversation. (optional)
-     * @return Any
+     * @return TalkToChatbot
      */
     @GET(Food.Converse.TALK_TO_CHATBOT)
     fun talkToChatbot(
         @Query("text") text: String,
         @Query("contextId") contextId: String? = null
-    ): Any
+    ): TalkToChatbot
 
 
     /**
      * Get a Random Food Joke
      * Get a random joke that is related to food. Caution: this is an endpoint for adults!
-     * @return Any
+     * @return ARandomFoodJoke
      */
     @GET(Food.GET_A_RANDOM_FOOD_JOKE)
-    fun getARandomFoodJoke(): Any
+    fun getARandomFoodJoke(): ARandomFoodJoke
 
     /**
      * Get Random Food Trivia
      * Returns random food trivia.
-     * @return Any
+     * @return RandomFoodTrivia
      */
     @GET(Food.GET_RANDOM_FOOD_TRIVIA)
-    fun getRandomFoodTrivia(): Any
+    fun getRandomFoodTrivia(): RandomFoodTrivia
 
     /**
      * Detect Food in Text
@@ -370,10 +397,10 @@ interface FoodService {
      * pizza or cheeseburger, or ingredients, such as cucumber or almonds.
      * @param requestDetectTextInFood The text in which food items, such as dish names and ingredients,
      * should be detected in.
-     * @return Any
+     * @return DetectFoodInText
      */
     @POST(Food.DETECT_FOOD_IN_TEXT)
-    fun detectFoodInText(@Body requestDetectTextInFood: RequestDetectTextInFood): Any
+    fun detectFoodInText(@Body requestDetectTextInFood: RequestDetectTextInFood): DetectFoodInText
 
     /**
      * Search Custom Foods
@@ -383,7 +410,7 @@ interface FoodService {
      * @param hash The private hash for the username.
      * @param offset The number of results to skip (between 0 and 990). (optional)
      * @param number The number of expected results (between 1 and 100). (optional)
-     * @return Any
+     * @return CustomFood
      */
     @GET(Food.SEARCH_CUSTOM_FOODS)
     fun searchCustomFoods(
@@ -392,7 +419,7 @@ interface FoodService {
         @Query("hash") hash: String,
         @Query("offset") offset: BigDecimal? = null,
         @Query("number") number: BigDecimal? = null
-    ): Any
+    ): CustomFood
 
     /**
      * Search Food Videos
@@ -411,7 +438,7 @@ interface FoodService {
      * @param maxLength Maximum video length in seconds. (optional)
      * @param offset The number of results to skip (between 0 and 900). (optional)
      * @param number The number of results to return (between 1 and 100). (optional)
-     * @return Any
+     * @return FoodVideos
      */
     @GET(Food.SEARCH_FOOD_VIDEOS)
     fun searchFoodVideos(
@@ -425,7 +452,7 @@ interface FoodService {
         @Query("maxLength") maxLength: BigDecimal?,
         @Query("offset") offset: BigDecimal?,
         @Query("number") number: BigDecimal?
-    ): Any
+    ): FoodVideos
 
     /**
      * Search Site Content

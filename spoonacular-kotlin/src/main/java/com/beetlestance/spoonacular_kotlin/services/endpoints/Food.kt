@@ -2,6 +2,22 @@ package com.beetlestance.spoonacular_kotlin.services.endpoints
 
 internal object Food {
 
+    object Converse {
+
+        const val GET_CONVERSATION_SUGGESTS = "/food/converse/suggest"
+
+        const val TALK_TO_CHATBOT = "/food/converse"
+
+    }
+
+    object Images {
+
+        const val IMAGE_CLASSIFICATION_BY_URL = "/food/images/analyze"
+
+        const val IMAGE_ANALYSIS_BY_URL = "/food/images/classify"
+
+    }
+
     object Ingredients {
 
         object ById {
@@ -16,6 +32,21 @@ internal object Food {
         const val GET_INGREDIENT_SUBSTITUTES = "/food/ingredients/substitutes"
 
         const val MAP_INGREDIENTS_TO_GROCERY_PRODUCTS = "/food/ingredients/map"
+    }
+
+    object MenuItems {
+
+        object ById {
+
+            const val GET_MENU_ITEM_INFORMATION = "/food/menuItems/{id}"
+
+            const val VISUALIZE_MENU_ITEM_NUTRITION = "/food/menuItems/{id}/nutritionWidget"
+
+        }
+
+        const val AUTOCOMPLETE_MENU_ITEM_SEARCH = "/food/menuItems/suggest"
+
+        const val SEARCH_MENU_ITEMS = "/food/menuItems/search"
     }
 
     object Products {
@@ -43,21 +74,6 @@ internal object Food {
         const val SEARCH_GROCERY_PRODUCTS = "/food/products/search"
     }
 
-    object MenuItems {
-
-        object ById {
-
-            const val GET_MENU_ITEM_INFORMATION = "/food/menuItems/{id}"
-
-            const val VISUALIZE_MENU_ITEM_NUTRITION = "/food/menuItems/{id}/nutritionWidget"
-
-        }
-
-        const val AUTOCOMPLETE_MENU_ITEM_SEARCH = "/food/menuItems/suggest"
-
-        const val SEARCH_MENU_ITEMS = "/food/menuItems/search"
-    }
-
     object Wine {
 
         const val GET_DISH_PAIRING_FOR_WINE = "/food/wine/dishes"
@@ -67,22 +83,6 @@ internal object Food {
         const val GET_WINE_PAIRING = "/food/wine/pairing"
 
         const val GET_WINE_RECOMMENDATION = "/food/wine/recommendation"
-    }
-
-    object Images {
-
-        const val IMAGE_CLASSIFICATION_BY_URL = "/food/images/analyze"
-
-        const val IMAGE_ANALYSIS_BY_URL = "/food/images/classify"
-
-    }
-
-    object Converse {
-
-        const val GET_CONVERSATION_SUGGESTS = "/food/converse/suggest"
-
-        const val TALK_TO_CHATBOT = "/food/converse"
-
     }
 
     const val GET_A_RANDOM_FOOD_JOKE = "/food/jokes/random"

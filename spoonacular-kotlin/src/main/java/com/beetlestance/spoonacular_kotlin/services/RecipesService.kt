@@ -62,7 +62,7 @@ interface RecipesService {
      * ingredients and equipment required.
      * @param id The recipe id.
      * @param stepBreakdown Whether to break down the recipe steps even more. (optional)
-     * @return List<ResponseAnalyzedRecipeInstructions>
+     * @return List<AnalyzedRecipeInstructions>
      */
     @GET(Recipes.ById.GET_ANALYZED_RECIPE_INSTRUCTIONS)
     fun getAnalyzedRecipeInstructions(
@@ -74,7 +74,7 @@ interface RecipesService {
      * Get Recipe Equipment by ID
      * Get a recipe's equipment list.
      * @param id The recipe id.
-     * @return ResponseRecipeEquipment
+     * @return RecipeEquipment
      */
     @GET(Recipes.ById.GET_RECIPE_EQUIPMENT)
     fun getRecipeEquipmentByID(@Path("id") id: BigDecimal): Call<RecipeEquipment>
@@ -87,7 +87,7 @@ interface RecipesService {
      * @param includeNutrition Include nutrition data in the recipe information. Nutrition data is
      * per serving. If you want the nutrition data for the entire recipe, just multiply by the
      * number of servings. (optional)
-     * @return ResponseRecipeInformation
+     * @return RecipeInformation
      */
     @GET(Recipes.ById.GET_RECIPE_INFORMATION)
     fun getRecipeInformation(
@@ -99,7 +99,7 @@ interface RecipesService {
      * Get Recipe Ingredients by ID
      * Get a recipe's ingredient list.
      * @param id The recipe id.
-     * @return ResponseRecipeIngredients
+     * @return RecipeIngredients
      */
     @GET(Recipes.ById.GET_RECIPE_INGREDIENTS)
     fun getRecipeIngredientsByID(@Path("id") id: BigDecimal): Call<RecipeIngredients>
@@ -108,7 +108,7 @@ interface RecipesService {
      * Get Recipe Nutrition Widget by ID
      * Get a recipe's nutrition widget data.
      * @param id The recipe id.
-     * @return ResponseRecipeNutrients
+     * @return RecipeNutrients
      */
     @GET(Recipes.ById.GET_RECIPE_NUTRITION)
     fun getRecipeNutritionWidgetByID(@Path("id") id: BigDecimal): Call<RecipeNutrients>
@@ -117,7 +117,7 @@ interface RecipesService {
      * Get Recipe Price Breakdown by ID
      * Get a recipe's price breakdown data.
      * @param id The recipe id.
-     * @return ResponseRecipePriceBreakdown
+     * @return RecipePriceBreakdown
      */
     @GET(Recipes.ById.GET_RECIPE_PRICE_BREAKDOWN)
     fun getRecipePriceBreakdownByID(@Path("id") id: BigDecimal): Call<RecipePriceBreakdown>
@@ -129,7 +129,7 @@ interface RecipesService {
      * @param number The number of random recipes to be returned (between 1 and 100). (optional)
      * @param limitLicense Whether the recipes should have an open license that allows display with
      * proper attribution. (optional)
-     * @return List<ResponseSimilarRecipes>
+     * @return List<SimilarRecipes>
      */
     @GET(Recipes.ById.GET_SIMILAR_RECIPES)
     fun getSimilarRecipes(
@@ -142,7 +142,7 @@ interface RecipesService {
      * Summarize Recipe
      * Automatically generate a short description that summarizes key information about the recipe.
      * @param id The recipe id.
-     * @return ResponseSummarizeRecipe
+     * @return SummarizeRecipe
      */
     @GET(Recipes.ById.SUMMARIZE_RECIPE)
     fun summarizeRecipe(@Path("id") id: BigDecimal): Call<SummarizeRecipe>
@@ -203,7 +203,7 @@ interface RecipesService {
      * Analyze a Recipe Search Query
      * Parse a recipe search query to find out its intention.
      * @param q The recipe search query.
-     * @return ResponseAnalyzeARecipeSearchQuery
+     * @return AnalyzeARecipeSearchQuery
      */
     @GET(Recipes.ANALYZE_A_RECIPE_SEARCH_QUERY)
     fun analyzeARecipeSearchQuery(@Query("q") q: String): Call<AnalyzeARecipeSearchQuery>
@@ -212,7 +212,7 @@ interface RecipesService {
      * Analyze Recipe Instructions
      * Extract ingredients and equipment from the recipe's instructions.
      * @see RequestAnalyzeRecipeInstructions
-     * @return ResponseAnalyzeRecipeInstructions
+     * @return AnalyzeRecipeInstructions
      */
     @POST(Recipes.ANALYZE_RECIPE_INSTRUCTIONS)
     fun analyzeRecipeInstructions(
@@ -224,7 +224,7 @@ interface RecipesService {
      * Autocomplete a partial input to suggest possible recipe names.
      * @param query The query to be autocompleted.
      * @param number The number of results to return (between 1 and 25). (optional)
-     * @return List<ResponseAutoCompleteRecipeSearch>
+     * @return List<AutoCompleteRecipeSearch>
      */
     @GET(Recipes.AUTOCOMPLETE_RECIPE_SEARCH)
     fun autocompleteRecipeSearch(
@@ -255,7 +255,7 @@ interface RecipesService {
      * @param targetUnit The unit to which you want to convert, e.g. the grams in "2.5 cups of
      * flour to grams". You can also use "piece", e.g. "3.4 oz tomatoes to
      * piece"
-     * @return ResponseConvertAmount
+     * @return ConvertAmount
      */
     @POST(Recipes.CONVERT_AMOUNTS)
     fun convertAmounts(
@@ -269,7 +269,7 @@ interface RecipesService {
      * Create Recipe Card
      * Generate a recipe card for a recipe.
      * @see RequestCreateRecipeCard
-     * @return ResponseCreateRecipeCard
+     * @return CreateRecipeCard
      */
     @POST(Recipes.CREATE_RECIPE_CARD)
     fun createRecipeCard(
@@ -285,7 +285,7 @@ interface RecipesService {
      * recipe or not. Use this only if information is missing as this operation is slower.(optional)
      * @param analyze If true, the recipe will be analyzed and classified resolving in more data
      * such as cuisines, dish types, and more. (optional)
-     * @return ResponseRecipeInformation
+     * @return RecipeInformation
      */
     @GET(Recipes.EXTRACT_RECIPE_FROM_WEBSITE)
     fun extractRecipeFromWebsite(
@@ -304,7 +304,7 @@ interface RecipesService {
      * @param tags The tags (can be diets, meal types, cuisines, or intolerances) that the recipe
      * must have. (optional)
      * @param number The number of random recipes to be returned (between 1 and 100). (optional)
-     * @return List<ResponseRecipeInformation>
+     * @return List<RecipeInformation>
      */
     @GET(Recipes.GET_RANDOM_RECIPES)
     fun getRandomRecipes(
@@ -321,7 +321,7 @@ interface RecipesService {
      * @param includeNutrition Include nutrition data to the recipe information. Nutrition data is
      * per serving. If you want the nutrition data for the entire recipe, just multiply by the
      * number of servings. (optional)
-     * @return List<ResponseRecipeInformation>
+     * @return List<RecipeInformation>
      */
     @GET(Recipes.GET_RECIPE_INFORMATION_BULK)
     fun getRecipeInformationBulk(
@@ -333,7 +333,7 @@ interface RecipesService {
      * Guess Nutrition by Dish Name
      * Estimate the macronutrients of a dish based on its title.
      * @param title The title of the dish.
-     * @return ResponseGuessNutritionByDishName
+     * @return GuessNutritionByDishName
      */
     @GET(Recipes.GUESS_NUTRITION_BY_DISH_NAME)
     fun guessNutritionByDishName(
@@ -344,7 +344,7 @@ interface RecipesService {
      * Parse Ingredients
      * Extract an ingredient from plain text.
      * @see RequestParseIngredients
-     * @return List<ResponseParseIngredients>
+     * @return List<ParseIngredients>
      */
     @POST(Recipes.PARSE_INGREDIENTS)
     fun parseIngredients(
@@ -355,7 +355,7 @@ interface RecipesService {
      * Quick Answer
      * Answer a nutrition related natural language question.
      * @param q The nutrition related question.
-     * @return ResponseQuickAnswer
+     * @return QuickAnswer
      */
     @GET(Recipes.QUICK_ANSWER)
     fun quickAnswer(
@@ -383,7 +383,7 @@ interface RecipesService {
      * @param limitLicense Whether the recipes should have an open license that allows display with
      * proper attribution. (optional)
      * @param instructionsRequired Whether the recipes must have instructions. (optional)
-     * @return ResponseRecipeSearch
+     * @return RecipeSearch
      */
     @GET(Recipes.SEARCH_RECIPES)
     fun searchRecipes(
@@ -413,7 +413,7 @@ interface RecipesService {
      * first. (optional)
      * @param ignorePantry Whether to ignore typical pantry items, such as water, salt, flour, etc.
      * (optional)
-     * @return List<ResponseSearchRecipesByIngredients>
+     * @return List<SearchRecipesByIngredients>
      */
     @GET(Recipes.SEARCH_RECIPES_BY_INGREDIENTS)
     fun searchRecipesByIngredients(
@@ -506,7 +506,7 @@ interface RecipesService {
      * requested limits. (optional)
      * @param limitLicense Whether the recipes should have an open license that allows display with
      * proper attribution. (optional)
-     * @return List<ResponseSearchRecipesByNutrients>
+     * @return List<SearchRecipesByNutrients>
      */
     @GET(Recipes.SEARCH_RECIPES_BY_NUTRIENTS)
     fun searchRecipesByNutrients(
@@ -704,7 +704,7 @@ interface RecipesService {
      * @param number The number of expected results (between 1 and 100). (optional)
      * @param limitLicense Whether the recipes should have an open license that allows display with
      * proper attribution. (optional)
-     * @return ResponseSearchRecipeComplex
+     * @return SearchRecipeComplex
      */
     @GET(Recipes.SEARCH_RECIPES_COMPLEX)
     fun searchRecipesComplex(
