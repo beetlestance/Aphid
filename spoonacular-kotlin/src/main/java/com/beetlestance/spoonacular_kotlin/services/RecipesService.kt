@@ -245,16 +245,16 @@ interface RecipesService {
 
     /**
      * Convert Amounts
-     * Convert amounts like \&quot;2 cups of flour to grams\&quot;.
+     * Convert amounts like "2 cups of flour to grams".
      * @param ingredientName The ingredient which you want to convert.
-     * @param sourceAmount The amount from which you want to convert, e.g. the 2.5 in \&quot;2.5
-     * cups of flour to grams\&quot;.
-     * @param sourceUnit The unit from which you want to convert, e.g. the grams in \&quot;2.5 cups
-     * of flour to grams\&quot;. You can also use \&quot;piece\&quot;, e.g. \&quot;3.4 oz tomatoes
-     * to piece\&quot;
-     * @param targetUnit The unit to which you want to convert, e.g. the grams in \&quot;2.5 cups of
-     * flour to grams\&quot;. You can also use \&quot;piece\&quot;, e.g. \&quot;3.4 oz tomatoes to
-     * piece\&quot;
+     * @param sourceAmount The amount from which you want to convert, e.g. the 2.5 in "2.5
+     * cups of flour to grams".
+     * @param sourceUnit The unit from which you want to convert, e.g. the grams in "2.5 cups
+     * of flour to grams". You can also use "piece", e.g. "3.4 oz tomatoes
+     * to piece"
+     * @param targetUnit The unit to which you want to convert, e.g. the grams in "2.5 cups of
+     * flour to grams". You can also use "piece", e.g. "3.4 oz tomatoes to
+     * piece"
      * @return ResponseConvertAmount
      */
     @POST(Recipes.CONVERT_AMOUNTS)
@@ -365,7 +365,7 @@ interface RecipesService {
     /**
      * Search Recipes
      * Our recipe API includes over 360,000 recipes as well as an open source recipe database.
-     * Consider using the \&quot;Search Recipes Complex\&quot; endpoint for much more flexibility.
+     * Consider using the "Search Recipes Complex" endpoint for much more flexibility.
      * @param query The (natural language) recipe search query.
      * @param cuisine The cuisine(s) of the recipes. One or more comma separated. See a full list
      * of supported cuisines. (optional)
@@ -603,7 +603,7 @@ interface RecipesService {
      * contain ingredients that are not suitable for people with the intolerances entered.
      * See a full list of supported intolerances. (optional)
      * @param equipment The equipment required. Multiple values will be interpreted as 'or'.
-     * For example, value could be \&quot;blender, frying pan, bowl\&quot;. (optional)
+     * For example, value could be "blender, frying pan, bowl". (optional)
      * @param includeIngredients A comma-separated list of ingredients that should/must be used in
      * the recipes. (optional)
      * @param excludeIngredients A comma-separated list of ingredients or ingredient types that the

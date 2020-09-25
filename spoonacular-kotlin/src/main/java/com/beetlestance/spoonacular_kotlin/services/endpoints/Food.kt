@@ -36,11 +36,11 @@ internal object Food {
 
         }
 
-        const val SEARCH_GROCERY_PRODUCTS = "/food/products/search"
-
         const val CLASSIFY_GROCERY_PRODUCT = "/food/products/classify"
 
         const val CLASSIFY_GROCERY_PRODUCT_BULK = "/food/products/classifyBatch"
+
+        const val SEARCH_GROCERY_PRODUCTS = "/food/products/search"
     }
 
     object MenuItems {
@@ -56,5 +56,16 @@ internal object Food {
         const val AUTOCOMPLETE_MENU_ITEM_SEARCH = "/food/menuItems/suggest"
 
         const val SEARCH_MENU_ITEMS = "/food/menuItems/search"
+    }
+
+    object Wine {
+
+        const val GET_DISH_PAIRING_FOR_WINE = "/food/wine/dishes"
+
+        const val GET_WINE_DESCRIPTION = "/food/wine/description"
+
+        const val GET_WINE_PAIRING = "/food/wine/pairing"
+
+        const val GET_WINE_RECOMMENDATION = "/food/wine/recommendation"
     }
 }

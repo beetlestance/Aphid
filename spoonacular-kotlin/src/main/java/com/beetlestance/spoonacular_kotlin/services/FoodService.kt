@@ -118,6 +118,35 @@ interface FoodService {
     fun searchGroceryProductsByUPC(@Path("upc") upc: BigDecimal): Any
 
     /**
+     * Classify Grocery Product
+     * This endpoint allows you to match a packaged food to a basic category, e.g. a specific brand
+     * of milk to the category milk.
+     * @param requestClassifyGroceryProduct A json object containing the product title.
+     * @param locale The display name of the returned category, supported is en_US
+     * (for American English) and en_GB (for British English). (optional)
+     * @return Any
+     */
+    @POST(Food.Products.CLASSIFY_GROCERY_PRODUCT)
+    fun classifyGroceryProduct(
+        @Body requestClassifyGroceryProduct: RequestClassifyGroceryProduct,
+        @Query("locale") locale: String? = null
+    ): Any
+
+    /**
+     * Classify Grocery Product Bulk
+     * Provide a set of product jsons, get back classified products.
+     * @param requestClassifyGroceryProduct
+     * @param locale The display name of the returned category, supported is en_US
+     * (for American English) and en_GB (for British English). (optional)
+     * @return Any
+     */
+    @POST(Food.Products.CLASSIFY_GROCERY_PRODUCT_BULK)
+    fun classifyGroceryProductBulk(
+        @Body requestClassifyGroceryProduct: RequestClassifyGroceryProduct,
+        @Query("locale") locale: String? = null
+    ): Any
+
+    /**
      * Search Grocery Products
      * Search packaged food products, such as frozen pizza or Greek yogurt.
      * @param query The search query.
@@ -146,35 +175,6 @@ interface FoodService {
         @Query("maxFat") maxFat: BigDecimal? = null,
         @Query("offset") offset: BigDecimal? = null,
         @Query("number") number: BigDecimal? = null
-    ): Any
-
-    /**
-     * Classify Grocery Product
-     * This endpoint allows you to match a packaged food to a basic category, e.g. a specific brand
-     * of milk to the category milk.
-     * @param requestClassifyGroceryProduct A json object containing the product title.
-     * @param locale The display name of the returned category, supported is en_US
-     * (for American English) and en_GB (for British English). (optional)
-     * @return Any
-     */
-    @POST(Food.Products.CLASSIFY_GROCERY_PRODUCT)
-    fun classifyGroceryProduct(
-        @Body requestClassifyGroceryProduct: RequestClassifyGroceryProduct,
-        @Query("locale") locale: String? = null
-    ): Any
-
-    /**
-     * Classify Grocery Product Bulk
-     * Provide a set of product jsons, get back classified products.
-     * @param requestClassifyGroceryProduct
-     * @param locale The display name of the returned category, supported is en_US
-     * (for American English) and en_GB (for British English). (optional)
-     * @return Any
-     */
-    @POST(Food.Products.CLASSIFY_GROCERY_PRODUCT_BULK)
-    fun classifyGroceryProductBulk(
-        @Body requestClassifyGroceryProduct: RequestClassifyGroceryProduct,
-        @Query("locale") locale: String? = null
     ): Any
 
     /**
@@ -242,6 +242,57 @@ interface FoodService {
         @Query("minFat") minFat: BigDecimal? = null,
         @Query("maxFat") maxFat: BigDecimal? = null,
         @Query("offset") offset: BigDecimal? = null,
+        @Query("number") number: BigDecimal? = null
+    ): Any
+
+    /**
+     * Get Dish Pairing for Wine
+     * Find a dish that goes well with a given wine.
+     * @param wine The type of wine that should be paired, e.g. "merlot", "riesling", or "malbec".
+     * @return Any
+     */
+    @GET(Food.Wine.GET_DISH_PAIRING_FOR_WINE)
+    fun getDishPairingForWine(@Query("wine") wine: String): Any
+
+    /**
+     * Get Wine Description
+     * Get a simple description of a certain wine, e.g. "malbec", "riesling", or "merlot".
+     * @param wine The name of the wine that should be paired, e.g. "merlot", "riesling", or "malbec".
+     * @return Any
+     */
+    @GET(Food.Wine.GET_WINE_DESCRIPTION)
+    fun getWineDescription(@Query("wine") wine: String): Any
+
+    /**
+     * Get Wine Pairing
+     * Find a wine that goes well with a food. Food can be a dish name ("steak"), an ingredient
+     * name ("salmon"), or a cuisine ("italian").
+     * @param food The food to get a pairing for. This can be a dish ("steak"), an ingredient
+     * ("salmon"), or a cuisine ("italian").
+     * @param maxPrice The maximum price for the specific wine recommendation in USD. (optional)
+     * @return Any
+     */
+    @GET(Food.Wine.GET_WINE_PAIRING)
+    fun getWinePairing(
+        @Query("food") food: String,
+        @Query("maxPrice") maxPrice: BigDecimal? = null
+    ): Any
+
+    /**
+     * Get Wine Recommendation
+     * Get a specific wine recommendation (concrete product) for a given wine type, e.g. "merlot".
+     * @param wine The type of wine to get a specific product recommendation for.
+     * @param maxPrice The maximum price for the specific wine recommendation in USD. (optional)
+     * @param minRating The minimum rating of the recommended wine between 0 and 1. For example,
+     * 0.8 equals 4 out of 5 stars. (optional)
+     * @param number The number of wine recommendations expected (between 1 and 100). (optional)
+     * @return Any
+     */
+    @GET(Food.Wine.GET_WINE_RECOMMENDATION)
+    fun getWineRecommendation(
+        @Query("wine") wine: String,
+        @Query("maxPrice") maxPrice: BigDecimal? = null,
+        @Query("minRating") minRating: BigDecimal? = null,
         @Query("number") number: BigDecimal? = null
     ): Any
 }
