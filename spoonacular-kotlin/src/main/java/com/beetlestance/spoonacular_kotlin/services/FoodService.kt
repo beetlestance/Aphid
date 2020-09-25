@@ -21,6 +21,7 @@ import com.beetlestance.spoonacular_kotlin.models.request.recipe.RequestClassify
 import com.beetlestance.spoonacular_kotlin.models.response.food.ARandomFoodJoke
 import com.beetlestance.spoonacular_kotlin.models.response.food.CustomFood
 import com.beetlestance.spoonacular_kotlin.models.response.food.DetectFoodInText
+import com.beetlestance.spoonacular_kotlin.models.response.food.FoodSiteContent
 import com.beetlestance.spoonacular_kotlin.models.response.food.FoodVideos
 import com.beetlestance.spoonacular_kotlin.models.response.food.RandomFoodTrivia
 import com.beetlestance.spoonacular_kotlin.models.response.food.converse.ConversationSuggests
@@ -51,6 +52,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import java.math.BigDecimal
 
+@Suppress("unused")
 interface FoodService {
 
     /**
@@ -475,8 +477,8 @@ interface FoodService {
      * partial strings as queries.
      * @param query The query to search for. You can also use partial queries such as "spagh" to
      * already find spaghetti recipes, articles, grocery products, and other content.
-     * @return Any
+     * @return FoodSiteContent
      */
     @GET(Food.SEARCH_SITE_CONTENT)
-    fun searchSiteContent(@Query("query") query: String): Any
+    fun searchSiteContent(@Query("query") query: String): FoodSiteContent
 }

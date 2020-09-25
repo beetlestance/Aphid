@@ -22,6 +22,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
+@Suppress("unused")
 open class Spoonacular(private val apiKey: String) {
 
     /**

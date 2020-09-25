@@ -20,6 +20,7 @@ import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.util.Date
 
+@Suppress("unused")
 class MoshiSerializer {
 
     companion object {

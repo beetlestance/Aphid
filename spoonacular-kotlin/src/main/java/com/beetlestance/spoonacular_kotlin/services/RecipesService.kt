@@ -29,6 +29,7 @@ import com.beetlestance.spoonacular_kotlin.models.response.recipe.AnalyzeARecipe
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.AnalyzeRecipeInstructions
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.AnalyzedRecipeInstructions
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.AutoCompleteRecipeSearch
+import com.beetlestance.spoonacular_kotlin.models.response.recipe.ClassifyCuisine
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.ConvertAmount
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.CreateRecipeCard
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.GuessNutritionByDishName
@@ -236,12 +237,12 @@ interface RecipesService {
      * Classify Cuisine
      * Classify the recipe's cuisine.
      * @see RequestClassifyCuisine
-     * @return RequestClassifyCuisine
+     * @return ClassifyCuisine
      */
     @POST(Recipes.CLASSIFY_CUISINE)
     fun classifyCuisine(
         @Body requestClassifyCuisine: RequestClassifyCuisine
-    ): Call<RequestClassifyCuisine>
+    ): Call<ClassifyCuisine>
 
     /**
      * Convert Amounts

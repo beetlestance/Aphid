@@ -15,6 +15,7 @@
  */
 package com.beetlestance.spoonacular_kotlin.exceptions
 
+@Suppress("unused")
 internal open class ServerException : RuntimeException {
 
     /**
