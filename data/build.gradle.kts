@@ -1,7 +1,7 @@
 import com.beetlestance.buildsrc.Libs
 
 plugins {
-    id("java-library")
+    `java-library`
     id("kotlin")
 }
 
