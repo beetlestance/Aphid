@@ -1,7 +1,7 @@
 import com.beetlestance.buildsrc.Libs
 
 plugins {
-    id("java-library")
+    `java-library`
     id("kotlin")
     id("com.android.lint")
 }
@@ -22,8 +22,8 @@ java {
 dependencies {
 
     // Kotlin
-    compileOnly(Libs.Kotlin.jdk7)
+    compileOnlyApi(Libs.Kotlin.jdk7)
 
-    compileOnly(Libs.Lint.api)
-    compileOnly(Libs.Lint.checks)
+    compileOnlyApi(Libs.Lint.api)
+    compileOnlyApi(Libs.Lint.checks)
 }
