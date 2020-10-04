@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.beetlestance.spoonacular_kotlin.models.request.recipe
+package com.beetlestance.spoonacular_kotlin.models.request.food
 
 import com.squareup.moshi.Json
 

@@ -16,22 +16,17 @@
 package com.beetlestance.spoonacular_kotlin.models.request.recipe
 
 import com.squareup.moshi.Json
-import java.math.BigDecimal
 
 /**
- * @param ingredientList The ingredient list of the recipe, one ingredient per line.
- * @param servings The number of servings.
+ * @param instructions The recipe's instructions.
  * @param view How to visualize the equipment, either "grid" or "list". (optional)
  * @param defaultCss Whether the default CSS should be added to the response. (optional)
  * @param showBacklink Whether to show a backlink to spoonacular. If set false, this call counts against your quota. (optional)
  */
 data class RequestVisualizeEquipment(
 
-    @Json(name = "ingredientList")
-    val ingredientList: String,
-
-    @Json(name = "servings")
-    val servings: BigDecimal,
+    @Json(name = "instructions")
+    val instructions: String,
 
     @Json(name = "view")
     val view: String?,

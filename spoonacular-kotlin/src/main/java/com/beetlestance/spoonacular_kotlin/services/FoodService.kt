@@ -15,9 +15,9 @@
  */
 package com.beetlestance.spoonacular_kotlin.services
 
+import com.beetlestance.spoonacular_kotlin.models.request.food.RequestClassifyGroceryProduct
 import com.beetlestance.spoonacular_kotlin.models.request.food.RequestDetectTextInFood
 import com.beetlestance.spoonacular_kotlin.models.request.food.RequestMapIngredientsToGroceryProduct
-import com.beetlestance.spoonacular_kotlin.models.request.recipe.RequestClassifyGroceryProduct
 import com.beetlestance.spoonacular_kotlin.models.response.food.ARandomFoodJoke
 import com.beetlestance.spoonacular_kotlin.models.response.food.CustomFood
 import com.beetlestance.spoonacular_kotlin.models.response.food.DetectFoodInText
