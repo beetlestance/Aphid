@@ -54,7 +54,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import java.math.BigDecimal
 
-@Suppress("unused")
 interface FoodService {
 
     /**
