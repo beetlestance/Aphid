@@ -18,8 +18,8 @@ package com.beetlestance.spoonacular_kotlin.models.request.food
 import com.squareup.moshi.Json
 
 /**
- * @param ingredients The title of the recipe.
- * @param servings The ingredient list of the recipe, one ingredient per line (separate lines with \n).
+ * @param ingredients The ingredient list of the recipe, one ingredient per line (separate lines with \n).
+ * @param servings the number of servings you can have for given ingredients
  */
 data class RequestMapIngredientsToGroceryProduct(
 

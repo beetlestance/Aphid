@@ -21,7 +21,7 @@ internal object Food {
 
         const val GET_CONVERSATION_SUGGESTS = "/food/converse/suggest"
 
-        const val TALK_TO_CHATBOT = "/food/converse"
+        const val TALK_TO_CHAT_BOT = "/food/converse"
     }
 
     object Images {
@@ -76,6 +76,8 @@ internal object Food {
 
             const val SEARCH_GROCERY_PRODUCTS = "/food/products/upc/{upc}"
         }
+
+        const val AUTOCOMPLETE_PRODUCT_SEARCH = "/food/products/suggest"
 
         const val CLASSIFY_GROCERY_PRODUCT = "/food/products/classify"
 

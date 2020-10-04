@@ -35,6 +35,7 @@ import com.beetlestance.spoonacular_kotlin.models.response.food.ingredients.MapI
 import com.beetlestance.spoonacular_kotlin.models.response.food.menuitem.AutoCompleteMenuItem
 import com.beetlestance.spoonacular_kotlin.models.response.food.menuitem.MenuItem
 import com.beetlestance.spoonacular_kotlin.models.response.food.menuitem.MenuItemInformation
+import com.beetlestance.spoonacular_kotlin.models.response.food.product.AutoCompleteProductSearch
 import com.beetlestance.spoonacular_kotlin.models.response.food.product.ClassifyGroceryProduct
 import com.beetlestance.spoonacular_kotlin.models.response.food.product.ComparableProduct
 import com.beetlestance.spoonacular_kotlin.models.response.food.product.GroceryProduct
@@ -162,6 +163,20 @@ interface FoodService {
      */
     @GET(Food.Products.ByUPC.SEARCH_GROCERY_PRODUCTS)
     fun searchGroceryProductsByUPC(@Path("upc") upc: BigDecimal): Call<GroceryProductByUpc>
+
+    /**
+     * Autocomplete Product Search
+     * Generate suggestions for grocery products based on a (partial) query. The matches will be
+     * found by looking in the title only.
+     * @param query The (partial) search query.
+     * @param number The number of results to return (between 1 and 25). (optional)
+     * @return AutoCompleteProductSearch
+     */
+    @POST(Food.Products.AUTOCOMPLETE_PRODUCT_SEARCH)
+    fun autocompleteProductSearch(
+        @Query("query") query: String,
+        @Query("number") number: BigDecimal? = null
+    ): Call<AutoCompleteProductSearch>
 
     /**
      * Classify Grocery Product
@@ -385,7 +400,7 @@ interface FoodService {
      * the conversation. (optional)
      * @return TalkToChatbot
      */
-    @GET(Food.Converse.TALK_TO_CHATBOT)
+    @GET(Food.Converse.TALK_TO_CHAT_BOT)
     fun talkToChatbot(
         @Query("text") text: String,
         @Query("contextId") contextId: String? = null
