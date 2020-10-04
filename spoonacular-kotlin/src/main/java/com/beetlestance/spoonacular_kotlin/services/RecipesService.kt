@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.beetlestance.spoonacular_kotlin.services
 
 import com.beetlestance.spoonacular_kotlin.models.request.recipe.RequestAnalyzeRecipeInstructions
