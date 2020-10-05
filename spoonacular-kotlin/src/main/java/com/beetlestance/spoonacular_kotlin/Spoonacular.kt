@@ -72,7 +72,6 @@ open class Spoonacular(private val apiKey: String) {
         return builder
     }
 
-
     /**
      * Adds an interceptor to add the api key query parameter and to log requests.
      */
