@@ -49,4 +49,6 @@ internal object MealPlanner {
     }
 
     const val GENERATE_MEAL_PLAN = "/mealplanner/generate"
+
+    const val GET_PUBLIC_MEAL_PLAN_TEMPLATES = "/mealplanner/public-templates"
 }

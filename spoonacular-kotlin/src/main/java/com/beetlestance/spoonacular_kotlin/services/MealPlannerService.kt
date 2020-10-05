@@ -17,10 +17,16 @@ package com.beetlestance.spoonacular_kotlin.services
 
 import com.beetlestance.spoonacular_kotlin.SpoonacularUserCredentials.userHash
 import com.beetlestance.spoonacular_kotlin.SpoonacularUserCredentials.userName
+import com.beetlestance.spoonacular_kotlin.constants.Diets
 import com.beetlestance.spoonacular_kotlin.models.request.mealplanner.RequestAddToShoppingList
 import com.beetlestance.spoonacular_kotlin.models.request.mealplanner.addtomealplan.RequestAddIngredientsToMealPlan
 import com.beetlestance.spoonacular_kotlin.models.request.mealplanner.addtomealplan.RequestAddMealPlanTemplateToMealPlan
 import com.beetlestance.spoonacular_kotlin.models.request.mealplanner.addtomealplan.RequestAddToMealPlan
+import com.beetlestance.spoonacular_kotlin.models.response.mealplanner.AddToMealPlan
+import com.beetlestance.spoonacular_kotlin.models.response.mealplanner.DeleteFromMealPlan
+import com.beetlestance.spoonacular_kotlin.models.response.mealplanner.GenerateMealPlan
+import com.beetlestance.spoonacular_kotlin.models.response.mealplanner.MealPlanTemplate
+import com.beetlestance.spoonacular_kotlin.models.response.mealplanner.PublicMealPlanTemplate
 import com.beetlestance.spoonacular_kotlin.services.endpoints.MealPlanner
 import retrofit2.Call
 import retrofit2.http.Body
@@ -40,14 +46,14 @@ interface MealPlannerService {
      * @param requestAddToMealPlan
      * @see RequestAddMealPlanTemplateToMealPlan
      * @see RequestAddIngredientsToMealPlan
-     * @return Any
+     * @return AddToMealPlan
      */
     @POST(MealPlanner.UserName.Items.ADD_TO_MEAL_PLAN)
     fun addToMealPlan(
         @Path("username") username: String = userName,
         @Query("hash") hash: String = userHash,
         @Body requestAddToMealPlan: RequestAddToMealPlan
-    ): Call<Any>
+    ): Call<AddToMealPlan>
 
     /**
      * Delete from Meal Plan
@@ -55,14 +61,14 @@ interface MealPlannerService {
      * @param username The username.
      * @param id The shopping list item id.
      * @param hash The private hash for the username.
-     * @return Any
+     * @return DeleteFromMealPlan
      */
     @DELETE(MealPlanner.UserName.Items.DELETE_FROM_MEAL_PLAN)
     fun deleteFromMealPlan(
         @Path("username") username: String = userName,
         @Path("id") id: Long,
         @Query("hash") hash: String = userHash,
-    ): Call<Any>
+    ): Call<DeleteFromMealPlan>
 
     /**
      * Get Meal Plan Template
@@ -77,7 +83,7 @@ interface MealPlannerService {
         @Path("username") username: String = userName,
         @Path("id") id: Long,
         @Query("hash") hash: String = userHash
-    ): Call<Any>
+    ): Call<MealPlanTemplate>
 
     /**
      * Get Meal Plan Templates
@@ -176,6 +182,7 @@ interface MealPlannerService {
      * try to get as close as possible to that goal. (optional)
      * @param diet Enter a diet that the meal plan has to adhere to. See a full list of supported
      * diets. (optional)
+     * @see Diets
      * @param exclude A comma-separated list of allergens or ingredients that must be excluded. (optional)
      * @return Any
      */
@@ -185,5 +192,11 @@ interface MealPlannerService {
         @Query("targetCalories") targetCalories: Int?,
         @Query("diet") diet: String?,
         @Query("exclude") exclude: String?
-    ): Call<Any>
+    ): Call<GenerateMealPlan>
+
+    /**
+     * Get public templates.
+     * */
+    @GET(MealPlanner.GET_PUBLIC_MEAL_PLAN_TEMPLATES)
+    fun getPublicMealTemplate(): Call<PublicMealPlanTemplate>
 }
