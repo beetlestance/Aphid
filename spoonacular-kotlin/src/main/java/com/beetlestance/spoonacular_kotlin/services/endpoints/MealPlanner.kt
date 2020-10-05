@@ -45,6 +45,10 @@ internal object MealPlanner {
             const val GET_SHOPPING_LIST = "/mealplanner/{username}/shopping-list"
         }
 
+        const val GET_MEAL_PLAN_DAY = "/mealplanner/{username}/day/{date}"
+
+        const val CLEAR_MEAL_PLAN_DAY = "/mealplanner/{username}/day/{date}"
+
         const val GET_MEAL_PLAN_WEEK = "/mealplanner/{username}/week/{start-date}"
     }
 

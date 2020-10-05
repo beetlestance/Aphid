@@ -23,10 +23,17 @@ import com.beetlestance.spoonacular_kotlin.models.request.mealplanner.addtomealp
 import com.beetlestance.spoonacular_kotlin.models.request.mealplanner.addtomealplan.RequestAddMealPlanTemplateToMealPlan
 import com.beetlestance.spoonacular_kotlin.models.request.mealplanner.addtomealplan.RequestAddToMealPlan
 import com.beetlestance.spoonacular_kotlin.models.response.mealplanner.AddToMealPlan
+import com.beetlestance.spoonacular_kotlin.models.response.mealplanner.AddToShoppingList
+import com.beetlestance.spoonacular_kotlin.models.response.mealplanner.ClearMealPlanDay
 import com.beetlestance.spoonacular_kotlin.models.response.mealplanner.DeleteFromMealPlan
+import com.beetlestance.spoonacular_kotlin.models.response.mealplanner.DeleteFromShoppingList
 import com.beetlestance.spoonacular_kotlin.models.response.mealplanner.GenerateMealPlan
+import com.beetlestance.spoonacular_kotlin.models.response.mealplanner.GenerateShoppingList
+import com.beetlestance.spoonacular_kotlin.models.response.mealplanner.MealPlanDay
 import com.beetlestance.spoonacular_kotlin.models.response.mealplanner.MealPlanTemplate
-import com.beetlestance.spoonacular_kotlin.models.response.mealplanner.PublicMealPlanTemplate
+import com.beetlestance.spoonacular_kotlin.models.response.mealplanner.MealPlanTemplates
+import com.beetlestance.spoonacular_kotlin.models.response.mealplanner.MealPlanWeek
+import com.beetlestance.spoonacular_kotlin.models.response.mealplanner.ShoppingList
 import com.beetlestance.spoonacular_kotlin.services.endpoints.MealPlanner
 import retrofit2.Call
 import retrofit2.http.Body
@@ -90,13 +97,13 @@ interface MealPlannerService {
      * Get meal plan templates from user or public ones.
      * @param username The username.
      * @param hash The private hash for the username.
-     * @return Any
+     * @return MealPlanTemplates
      */
     @GET(MealPlanner.UserName.Templates.GET_MEAL_PLAN_TEMPLATES)
     fun getMealPlanTemplates(
         @Path("username") username: String = userName,
         @Query("hash") hash: String = userHash
-    ): Call<Any>
+    ): Call<MealPlanTemplates>
 
     /**
      * Add to Shopping List
@@ -104,14 +111,14 @@ interface MealPlannerService {
      * @param username The username.
      * @param hash The private hash for the username.
      * @param requestAddToShoppingList contains aisle and name of item
-     * @return Any
+     * @return AddToShoppingList
      */
     @POST(MealPlanner.UserName.ShoppingLists.ADD_TO_SHOPPING_LIST)
     fun addToShoppingList(
         @Path("username") username: String = userName,
         @Query("hash") hash: String = userHash,
         @Body requestAddToShoppingList: RequestAddToShoppingList
-    ): Call<Any>
+    ): Call<AddToShoppingList>
 
     /**
      * Delete from Shopping List
@@ -119,14 +126,14 @@ interface MealPlannerService {
      * @param username The username.
      * @param id The shopping list item id.
      * @param hash The private hash for the username.
-     * @return Any
+     * @return DeleteFromShoppingList
      */
     @DELETE(MealPlanner.UserName.ShoppingLists.DELETE_FROM_SHOPPING_LIST)
     fun deleteFromShoppingList(
         @Path("username") username: String = userName,
         @Path("id") id: Long,
         @Query("hash") hash: String = userHash
-    ): Call<Any>
+    ): Call<DeleteFromShoppingList>
 
     /**
      * Generate Shopping List
@@ -135,7 +142,7 @@ interface MealPlannerService {
      * @param startDate The start date in the format yyyy-mm-dd.
      * @param endDate The end date in the format yyyy-mm-dd.
      * @param hash The private hash for the username.
-     * @return Any
+     * @return GenerateShoppingList
      */
     @POST(MealPlanner.UserName.ShoppingLists.GENERATE_SHOPPING_LIST)
     fun generateShoppingList(
@@ -143,20 +150,51 @@ interface MealPlannerService {
         @Path("start-date") startDate: String,
         @Path("end-date") endDate: String,
         @Query("hash") hash: String = userHash
-    ): Call<Any>
+    ): Call<GenerateShoppingList>
 
     /**
      * Get Shopping List
      * Get the current shopping list for the given user.
      * @param username The username.
      * @param hash The private hash for the username.
-     * @return Any
+     * @return ShoppingList
      */
     @GET(MealPlanner.UserName.ShoppingLists.GET_SHOPPING_LIST)
     fun getShoppingList(
         @Path("username") username: String = userName,
         @Query("hash") hash: String = userHash
-    ): Call<Any>
+    ): Call<ShoppingList>
+
+    /**
+     * Get Meal Plan Day
+     * Retrieve a meal planned day for the given user. The username must be a spoonacular user and
+     * the hash must the the user's hash that can be found in his/her account.
+     * @param username The username.
+     * @param date The start date of the meal planned week in the format yyyy-mm-dd.
+     * @param hash The private hash for the username.
+     * @return MealPlanDay
+     */
+    @GET(MealPlanner.UserName.GET_MEAL_PLAN_DAY)
+    fun getMealPlanDay(
+        @Path("username") username: String = userName,
+        @Path("date") date: String,
+        @Query("hash") hash: String = userHash
+    ): Call<MealPlanDay>
+
+    /**
+     * Clear Meal Plan Day
+     * Delete all planned items from the user's meal plan for a specific day.
+     * @param username The username.
+     * @param date The start date of the meal planned week in the format yyyy-mm-dd.
+     * @param hash The private hash for the username.
+     * @return ClearMealPlanDay
+     */
+    @DELETE(MealPlanner.UserName.CLEAR_MEAL_PLAN_DAY)
+    fun clearMealPlanDay(
+        @Path("username") username: String = userName,
+        @Path("date") date: String,
+        @Query("hash") hash: String = userHash
+    ): Call<ClearMealPlanDay>
 
     /**
      * Get Meal Plan Week
@@ -165,14 +203,14 @@ interface MealPlannerService {
      * @param username The username.
      * @param startDate The start date of the meal planned week in the format yyyy-mm-dd.
      * @param hash The private hash for the username.
-     * @return Any
+     * @return MealPlanWeek
      */
     @GET(MealPlanner.UserName.GET_MEAL_PLAN_WEEK)
     fun getMealPlanWeek(
         @Path("username") username: String = userName,
         @Path("start-date") startDate: String,
         @Query("hash") hash: String = userHash
-    ): Call<Any>
+    ): Call<MealPlanWeek>
 
     /**
      * Generate Meal Plan
@@ -198,5 +236,5 @@ interface MealPlannerService {
      * Get public templates.
      * */
     @GET(MealPlanner.GET_PUBLIC_MEAL_PLAN_TEMPLATES)
-    fun getPublicMealTemplate(): Call<PublicMealPlanTemplate>
+    fun getPublicMealTemplate(): Call<MealPlanTemplates>
 }

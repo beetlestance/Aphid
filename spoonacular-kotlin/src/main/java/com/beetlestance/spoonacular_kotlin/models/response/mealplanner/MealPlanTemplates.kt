@@ -2,7 +2,7 @@ package com.beetlestance.spoonacular_kotlin.models.response.mealplanner
 
 import com.squareup.moshi.Json
 
-data class PublicMealPlanTemplate(
+data class MealPlanTemplates(
 
     @Json(name = "templates")
     val templates: List<TemplatesItem?>? = null
