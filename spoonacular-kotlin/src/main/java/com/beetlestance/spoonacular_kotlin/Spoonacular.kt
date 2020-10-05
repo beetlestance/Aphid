@@ -19,6 +19,7 @@ import com.beetlestance.spoonacular_kotlin.retrofit.SpoonacularInterceptor
 import com.beetlestance.spoonacular_kotlin.services.FoodService
 import com.beetlestance.spoonacular_kotlin.services.MealPlannerService
 import com.beetlestance.spoonacular_kotlin.services.RecipesService
+import com.beetlestance.spoonacular_kotlin.services.UserService
 import com.beetlestance.spoonacular_kotlin.utils.MoshiSerializer
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -98,6 +99,13 @@ open class Spoonacular(private val apiKey: String) {
      * */
     fun createMealPlannerService(): MealPlannerService {
         return retrofit().create(MealPlannerService::class.java)
+    }
+
+    /**
+     * Provides all Api's related to spoonacular users.
+     * */
+    fun createUserService(): UserService {
+        return retrofit().create(UserService::class.java)
     }
 
     /**
