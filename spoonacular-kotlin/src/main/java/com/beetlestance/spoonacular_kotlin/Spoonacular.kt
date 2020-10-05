@@ -24,28 +24,8 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-@Suppress("unused")
+@Suppress("unused", "MemberVisibilityCanBePrivate")
 open class Spoonacular(private val apiKey: String) {
-
-    /**
-     * Returns the default OkHttp client instance. It is strongly recommended to override this and
-     * use your app instance.
-     */
-    protected open fun okHttpClient(): OkHttpClient {
-        return okHttpClientBuilder().build()
-    }
-
-    /**
-     * Returns the default OkHttp client builder. It is strongly recommended to override this and
-     * use your app instance.
-     *
-     * @see setOkHttpClientInterceptors
-     */
-    protected open fun okHttpClientBuilder(): OkHttpClient.Builder {
-        val builder = OkHttpClient.Builder()
-        builder.setOkHttpClientInterceptors()
-        return builder
-    }
 
     /**
      * Return the current [Retrofit] instance.
@@ -64,7 +44,7 @@ open class Spoonacular(private val apiKey: String) {
      *
      * @see okHttpClient
      */
-    protected open fun retrofitBuilder(): Retrofit.Builder {
+    fun retrofitBuilder(): Retrofit.Builder {
         return Retrofit.Builder()
             .baseUrl(SPOONACULAR_API_URL)
             .addConverterFactory(MoshiConverterFactory.create(MoshiSerializer.moshi))
@@ -72,9 +52,30 @@ open class Spoonacular(private val apiKey: String) {
     }
 
     /**
+     * Returns the default OkHttp client instance. It is strongly recommended to override this and
+     * use your app instance.
+     */
+    protected open fun okHttpClient(): OkHttpClient {
+        return okHttpClientBuilder().build()
+    }
+
+    /**
+     * Returns the default OkHttp client builder. It is strongly recommended to override this and
+     * use your app instance.
+     *
+     * @see setOkHttpClientInterceptors
+     */
+    fun okHttpClientBuilder(): OkHttpClient.Builder {
+        val builder = OkHttpClient.Builder()
+        builder.setOkHttpClientInterceptors()
+        return builder
+    }
+
+
+    /**
      * Adds an interceptor to add the api key query parameter and to log requests.
      */
-    protected open fun OkHttpClient.Builder.setOkHttpClientInterceptors() {
+    fun OkHttpClient.Builder.setOkHttpClientInterceptors() {
         addInterceptor(SpoonacularInterceptor(apiKey))
     }
 
