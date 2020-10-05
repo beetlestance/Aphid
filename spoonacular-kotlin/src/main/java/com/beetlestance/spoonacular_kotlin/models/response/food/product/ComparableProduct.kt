@@ -16,7 +16,6 @@
 package com.beetlestance.spoonacular_kotlin.models.response.food.product
 
 import com.squareup.moshi.Json
-import java.math.BigDecimal
 
 data class ComparableProduct(
 
@@ -54,7 +53,7 @@ data class ComparableProduct(
         val difference: Int? = null,
 
         @Json(name = "id")
-        val id: BigDecimal? = null,
+        val id: Long? = null,
 
         @Json(name = "title")
         val title: String? = null,

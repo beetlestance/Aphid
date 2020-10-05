@@ -16,18 +16,17 @@
 package com.beetlestance.spoonacular_kotlin.models.response.recipe
 
 import com.squareup.moshi.Json
-import java.math.BigDecimal
 
 data class SearchRecipeComplex(
 
     @Json(name = "number")
-    val number: BigDecimal? = null,
+    val number: Int? = null,
 
     @Json(name = "totalResults")
-    val totalResults: BigDecimal? = null,
+    val totalResults: Int? = null,
 
     @Json(name = "offset")
-    val offset: BigDecimal? = null,
+    val offset: Int? = null,
 
     @Json(name = "results")
     val results: List<ResultsItem?>? = null
@@ -48,10 +47,10 @@ data class SearchRecipeComplex(
         val fat: String? = null,
 
         @Json(name = "id")
-        val id: BigDecimal? = null,
+        val id: Long? = null,
 
         @Json(name = "calories")
-        val calories: BigDecimal? = null,
+        val calories: Int? = null,
 
         @Json(name = "title")
         val title: String? = null,

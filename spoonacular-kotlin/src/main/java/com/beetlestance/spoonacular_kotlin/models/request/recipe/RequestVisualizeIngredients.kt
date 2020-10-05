@@ -16,7 +16,6 @@
 package com.beetlestance.spoonacular_kotlin.models.request.recipe
 
 import com.squareup.moshi.Json
-import java.math.BigDecimal
 
 /**
  * @param ingredientList The ingredient list of the recipe, one ingredient per line.
@@ -33,7 +32,7 @@ data class RequestVisualizeIngredients(
     val ingredientList: String,
 
     @Json(name = "servings")
-    val servings: BigDecimal,
+    val servings: Int,
 
     @Json(name = "measure")
     val measure: String?,

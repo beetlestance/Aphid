@@ -17,7 +17,6 @@ package com.beetlestance.spoonacular_kotlin.models.request.recipe
 
 import com.squareup.moshi.Json
 import java.io.File
-import java.math.BigDecimal
 
 /**
  * @param title The title of the recipe.
@@ -49,10 +48,10 @@ data class RequestCreateRecipeCard(
     val instructions: String,
 
     @Json(name = "readyInMinutes")
-    val readyInMinutes: BigDecimal,
+    val readyInMinutes: Long,
 
     @Json(name = "servings")
-    val servings: BigDecimal,
+    val servings: Int,
 
     @Json(name = "mask")
     val mask: String,

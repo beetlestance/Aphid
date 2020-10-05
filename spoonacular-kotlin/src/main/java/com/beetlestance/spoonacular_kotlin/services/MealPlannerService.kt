@@ -29,7 +29,6 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
-import java.math.BigDecimal
 
 interface MealPlannerService {
 
@@ -61,7 +60,7 @@ interface MealPlannerService {
     @DELETE(MealPlanner.UserName.Items.DELETE_FROM_MEAL_PLAN)
     fun deleteFromMealPlan(
         @Path("username") username: String = userName,
-        @Path("id") id: BigDecimal,
+        @Path("id") id: Long,
         @Query("hash") hash: String = userHash,
     ): Call<Any>
 
@@ -76,7 +75,7 @@ interface MealPlannerService {
     @GET(MealPlanner.UserName.Templates.GET_MEAL_PLAN_TEMPLATE)
     fun getMealPlanTemplate(
         @Path("username") username: String = userName,
-        @Path("id") id: BigDecimal,
+        @Path("id") id: Long,
         @Query("hash") hash: String = userHash
     ): Call<Any>
 
@@ -119,7 +118,7 @@ interface MealPlannerService {
     @DELETE(MealPlanner.UserName.ShoppingLists.DELETE_FROM_SHOPPING_LIST)
     fun deleteFromShoppingList(
         @Path("username") username: String = userName,
-        @Path("id") id: BigDecimal,
+        @Path("id") id: Long,
         @Query("hash") hash: String = userHash
     ): Call<Any>
 
@@ -183,7 +182,7 @@ interface MealPlannerService {
     @GET(MealPlanner.GENERATE_MEAL_PLAN)
     fun generateMealPlan(
         @Query("timeFrame") timeFrame: String?,
-        @Query("targetCalories") targetCalories: BigDecimal?,
+        @Query("targetCalories") targetCalories: Int?,
         @Query("diet") diet: String?,
         @Query("exclude") exclude: String?
     ): Call<Any>
