@@ -17,6 +17,7 @@ package com.beetlestance.spoonacular_kotlin
 
 import com.beetlestance.spoonacular_kotlin.retrofit.SpoonacularInterceptor
 import com.beetlestance.spoonacular_kotlin.services.FoodService
+import com.beetlestance.spoonacular_kotlin.services.MealPlannerService
 import com.beetlestance.spoonacular_kotlin.services.RecipesService
 import com.beetlestance.spoonacular_kotlin.utils.MoshiSerializer
 import okhttp3.OkHttpClient
@@ -89,6 +90,21 @@ open class Spoonacular(private val apiKey: String) {
      * */
     fun createFoodService(): FoodService {
         return retrofit().create(FoodService::class.java)
+    }
+
+    /**
+     * Provides all Api's related to meal planner
+     * */
+    fun createMealPlannerService(): MealPlannerService {
+        return retrofit().create(MealPlannerService::class.java)
+    }
+
+    /**
+     * Sets user credentials to avoid passing username and hash on every MealPlannerService Api
+     * */
+    fun setUserCredentials(userName: String, hash: String) {
+        SpoonacularUserCredentials.spoonacularUserName = userName
+        SpoonacularUserCredentials.spoonacularUserHash = hash
     }
 
     companion object {

@@ -15,6 +15,8 @@
  */
 package com.beetlestance.spoonacular_kotlin.services
 
+import com.beetlestance.spoonacular_kotlin.SpoonacularUserCredentials.userHash
+import com.beetlestance.spoonacular_kotlin.SpoonacularUserCredentials.userName
 import com.beetlestance.spoonacular_kotlin.models.request.mealplanner.RequestAddToShoppingList
 import com.beetlestance.spoonacular_kotlin.models.request.mealplanner.addtomealplan.RequestAddIngredientsToMealPlan
 import com.beetlestance.spoonacular_kotlin.models.request.mealplanner.addtomealplan.RequestAddMealPlanTemplateToMealPlan
@@ -43,8 +45,8 @@ interface MealPlannerService {
      */
     @POST(MealPlanner.UserName.Items.ADD_TO_MEAL_PLAN)
     fun addToMealPlan(
-        @Path("username") username: String,
-        @Query("hash") hash: String,
+        @Path("username") username: String = userName,
+        @Query("hash") hash: String = userHash,
         @Body requestAddToMealPlan: RequestAddToMealPlan
     ): Call<Any>
 
@@ -58,9 +60,9 @@ interface MealPlannerService {
      */
     @DELETE(MealPlanner.UserName.Items.DELETE_FROM_MEAL_PLAN)
     fun deleteFromMealPlan(
-        @Path("username") username: String,
+        @Path("username") username: String = userName,
         @Path("id") id: BigDecimal,
-        @Query("hash") hash: String,
+        @Query("hash") hash: String = userHash,
     ): Call<Any>
 
     /**
@@ -73,9 +75,9 @@ interface MealPlannerService {
      */
     @GET(MealPlanner.UserName.Templates.GET_MEAL_PLAN_TEMPLATE)
     fun getMealPlanTemplate(
-        @Path("username") username: String,
+        @Path("username") username: String = userName,
         @Path("id") id: BigDecimal,
-        @Query("hash") hash: String
+        @Query("hash") hash: String = userHash
     ): Call<Any>
 
     /**
@@ -87,8 +89,8 @@ interface MealPlannerService {
      */
     @GET(MealPlanner.UserName.Templates.GET_MEAL_PLAN_TEMPLATES)
     fun getMealPlanTemplates(
-        @Path("username") username: String,
-        @Query("hash") hash: String
+        @Path("username") username: String = userName,
+        @Query("hash") hash: String = userHash
     ): Call<Any>
 
     /**
@@ -101,8 +103,8 @@ interface MealPlannerService {
      */
     @POST(MealPlanner.UserName.ShoppingLists.ADD_TO_SHOPPING_LIST)
     fun addToShoppingList(
-        @Path("username") username: String,
-        @Query("hash") hash: String,
+        @Path("username") username: String = userName,
+        @Query("hash") hash: String = userHash,
         @Body requestAddToShoppingList: RequestAddToShoppingList
     ): Call<Any>
 
@@ -116,9 +118,9 @@ interface MealPlannerService {
      */
     @DELETE(MealPlanner.UserName.ShoppingLists.DELETE_FROM_SHOPPING_LIST)
     fun deleteFromShoppingList(
-        @Path("username") username: String,
+        @Path("username") username: String = userName,
         @Path("id") id: BigDecimal,
-        @Query("hash") hash: String
+        @Query("hash") hash: String = userHash
     ): Call<Any>
 
     /**
@@ -132,10 +134,10 @@ interface MealPlannerService {
      */
     @POST(MealPlanner.UserName.ShoppingLists.GENERATE_SHOPPING_LIST)
     fun generateShoppingList(
-        @Path("username") username: String,
+        @Path("username") username: String = userName,
         @Path("start-date") startDate: String,
         @Path("end-date") endDate: String,
-        @Query("hash") hash: String
+        @Query("hash") hash: String = userHash
     ): Call<Any>
 
     /**
@@ -147,8 +149,8 @@ interface MealPlannerService {
      */
     @GET(MealPlanner.UserName.ShoppingLists.GET_SHOPPING_LIST)
     fun getShoppingList(
-        @Path("username") username: String,
-        @Query("hash") hash: String
+        @Path("username") username: String = userName,
+        @Query("hash") hash: String = userHash
     ): Call<Any>
 
     /**
@@ -162,9 +164,9 @@ interface MealPlannerService {
      */
     @GET(MealPlanner.UserName.GET_MEAL_PLAN_WEEK)
     fun getMealPlanWeek(
-        @Path("username") username: String,
+        @Path("username") username: String = userName,
         @Path("start-date") startDate: String,
-        @Query("hash") hash: String
+        @Query("hash") hash: String = userHash
     ): Call<Any>
 
     /**
