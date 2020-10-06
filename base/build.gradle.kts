@@ -6,6 +6,9 @@ plugins {
 
 dependencies {
 
+    // Local Projects
+    implementation(project(":spoonacular-kotlin"))
+
     // Kotlin
     implementation(Libs.Kotlin.stdlib)
 

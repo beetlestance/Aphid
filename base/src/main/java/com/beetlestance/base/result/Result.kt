@@ -19,13 +19,13 @@ package com.beetlestance.base.result
  * A generic class that holds a successful outcome with a value of type [T] or a
  * failure with an arbitrary [Throwable] exception
  */
-sealed class Result<T>{
+sealed class Result<T> {
 
     // Returns `true` if this instance represents a successful outcome.
     val isSuccess: Boolean get() = this is Success
 
     // Returns `true` if this instance represents a failed outcome.
-    val isError: Boolean get() = this is Error
+    val isFailure: Boolean get() = this is Failure
 }
 
 /**
@@ -36,40 +36,40 @@ data class Success<T>(val data: T) : Result<T>()
 /**
  * Represents an instance that holds the given [throwable] as error value.
  */
-data class Error<T>(val throwable: Throwable): Result<T>()
+data class Failure<T>(val throwable: Throwable) : Result<T>()
 
 /**
  * Returns the holding value if the instance is [Success] or
- * throws the holding throwable if the instance is [Error]
+ * throws the holding throwable if the instance is [Failure]
  */
-fun <T> Result<T>.dataOrThrow() = when(this){
+fun <T> Result<T>.dataOrThrow() = when (this) {
     is Success -> data
-    is Error -> throw throwable
+    is Failure -> throw throwable
 }
 
 /**
  * Returns the holding value if the instance is [Success] or
- * returns the provided value if the instance is [Error]
+ * returns the provided value if the instance is [Failure]
  */
-fun <T> Result<T>.dataOrElse(value: T): T = when(this){
+fun <T> Result<T>.dataOrElse(value: T): T = when (this) {
     is Success -> data
-    is Error -> value
+    is Failure -> value
 }
 
 /**
  * Performs the given [action] on the holding data fi the instance is [Success].
  * Returns the original result unchanged.
  */
-inline fun <T> Result<T>.onSuccess(action: (value: T) -> Unit): Result<T>{
-    if(this is Success) action(data)
+inline fun <T> Result<T>.onSuccess(action: (value: T) -> Unit): Result<T> {
+    if (this is Success) action(data)
     return this
 }
 
 /**
- * Performs the given [action] on the holding throwable if the instance is [Error].
+ * Performs the given [action] on the holding throwable if the instance is [Failure].
  * Returns the original result unchanged.
  */
-inline fun <T> Result<T>.onError(action: (exception: Throwable) -> Unit): Result<T> {
-    if(this is Error) action(throwable)
+inline fun <T> Result<T>.onFailure(action: (exception: Throwable) -> Unit): Result<T> {
+    if (this is Failure) action(throwable)
     return this
 }
