@@ -13,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@file:Suppress("unused")
-
 package com.beetlestance.spoonacular_kotlin.services
 
 import com.beetlestance.spoonacular_kotlin.models.request.recipe.RequestAnalyzeRecipeInstructions
@@ -53,7 +51,6 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
-import java.math.BigDecimal
 
 interface RecipesService {
 
@@ -67,7 +64,7 @@ interface RecipesService {
      */
     @GET(Recipes.ById.GET_ANALYZED_RECIPE_INSTRUCTIONS)
     fun getAnalyzedRecipeInstructions(
-        @Path("id") id: BigDecimal,
+        @Path("id") id: Long,
         @Query("stepBreakdown") stepBreakdown: Boolean? = null
     ): Call<List<AnalyzedRecipeInstructions>>
 
@@ -78,7 +75,7 @@ interface RecipesService {
      * @return RecipeEquipment
      */
     @GET(Recipes.ById.GET_RECIPE_EQUIPMENT)
-    fun getRecipeEquipmentByID(@Path("id") id: BigDecimal): Call<RecipeEquipment>
+    fun getRecipeEquipmentByID(@Path("id") id: Long): Call<RecipeEquipment>
 
     /**
      * Get Recipe Information
@@ -92,7 +89,7 @@ interface RecipesService {
      */
     @GET(Recipes.ById.GET_RECIPE_INFORMATION)
     fun getRecipeInformation(
-        @Path("id") id: BigDecimal,
+        @Path("id") id: Long,
         @Query("includeNutrition") includeNutrition: Boolean? = null
     ): Call<RecipeInformation>
 
@@ -103,7 +100,7 @@ interface RecipesService {
      * @return RecipeIngredients
      */
     @GET(Recipes.ById.GET_RECIPE_INGREDIENTS)
-    fun getRecipeIngredientsByID(@Path("id") id: BigDecimal): Call<RecipeIngredients>
+    fun getRecipeIngredientsByID(@Path("id") id: Long): Call<RecipeIngredients>
 
     /**
      * Get Recipe Nutrition Widget by ID
@@ -112,7 +109,7 @@ interface RecipesService {
      * @return RecipeNutrients
      */
     @GET(Recipes.ById.GET_RECIPE_NUTRITION)
-    fun getRecipeNutritionWidgetByID(@Path("id") id: BigDecimal): Call<RecipeNutrients>
+    fun getRecipeNutritionWidgetByID(@Path("id") id: Long): Call<RecipeNutrients>
 
     /**
      * Get Recipe Price Breakdown by ID
@@ -121,7 +118,7 @@ interface RecipesService {
      * @return RecipePriceBreakdown
      */
     @GET(Recipes.ById.GET_RECIPE_PRICE_BREAKDOWN)
-    fun getRecipePriceBreakdownByID(@Path("id") id: BigDecimal): Call<RecipePriceBreakdown>
+    fun getRecipePriceBreakdownByID(@Path("id") id: Long): Call<RecipePriceBreakdown>
 
     /**
      * Get Similar Recipes
@@ -134,8 +131,8 @@ interface RecipesService {
      */
     @GET(Recipes.ById.GET_SIMILAR_RECIPES)
     fun getSimilarRecipes(
-        @Path("id") id: BigDecimal,
-        @Query("number") number: BigDecimal? = null,
+        @Path("id") id: Long,
+        @Query("number") number: Int? = null,
         @Query("limitLicense") limitLicense: Boolean? = null
     ): Call<List<SimilarRecipes>>
 
@@ -146,7 +143,7 @@ interface RecipesService {
      * @return SummarizeRecipe
      */
     @GET(Recipes.ById.SUMMARIZE_RECIPE)
-    fun summarizeRecipe(@Path("id") id: BigDecimal): Call<SummarizeRecipe>
+    fun summarizeRecipe(@Path("id") id: Long): Call<SummarizeRecipe>
 
     /**
      * Visualize Recipe Equipment by ID
@@ -157,7 +154,7 @@ interface RecipesService {
      */
     @GET(Recipes.ById.VISUALIZE_RECIPE_EQUIPMENT)
     fun visualizeRecipeEquipmentByID(
-        @Path("id") id: BigDecimal,
+        @Path("id") id: Long,
         @Query("defaultCss") defaultCss: Boolean? = null
     ): Call<String>
 
@@ -170,7 +167,7 @@ interface RecipesService {
      */
     @GET(Recipes.ById.VISUALIZE_RECIPE_INGREDIENTS)
     fun visualizeRecipeIngredientsByID(
-        @Path("id") id: BigDecimal,
+        @Path("id") id: Long,
         @Query("defaultCss") defaultCss: Boolean? = null
     ): Call<String>
 
@@ -183,7 +180,7 @@ interface RecipesService {
      */
     @GET(Recipes.ById.VISUALIZE_RECIPE_NUTRITION)
     fun visualizeRecipeNutritionByID(
-        @Path("id") id: BigDecimal,
+        @Path("id") id: Long,
         @Query("defaultCss") defaultCss: Boolean? = null
     ): Call<String>
 
@@ -196,7 +193,7 @@ interface RecipesService {
      */
     @GET(Recipes.ById.VISUALIZE_RECIPE_PRICE_BREAKDOWN)
     fun visualizeRecipePriceBreakdownByID(
-        @Path("id") id: BigDecimal,
+        @Path("id") id: Long,
         @Query("defaultCss") defaultCss: Boolean? = null
     ): Call<String>
 
@@ -230,7 +227,7 @@ interface RecipesService {
     @GET(Recipes.AUTOCOMPLETE_RECIPE_SEARCH)
     fun autocompleteRecipeSearch(
         @Query("query") query: String,
-        @Query("number") number: BigDecimal? = null
+        @Query("number") number: Long? = null
     ): Call<List<AutoCompleteRecipeSearch>>
 
     /**
@@ -261,7 +258,7 @@ interface RecipesService {
     @POST(Recipes.CONVERT_AMOUNTS)
     fun convertAmounts(
         @Query("ingredientName") ingredientName: String,
-        @Query("sourceAmount") sourceAmount: BigDecimal,
+        @Query("sourceAmount") sourceAmount: Double,
         @Query("sourceUnit") sourceUnit: String,
         @Query("targetUnit") targetUnit: String
     ): Call<ConvertAmount>
@@ -311,7 +308,7 @@ interface RecipesService {
     fun getRandomRecipes(
         @Query("limitLicense") limitLicense: Boolean? = null,
         @Query("tags") tags: String? = null,
-        @Query("number") number: BigDecimal? = null
+        @Query("number") number: Int? = null
     ): Call<List<RecipeInformation>>
 
     /**
@@ -393,8 +390,8 @@ interface RecipesService {
         @Query("diet") diet: String? = null,
         @Query("excludeIngredients") excludeIngredients: String? = null,
         @Query("intolerances") intolerances: String? = null,
-        @Query("offset") offset: BigDecimal? = null,
-        @Query("number") number: BigDecimal? = null,
+        @Query("offset") offset: Int? = null,
+        @Query("number") number: Int? = null,
         @Query("limitLicense") limitLicense: Boolean? = null,
         @Query("instructionsRequired") instructionsRequired: Boolean? = null
     ): Call<RecipeSearch>
@@ -419,9 +416,9 @@ interface RecipesService {
     @GET(Recipes.SEARCH_RECIPES_BY_INGREDIENTS)
     fun searchRecipesByIngredients(
         @Query("ingredients") ingredients: String,
-        @Query("number") number: BigDecimal? = null,
+        @Query("number") number: Int? = null,
         @Query("limitLicense") limitLicense: Boolean? = null,
-        @Query("ranking") ranking: BigDecimal? = null,
+        @Query("ranking") ranking: Int? = null,
         @Query("ignorePantry") ignorePantry: Boolean? = null
     ): Call<List<SearchRecipesByIngredients>>
 
@@ -511,80 +508,80 @@ interface RecipesService {
      */
     @GET(Recipes.SEARCH_RECIPES_BY_NUTRIENTS)
     fun searchRecipesByNutrients(
-        @Query("minCarbs") minCarbs: BigDecimal? = null,
-        @Query("maxCarbs") maxCarbs: BigDecimal? = null,
-        @Query("minProtein") minProtein: BigDecimal? = null,
-        @Query("maxProtein") maxProtein: BigDecimal? = null,
-        @Query("minCalories") minCalories: BigDecimal? = null,
-        @Query("maxCalories") maxCalories: BigDecimal? = null,
-        @Query("minFat") minFat: BigDecimal? = null,
-        @Query("maxFat") maxFat: BigDecimal? = null,
-        @Query("minAlcohol") minAlcohol: BigDecimal? = null,
-        @Query("maxAlcohol") maxAlcohol: BigDecimal? = null,
-        @Query("minCaffeine") minCaffeine: BigDecimal? = null,
-        @Query("maxCaffeine") maxCaffeine: BigDecimal? = null,
-        @Query("minCopper") minCopper: BigDecimal? = null,
-        @Query("maxCopper") maxCopper: BigDecimal? = null,
-        @Query("minCalcium") minCalcium: BigDecimal? = null,
-        @Query("maxCalcium") maxCalcium: BigDecimal? = null,
-        @Query("minCholine") minCholine: BigDecimal? = null,
-        @Query("maxCholine") maxCholine: BigDecimal? = null,
-        @Query("minCholesterol") minCholesterol: BigDecimal? = null,
-        @Query("maxCholesterol") maxCholesterol: BigDecimal? = null,
-        @Query("minFluoride") minFluoride: BigDecimal? = null,
-        @Query("maxFluoride") maxFluoride: BigDecimal? = null,
-        @Query("minSaturatedFat") minSaturatedFat: BigDecimal? = null,
-        @Query("maxSaturatedFat") maxSaturatedFat: BigDecimal? = null,
-        @Query("minVitaminA") minVitaminA: BigDecimal? = null,
-        @Query("maxVitaminA") maxVitaminA: BigDecimal? = null,
-        @Query("minVitaminC") minVitaminC: BigDecimal? = null,
-        @Query("maxVitaminC") maxVitaminC: BigDecimal? = null,
-        @Query("minVitaminD") minVitaminD: BigDecimal? = null,
-        @Query("maxVitaminD") maxVitaminD: BigDecimal? = null,
-        @Query("minVitaminE") minVitaminE: BigDecimal? = null,
-        @Query("maxVitaminE") maxVitaminE: BigDecimal? = null,
-        @Query("minVitaminK") minVitaminK: BigDecimal? = null,
-        @Query("maxVitaminK") maxVitaminK: BigDecimal? = null,
-        @Query("minVitaminB1") minVitaminB1: BigDecimal? = null,
-        @Query("maxVitaminB1") maxVitaminB1: BigDecimal? = null,
-        @Query("minVitaminB2") minVitaminB2: BigDecimal? = null,
-        @Query("maxVitaminB2") maxVitaminB2: BigDecimal? = null,
-        @Query("minVitaminB5") minVitaminB5: BigDecimal? = null,
-        @Query("maxVitaminB5") maxVitaminB5: BigDecimal? = null,
-        @Query("minVitaminB3") minVitaminB3: BigDecimal? = null,
-        @Query("maxVitaminB3") maxVitaminB3: BigDecimal? = null,
-        @Query("minVitaminB6") minVitaminB6: BigDecimal? = null,
-        @Query("maxVitaminB6") maxVitaminB6: BigDecimal? = null,
-        @Query("minVitaminB12") minVitaminB12: BigDecimal? = null,
-        @Query("maxVitaminB12") maxVitaminB12: BigDecimal? = null,
-        @Query("minFiber") minFiber: BigDecimal? = null,
-        @Query("maxFiber") maxFiber: BigDecimal? = null,
-        @Query("minFolate") minFolate: BigDecimal? = null,
-        @Query("maxFolate") maxFolate: BigDecimal? = null,
-        @Query("minFolicAcid") minFolicAcid: BigDecimal? = null,
-        @Query("maxFolicAcid") maxFolicAcid: BigDecimal? = null,
-        @Query("minIodine") minIodine: BigDecimal? = null,
-        @Query("maxIodine") maxIodine: BigDecimal? = null,
-        @Query("minIron") minIron: BigDecimal? = null,
-        @Query("maxIron") maxIron: BigDecimal? = null,
-        @Query("minMagnesium") minMagnesium: BigDecimal? = null,
-        @Query("maxMagnesium") maxMagnesium: BigDecimal? = null,
-        @Query("minManganese") minManganese: BigDecimal? = null,
-        @Query("maxManganese") maxManganese: BigDecimal? = null,
-        @Query("minPhosphorus") minPhosphorus: BigDecimal? = null,
-        @Query("maxPhosphorus") maxPhosphorus: BigDecimal? = null,
-        @Query("minPotassium") minPotassium: BigDecimal? = null,
-        @Query("maxPotassium") maxPotassium: BigDecimal? = null,
-        @Query("minSelenium") minSelenium: BigDecimal? = null,
-        @Query("maxSelenium") maxSelenium: BigDecimal? = null,
-        @Query("minSodium") minSodium: BigDecimal? = null,
-        @Query("maxSodium") maxSodium: BigDecimal? = null,
-        @Query("minSugar") minSugar: BigDecimal? = null,
-        @Query("maxSugar") maxSugar: BigDecimal? = null,
-        @Query("minZinc") minZinc: BigDecimal? = null,
-        @Query("maxZinc") maxZinc: BigDecimal? = null,
-        @Query("offset") offset: BigDecimal? = null,
-        @Query("number") number: BigDecimal? = null,
+        @Query("minCarbs") minCarbs: Int? = null,
+        @Query("maxCarbs") maxCarbs: Int? = null,
+        @Query("minProtein") minProtein: Int? = null,
+        @Query("maxProtein") maxProtein: Int? = null,
+        @Query("minCalories") minCalories: Int? = null,
+        @Query("maxCalories") maxCalories: Int? = null,
+        @Query("minFat") minFat: Int? = null,
+        @Query("maxFat") maxFat: Int? = null,
+        @Query("minAlcohol") minAlcohol: Int? = null,
+        @Query("maxAlcohol") maxAlcohol: Int? = null,
+        @Query("minCaffeine") minCaffeine: Int? = null,
+        @Query("maxCaffeine") maxCaffeine: Int? = null,
+        @Query("minCopper") minCopper: Int? = null,
+        @Query("maxCopper") maxCopper: Int? = null,
+        @Query("minCalcium") minCalcium: Int? = null,
+        @Query("maxCalcium") maxCalcium: Int? = null,
+        @Query("minCholine") minCholine: Int? = null,
+        @Query("maxCholine") maxCholine: Int? = null,
+        @Query("minCholesterol") minCholesterol: Int? = null,
+        @Query("maxCholesterol") maxCholesterol: Int? = null,
+        @Query("minFluoride") minFluoride: Int? = null,
+        @Query("maxFluoride") maxFluoride: Int? = null,
+        @Query("minSaturatedFat") minSaturatedFat: Int? = null,
+        @Query("maxSaturatedFat") maxSaturatedFat: Int? = null,
+        @Query("minVitaminA") minVitaminA: Int? = null,
+        @Query("maxVitaminA") maxVitaminA: Int? = null,
+        @Query("minVitaminC") minVitaminC: Int? = null,
+        @Query("maxVitaminC") maxVitaminC: Int? = null,
+        @Query("minVitaminD") minVitaminD: Int? = null,
+        @Query("maxVitaminD") maxVitaminD: Int? = null,
+        @Query("minVitaminE") minVitaminE: Int? = null,
+        @Query("maxVitaminE") maxVitaminE: Int? = null,
+        @Query("minVitaminK") minVitaminK: Int? = null,
+        @Query("maxVitaminK") maxVitaminK: Int? = null,
+        @Query("minVitaminB1") minVitaminB1: Int? = null,
+        @Query("maxVitaminB1") maxVitaminB1: Int? = null,
+        @Query("minVitaminB2") minVitaminB2: Int? = null,
+        @Query("maxVitaminB2") maxVitaminB2: Int? = null,
+        @Query("minVitaminB5") minVitaminB5: Int? = null,
+        @Query("maxVitaminB5") maxVitaminB5: Int? = null,
+        @Query("minVitaminB3") minVitaminB3: Int? = null,
+        @Query("maxVitaminB3") maxVitaminB3: Int? = null,
+        @Query("minVitaminB6") minVitaminB6: Int? = null,
+        @Query("maxVitaminB6") maxVitaminB6: Int? = null,
+        @Query("minVitaminB12") minVitaminB12: Int? = null,
+        @Query("maxVitaminB12") maxVitaminB12: Int? = null,
+        @Query("minFiber") minFiber: Int? = null,
+        @Query("maxFiber") maxFiber: Int? = null,
+        @Query("minFolate") minFolate: Int? = null,
+        @Query("maxFolate") maxFolate: Int? = null,
+        @Query("minFolicAcid") minFolicAcid: Int? = null,
+        @Query("maxFolicAcid") maxFolicAcid: Int? = null,
+        @Query("minIodine") minIodine: Int? = null,
+        @Query("maxIodine") maxIodine: Int? = null,
+        @Query("minIron") minIron: Int? = null,
+        @Query("maxIron") maxIron: Int? = null,
+        @Query("minMagnesium") minMagnesium: Int? = null,
+        @Query("maxMagnesium") maxMagnesium: Int? = null,
+        @Query("minManganese") minManganese: Int? = null,
+        @Query("maxManganese") maxManganese: Int? = null,
+        @Query("minPhosphorus") minPhosphorus: Int? = null,
+        @Query("maxPhosphorus") maxPhosphorus: Int? = null,
+        @Query("minPotassium") minPotassium: Int? = null,
+        @Query("maxPotassium") maxPotassium: Int? = null,
+        @Query("minSelenium") minSelenium: Int? = null,
+        @Query("maxSelenium") maxSelenium: Int? = null,
+        @Query("minSodium") minSodium: Int? = null,
+        @Query("maxSodium") maxSodium: Int? = null,
+        @Query("minSugar") minSugar: Int? = null,
+        @Query("maxSugar") maxSugar: Int? = null,
+        @Query("minZinc") minZinc: Int? = null,
+        @Query("maxZinc") maxZinc: Int? = null,
+        @Query("offset") offset: Int? = null,
+        @Query("number") number: Int? = null,
         @Query("random") random: Boolean? = null,
         @Query("limitLicense") limitLicense: Boolean? = null
     ): Call<List<SearchRecipesByNutrients>>
@@ -724,86 +721,86 @@ interface RecipesService {
         @Query("addRecipeNutrition") addRecipeNutrition: Boolean? = null,
         @Query("author") author: String? = null,
         @Query("tags") tags: String? = null,
-        @Query("recipeBoxId") recipeBoxId: BigDecimal? = null,
+        @Query("recipeBoxId") recipeBoxId: Long? = null,
         @Query("titleMatch") titleMatch: String? = null,
-        @Query("maxReadyTime") maxReadyTime: BigDecimal? = null,
+        @Query("maxReadyTime") maxReadyTime: Long? = null,
         @Query("ignorePantry") ignorePantry: Boolean? = null,
         @Query("sort") sort: String? = null,
         @Query("sortDirection") sortDirection: String? = null,
-        @Query("minCarbs") minCarbs: BigDecimal? = null,
-        @Query("maxCarbs") maxCarbs: BigDecimal? = null,
-        @Query("minProtein") minProtein: BigDecimal? = null,
-        @Query("maxProtein") maxProtein: BigDecimal? = null,
-        @Query("minCalories") minCalories: BigDecimal? = null,
-        @Query("maxCalories") maxCalories: BigDecimal? = null,
-        @Query("minFat") minFat: BigDecimal? = null,
-        @Query("maxFat") maxFat: BigDecimal? = null,
-        @Query("minAlcohol") minAlcohol: BigDecimal? = null,
-        @Query("maxAlcohol") maxAlcohol: BigDecimal? = null,
-        @Query("minCaffeine") minCaffeine: BigDecimal? = null,
-        @Query("maxCaffeine") maxCaffeine: BigDecimal? = null,
-        @Query("minCopper") minCopper: BigDecimal? = null,
-        @Query("maxCopper") maxCopper: BigDecimal? = null,
-        @Query("minCalcium") minCalcium: BigDecimal? = null,
-        @Query("maxCalcium") maxCalcium: BigDecimal? = null,
-        @Query("minCholine") minCholine: BigDecimal? = null,
-        @Query("maxCholine") maxCholine: BigDecimal? = null,
-        @Query("minCholesterol") minCholesterol: BigDecimal? = null,
-        @Query("maxCholesterol") maxCholesterol: BigDecimal? = null,
-        @Query("minFluoride") minFluoride: BigDecimal? = null,
-        @Query("maxFluoride") maxFluoride: BigDecimal? = null,
-        @Query("minSaturatedFat") minSaturatedFat: BigDecimal? = null,
-        @Query("maxSaturatedFat") maxSaturatedFat: BigDecimal? = null,
-        @Query("minVitaminA") minVitaminA: BigDecimal? = null,
-        @Query("maxVitaminA") maxVitaminA: BigDecimal? = null,
-        @Query("minVitaminC") minVitaminC: BigDecimal? = null,
-        @Query("maxVitaminC") maxVitaminC: BigDecimal? = null,
-        @Query("minVitaminD") minVitaminD: BigDecimal? = null,
-        @Query("maxVitaminD") maxVitaminD: BigDecimal? = null,
-        @Query("minVitaminE") minVitaminE: BigDecimal? = null,
-        @Query("maxVitaminE") maxVitaminE: BigDecimal? = null,
-        @Query("minVitaminK") minVitaminK: BigDecimal? = null,
-        @Query("maxVitaminK") maxVitaminK: BigDecimal? = null,
-        @Query("minVitaminB1") minVitaminB1: BigDecimal? = null,
-        @Query("maxVitaminB1") maxVitaminB1: BigDecimal? = null,
-        @Query("minVitaminB2") minVitaminB2: BigDecimal? = null,
-        @Query("maxVitaminB2") maxVitaminB2: BigDecimal? = null,
-        @Query("minVitaminB5") minVitaminB5: BigDecimal? = null,
-        @Query("maxVitaminB5") maxVitaminB5: BigDecimal? = null,
-        @Query("minVitaminB3") minVitaminB3: BigDecimal? = null,
-        @Query("maxVitaminB3") maxVitaminB3: BigDecimal? = null,
-        @Query("minVitaminB6") minVitaminB6: BigDecimal? = null,
-        @Query("maxVitaminB6") maxVitaminB6: BigDecimal? = null,
-        @Query("minVitaminB12") minVitaminB12: BigDecimal? = null,
-        @Query("maxVitaminB12") maxVitaminB12: BigDecimal? = null,
-        @Query("minFiber") minFiber: BigDecimal? = null,
-        @Query("maxFiber") maxFiber: BigDecimal? = null,
-        @Query("minFolate") minFolate: BigDecimal? = null,
-        @Query("maxFolate") maxFolate: BigDecimal? = null,
-        @Query("minFolicAcid") minFolicAcid: BigDecimal? = null,
-        @Query("maxFolicAcid") maxFolicAcid: BigDecimal? = null,
-        @Query("minIodine") minIodine: BigDecimal? = null,
-        @Query("maxIodine") maxIodine: BigDecimal? = null,
-        @Query("minIron") minIron: BigDecimal? = null,
-        @Query("maxIron") maxIron: BigDecimal? = null,
-        @Query("minMagnesium") minMagnesium: BigDecimal? = null,
-        @Query("maxMagnesium") maxMagnesium: BigDecimal? = null,
-        @Query("minManganese") minManganese: BigDecimal? = null,
-        @Query("maxManganese") maxManganese: BigDecimal? = null,
-        @Query("minPhosphorus") minPhosphorus: BigDecimal? = null,
-        @Query("maxPhosphorus") maxPhosphorus: BigDecimal? = null,
-        @Query("minPotassium") minPotassium: BigDecimal? = null,
-        @Query("maxPotassium") maxPotassium: BigDecimal? = null,
-        @Query("minSelenium") minSelenium: BigDecimal? = null,
-        @Query("maxSelenium") maxSelenium: BigDecimal? = null,
-        @Query("minSodium") minSodium: BigDecimal? = null,
-        @Query("maxSodium") maxSodium: BigDecimal? = null,
-        @Query("minSugar") minSugar: BigDecimal? = null,
-        @Query("maxSugar") maxSugar: BigDecimal? = null,
-        @Query("minZinc") minZinc: BigDecimal? = null,
-        @Query("maxZinc") maxZinc: BigDecimal? = null,
-        @Query("offset") offset: BigDecimal? = null,
-        @Query("number") number: BigDecimal? = null,
+        @Query("minCarbs") minCarbs: Int? = null,
+        @Query("maxCarbs") maxCarbs: Int? = null,
+        @Query("minProtein") minProtein: Int? = null,
+        @Query("maxProtein") maxProtein: Int? = null,
+        @Query("minCalories") minCalories: Int? = null,
+        @Query("maxCalories") maxCalories: Int? = null,
+        @Query("minFat") minFat: Int? = null,
+        @Query("maxFat") maxFat: Int? = null,
+        @Query("minAlcohol") minAlcohol: Int? = null,
+        @Query("maxAlcohol") maxAlcohol: Int? = null,
+        @Query("minCaffeine") minCaffeine: Int? = null,
+        @Query("maxCaffeine") maxCaffeine: Int? = null,
+        @Query("minCopper") minCopper: Int? = null,
+        @Query("maxCopper") maxCopper: Int? = null,
+        @Query("minCalcium") minCalcium: Int? = null,
+        @Query("maxCalcium") maxCalcium: Int? = null,
+        @Query("minCholine") minCholine: Int? = null,
+        @Query("maxCholine") maxCholine: Int? = null,
+        @Query("minCholesterol") minCholesterol: Int? = null,
+        @Query("maxCholesterol") maxCholesterol: Int? = null,
+        @Query("minFluoride") minFluoride: Int? = null,
+        @Query("maxFluoride") maxFluoride: Int? = null,
+        @Query("minSaturatedFat") minSaturatedFat: Int? = null,
+        @Query("maxSaturatedFat") maxSaturatedFat: Int? = null,
+        @Query("minVitaminA") minVitaminA: Int? = null,
+        @Query("maxVitaminA") maxVitaminA: Int? = null,
+        @Query("minVitaminC") minVitaminC: Int? = null,
+        @Query("maxVitaminC") maxVitaminC: Int? = null,
+        @Query("minVitaminD") minVitaminD: Int? = null,
+        @Query("maxVitaminD") maxVitaminD: Int? = null,
+        @Query("minVitaminE") minVitaminE: Int? = null,
+        @Query("maxVitaminE") maxVitaminE: Int? = null,
+        @Query("minVitaminK") minVitaminK: Int? = null,
+        @Query("maxVitaminK") maxVitaminK: Int? = null,
+        @Query("minVitaminB1") minVitaminB1: Int? = null,
+        @Query("maxVitaminB1") maxVitaminB1: Int? = null,
+        @Query("minVitaminB2") minVitaminB2: Int? = null,
+        @Query("maxVitaminB2") maxVitaminB2: Int? = null,
+        @Query("minVitaminB5") minVitaminB5: Int? = null,
+        @Query("maxVitaminB5") maxVitaminB5: Int? = null,
+        @Query("minVitaminB3") minVitaminB3: Int? = null,
+        @Query("maxVitaminB3") maxVitaminB3: Int? = null,
+        @Query("minVitaminB6") minVitaminB6: Int? = null,
+        @Query("maxVitaminB6") maxVitaminB6: Int? = null,
+        @Query("minVitaminB12") minVitaminB12: Int? = null,
+        @Query("maxVitaminB12") maxVitaminB12: Int? = null,
+        @Query("minFiber") minFiber: Int? = null,
+        @Query("maxFiber") maxFiber: Int? = null,
+        @Query("minFolate") minFolate: Int? = null,
+        @Query("maxFolate") maxFolate: Int? = null,
+        @Query("minFolicAcid") minFolicAcid: Int? = null,
+        @Query("maxFolicAcid") maxFolicAcid: Int? = null,
+        @Query("minIodine") minIodine: Int? = null,
+        @Query("maxIodine") maxIodine: Int? = null,
+        @Query("minIron") minIron: Int? = null,
+        @Query("maxIron") maxIron: Int? = null,
+        @Query("minMagnesium") minMagnesium: Int? = null,
+        @Query("maxMagnesium") maxMagnesium: Int? = null,
+        @Query("minManganese") minManganese: Int? = null,
+        @Query("maxManganese") maxManganese: Int? = null,
+        @Query("minPhosphorus") minPhosphorus: Int? = null,
+        @Query("maxPhosphorus") maxPhosphorus: Int? = null,
+        @Query("minPotassium") minPotassium: Int? = null,
+        @Query("maxPotassium") maxPotassium: Int? = null,
+        @Query("minSelenium") minSelenium: Int? = null,
+        @Query("maxSelenium") maxSelenium: Int? = null,
+        @Query("minSodium") minSodium: Int? = null,
+        @Query("maxSodium") maxSodium: Int? = null,
+        @Query("minSugar") minSugar: Int? = null,
+        @Query("maxSugar") maxSugar: Int? = null,
+        @Query("minZinc") minZinc: Int? = null,
+        @Query("maxZinc") maxZinc: Int? = null,
+        @Query("offset") offset: Int? = null,
+        @Query("number") number: Int? = null,
         @Query("random") random: Boolean? = null,
         @Query("limitLicense") limitLicense: Boolean? = null
     ): Call<SearchRecipeComplex>

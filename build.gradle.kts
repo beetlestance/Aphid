@@ -40,6 +40,7 @@ subprojects {
             targetExclude("bin/**/*.kt")
 
             ktlint(com.beetlestance.buildsrc.Versions.ktlint)
+            /* ./gradlew spotlessApply */
             licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
         }
     }

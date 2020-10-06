@@ -13,23 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.beetlestance.spoonacular_kotlin.models.request.recipe
+package com.beetlestance.spoonacular_kotlin.models.request.user
 
 import com.squareup.moshi.Json
 
-/**
- * @param ingredientList The ingredient list of the recipe, one ingredient per line.
- * @param servings The number of servings that you can make from the ingredients.
- * @param includeNutrition Whether nutrition data should be added to correctly parsed ingredients. (optional)
- * */
-data class RequestParseIngredients(
+data class RequestConnectUser(
 
-    @Json(name = "ingredientList")
-    val ingredientList: String,
+    @Json(name = "firstName")
+    val firstName: String? = null,
 
-    @Json(name = "servings")
-    val servings: Int,
+    @Json(name = "lastName")
+    val lastName: String? = null,
 
-    @Json(name = "includeNutrition")
-    val includeNutrition: Boolean?
+    @Json(name = "email")
+    val email: String? = null,
+
+    @Json(name = "username")
+    val username: String? = null
 )

@@ -13,20 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.beetlestance.spoonacular_kotlin.models.request.food
+package com.beetlestance.spoonacular_kotlin.constants
 
-import com.squareup.moshi.Json
+object MealPlanType {
 
-/**
- * @param ingredients The ingredient list of the recipe, one ingredient per line (separate lines with \n).
- * @param servings the number of servings you can have for given ingredients
- */
-data class RequestMapIngredientsToGroceryProduct(
+    const val INGREDIENTS: String = "INGREDIENTS"
 
-    @Json(name = "ingredients")
-    val ingredients: List<String>,
+    const val RECIPE: String = "RECIPE"
 
-    @Json(name = "servings")
-    val servings: Int
+    const val PRODUCT: String = "PRODUCT"
 
-)
+    const val MENU_ITEM: String = "MENU_ITEM"
+
+    const val CUSTOM_FOOD: String = "CUSTOM_FOOD"
+}

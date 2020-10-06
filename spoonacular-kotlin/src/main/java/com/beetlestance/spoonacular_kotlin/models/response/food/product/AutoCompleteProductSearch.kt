@@ -13,20 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.beetlestance.spoonacular_kotlin.models.response.recipe
+package com.beetlestance.spoonacular_kotlin.models.response.food.product
 
 import com.squareup.moshi.Json
 
-data class SearchRecipeComplex(
-
-    @Json(name = "number")
-    val number: Int? = null,
-
-    @Json(name = "totalResults")
-    val totalResults: Int? = null,
-
-    @Json(name = "offset")
-    val offset: Int? = null,
+data class AutoCompleteProductSearch(
 
     @Json(name = "results")
     val results: List<ResultsItem?>? = null
@@ -34,28 +25,10 @@ data class SearchRecipeComplex(
 
     data class ResultsItem(
 
-        @Json(name = "image")
-        val image: String? = null,
-
-        @Json(name = "carbs")
-        val carbs: String? = null,
-
-        @Json(name = "protein")
-        val protein: String? = null,
-
-        @Json(name = "fat")
-        val fat: String? = null,
-
         @Json(name = "id")
-        val id: Long? = null,
-
-        @Json(name = "calories")
-        val calories: Int? = null,
+        val id: Int? = null,
 
         @Json(name = "title")
-        val title: String? = null,
-
-        @Json(name = "imageType")
-        val imageType: String? = null
+        val title: String? = null
     )
 }

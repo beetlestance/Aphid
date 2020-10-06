@@ -13,25 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.beetlestance.spoonacular_kotlin.models.request.recipe
+package com.beetlestance.spoonacular_kotlin.models.response.mealplanner
 
 import com.squareup.moshi.Json
 
-/**
- *
- * @param title The title of product
- * @param upc The Universal Product Code
- * @param pluCode Price look-up codes
- */
-data class RequestClassifyGroceryProduct(
+data class AddToMealPlan(
 
-    @Json(name = "title")
-    val title: String,
+    @Json(name = "status")
+    val status: String? = null,
 
-    @Json(name = "upc")
-    val upc: String,
-
-    @Json(name = "plu_code")
-    val pluCode: String
+    @Json(name = "id")
+    val id: Long? = null
 
 )

@@ -23,7 +23,6 @@ import com.beetlestance.spoonacular_kotlin.annotations.IngredientImageSize
 import com.beetlestance.spoonacular_kotlin.annotations.MenuItemImageSize
 import com.beetlestance.spoonacular_kotlin.annotations.RecipeImageSize
 import com.beetlestance.spoonacular_kotlin.constants.SpoonacularImageSize
-import java.math.BigDecimal
 
 object SpoonacularImageHelper {
     /**
@@ -114,7 +113,7 @@ object SpoonacularImageHelper {
      * @see SpoonacularImageSize.Grocery
      * */
     fun generateGroceryImageUrl(
-        id: BigDecimal,
+        id: Long,
         @GroceryImageSize imageSize: String,
         imageType: String
     ): String {
@@ -137,7 +136,7 @@ object SpoonacularImageHelper {
      * @see SpoonacularImageSize.MenuItem
      * */
     fun generateMenuItemsImageUrl(
-        id: BigDecimal,
+        id: Long,
         @MenuItemImageSize imageSize: String,
         imageType: String
     ): String {
@@ -159,7 +158,7 @@ object SpoonacularImageHelper {
      * @see SpoonacularImageSize.Recipe
      * */
     fun generateRecipeImageUrl(
-        id: BigDecimal,
+        id: Long,
         @RecipeImageSize imageSize: String,
         imageType: String
     ): String {

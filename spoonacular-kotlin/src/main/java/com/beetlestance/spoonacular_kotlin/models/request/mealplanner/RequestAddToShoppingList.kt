@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.beetlestance.spoonacular_kotlin.models.request.recipe
+package com.beetlestance.spoonacular_kotlin.models.request.mealplanner
 
 import com.squareup.moshi.Json
 
 /**
- * @param ingredientList The ingredient list of the recipe, one ingredient per line.
- * @param servings The number of servings that you can make from the ingredients.
- * @param includeNutrition Whether nutrition data should be added to correctly parsed ingredients. (optional)
+ * @param item desc of item for example "1 package baking powder"
+ * @param aisle is optional and will be added if not given.
+ * @param parse false if you want to put a non-food item to the shopping list.
  * */
-data class RequestParseIngredients(
+data class RequestAddToShoppingList(
 
-    @Json(name = "ingredientList")
-    val ingredientList: String,
+    @Json(name = "item")
+    val item: String? = null,
 
-    @Json(name = "servings")
-    val servings: Int,
+    @Json(name = "parse")
+    val parse: Boolean? = null,
 
-    @Json(name = "includeNutrition")
-    val includeNutrition: Boolean?
+    @Json(name = "aisle")
+    val aisle: String? = null
 )

@@ -13,23 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.beetlestance.spoonacular_kotlin.models.request.recipe
+package com.beetlestance.spoonacular_kotlin.models.request.mealplanner.addtomealplan
 
 import com.squareup.moshi.Json
 
 /**
- * @param ingredientList The ingredient list of the recipe, one ingredient per line.
- * @param servings The number of servings that you can make from the ingredients.
- * @param includeNutrition Whether nutrition data should be added to correctly parsed ingredients. (optional)
+ * @param mealPlanTemplateId is unique id for meal plan template.
+ * @param startDate is the timestamp of the day the item should be added to.
  * */
-data class RequestParseIngredients(
+data class RequestAddMealPlanTemplateToMealPlan(
 
-    @Json(name = "ingredientList")
-    val ingredientList: String,
+    @Json(name = "mealPlanTemplateId")
+    val mealPlanTemplateId: Int,
 
-    @Json(name = "servings")
-    val servings: Int,
-
-    @Json(name = "includeNutrition")
-    val includeNutrition: Boolean?
-)
+    @Json(name = "startDate")
+    val startDate: Long
+) : RequestAddToMealPlan

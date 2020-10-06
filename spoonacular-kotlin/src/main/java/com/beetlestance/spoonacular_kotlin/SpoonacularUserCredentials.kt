@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.beetlestance.spoonacular_kotlin.models.request.food
+package com.beetlestance.spoonacular_kotlin
 
-import com.squareup.moshi.Json
+internal object SpoonacularUserCredentials {
 
-/**
- * @param ingredients The ingredient list of the recipe, one ingredient per line (separate lines with \n).
- * @param servings the number of servings you can have for given ingredients
- */
-data class RequestMapIngredientsToGroceryProduct(
+    var spoonacularUserName: String? = null
 
-    @Json(name = "ingredients")
-    val ingredients: List<String>,
+    val userName: String
+        get() = requireNotNull(spoonacularUserName, { REASON_NO_USER_CREDENTIAL })
 
-    @Json(name = "servings")
-    val servings: Int
+    var spoonacularUserHash: String? = null
 
-)
+    val userHash: String
+        get() = requireNotNull(spoonacularUserHash, { REASON_NO_USER_CREDENTIAL })
+
+    private const val REASON_NO_USER_CREDENTIAL = "No user credentials provided, pass it " +
+        "manually or call Spoonacluar.setUserCredentials() before using MealPlannerService Api's"
+}

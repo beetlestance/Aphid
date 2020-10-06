@@ -15,9 +15,9 @@
  */
 package com.beetlestance.spoonacular_kotlin.services
 
+import com.beetlestance.spoonacular_kotlin.models.request.food.RequestClassifyGroceryProduct
 import com.beetlestance.spoonacular_kotlin.models.request.food.RequestDetectTextInFood
 import com.beetlestance.spoonacular_kotlin.models.request.food.RequestMapIngredientsToGroceryProduct
-import com.beetlestance.spoonacular_kotlin.models.request.recipe.RequestClassifyGroceryProduct
 import com.beetlestance.spoonacular_kotlin.models.response.food.ARandomFoodJoke
 import com.beetlestance.spoonacular_kotlin.models.response.food.CustomFood
 import com.beetlestance.spoonacular_kotlin.models.response.food.DetectFoodInText
@@ -35,6 +35,7 @@ import com.beetlestance.spoonacular_kotlin.models.response.food.ingredients.MapI
 import com.beetlestance.spoonacular_kotlin.models.response.food.menuitem.AutoCompleteMenuItem
 import com.beetlestance.spoonacular_kotlin.models.response.food.menuitem.MenuItem
 import com.beetlestance.spoonacular_kotlin.models.response.food.menuitem.MenuItemInformation
+import com.beetlestance.spoonacular_kotlin.models.response.food.product.AutoCompleteProductSearch
 import com.beetlestance.spoonacular_kotlin.models.response.food.product.ClassifyGroceryProduct
 import com.beetlestance.spoonacular_kotlin.models.response.food.product.ComparableProduct
 import com.beetlestance.spoonacular_kotlin.models.response.food.product.GroceryProduct
@@ -45,14 +46,13 @@ import com.beetlestance.spoonacular_kotlin.models.response.food.wine.WineDescrip
 import com.beetlestance.spoonacular_kotlin.models.response.food.wine.WinePairing
 import com.beetlestance.spoonacular_kotlin.models.response.food.wine.WineRecommendation
 import com.beetlestance.spoonacular_kotlin.services.endpoints.Food
+import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
-import java.math.BigDecimal
 
-@Suppress("unused")
 interface FoodService {
 
     /**
@@ -66,10 +66,10 @@ interface FoodService {
      */
     @GET(Food.Ingredients.ById.GET_INGREDIENT_INFORMATION)
     fun getIngredientInformation(
-        @Path("id") id: BigDecimal,
-        @Query("amount") amount: BigDecimal? = null,
+        @Path("id") id: Long,
+        @Query("amount") amount: Double? = null,
         @Query("unit") unit: String? = null
-    ): IngredientInformation
+    ): Call<IngredientInformation>
 
     /**
      * Get Ingredient Substitutes by ID
@@ -78,7 +78,7 @@ interface FoodService {
      * @return IngredientSubstitutes
      */
     @GET(Food.Ingredients.ById.GET_INGREDIENT_SUBSTITUTES)
-    fun getIngredientSubstitutesByID(@Path("id") id: BigDecimal): IngredientSubstitutes
+    fun getIngredientSubstitutesByID(@Path("id") id: Long): Call<IngredientSubstitutes>
 
     /**
      * Autocomplete Ingredient Search
@@ -94,10 +94,10 @@ interface FoodService {
     @GET(Food.Ingredients.AUTOCOMPLETE_INGREDIENT_SEARCH)
     fun autocompleteIngredientSearch(
         @Query("query") query: String,
-        @Query("number") number: BigDecimal? = null,
+        @Query("number") number: Int? = null,
         @Query("metaInformation") metaInformation: Boolean? = null,
         @Query("intolerances") intolerances: Boolean? = null
-    ): List<AutoCompleteIngredientSearch>
+    ): Call<List<AutoCompleteIngredientSearch>>
 
     /**
      * Get Ingredient Substitutes
@@ -108,7 +108,7 @@ interface FoodService {
     @GET(Food.Ingredients.GET_INGREDIENT_SUBSTITUTES)
     fun getIngredientSubstitutes(
         @Query("ingredientName") ingredientName: String
-    ): IngredientSubstitutes
+    ): Call<IngredientSubstitutes>
 
     /**
      * Map Ingredients to Grocery Products
@@ -119,7 +119,7 @@ interface FoodService {
     @POST(Food.Ingredients.MAP_INGREDIENTS_TO_GROCERY_PRODUCTS)
     fun mapIngredientsToGroceryProducts(
         @Body requestMapIngredientsToGroceryProduct: RequestMapIngredientsToGroceryProduct
-    ): List<MapIngredientsToGroceryProducts>
+    ): Call<List<MapIngredientsToGroceryProducts>>
 
     /**
      * Get Product Information
@@ -129,7 +129,7 @@ interface FoodService {
      * @return ProductInformation
      */
     @GET(Food.Products.ById.GET_PRODUCT_INFORMATION)
-    fun getProductInformation(@Query("id") id: BigDecimal): ProductInformation
+    fun getProductInformation(@Query("id") id: Long): Call<ProductInformation>
 
     /**
      * Visualize Product Nutrition by ID
@@ -140,9 +140,9 @@ interface FoodService {
      */
     @GET(Food.Products.ById.VISUALIZE_PRODUCT_NUTRITION)
     fun visualizeProductNutritionByID(
-        @Query("id") id: BigDecimal,
+        @Query("id") id: Long,
         @Query("defaultCss") defaultCss: Boolean? = null
-    ): String
+    ): Call<String>
 
     /**
      * Get Comparable Products
@@ -151,7 +151,7 @@ interface FoodService {
      * @return ComparableProduct
      */
     @GET(Food.Products.ByUPC.GET_COMPARABLE_PRODUCTS)
-    fun getComparableProducts(@Path("upc") upc: BigDecimal): ComparableProduct
+    fun getComparableProducts(@Path("upc") upc: Long): Call<ComparableProduct>
 
     /**
      * Search Grocery Products by UPC
@@ -160,7 +160,21 @@ interface FoodService {
      * @return GroceryProductByUpc
      */
     @GET(Food.Products.ByUPC.SEARCH_GROCERY_PRODUCTS)
-    fun searchGroceryProductsByUPC(@Path("upc") upc: BigDecimal): GroceryProductByUpc
+    fun searchGroceryProductsByUPC(@Path("upc") upc: Long): Call<GroceryProductByUpc>
+
+    /**
+     * Autocomplete Product Search
+     * Generate suggestions for grocery products based on a (partial) query. The matches will be
+     * found by looking in the title only.
+     * @param query The (partial) search query.
+     * @param number The number of results to return (between 1 and 25). (optional)
+     * @return AutoCompleteProductSearch
+     */
+    @POST(Food.Products.AUTOCOMPLETE_PRODUCT_SEARCH)
+    fun autocompleteProductSearch(
+        @Query("query") query: String,
+        @Query("number") number: Int? = null
+    ): Call<AutoCompleteProductSearch>
 
     /**
      * Classify Grocery Product
@@ -175,7 +189,7 @@ interface FoodService {
     fun classifyGroceryProduct(
         @Body requestClassifyGroceryProduct: RequestClassifyGroceryProduct,
         @Query("locale") locale: String? = null
-    ): ClassifyGroceryProduct
+    ): Call<ClassifyGroceryProduct>
 
     /**
      * Classify Grocery Product Bulk
@@ -189,7 +203,7 @@ interface FoodService {
     fun classifyGroceryProductBulk(
         @Body requestClassifyGroceryProduct: RequestClassifyGroceryProduct,
         @Query("locale") locale: String? = null
-    ): List<ClassifyGroceryProduct>
+    ): Call<List<ClassifyGroceryProduct>>
 
     /**
      * Search Grocery Products
@@ -210,17 +224,17 @@ interface FoodService {
     @GET(Food.Products.SEARCH_GROCERY_PRODUCTS)
     fun searchGroceryProducts(
         @Query("query") query: String,
-        @Query("minCalories") minCalories: BigDecimal? = null,
-        @Query("maxCalories") maxCalories: BigDecimal? = null,
-        @Query("minCarbs") minCarbs: BigDecimal? = null,
-        @Query("maxCarbs") maxCarbs: BigDecimal? = null,
-        @Query("minProtein") minProtein: BigDecimal? = null,
-        @Query("maxProtein") maxProtein: BigDecimal? = null,
-        @Query("minFat") minFat: BigDecimal? = null,
-        @Query("maxFat") maxFat: BigDecimal? = null,
-        @Query("offset") offset: BigDecimal? = null,
-        @Query("number") number: BigDecimal? = null
-    ): GroceryProduct
+        @Query("minCalories") minCalories: Int? = null,
+        @Query("maxCalories") maxCalories: Int? = null,
+        @Query("minCarbs") minCarbs: Int? = null,
+        @Query("maxCarbs") maxCarbs: Int? = null,
+        @Query("minProtein") minProtein: Int? = null,
+        @Query("maxProtein") maxProtein: Int? = null,
+        @Query("minFat") minFat: Int? = null,
+        @Query("maxFat") maxFat: Int? = null,
+        @Query("offset") offset: Int? = null,
+        @Query("number") number: Int? = null
+    ): Call<GroceryProduct>
 
     /**
      * Get Menu Item Information
@@ -229,7 +243,7 @@ interface FoodService {
      * @return MenuItemInformation
      */
     @GET(Food.MenuItems.ById.GET_MENU_ITEM_INFORMATION)
-    fun getMenuItemInformation(@Query("id") id: BigDecimal): MenuItemInformation
+    fun getMenuItemInformation(@Query("id") id: Long): Call<MenuItemInformation>
 
     /**
      * Visualize Menu Item Nutrition by ID
@@ -240,9 +254,9 @@ interface FoodService {
      */
     @GET(Food.MenuItems.ById.VISUALIZE_MENU_ITEM_NUTRITION)
     fun visualizeMenuItemNutritionByID(
-        @Query("id") id: BigDecimal,
+        @Query("id") id: Long,
         @Query("defaultCss") defaultCss: Boolean? = null
-    ): String
+    ): Call<String>
 
     /**
      * Autocomplete Menu Item Search
@@ -255,8 +269,8 @@ interface FoodService {
     @GET(Food.MenuItems.AUTOCOMPLETE_MENU_ITEM_SEARCH)
     fun autocompleteMenuItemSearch(
         @Query("query") query: String,
-        @Query("number") number: BigDecimal? = null
-    ): AutoCompleteMenuItem
+        @Query("number") number: Int? = null
+    ): Call<AutoCompleteMenuItem>
 
     /**
      * Search Menu Items
@@ -278,17 +292,17 @@ interface FoodService {
     @GET(Food.MenuItems.SEARCH_MENU_ITEMS)
     fun searchMenuItems(
         @Query("query") query: String,
-        @Query("minCalories") minCalories: BigDecimal? = null,
-        @Query("maxCalories") maxCalories: BigDecimal? = null,
-        @Query("minCarbs") minCarbs: BigDecimal? = null,
-        @Query("maxCarbs") maxCarbs: BigDecimal? = null,
-        @Query("minProtein") minProtein: BigDecimal? = null,
-        @Query("maxProtein") maxProtein: BigDecimal? = null,
-        @Query("minFat") minFat: BigDecimal? = null,
-        @Query("maxFat") maxFat: BigDecimal? = null,
-        @Query("offset") offset: BigDecimal? = null,
-        @Query("number") number: BigDecimal? = null
-    ): MenuItem
+        @Query("minCalories") minCalories: Int? = null,
+        @Query("maxCalories") maxCalories: Int? = null,
+        @Query("minCarbs") minCarbs: Int? = null,
+        @Query("maxCarbs") maxCarbs: Int? = null,
+        @Query("minProtein") minProtein: Int? = null,
+        @Query("maxProtein") maxProtein: Int? = null,
+        @Query("minFat") minFat: Int? = null,
+        @Query("maxFat") maxFat: Int? = null,
+        @Query("offset") offset: Int? = null,
+        @Query("number") number: Int? = null
+    ): Call<MenuItem>
 
     /**
      * Get Dish Pairing for Wine
@@ -297,7 +311,7 @@ interface FoodService {
      * @return DishPairingForWine
      */
     @GET(Food.Wine.GET_DISH_PAIRING_FOR_WINE)
-    fun getDishPairingForWine(@Query("wine") wine: String): DishPairingForWine
+    fun getDishPairingForWine(@Query("wine") wine: String): Call<DishPairingForWine>
 
     /**
      * Get Wine Description
@@ -306,7 +320,7 @@ interface FoodService {
      * @return WineDescription
      */
     @GET(Food.Wine.GET_WINE_DESCRIPTION)
-    fun getWineDescription(@Query("wine") wine: String): WineDescription
+    fun getWineDescription(@Query("wine") wine: String): Call<WineDescription>
 
     /**
      * Get Wine Pairing
@@ -320,8 +334,8 @@ interface FoodService {
     @GET(Food.Wine.GET_WINE_PAIRING)
     fun getWinePairing(
         @Query("food") food: String,
-        @Query("maxPrice") maxPrice: BigDecimal? = null
-    ): WinePairing
+        @Query("maxPrice") maxPrice: Int? = null
+    ): Call<WinePairing>
 
     /**
      * Get Wine Recommendation
@@ -336,10 +350,10 @@ interface FoodService {
     @GET(Food.Wine.GET_WINE_RECOMMENDATION)
     fun getWineRecommendation(
         @Query("wine") wine: String,
-        @Query("maxPrice") maxPrice: BigDecimal? = null,
-        @Query("minRating") minRating: BigDecimal? = null,
-        @Query("number") number: BigDecimal? = null
-    ): WineRecommendation
+        @Query("maxPrice") maxPrice: Int? = null,
+        @Query("minRating") minRating: Double? = null,
+        @Query("number") number: Int? = null
+    ): Call<WineRecommendation>
 
     /**
      * Image Analysis by URL
@@ -349,7 +363,7 @@ interface FoodService {
      * @return Any
      */
     @GET(Food.Images.IMAGE_ANALYSIS_BY_URL)
-    fun imageAnalysisByURL(@Query("imageUrl") imageUrl: String): ImageAnalysisByUrl
+    fun imageAnalysisByURL(@Query("imageUrl") imageUrl: String): Call<ImageAnalysisByUrl>
 
     /**
      * Image Classification by URL
@@ -358,7 +372,7 @@ interface FoodService {
      * @return ImageClassificationByUrl
      */
     @GET(Food.Images.IMAGE_CLASSIFICATION_BY_URL)
-    fun imageClassificationByURL(@Query("imageUrl") imageUrl: String): ImageClassificationByUrl
+    fun imageClassificationByURL(@Query("imageUrl") imageUrl: String): Call<ImageClassificationByUrl>
 
     /**
      * Get Conversation Suggests
@@ -371,8 +385,8 @@ interface FoodService {
     @GET(Food.Converse.GET_CONVERSATION_SUGGESTS)
     fun getConversationSuggests(
         @Query("query") query: String,
-        @Query("number") number: BigDecimal? = null
-    ): ConversationSuggests
+        @Query("number") number: Int? = null
+    ): Call<ConversationSuggests>
 
     /**
      * Talk to Chatbot
@@ -384,11 +398,11 @@ interface FoodService {
      * the conversation. (optional)
      * @return TalkToChatbot
      */
-    @GET(Food.Converse.TALK_TO_CHATBOT)
+    @GET(Food.Converse.TALK_TO_CHAT_BOT)
     fun talkToChatbot(
         @Query("text") text: String,
         @Query("contextId") contextId: String? = null
-    ): TalkToChatbot
+    ): Call<TalkToChatbot>
 
     /**
      * Get a Random Food Joke
@@ -396,7 +410,7 @@ interface FoodService {
      * @return ARandomFoodJoke
      */
     @GET(Food.GET_A_RANDOM_FOOD_JOKE)
-    fun getARandomFoodJoke(): ARandomFoodJoke
+    fun getARandomFoodJoke(): Call<ARandomFoodJoke>
 
     /**
      * Get Random Food Trivia
@@ -404,7 +418,7 @@ interface FoodService {
      * @return RandomFoodTrivia
      */
     @GET(Food.GET_RANDOM_FOOD_TRIVIA)
-    fun getRandomFoodTrivia(): RandomFoodTrivia
+    fun getRandomFoodTrivia(): Call<RandomFoodTrivia>
 
     /**
      * Detect Food in Text
@@ -416,7 +430,9 @@ interface FoodService {
      * @return DetectFoodInText
      */
     @POST(Food.DETECT_FOOD_IN_TEXT)
-    fun detectFoodInText(@Body requestDetectTextInFood: RequestDetectTextInFood): DetectFoodInText
+    fun detectFoodInText(
+        @Body requestDetectTextInFood: RequestDetectTextInFood
+    ): Call<DetectFoodInText>
 
     /**
      * Search Custom Foods
@@ -433,9 +449,9 @@ interface FoodService {
         @Query("query") query: String,
         @Query("username") username: String,
         @Query("hash") hash: String,
-        @Query("offset") offset: BigDecimal? = null,
-        @Query("number") number: BigDecimal? = null
-    ): CustomFood
+        @Query("offset") offset: Int? = null,
+        @Query("number") number: Int? = null
+    ): Call<CustomFood>
 
     /**
      * Search Food Videos
@@ -464,11 +480,11 @@ interface FoodService {
         @Query("diet") diet: String?,
         @Query("includeIngredients") includeIngredients: String?,
         @Query("excludeIngredients") excludeIngredients: String?,
-        @Query("minLength") minLength: BigDecimal?,
-        @Query("maxLength") maxLength: BigDecimal?,
-        @Query("offset") offset: BigDecimal?,
-        @Query("number") number: BigDecimal?
-    ): FoodVideos
+        @Query("minLength") minLength: Int?,
+        @Query("maxLength") maxLength: Int?,
+        @Query("offset") offset: Int?,
+        @Query("number") number: Int?
+    ): Call<FoodVideos>
 
     /**
      * Search Site Content
@@ -480,5 +496,5 @@ interface FoodService {
      * @return FoodSiteContent
      */
     @GET(Food.SEARCH_SITE_CONTENT)
-    fun searchSiteContent(@Query("query") query: String): FoodSiteContent
+    fun searchSiteContent(@Query("query") query: String): Call<FoodSiteContent>
 }

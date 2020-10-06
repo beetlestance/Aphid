@@ -13,20 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.beetlestance.spoonacular_kotlin.models.request.food
+package com.beetlestance.spoonacular_kotlin.services.endpoints
 
-import com.squareup.moshi.Json
+internal object User {
 
-/**
- * @param ingredients The ingredient list of the recipe, one ingredient per line (separate lines with \n).
- * @param servings the number of servings you can have for given ingredients
- */
-data class RequestMapIngredientsToGroceryProduct(
-
-    @Json(name = "ingredients")
-    val ingredients: List<String>,
-
-    @Json(name = "servings")
-    val servings: Int
-
-)
+    const val CONNECT_USER = "/users/connect"
+}

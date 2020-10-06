@@ -13,23 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.beetlestance.spoonacular_kotlin.models.request.recipe
+package com.beetlestance.spoonacular_kotlin.models.request.food
 
 import com.squareup.moshi.Json
 
 /**
- * @param ingredientList The ingredient list of the recipe, one ingredient per line.
- * @param servings The number of servings that you can make from the ingredients.
- * @param includeNutrition Whether nutrition data should be added to correctly parsed ingredients. (optional)
- * */
-data class RequestParseIngredients(
+ *
+ * @param title The title of product
+ * @param upc The Universal Product Code
+ * @param pluCode Price look-up codes
+ */
+data class RequestClassifyGroceryProduct(
 
-    @Json(name = "ingredientList")
-    val ingredientList: String,
+    @Json(name = "title")
+    val title: String,
 
-    @Json(name = "servings")
-    val servings: Int,
+    @Json(name = "upc")
+    val upc: String,
 
-    @Json(name = "includeNutrition")
-    val includeNutrition: Boolean?
+    @Json(name = "plu_code")
+    val pluCode: String
+
 )
