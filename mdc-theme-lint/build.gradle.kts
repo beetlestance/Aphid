@@ -1,7 +1,6 @@
 import com.beetlestance.buildsrc.Libs
 
 plugins {
-    `java-library`
     id("kotlin")
     id("com.android.lint")
 }
@@ -14,16 +13,11 @@ lintOptions {
     isIgnoreTestSources = true
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
-
 dependencies {
 
     // Kotlin
-    compileOnlyApi(Libs.Kotlin.jdk7)
+    compileOnly(Libs.Kotlin.jdk7)
 
-    compileOnlyApi(Libs.Lint.api)
-    compileOnlyApi(Libs.Lint.checks)
+    compileOnly(Libs.Lint.api)
+    compileOnly(Libs.Lint.checks)
 }
