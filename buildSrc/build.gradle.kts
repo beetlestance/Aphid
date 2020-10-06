@@ -17,7 +17,6 @@
 
 plugins {
     `kotlin-dsl`
-    `java-gradle-plugin`
 }
 
 kotlinDslPluginOptions {
