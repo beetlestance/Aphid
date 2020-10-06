@@ -40,6 +40,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -71,7 +72,12 @@ android {
     }
 
     buildFeatures {
-        dataBinding = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerVersion = Libs.Kotlin.version
+        kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
     }
 }
 
@@ -97,10 +103,23 @@ dependencies {
     implementation(Libs.AndroidX.appcompat)
     implementation(Libs.AndroidX.coreKtx)
     implementation(Libs.AndroidX.Fragment.fragmentKtx)
-    implementation(Libs.AndroidX.constraintlayout)
 
     // Material Design
-    implementation(Libs.Google.material)
+    implementation(Libs.Google.Mdc.material)
+    implementation(Libs.Google.Mdc.composeThemeAdapter)
+
+    // Compose
+    implementation(Libs.AndroidX.Compose.runtime)
+    implementation(Libs.AndroidX.Compose.foundation)
+    implementation(Libs.AndroidX.Compose.ui)
+    implementation(Libs.AndroidX.Compose.layout)
+    implementation(Libs.AndroidX.Compose.material)
+    implementation(Libs.AndroidX.Compose.animation)
+    implementation(Libs.AndroidX.Compose.tooling)
+    implementation(Libs.AndroidX.Compose.livedata)
+
+    // Coil
+    implementation(Libs.Coil.coil)
 
     // Kotlin
     implementation(Libs.Kotlin.stdlib)

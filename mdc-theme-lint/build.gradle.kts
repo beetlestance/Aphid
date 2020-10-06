@@ -16,7 +16,7 @@ lintOptions {
 dependencies {
 
     // Kotlin
-    compileOnly(Libs.Kotlin.jdk7)
+    compileOnly(Libs.Kotlin.stdlib)
 
     compileOnly(Libs.Lint.api)
     compileOnly(Libs.Lint.checks)
