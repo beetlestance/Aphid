@@ -72,12 +72,7 @@ object Libs {
         }
 
         object Compose {
-            const val snapshot = "6860046"
-            const val version = "1.0.0-SNAPSHOT"
-
-            @get:JvmStatic
-            val snapshotUrl: String
-                get() = "https://androidx.dev/snapshots/builds/$snapshot/artifacts/ui/repository/"
+            const val version = "1.0.0-alpha04"
 
             const val compiler = "androidx.compose.compiler:compiler:$version"
 
@@ -140,8 +135,7 @@ object Libs {
     }
 
     object Kotlin {
-        private const val version = "1.4.10"
-        const val jdk7: String = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version"
+        const val version = "1.4.10"
         const val stdlib: String = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val reflect: String = "org.jetbrains.kotlin:kotlin-reflect:$version"
         const val extensions: String = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
