@@ -32,31 +32,6 @@ object Libs {
         const val androidAnnotation: String = "androidx.annotation:annotation:1.2.0-alpha01"
         const val appcompat: String = "androidx.appcompat:appcompat:1.3.0-alpha02"
         const val coreKtx: String = "androidx.core:core-ktx:1.5.0-alpha04"
-        const val adsIdentifier: String = "androidx.ads:ads-identifier:1.0.0-alpha04"
-        const val multidex: String = "androidx.multidex:multidex:2.0.1"
-
-        const val collection: String = "androidx.collection:collection-ktx:1.1.0"
-        const val leagcy: String = "androidx.legacy:legacy-support-v4:1.0.0"
-
-        const val exifInfo: String = "androidx.exifinterface:exifinterface:1.2.0"
-
-        const val swipeToRefreshLayout: String =
-            "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-        const val constraintlayout: String =
-            "androidx.constraintlayout:constraintlayout:2.0.1"
-        const val recyclerview: String = "androidx.recyclerview:recyclerview:1.2.0-alpha04"
-        const val cardView: String = "androidx.cardview:cardview:1.0.0"
-        const val webkit: String = "androidx.webkit:webkit:1.2.0"
-
-        const val guava: String = "com.google.guava:guava:29.0-android"
-
-        object Navigation {
-            private const val version = "2.3.0"
-            const val fragment: String = "androidx.navigation:navigation-fragment-ktx:$version"
-            const val ui: String = "androidx.navigation:navigation-ui-ktx:$version"
-            const val safeArgs: String =
-                "androidx.navigation:navigation-safe-args-gradle-plugin:$version"
-        }
 
         object Fragment {
             private const val version = "1.3.0-beta01"
@@ -70,12 +45,6 @@ object Libs {
             const val rules: String = "androidx.test:rules:$version"
             const val junit: String = "androidx.test.ext:junit:1.1.2"
             const val espressoCore: String = "androidx.test.espresso:espresso-core:3.3.0"
-        }
-
-        object Paging {
-            private const val version = "2.1.2"
-            const val common: String = "androidx.paging:paging-common-ktx:$version"
-            const val runtime: String = "androidx.paging:paging-runtime-ktx:$version"
         }
 
         object Lifecycle {
@@ -99,33 +68,15 @@ object Libs {
 
         object Work {
             private const val version = "2.4.0"
-            const val runtime: String = "androidx.work:work-runtime:$version"
             const val runtimeKtx: String = "androidx.work:work-runtime-ktx:$version"
-        }
-
-        object Animation {
-            private const val version = "1.0.0-alpha03"
-            const val dynamicAnimations: String =
-                "androidx.dynamicanimation:dynamicanimation:$version"
-            const val dynamicKtx: String = "androidx.dynamicanimation:dynamicanimation-ktx:$version"
         }
     }
 
     object Google {
         const val material: String = "com.google.android.material:material:1.3.0-alpha03"
-        const val flexBox: String = "com.google.android:flexbox:2.0.1"
-        const val playCore: String = "com.google.android.play:core:1.8.0"
-        const val playCoreKtx: String = "com.google.android.play:core-ktx:1.8.1"
-        const val gson: String = "com.google.code.gson:gson:2.8.6"
-        const val places: String = "com.google.android.libraries.places:places:2.3.0"
 
         object PlayServices {
             const val gmsGoogleServices: String = "com.google.gms:google-services:4.3.3"
-
-            const val phone: String = "com.google.android.gms:play-services-auth-api-phone:17.4.0"
-            const val gps: String = "com.google.android.gms:play-services-location:17.0.0"
-            const val auth: String = "com.google.android.gms:play-services-auth:18.1.0"
-            const val maps: String = "com.google.android.gms:play-services-maps:17.0.0"
         }
 
         object Firebase {
@@ -133,10 +84,8 @@ object Libs {
             const val crashlyticsGradle: String =
                 "com.google.firebase:firebase-crashlytics-gradle:2.2.0"
 
-            const val analytics: String = "com.google.firebase:firebase-analytics:17.5.0"
             const val analyticsKtx: String = "com.google.firebase:firebase-analytics-ktx:17.5.0"
             const val auth: String = "com.google.firebase:firebase-auth:19.3.2"
-            const val config: String = "com.google.firebase:firebase-config:19.2.0"
             const val configKtx: String = "com.google.firebase:firebase-config-ktx:19.2.0"
             const val core: String = "com.google.firebase:firebase-core:17.5.0"
             const val crashlytics: String = "com.google.firebase:firebase-crashlytics:17.2.1"
@@ -187,33 +136,9 @@ object Libs {
         const val test: String = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
     }
 
-    object Insetter {
-        private const val version = "0.3.0"
-
-        // If you're using data-binding use this
-        const val dbInsetter: String = "dev.chrisbanes:insetter-dbx:$version"
-
-        // If you're using Kotlin use this too
-        const val ktxInsetter: String = "dev.chrisbanes:insetter-ktx:$version"
-    }
-
-    object BeetleStance {
-        const val navigationExtensions: String =
-            "com.github.beetlestance.android-extensions:navigation:0.1.1"
-    }
-
     object Lint {
         private const val version = "27.2.0-alpha13"
         const val api: String = "com.android.tools.lint:lint-api:$version"
         const val checks: String = "com.android.tools.lint:lint-checks:$version"
-    }
-
-    object ThirdParty {
-        const val youtubePlayer: String =
-            "com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5"
-        const val viewPagerDotsIndicator: String =
-            "com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2"
-        const val coil: String = "io.coil-kt:coil:0.11.0"
-        const val spotDialog: String = "com.github.d-max:spots-dialog:0.7@aar"
     }
 }

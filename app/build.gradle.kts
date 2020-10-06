@@ -97,7 +97,6 @@ dependencies {
     implementation(Libs.AndroidX.appcompat)
     implementation(Libs.AndroidX.coreKtx)
     implementation(Libs.AndroidX.Fragment.fragmentKtx)
-    implementation(Libs.AndroidX.constraintlayout)
 
     // Material Design
     implementation(Libs.Google.material)
