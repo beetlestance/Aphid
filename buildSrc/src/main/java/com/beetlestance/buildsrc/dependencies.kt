@@ -70,33 +70,73 @@ object Libs {
             private const val version = "2.4.0"
             const val runtimeKtx: String = "androidx.work:work-runtime-ktx:$version"
         }
+
+        object Compose {
+            const val snapshot = "6860046"
+            const val version = "1.0.0-SNAPSHOT"
+
+            @get:JvmStatic
+            val snapshotUrl: String
+                get() = "https://androidx.dev/snapshots/builds/$snapshot/artifacts/ui/repository/"
+
+            const val compiler = "androidx.compose.compiler:compiler:$version"
+
+            const val runtime = "androidx.compose.runtime:runtime:$version"
+            const val livedata = "androidx.compose.runtime:runtime-livedata:$version"
+
+            const val foundation = "androidx.compose.foundation:foundation:$version"
+            const val layout = "androidx.compose.foundation:foundation-layout:$version"
+
+            const val ui = "androidx.compose.ui:ui:$version"
+            const val material = "androidx.compose.material:material:$version"
+
+            const val animation = "androidx.compose.animation:animation:$version"
+
+            const val tooling = "androidx.ui:ui-tooling:$version"
+            const val test = "androidx.ui:ui-test:$version"
+        }
+
+        object Hilt {
+            private const val version = "1.0.0-alpha02"
+            const val work = "androidx.hilt:hilt-work:$version"
+            const val viewmodel = "androidx.hilt:hilt-lifecycle-viewmodel:$version"
+            const val compiler = "androidx.hilt:hilt-compiler:$version"
+        }
     }
 
     object Google {
-        const val material: String = "com.google.android.material:material:1.3.0-alpha03"
+
+        const val openSourceLicensesPlugin = "com.google.android.gms:oss-licenses-plugin:0.10.2"
+        const val openSourceLicensesLibrary =
+            "com.google.android.gms:play-services-oss-licenses:17.0.0"
+
+        object Mdc {
+            const val material: String = "com.google.android.material:material:1.3.0-alpha03"
+            const val composeThemeAdapter =
+                "com.google.android.material:compose-theme-adapter:1.0.0-alpha03"
+        }
 
         object PlayServices {
             const val gmsGoogleServices: String = "com.google.gms:google-services:4.3.3"
         }
 
         object Firebase {
-            const val firebasePrefPlugin: String = "com.google.firebase:perf-plugin:1.3.1"
+            const val performance: String = "com.google.firebase:firebase-perf:19.0.8"
+            const val performancePlugin: String = "com.google.firebase:perf-plugin:1.3.1"
+
+            const val crashlytics: String = "com.google.firebase:firebase-crashlytics:17.2.1"
             const val crashlyticsGradle: String =
                 "com.google.firebase:firebase-crashlytics-gradle:2.2.0"
 
-            const val analyticsKtx: String = "com.google.firebase:firebase-analytics-ktx:17.5.0"
             const val auth: String = "com.google.firebase:firebase-auth:19.3.2"
-            const val configKtx: String = "com.google.firebase:firebase-config-ktx:19.2.0"
-            const val core: String = "com.google.firebase:firebase-core:17.5.0"
-            const val crashlytics: String = "com.google.firebase:firebase-crashlytics:17.2.1"
-            const val dynamicLink: String = "com.google.firebase:firebase-dynamic-links:19.1.0"
-            const val firestore: String = "com.google.firebase:firebase-firestore-ktx:21.5.0"
-            const val inAppMessaging: String =
-                "com.google.firebase:firebase-inappmessaging-display-ktx:19.1.0"
+
             const val messaging: String = "com.google.firebase:firebase-messaging:20.2.4"
-            const val performance: String = "com.google.firebase:firebase-perf:19.0.8"
-            const val uiStorage: String = "com.firebaseui:firebase-ui-storage:6.2.0"
         }
+    }
+
+    object Coil {
+        private const val version = "1.0.0-rc3"
+        const val coil = "io.coil-kt:coil:$version"
     }
 
     object Kotlin {

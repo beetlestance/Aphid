@@ -44,7 +44,7 @@ dependencies {
     // AndroidX
 
     // Material Design
-    implementation(Libs.Google.material)
+    implementation(Libs.Google.Mdc.material)
 
     // Kotlin
     implementation(Libs.Kotlin.stdlib)
