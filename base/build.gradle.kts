@@ -12,4 +12,7 @@ dependencies {
     // Co-Routines
     api(Libs.Coroutines.core)
 
+    // Retrofit
+    api(Libs.Retrofit.retrofit)
+
 }

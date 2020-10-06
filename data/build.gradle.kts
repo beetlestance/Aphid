@@ -8,6 +8,7 @@ dependencies {
 
     // Local projects
     implementation(project(":base"))
+    implementation(project(":spoonacular-kotlin"))
 
     // Kotlin
     implementation(Libs.Kotlin.stdlib)

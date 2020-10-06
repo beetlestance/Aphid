@@ -36,7 +36,7 @@ data class Success<T>(val data: T) : Result<T>()
 /**
  * Represents an instance that holds the given [throwable] as error value.
  */
-data class Error(val throwable: Throwable): Result<Nothing>()
+data class Error<T>(val throwable: Throwable): Result<T>()
 
 /**
  * Returns the holding value if the instance is [Success] or
