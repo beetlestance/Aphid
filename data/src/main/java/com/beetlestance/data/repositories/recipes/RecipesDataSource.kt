@@ -7,17 +7,13 @@ import com.beetlestance.spoonacular_kotlin.models.response.recipe.RecipeInformat
 import com.beetlestance.spoonacular_kotlin.services.RecipesService
 import com.beetlestance.spoonacular_kotlin.utils.toSpoonacularApiResponse
 
-interface RecipesDataSource {
-    suspend fun fetchRecipes(): Result<List<RecipeInformation>?>?
-}
-
-class RecipesDataSourceImpl(
+class RecipesDataSource(
     private val recipesService: RecipesService
 ) {
-    suspend fun fetchRecipes(): Result<List<RecipeInformation>?>? {
+    suspend fun fetchRecipes(): Result<List<RecipeInformation>> {
         return recipesService.getRandomRecipes()
             .executeWithRetry(shouldRetry = { true })
             .toSpoonacularApiResponse()
-            ?.toResult()
+            .toResult()
     }
 }

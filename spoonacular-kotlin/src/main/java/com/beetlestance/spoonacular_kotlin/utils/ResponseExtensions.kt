@@ -40,7 +40,7 @@ val Response.isClientError: Boolean get() = this.code in 400..499
  */
 val Response.isServerError: Boolean get() = this.code in 500..999
 
-inline fun <reified T> Response.toSpoonacularApiResponse(): SpoonacularApiResponse<T?>? {
+inline fun <reified T> Response.toSpoonacularApiResponse(): SpoonacularApiResponse<T> {
 
     return when {
         isRedirect -> Redirection(code, headers.toMultimap())
