@@ -28,7 +28,7 @@ import retrofit2.Response
 import java.io.IOException
 import com.beetlestance.spoonacular_kotlin.models.Success as SpoonacularSuccess
 
-fun <T> Response<T>.bodyOrThrow(): T {
+fun <T> Response<T>.bodyOrThrowException(): T {
     if (!isSuccessful) throw toException()
     return body()!!
 }
@@ -62,7 +62,7 @@ suspend inline fun <T> Call<T>.fetchBodyWithRetry(
     defaultDelay: Long = 100,
     maxAttempts: Int = 3,
     shouldRetry: (Exception) -> Boolean
-): T = executeWithRetry(defaultDelay, maxAttempts, shouldRetry).bodyOrThrow()
+): T = executeWithRetry(defaultDelay, maxAttempts, shouldRetry).bodyOrThrowException()
 
 fun defaultShouldRetry(exception: Exception) = when (exception) {
     is HttpException -> exception.code() == 429
@@ -86,7 +86,7 @@ suspend fun <T> Call<T>.executeSynchronous(): Response<T> {
 
 fun <T> Response<T>.toResult(): Result<T> = try {
     if (isSuccessful) {
-        Success(data = bodyOrThrow())
+        Success(data = bodyOrThrowException())
     } else {
         Failure(toException())
     }
@@ -96,7 +96,7 @@ fun <T> Response<T>.toResult(): Result<T> = try {
 
 suspend fun <T, E> Response<T>.toResult(mapper: suspend (T) -> E): Result<E> = try {
     if (isSuccessful) {
-        Success(data = mapper(bodyOrThrow()))
+        Success(data = mapper(bodyOrThrowException()))
     } else {
         Failure(toException())
     }
