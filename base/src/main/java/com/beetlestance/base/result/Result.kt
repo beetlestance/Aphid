@@ -57,6 +57,15 @@ fun <T> Result<T>.dataOrElse(value: T): T = when (this) {
 }
 
 /**
+ * Returns the holding value if the instance is [Success] or
+ * returns `null` if the instance is [Failure]
+ */
+fun <T> Result<T>.dataOrNull(): T? = when (this) {
+    is Success -> data
+    is Failure -> null
+}
+
+/**
  * Performs the given [action] on the holding data fi the instance is [Success].
  * Returns the original result unchanged.
  */
