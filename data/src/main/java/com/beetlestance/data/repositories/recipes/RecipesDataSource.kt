@@ -10,10 +10,10 @@ import com.beetlestance.spoonacular_kotlin.utils.toSpoonacularApiResponse
 class RecipesDataSource(
     private val recipesService: RecipesService
 ) {
-    suspend fun fetchRecipes(): Result<List<RecipeInformation>?>? {
+    suspend fun fetchRecipes(): Result<List<RecipeInformation>> {
         return recipesService.getRandomRecipes()
             .executeWithRetry(shouldRetry = { true })
             .toSpoonacularApiResponse()
-            ?.toResult()
+            .toResult()
     }
 }
