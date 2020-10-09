@@ -116,3 +116,16 @@ fun <T> SpoonacularApiResponse<T>.toResult(): Result<T> = try {
 } catch (e: Exception) {
     Failure(e)
 }
+
+suspend fun <T, E> SpoonacularApiResponse<T>.toResult(mapper: suspend (T) -> E): Result<E> = try {
+    when (this) {
+        is SpoonacularSuccess -> {
+            Success(data = mapper(data))
+        }
+        else -> {
+            Failure(IllegalArgumentException())
+        }
+    }
+} catch (e: Exception) {
+    Failure(e)
+}
