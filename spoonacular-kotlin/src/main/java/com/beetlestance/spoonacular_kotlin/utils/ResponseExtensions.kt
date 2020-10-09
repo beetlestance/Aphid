@@ -24,7 +24,6 @@ import com.beetlestance.spoonacular_kotlin.models.ServerError
 import com.beetlestance.spoonacular_kotlin.models.SpoonacularApiResponse
 import com.beetlestance.spoonacular_kotlin.models.Success
 import okhttp3.Response
-import retrofit2.Response as RetrofitResponse
 
 /**
  * Provides an extension to evaluation whether the response is a 1xx code
@@ -51,8 +50,4 @@ inline fun <reified T> Response.toSpoonacularApiResponse(): SpoonacularApiRespon
         isServerError -> ServerError(null, body?.string(), code, headers.toMultimap())
         else -> throw IllegalStateException("Unknown error code $code")
     }
-}
-
-inline fun <reified T> RetrofitResponse<T>.toSpoonacularApiResponse(): SpoonacularApiResponse<T?>? {
-    return raw().toSpoonacularApiResponse()
 }
