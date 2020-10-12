@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
+import timber.log.Timber
 
 /**
  * To be used for performing work without any result for the work
@@ -35,9 +36,9 @@ abstract class UseCase<in P> {
             emit(Status.Started)
             doWork(params)
             emit(Status.Success)
-        }.catch { t ->
-            emit(Status.Error(t))
-            // Log exception here
+        }.catch { throwable ->
+            emit(Status.Error(throwable))
+            Timber.e(throwable)
         }
     }
 
@@ -89,8 +90,8 @@ abstract class ResultUseCase<in P, out R> {
     operator fun invoke(params: P): Flow<R> {
         return flow {
             emit(doWork(params))
-        }.catch {
-            // Log exception here if any
+        }.catch { throwable ->
+            Timber.e(throwable)
         }
     }
 
@@ -121,8 +122,8 @@ abstract class ObserveUseCase<P : Any, T> {
     protected abstract fun createObservable(params: P): Flow<T>
 
     fun observe(): Flow<T> = paramState.filterNotNull().flatMapLatest {
-        createObservable(it).catch {
-            // Log exception here if any
+        createObservable(it).catch { throwable ->
+            Timber.e(throwable)
         }
     }
 }
@@ -136,8 +137,8 @@ abstract class ObserveUseCase<P : Any, T> {
 abstract class SuspendableWorkUseCase<P : Any, T> : ObserveUseCase<P, T>() {
     override fun createObservable(params: P): Flow<T> = flow {
         emit(doWork(params))
-    }.catch {
-        // Log exception here
+    }.catch { throwable ->
+        Timber.e(throwable)
     }
 
     abstract suspend fun doWork(params: P): T
