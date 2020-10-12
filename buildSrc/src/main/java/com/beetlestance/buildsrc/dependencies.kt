@@ -23,7 +23,7 @@ object Libs {
     const val timber: String = "com.jakewharton.timber:timber:4.7.1"
 
     object Test {
-        const val junit: String = "junit:junit:4.13"
+        const val junit: String = "junit:junit:4.13.1"
         const val robolectric: String = "org.robolectric:robolectric:4.3.1"
         const val mockK: String = "io.mockk:mockk:1.9.3"
     }
@@ -108,7 +108,7 @@ object Libs {
         object Mdc {
             const val material: String = "com.google.android.material:material:1.3.0-alpha03"
             const val composeThemeAdapter =
-                "com.google.android.material:compose-theme-adapter:1.0.0-alpha03"
+                "com.google.android.material:compose-theme-adapter:1.0.0-alpha04"
         }
 
         object PlayServices {
@@ -149,7 +149,7 @@ object Libs {
     }
 
     object Moshi {
-        private const val version = "1.10.0"
+        private const val version = "1.11.0"
         const val moshi = "com.squareup.moshi:moshi:$version"
         const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:$version"
         const val moshiAdapters = "com.squareup.moshi:moshi-adapters:$version"
