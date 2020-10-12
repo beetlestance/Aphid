@@ -42,6 +42,8 @@ dependencies {
     androidTestImplementation(Libs.AndroidX.Test.espressoCore)
 
     // AndroidX
+    implementation(Libs.AndroidX.Lifecycle.viewmodelKtx)
+    implementation(Libs.AndroidX.Lifecycle.livedataKtx)
 
     // Material Design
     implementation(Libs.Google.Mdc.material)
