@@ -38,7 +38,7 @@ fun <T> Response<T>.toException() = HttpException(this)
 suspend inline fun <T> Call<T>.executeWithRetry(
     defaultDelay: Long = 100,
     maxAttempts: Int = 3,
-    shouldRetry: (Exception) -> Boolean
+    shouldRetry: (Exception) -> Boolean = ::defaultShouldRetry
 ): Response<T> {
     repeat(maxAttempts) { attempt ->
         val nextDelay = attempt * attempt * defaultDelay

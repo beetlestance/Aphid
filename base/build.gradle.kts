@@ -7,6 +7,7 @@ plugins {
 dependencies {
 
     // Local Projects
+    // Have to check if this dependency can go here or not, base is supposed to be independent
     implementation(project(":spoonacular-kotlin"))
 
     // Kotlin
@@ -15,7 +16,12 @@ dependencies {
     // Co-Routines
     api(Libs.Coroutines.core)
 
+    // Dagger
+    api(Libs.Dagger.dagger)
+
     // Retrofit
     api(Libs.Retrofit.retrofit)
 
+    // Timber
+    api(Libs.timber)
 }

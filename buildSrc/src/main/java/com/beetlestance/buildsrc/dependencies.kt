@@ -134,6 +134,20 @@ object Libs {
         const val coil = "io.coil-kt:coil:$version"
     }
 
+    object Dagger {
+        private const val version = "2.29.1"
+        const val dagger = "com.google.dagger:dagger:$version"
+        const val compiler = "com.google.dagger:dagger-compiler:$version"
+    }
+
+    object Hilt {
+        private const val version = "2.29.1-alpha"
+        const val library = "com.google.dagger:hilt-android:$version"
+        const val compiler = "com.google.dagger:hilt-android-compiler:$version"
+        const val testing = "com.google.dagger:hilt-android-testing:$version"
+        const val gradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:$version"
+    }
+
     object Kotlin {
         const val version = "1.4.10"
         const val stdlib: String = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
