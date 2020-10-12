@@ -16,6 +16,9 @@ dependencies {
     // Co-Routines
     api(Libs.Coroutines.core)
 
+    // Dagger
+    api(Libs.Dagger.dagger)
+
     // Retrofit
     api(Libs.Retrofit.retrofit)
 
