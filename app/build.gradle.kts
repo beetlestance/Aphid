@@ -15,7 +15,9 @@ kapt {
 
 extra {
     var ci: Boolean by extra
-    ci = System.getenv("CI") == "true"
+    @Suppress("UnstableApiUsage")
+    // CI Always set to true for github actions so check only if flag is present
+    ci = providers.environmentVariable("CI").forUseAtConfigurationTime().isPresent
 }
 
 android {
@@ -39,11 +41,6 @@ android {
                 "proguard-rules.pro"
             )
         }
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     dexOptions {

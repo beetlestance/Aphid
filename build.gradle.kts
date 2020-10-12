@@ -45,6 +45,14 @@ subprojects {
         }
     }
 
+    tasks.withType<JavaCompile> {
+        options.isFork = true
+    }
+
+    tasks.withType<Test> {
+        maxParallelForks = (Runtime.getRuntime().availableProcessors() / 2).takeIf { it > 0 } ?: 1
+    }
+
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
         kotlinOptions {
             // Treat all Kotlin warnings as errors

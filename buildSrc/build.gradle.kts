@@ -23,6 +23,13 @@ kotlinDslPluginOptions {
     experimentalWarning.set(false)
 }
 
+@Suppress("UnstableApiUsage")
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(15))
+    }
+}
+
 repositories {
     // The org.jetbrains.kotlin.jvm plugin requires a repository
     // where to download the Kotlin compiler dependencies from.
