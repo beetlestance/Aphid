@@ -1,34 +1,31 @@
 package com.beetlestance.aphid
 
-import androidx.compose.foundation.Icon
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollableColumn
-import androidx.compose.foundation.ScrollableRow
-import androidx.compose.foundation.Text
+import androidx.compose.foundation.*
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ConstraintLayout
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.EmphasisAmbient
-import androidx.compose.material.IconToggleButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ProvideEmphasis
-import androidx.compose.material.Surface
-import androidx.compose.runtime.Composable
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.ExperimentalFocus
+import androidx.compose.ui.focus.isFocused
+import androidx.compose.ui.focusObserver
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 
@@ -45,6 +42,7 @@ fun Explore() {
                 alignment = Alignment.Top
             )
         ) {
+            Search()
             BreakFast()
         }
     }
@@ -153,4 +151,61 @@ fun BreakFastDetails() {
         text = "Creamy Donut",
         style = MaterialTheme.typography.body1
     )
+}
+
+@OptIn(ExperimentalFocus::class)
+@Composable
+fun Search(state: SearchState = rememberSearchState()) {
+    Surface {
+        val placeHolder = "Palak Paneer"
+        OutlinedTextField(
+            value = state.query,
+            onValueChange = {
+                state.query = it
+            },
+            modifier = Modifier.fillMaxWidth().focusObserver {
+                state.focused = it.isFocused
+            },
+            leadingIcon = {
+                Icon(Icons.Outlined.Search)
+            },
+            label = { SearchHint(hint = state.hint) },
+            placeholder = { SearchPlaceHolder(placeHolder = placeHolder) }
+        )
+    }
+}
+
+@Composable
+fun SearchHint(hint: String) {
+    Text(text = hint)
+}
+
+@Composable
+fun SearchPlaceHolder(placeHolder: String) {
+    Text(text = placeHolder)
+}
+
+@Composable
+private fun rememberSearchState(
+    query: String = "",
+    focused: Boolean = false
+): SearchState {
+    return remember {
+        SearchState(
+            query = query,
+            focused = focused
+        )
+    }
+}
+
+@Stable
+class SearchState(
+    query: String,
+    focused: Boolean
+) {
+    var query by mutableStateOf(query)
+    var focused by mutableStateOf(focused)
+
+    val hint: String
+        get() = if (focused) "Search For Food" else "Palak Paneer"
 }
