@@ -9,10 +9,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ConstraintLayout
+import androidx.compose.foundation.layout.ExperimentalLayout
+import androidx.compose.foundation.layout.FlowMainAxisAlignment
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.SizeMode
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.preferredWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -25,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.ConfigurationAmbient
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
@@ -65,15 +71,17 @@ fun BreakFast() {
         )
     ) {
 
-        BreakFastContent()
-
-        BreakFastContent()
+        repeat(4) {
+            BreakFastContent()
+        }
     }
 }
 
 @Composable
 fun BreakFastContent() {
+    val itemWidth = (ConfigurationAmbient.current.screenWidthDp * 0.7f).dp
     Column(
+        modifier = Modifier.preferredWidth(itemWidth).fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(
             space = 4.dp,
             alignment = Alignment.Top
@@ -91,6 +99,7 @@ fun BreakFastCard() {
     Card(shape = RoundedCornerShape(16.dp)) {
         Box {
             Image(
+                modifier = Modifier.fillMaxWidth(),
                 asset = imageResource(id = R.drawable.temp_brownie),
                 contentScale = ContentScale.Crop
             )
@@ -118,17 +127,15 @@ fun BreakFastCard() {
     }
 }
 
+@OptIn(ExperimentalLayout::class)
 @Composable
 fun BreakFastDetails() {
-
-    ConstraintLayout {
-        val (button, text) = createRefs()
-
+    FlowRow(
+        mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween,
+        mainAxisSize = SizeMode.Expand,
+        crossAxisSpacing = 4.dp
+    ) {
         Text(
-            modifier = Modifier.constrainAs(button) {
-                start.linkTo(anchor = parent.start)
-                end.linkTo(anchor = text.start)
-            },
             text = "2 Serving • 40 Min • 331 Cal ",
             style = MaterialTheme.typography.body2,
             color = colorResource(id = R.color.grey_700)
@@ -136,9 +143,7 @@ fun BreakFastDetails() {
 
         Text(
             modifier = Modifier
-                .constrainAs(text) {
-                    end.linkTo(anchor = parent.end)
-                }.background(
+                .background(
                     color = colorResource(id = R.color.deep_orange_a200),
                     shape = RoundedCornerShape(10.dp)
                 )
