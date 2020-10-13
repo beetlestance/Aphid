@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Aphid</string>
+
+    <string name="explore_breaksfast_header">Breakfast</string>
 </resources>

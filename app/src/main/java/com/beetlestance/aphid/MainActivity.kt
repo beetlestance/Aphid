@@ -17,10 +17,17 @@ package com.beetlestance.aphid
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.Recomposer
+import androidx.compose.ui.platform.setContent
+import com.google.android.material.composethemeadapter.MdcTheme
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContent(Recomposer.current()) {
+            MdcTheme {
+                Explore()
+            }
+        }
     }
 }
