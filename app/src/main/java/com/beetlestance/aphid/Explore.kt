@@ -1,6 +1,7 @@
 package com.beetlestance.aphid
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.ScrollableRow
@@ -22,19 +23,23 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.focus.ExperimentalFocus
 import androidx.compose.ui.focus.isFocused
 import androidx.compose.ui.focusObserver
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ConfigurationAmbient
 import androidx.compose.ui.res.colorResource
@@ -72,6 +77,64 @@ fun Explore() {
             RecentlyViewedRecipesWithHeader()
         }
     }
+}
+
+
+@OptIn(ExperimentalFocus::class)
+@Composable
+fun Search(state: SearchState = rememberSearchState()) {
+    Surface {
+        val placeHolder = "Palak Paneer"
+        OutlinedTextField(
+            value = state.query,
+            onValueChange = {
+                state.query = it
+            },
+            modifier = Modifier.fillMaxWidth().focusObserver {
+                state.focused = it.isFocused
+            },
+            leadingIcon = {
+                Icon(Icons.Outlined.Search)
+            },
+            label = { SearchHint(hint = state.hint) },
+            placeholder = { SearchPlaceHolder(placeHolder = placeHolder) }
+        )
+    }
+}
+
+@Composable
+fun SearchHint(hint: String) {
+    Text(text = hint)
+}
+
+@Composable
+fun SearchPlaceHolder(placeHolder: String) {
+    Text(text = placeHolder)
+}
+
+@Composable
+private fun rememberSearchState(
+    query: String = "",
+    focused: Boolean = false
+): SearchState {
+    return remember {
+        SearchState(
+            query = query,
+            focused = focused
+        )
+    }
+}
+
+@Stable
+class SearchState(
+    query: String,
+    focused: Boolean
+) {
+    var query: String by mutableStateOf(query)
+    var focused: Boolean by mutableStateOf(focused)
+
+    val hint: String
+        get() = if (focused) "Search For Food" else "Palak Paneer"
 }
 
 @Composable
@@ -135,64 +198,6 @@ fun MoodContent() {
         )
     }
 
-}
-
-
-@OptIn(ExperimentalFocus::class)
-@Composable
-fun Search(state: SearchState = rememberSearchState()) {
-    Surface {
-        val placeHolder = "Palak Paneer"
-        OutlinedTextField(
-            value = state.query,
-            onValueChange = {
-                state.query = it
-            },
-            modifier = Modifier.fillMaxWidth().focusObserver {
-                state.focused = it.isFocused
-            },
-            leadingIcon = {
-                Icon(Icons.Outlined.Search)
-            },
-            label = { SearchHint(hint = state.hint) },
-            placeholder = { SearchPlaceHolder(placeHolder = placeHolder) }
-        )
-    }
-}
-
-@Composable
-fun SearchHint(hint: String) {
-    Text(text = hint)
-}
-
-@Composable
-fun SearchPlaceHolder(placeHolder: String) {
-    Text(text = placeHolder)
-}
-
-@Composable
-private fun rememberSearchState(
-    query: String = "",
-    focused: Boolean = false
-): SearchState {
-    return remember {
-        SearchState(
-            query = query,
-            focused = focused
-        )
-    }
-}
-
-@Stable
-class SearchState(
-    query: String,
-    focused: Boolean
-) {
-    var query by mutableStateOf(query)
-    var focused by mutableStateOf(focused)
-
-    val hint: String
-        get() = if (focused) "Search For Food" else "Palak Paneer"
 }
 
 @Composable
