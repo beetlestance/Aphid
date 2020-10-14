@@ -64,18 +64,18 @@ open class Spoonacular(private val apiKey: String) {
      * Returns the default OkHttp client builder. It is strongly recommended to override this and
      * use your app instance.
      *
-     * @see setOkHttpClientInterceptors
+     * @see setOkHttpClientDefaults
      */
     fun okHttpClientBuilder(): OkHttpClient.Builder {
         val builder = OkHttpClient.Builder()
-        builder.setOkHttpClientInterceptors()
+        builder.setOkHttpClientDefaults()
         return builder
     }
 
     /**
      * Adds an interceptor to add the api key query parameter and to log requests.
      */
-    fun OkHttpClient.Builder.setOkHttpClientInterceptors() {
+    fun OkHttpClient.Builder.setOkHttpClientDefaults() {
         addInterceptor(SpoonacularInterceptor(apiKey))
     }
 
