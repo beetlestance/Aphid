@@ -1,5 +1,6 @@
 package com.beetlestance.aphid
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollableColumn
@@ -33,12 +34,14 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ConfigurationAmbient
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 
@@ -58,6 +61,8 @@ fun Explore() {
             BreakFast()
 
             MoodContent()
+
+            Cuisine()
         }
     }
 }
@@ -188,7 +193,7 @@ fun MoodContent() {
                     color = colorResource(id = R.color.amber_500),
                     shape = RoundedCornerShape(16.dp)
                 ).padding(16.dp),
-            text = "What Are You In\nMood For Today ?",
+            text = "What Are You In Mood For Today ?",
             style = MaterialTheme.typography.h5
         )
 
@@ -201,4 +206,66 @@ fun MoodContent() {
         )
     }
 
+}
+
+@Composable
+fun Cuisine() {
+
+    Text(
+        text = stringResource(id = R.string.explore_cuisine_header),
+        style = MaterialTheme.typography.h6,
+    )
+
+    ScrollableRow(
+        horizontalArrangement = Arrangement.spacedBy(
+            space = 16.dp,
+            alignment = Alignment.Start
+        )
+    ) {
+
+        repeat(8) {
+            CuisineContent()
+        }
+    }
+}
+
+@Composable
+fun CuisineContent() {
+    val itemWidth = (ConfigurationAmbient.current.screenWidthDp * 0.3f).dp
+    Column(
+        modifier = Modifier.preferredWidth(itemWidth).fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(
+            space = 4.dp,
+            alignment = Alignment.Top
+        )
+    ) {
+
+        CuisineCard()
+
+        CuisineDetails()
+    }
+}
+
+@Composable
+fun CuisineCard() {
+    Card(
+        shape = CircleShape,
+        border = BorderStroke(2.dp, colorResource(id = R.color.purple_600))
+    ) {
+        Image(
+            modifier = Modifier.fillMaxWidth().clipToBounds().aspectRatio(1f),
+            asset = imageResource(id = R.drawable.temp_chinese),
+            contentScale = ContentScale.Crop
+        )
+    }
+}
+
+@Composable
+fun CuisineDetails() {
+    Text(
+        modifier = Modifier.fillMaxWidth(),
+        text = "Creamy Donut",
+        style = MaterialTheme.typography.body1,
+        textAlign = TextAlign.Center
+    )
 }

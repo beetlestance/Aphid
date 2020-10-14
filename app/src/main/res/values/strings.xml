@@ -2,4 +2,6 @@
     <string name="app_name">Aphid</string>
 
     <string name="explore_breaksfast_header">Breakfast</string>
+
+    <string name="explore_cuisine_header">Cuisine</string>
 </resources>
