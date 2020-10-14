@@ -28,5 +28,5 @@ internal object SpoonacularUserCredentials {
         get() = requireNotNull(spoonacularUserHash, { REASON_NO_USER_CREDENTIAL })
 
     private const val REASON_NO_USER_CREDENTIAL = "No user credentials provided, pass it " +
-        "manually or call Spoonacluar.setUserCredentials() before using MealPlannerService Api's"
+            "manually or call Spoonacluar.setUserCredentials() before using MealPlannerService Api's"
 }

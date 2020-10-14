@@ -1,11 +1,6 @@
 package com.beetlestance.aphid
 
-import androidx.compose.animation.DpPropKey
-import androidx.compose.animation.animate
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.transitionDefinition
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.transition
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -35,13 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.*
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.rounded.Clear
-import androidx.compose.material.icons.rounded.Close
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawOpacity
 
 @Composable
 fun Explore() {
