@@ -143,3 +143,8 @@ abstract class SuspendableWorkUseCase<P : Any, T> : ObserveUseCase<P, T>() {
 
     abstract suspend fun doWork(params: P): T
 }
+
+
+operator fun UseCase<Unit>.invoke() = invoke(Unit)
+operator fun <T> ResultUseCase<Unit, T>.invoke() = invoke(Unit)
+operator fun <T> ObserveUseCase<Unit, T>.invoke() = invoke(Unit)
