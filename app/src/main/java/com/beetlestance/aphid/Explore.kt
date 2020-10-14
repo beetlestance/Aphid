@@ -1,24 +1,15 @@
 package com.beetlestance.aphid
 
+import androidx.compose.animation.DpPropKey
+import androidx.compose.animation.animate
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.transitionDefinition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.transition
 import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ConstraintLayout
-import androidx.compose.foundation.layout.Dimension
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.preferredWidth
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
@@ -43,6 +34,14 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.selection.toggleable
+import androidx.compose.material.*
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.rounded.Clear
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawOpacity
 
 @Composable
 fun Explore() {
@@ -140,27 +139,46 @@ fun Filters(filters: List<Filter> = provideFilters()) {
         )
     ) {
         filters.forEach { filter ->
-            val backGround = if (filter.selected) R.color.deep_orange_a200 else R.color.white
-            Text(
-                text = "Juices",
-                modifier = Modifier
-                    .border(
-                        width = if (filter.selected) 0.dp else 2.dp,
-                        color = colorResource(id = R.color.grey_700),
-                        shape = CircleShape
-                    )
-                    .background(
-                        color = colorResource(id = backGround),
-                        shape = CircleShape
-                    )
-                    .toggleable(
-                        value = filter.selected,
-                        onValueChange = { filter.selected = it }
-                    )
-                    .padding(
-                        horizontal = 16.dp,
-                        vertical = 8.dp
-                    )
+            FilterChip(filter = filter)
+        }
+    }
+}
+
+@Composable
+fun FilterChip(filter: Filter) {
+    val backGround = if (filter.selected) R.color.deep_orange_a200 else R.color.white
+
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(
+            space = 8.dp,
+            alignment = Alignment.Start
+        ),
+        modifier = Modifier
+            .animateContentSize()
+            .border(
+                width = if (filter.selected) 0.dp else 2.dp,
+                color = colorResource(id = R.color.grey_700),
+                shape = CircleShape
+            )
+            .clip(CircleShape)
+            .background(
+                color = colorResource(id = backGround)
+            )
+            .toggleable(
+                value = filter.selected,
+                onValueChange = { filter.selected = it }
+            )
+            .padding(
+                horizontal = 16.dp,
+                vertical = 8.dp
+            )
+    ) {
+        Text(text = "Juices")
+
+        if (filter.selected) {
+            Icon(
+                asset = vectorResource(id = R.drawable.ic_close_filled),
+                modifier = Modifier.align(Alignment.CenterVertically)
             )
         }
     }
