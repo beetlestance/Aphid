@@ -4,4 +4,8 @@
     <string name="explore_breaksfast_header">Breakfast</string>
 
     <string name="explore_cuisine_header">Cuisine</string>
+
+    <string name="explore_quick_recipes_header">Ready In Under 30 Mins</string>
+
+    <string name="explore_recently_viewed_recipes_header">Recently Viewed</string>
 </resources>
