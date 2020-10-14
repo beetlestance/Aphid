@@ -9,11 +9,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ConstraintLayout
+import androidx.compose.foundation.layout.Dimension
 import androidx.compose.foundation.layout.ExperimentalLayout
+import androidx.compose.foundation.layout.FlowCrossAxisAlignment
 import androidx.compose.foundation.layout.FlowMainAxisAlignment
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.SizeMode
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -53,6 +57,8 @@ fun Explore() {
         ) {
             Search()
             BreakFast()
+
+            MoodContent()
         }
     }
 }
@@ -134,6 +140,7 @@ fun BreakFastDetails() {
     FlowRow(
         mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween,
         mainAxisSize = SizeMode.Expand,
+        crossAxisAlignment = FlowCrossAxisAlignment.Center,
         crossAxisSpacing = 4.dp
     ) {
         Text(
@@ -159,6 +166,42 @@ fun BreakFastDetails() {
         text = "Creamy Donut",
         style = MaterialTheme.typography.body1
     )
+}
+
+@Composable
+fun MoodContent() {
+    ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
+
+        val (text, image) = createRefs()
+
+        val endGuideline = createGuidelineFromEnd(fraction = 0.05f)
+
+        val topGuideline = createGuidelineFromTop(fraction = 0.15f)
+
+        Text(
+            modifier = Modifier
+                .constrainAs(text) {
+                    linkTo(start = parent.start, end = endGuideline)
+                    linkTo(top = topGuideline, bottom = parent.bottom)
+                    width = Dimension.fillToConstraints
+                }
+                .background(
+                    color = colorResource(id = R.color.amber_500),
+                    shape = RoundedCornerShape(16.dp)
+                ).padding(16.dp),
+            text = "What Are You In\nMood For Today ?",
+            style = MaterialTheme.typography.h5
+        )
+
+        Image(
+            modifier = Modifier.constrainAs(image) {
+                linkTo(start = parent.start, end = parent.end, bias = 1f)
+                width = Dimension.percent(0.2f)
+            }.aspectRatio(1f),
+            asset = vectorResource(id = R.drawable.ic_cookie)
+        )
+    }
+
 }
 
 
