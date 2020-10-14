@@ -11,11 +11,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ConstraintLayout
 import androidx.compose.foundation.layout.Dimension
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredWidth
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -25,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ConfigurationAmbient
 import androidx.compose.ui.res.colorResource
@@ -33,10 +36,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.ui.tooling.preview.Preview
 
 
-@Preview
 @Composable
 fun Explore() {
     Surface(color = MaterialTheme.colors.surface) {
@@ -53,6 +54,8 @@ fun Explore() {
             MoodContent()
 
             Cuisine()
+
+            PlanYourMealAheadWithHeader()
 
             QuickRecipesWithHeader()
 
@@ -210,6 +213,60 @@ fun QuickRecipesWithHeader() {
                 name = "Asian Pesto Noodles",
             )
         }
+    }
+}
+
+
+@Composable
+fun PlanYourMealAheadWithHeader() {
+
+    Text(
+        text = stringResource(id = R.string.explore_plan_your_meal_ahead),
+        style = MaterialTheme.typography.h6,
+    )
+
+    ScrollableRow(
+        horizontalArrangement = Arrangement.spacedBy(
+            space = 16.dp,
+            alignment = Alignment.CenterHorizontally
+        )
+    ) {
+        // per item width in row
+        val itemWidth = (ConfigurationAmbient.current.screenWidthDp * 1f).dp - 32.dp
+
+        Card(
+            modifier = Modifier.preferredWidth(itemWidth).fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            elevation = 4.dp,
+            backgroundColor = colorResource(id = R.color.gun_powder)
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+
+                Text(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .align(Alignment.CenterVertically)
+                        .weight(0.4f)
+                        .wrapContentSize(),
+                    text = "Plan Your Lunch",
+                    color = Color.White,
+                    style = MaterialTheme.typography.h5
+                )
+
+                Image(
+                    modifier = Modifier.fillMaxWidth()
+                        .clipToBounds()
+                        .align(Alignment.Bottom)
+                        .weight(0.6f)
+                        .padding(top = 16.dp),
+                    asset = vectorResource(id = R.drawable.ic_plan_your_meal),
+                    contentScale = ContentScale.Crop
+                )
+            }
+        }
+
     }
 }
 

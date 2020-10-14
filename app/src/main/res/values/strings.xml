@@ -7,5 +7,7 @@
 
     <string name="explore_quick_recipes_header">Ready In Under 30 Mins</string>
 
+    <string name="explore_plan_your_meal_ahead">Plan Ahead</string>
+
     <string name="explore_recently_viewed_recipes_header">Recently Viewed</string>
 </resources>

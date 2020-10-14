@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
     <configuration name="Explore" activateToolWindowBeforeRun="false" default="false"
-        type="ComposePreviewRunConfiguration">
+        singleton="false" type="ComposePreviewRunConfiguration">
         <module name="Aphid.app" />
         <option name="DEPLOY" value="true" />
         <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
