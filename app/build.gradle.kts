@@ -6,6 +6,7 @@ plugins {
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 kapt {
@@ -120,4 +121,11 @@ dependencies {
 
     // Kotlin
     implementation(Libs.Kotlin.stdlib)
+    implementation(Libs.AndroidX.Lifecycle.viewmodelKtx)
+
+    implementation(Libs.Hilt.library)
+    kapt(Libs.Hilt.compiler)
+
+    implementation(Libs.AndroidX.Hilt.viewmodel)
+    kapt(Libs.AndroidX.Hilt.compiler)
 }

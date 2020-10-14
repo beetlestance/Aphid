@@ -16,12 +16,16 @@
 package com.beetlestance.aphid
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Recomposer
 import androidx.compose.ui.platform.setContent
 import com.google.android.material.composethemeadapter.MdcTheme
 
 class MainActivity : AppCompatActivity() {
+
+    private val viewModel: MainActivityViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent(Recomposer.current()) {
