@@ -1,12 +1,6 @@
 package com.beetlestance.aphid
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Icon
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollableColumn
-import androidx.compose.foundation.ScrollableRow
-import androidx.compose.foundation.Text
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ConstraintLayout
@@ -48,7 +42,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.selection.ToggleableState
+import androidx.compose.foundation.selection.toggleable
 
 @Composable
 fun Explore() {
@@ -63,6 +59,8 @@ fun Explore() {
         ) {
 
             Search()
+
+            Filters()
 
             BreakFastWithHeader()
 
@@ -83,23 +81,21 @@ fun Explore() {
 @OptIn(ExperimentalFocus::class)
 @Composable
 fun Search(state: SearchState = rememberSearchState()) {
-    Surface {
-        val placeHolder = "Palak Paneer"
-        OutlinedTextField(
-            value = state.query,
-            onValueChange = {
-                state.query = it
-            },
-            modifier = Modifier.fillMaxWidth().focusObserver {
-                state.focused = it.isFocused
-            },
-            leadingIcon = {
-                Icon(Icons.Outlined.Search)
-            },
-            label = { SearchHint(hint = state.hint) },
-            placeholder = { SearchPlaceHolder(placeHolder = placeHolder) }
-        )
-    }
+    val placeHolder = "Palak Paneer"
+    OutlinedTextField(
+        value = state.query,
+        onValueChange = {
+            state.query = it
+        },
+        modifier = Modifier.fillMaxWidth().focusObserver {
+            state.focused = it.isFocused
+        },
+        leadingIcon = {
+            Icon(Icons.Outlined.Search)
+        },
+        label = { SearchHint(hint = state.hint) },
+        placeholder = { SearchPlaceHolder(placeHolder = placeHolder) }
+    )
 }
 
 @Composable
@@ -136,6 +132,57 @@ class SearchState(
     val hint: String
         get() = if (focused) "Search For Food" else "Palak Paneer"
 }
+
+@Composable
+fun Filters(filters: List<Filter> = provideFilters()) {
+    ScrollableRow(
+        horizontalArrangement = Arrangement.spacedBy(
+            space = 8.dp,
+            alignment = Alignment.End
+        )
+    ) {
+        filters.forEach { filter ->
+            val backGround = if (filter.selected) R.color.deep_orange_a200 else R.color.white
+            Text(
+                text = "Juices",
+                modifier = Modifier
+                    .border(
+                        width = if (filter.selected) 0.dp else 2.dp,
+                        color = colorResource(id = R.color.grey_700),
+                        shape = CircleShape
+                    )
+                    .background(
+                        color = colorResource(id = backGround),
+                        shape = CircleShape
+                    )
+                    .toggleable(
+                        value = filter.selected,
+                        onValueChange = { filter.selected = it }
+                    )
+                    .padding(
+                        horizontal = 16.dp,
+                        vertical = 8.dp
+                    )
+            )
+        }
+    }
+}
+
+@Composable
+fun provideFilters(): List<Filter> {
+    val filters: MutableList<Filter> = mutableListOf()
+    repeat(10) {
+        filters.add(Filter(selected = false))
+    }
+    return remember { filters }
+}
+
+class Filter(
+    selected: Boolean
+) {
+    var selected: Boolean by mutableStateOf(selected)
+}
+
 
 @Composable
 fun BreakFastWithHeader() {
