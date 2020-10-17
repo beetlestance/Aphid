@@ -2,11 +2,12 @@ rootProject.name = "Aphid"
 
 include(
     ":app",
-    ":domain",
     ":base",
-    ":data",
     ":base-android",
+    ":data",
     ":data-android",
-    ":spoonacular-kotlin",
-    ":mdc-theme-lint"
+    ":domain",
+    ":mdc-theme-lint",
+    ":spoonacular",
+    ":spoonacular-kotlin"
 )
