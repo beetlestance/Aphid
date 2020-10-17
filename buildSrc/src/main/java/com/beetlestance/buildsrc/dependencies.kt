@@ -72,7 +72,7 @@ object Libs {
         }
 
         object Compose {
-            const val version = "1.0.0-alpha04"
+            const val version = "1.0.0-alpha05"
 
             const val compiler = "androidx.compose.compiler:compiler:$version"
 

@@ -1,18 +1,30 @@
 package com.beetlestance.aphid
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Icon
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollableColumn
+import androidx.compose.foundation.ScrollableRow
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ConstraintLayout
+import androidx.compose.foundation.layout.Dimension
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.preferredWidth
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
@@ -29,9 +41,25 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusState
+import androidx.compose.ui.text.input.TextFieldValue
 
+/**
+ * If possible manage all the states in the top level composable for the screen
+ */
+@OptIn(ExperimentalFocus::class)
 @Composable
 fun Explore() {
     Surface(color = MaterialTheme.colors.surface) {
@@ -44,7 +72,19 @@ fun Explore() {
             )
         ) {
 
-            Search()
+            val searchState = rememberSearchState()
+            val searchQuery = savedInstanceState(saver = TextFieldValue.Saver) {
+                TextFieldValue(searchState.query)
+            }
+            Search(
+                value = searchQuery.value,
+                hint = searchState.hint,
+                onValueChange = {
+                    searchQuery.value = it
+                    searchState.query = it.text
+                },
+                onFocusChange = { searchState.focused = it.isFocused }
+            )
 
             Filters()
 
@@ -63,23 +103,24 @@ fun Explore() {
     }
 }
 
-
+/**
+ * This component should be stateless
+ */
 @OptIn(ExperimentalFocus::class)
 @Composable
-fun Search(state: SearchState = rememberSearchState()) {
+fun Search(
+    value: TextFieldValue,
+    hint: String,
+    onValueChange: (TextFieldValue) -> Unit,
+    onFocusChange: (FocusState) -> Unit
+) {
     val placeHolder = "Palak Paneer"
     OutlinedTextField(
-        value = state.query,
-        onValueChange = {
-            state.query = it
-        },
-        modifier = Modifier.fillMaxWidth().focusObserver {
-            state.focused = it.isFocused
-        },
-        leadingIcon = {
-            Icon(Icons.Outlined.Search)
-        },
-        label = { SearchHint(hint = state.hint) },
+        value = value,
+        onValueChange = onValueChange,
+        modifier = Modifier.fillMaxWidth().focusObserver { onFocusChange(it) },
+        leadingIcon = { Icon(Icons.Outlined.Search) },
+        label = { SearchHint(hint = hint) },
         placeholder = { SearchPlaceHolder(placeHolder = placeHolder) }
     )
 }

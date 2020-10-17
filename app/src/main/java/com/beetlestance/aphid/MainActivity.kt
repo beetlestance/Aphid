@@ -19,6 +19,8 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Recomposer
+import androidx.compose.runtime.State
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.setContent
 import com.google.android.material.composethemeadapter.MdcTheme
 
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent(Recomposer.current()) {
             MdcTheme {
+                //val state: State<ExploreViewState?> = viewModel.liveData.observeAsState()
                 Explore()
             }
         }
