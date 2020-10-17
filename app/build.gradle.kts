@@ -93,6 +93,7 @@ dependencies {
     implementation(project(":base-android"))
     implementation(project(":data-android"))
     implementation(project(":domain"))
+    implementation(project(":spoonacular"))
     implementation(project(":spoonacular-kotlin"))
 
     // Lint checks
@@ -129,9 +130,15 @@ dependencies {
     implementation(Libs.Kotlin.stdlib)
     implementation(Libs.AndroidX.Lifecycle.viewmodelKtx)
 
+    // Hilt
     implementation(Libs.Hilt.library)
-    kapt(Libs.Hilt.compiler)
-
     implementation(Libs.AndroidX.Hilt.viewmodel)
     kapt(Libs.AndroidX.Hilt.compiler)
+    kapt(Libs.Hilt.compiler)
+
+    // Ok-Http
+    implementation(Libs.OkHttp.okhttp)
+    implementation(Libs.OkHttp.loggingInterceptor)
+    implementation(Libs.OkHttp.urlConnection)
+
 }
