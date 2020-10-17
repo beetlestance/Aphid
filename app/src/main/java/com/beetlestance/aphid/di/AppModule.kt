@@ -15,7 +15,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideCoroutineDispatchers() = AppCoroutineDispatchers(
+    fun provideCoroutineDispatchers(): AppCoroutineDispatchers = AppCoroutineDispatchers(
         io = Dispatchers.IO,
         computation = Dispatchers.Default,
         main = Dispatchers.Main

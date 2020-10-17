@@ -6,10 +6,6 @@ plugins {
 
 dependencies {
 
-    // Local Projects
-    // Have to check if this dependency can go here or not, base is supposed to be independent
-    implementation(project(":spoonacular-kotlin"))
-
     // Kotlin
     implementation(Libs.Kotlin.stdlib)
 

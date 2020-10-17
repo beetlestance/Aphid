@@ -25,6 +25,7 @@ import javax.inject.Singleton
     ]
 )
 object NetworkModule {
+
     @Singleton
     @Provides
     fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor? {

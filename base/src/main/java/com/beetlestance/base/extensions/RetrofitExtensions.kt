@@ -18,7 +18,6 @@ package com.beetlestance.base.extensions
 import com.beetlestance.base.result.Failure
 import com.beetlestance.base.result.Result
 import com.beetlestance.base.result.Success
-import com.beetlestance.spoonacular_kotlin.models.SpoonacularApiResponse
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.suspendCancellableCoroutine
 import retrofit2.Call
@@ -26,7 +25,6 @@ import retrofit2.Callback
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
-import com.beetlestance.spoonacular_kotlin.models.Success as SpoonacularSuccess
 
 fun <T> Response<T>.bodyOrThrowException(): T {
     if (!isSuccessful) throw toException()
@@ -99,32 +97,6 @@ suspend fun <T, E> Response<T>.toResult(mapper: suspend (T) -> E): Result<E> = t
         Success(data = mapper(bodyOrThrowException()))
     } else {
         Failure(toException())
-    }
-} catch (e: Exception) {
-    Failure(e)
-}
-
-fun <T> SpoonacularApiResponse<T>.toResult(): Result<T> = try {
-    when (this) {
-        is SpoonacularSuccess -> {
-            Success(data)
-        }
-        else -> {
-            Failure(IllegalArgumentException())
-        }
-    }
-} catch (e: Exception) {
-    Failure(e)
-}
-
-suspend fun <T, E> SpoonacularApiResponse<T>.toResult(mapper: suspend (T) -> E): Result<E> = try {
-    when (this) {
-        is SpoonacularSuccess -> {
-            Success(data = mapper(data))
-        }
-        else -> {
-            Failure(IllegalArgumentException())
-        }
     }
 } catch (e: Exception) {
     Failure(e)
