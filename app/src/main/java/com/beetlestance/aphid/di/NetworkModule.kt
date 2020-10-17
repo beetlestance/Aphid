@@ -20,6 +20,7 @@ import javax.inject.Singleton
 @InstallIn(ApplicationComponent::class)
 @Module
 object NetworkModule {
+
     @Singleton
     @Provides
     fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor? {

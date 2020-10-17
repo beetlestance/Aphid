@@ -60,9 +60,7 @@ subprojects {
             allWarningsAsErrors = true
 
             // Enable experimental coroutines APIs, including Flow
-            if (project.name != "mdc-theme-lint" && project.name != "spoonacular-kotlin" &&
-                project.name != "spoonacular"
-            ) {
+            if (project.name != "mdc-theme-lint" && project.name != "spoonacular-kotlin") {
                 freeCompilerArgs = freeCompilerArgs + listOf(
                     "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
                     "-Xopt-in=kotlinx.coroutines.FlowPreview"

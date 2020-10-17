@@ -2,18 +2,25 @@ import com.beetlestance.buildsrc.Libs
 
 plugins {
     id("kotlin")
+    kotlin("kapt")
+}
+
+kapt {
+    correctErrorTypes = true
+    useBuildCache = true
 }
 
 dependencies {
 
     // Local projects
+    implementation(project(":base"))
     implementation(project(":spoonacular-kotlin"))
 
     // Kotlin
     implementation(Libs.Kotlin.stdlib)
 
     // Dagger
-    implementation(Libs.Dagger.compiler)
+    kapt(Libs.Dagger.compiler)
 
     // Ok-Http
     implementation(Libs.OkHttp.okhttp)

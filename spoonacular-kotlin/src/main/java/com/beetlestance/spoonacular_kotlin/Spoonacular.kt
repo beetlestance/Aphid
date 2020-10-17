@@ -24,7 +24,6 @@ import com.beetlestance.spoonacular_kotlin.utils.MoshiSerializer
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.concurrent.TimeUnit
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 open class Spoonacular(private val apiKey: String) {
