@@ -31,6 +31,12 @@ android {
         versionCode = Aphid.versionCode
         versionName = Aphid.versionName
 
+        buildConfigField(
+            type = "String",
+            name = "SpoonacularApiKey",
+            value = project.property("SPOONACULAR_API_KEY") as? String ?: ""
+        )
+
         testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
     }
 

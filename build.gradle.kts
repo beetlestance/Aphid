@@ -78,3 +78,8 @@ subprojects {
         }
     }
 }
+
+fun propOrDef(propertyName: String, defaultValue: Any): Any {
+    val propertyValue = project.properties[propertyName]
+    return propertyValue ?: defaultValue
+}
