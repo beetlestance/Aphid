@@ -251,6 +251,7 @@ fun BreakFastWithHeader(breakfastRecipes: List<Recipe>) {
         breakfastRecipes.forEach { recipe ->
             FoodCardWithDetails(
                 fraction = 0.7f,
+                imageRatio = 0.7f,
                 imageUrl = recipe.image,
                 imageResource = R.drawable.temp_brownie,
                 contentTags = "2 Serving • 40 Min • 331 Cal ",

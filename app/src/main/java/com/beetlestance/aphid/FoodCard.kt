@@ -44,6 +44,7 @@ fun FoodCardWithDetails(
     fraction: Float = 1f,
     verticalItemSpace: Dp = 4.dp,
     imageUrl: String? = null,
+    imageRatio: Float = 1f,
     @DrawableRes imageResource: Int,
     cardShape: Shape = RoundedCornerShape(16.dp),
     onCheckedChange: (Boolean) -> Unit = {},
@@ -66,6 +67,7 @@ fun FoodCardWithDetails(
             imageSrc = imageUrl ?: imageResource,
             itemWidth = itemWidth,
             cardShape = cardShape,
+            imageRatio = imageRatio,
             onCheckChanged = onCheckedChange
         )
 
@@ -81,6 +83,7 @@ fun FoodCardWithDetails(
 fun FoodCardWithFavIcon(
     imageSrc: Any,
     itemWidth: Dp,
+    imageRatio: Float,
     cardShape: Shape = RoundedCornerShape(16.dp),
     onCheckChanged: (Boolean) -> Unit = {}
 ) {
@@ -90,7 +93,10 @@ fun FoodCardWithFavIcon(
                 data = imageSrc,
                 fadeIn = true,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.preferredWidth(itemWidth).aspectRatio(3 / 4f).clip(cardShape)
+                modifier = Modifier
+                    .preferredWidth(itemWidth)
+                    .aspectRatio(imageRatio)
+                    .clip(cardShape)
             )
 
             ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {
