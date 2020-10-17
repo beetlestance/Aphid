@@ -7,8 +7,11 @@ plugins {
 dependencies {
 
     // Local projects
-    implementation(project(":base"))
+    api(project(":base"))
     implementation(project(":spoonacular-kotlin"))
+
+    // Room
+    api(Libs.AndroidX.Room.common)
 
     // Kotlin
     implementation(Libs.Kotlin.stdlib)

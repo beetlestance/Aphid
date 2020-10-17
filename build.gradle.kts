@@ -1,3 +1,5 @@
+import java.net.URI
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
 
@@ -27,6 +29,9 @@ allprojects {
         google()
         jcenter()
         mavenCentral()
+
+        // Used for Roomigrant
+        maven { url = URI("https://jitpack.io") }
     }
 }
 
@@ -47,6 +52,9 @@ subprojects {
     }
 
     tasks.withType<JavaCompile> {
+        // Remove once kotlin supports jvm 15
+        sourceCompatibility = JavaVersion.VERSION_1_8.toString()
+        targetCompatibility = JavaVersion.VERSION_1_8.toString()
         options.isFork = true
     }
 

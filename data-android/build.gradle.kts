@@ -21,6 +21,17 @@ android {
 
         testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
         consumerProguardFiles("consumer-rules.pro")
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments(
+                    mapOf(
+                        "room.schemaLocation" to "$projectDir/schemas",
+                        "room.incremental" to "true"
+                    )
+                )
+            }
+        }
     }
 }
 
@@ -37,4 +48,20 @@ dependencies {
 
     // Kotlin
     implementation(Libs.Kotlin.stdlib)
+
+    // Room
+    api(Libs.AndroidX.Room.runtime)
+    implementation(Libs.AndroidX.Room.ktx)
+    kapt(Libs.AndroidX.Room.compiler)
+
+    // Room Migration
+    implementation(Libs.Roomigrant.library)
+    kapt(Libs.Roomigrant.compiler)
+
+    // Hilt
+    implementation(Libs.Hilt.library)
+    implementation(Libs.AndroidX.Hilt.viewmodel)
+    kapt(Libs.AndroidX.Hilt.compiler)
+    kapt(Libs.Hilt.compiler)
+
 }
