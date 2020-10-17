@@ -9,6 +9,6 @@ class RecipesRepository @Inject constructor(
 ) {
     suspend fun fetchRecipes(): List<RecipeInformation> {
         val recipeResult = recipesDataSource.fetchRecipes()
-        return recipeResult.dataOrThrowException()
+        return recipeResult.dataOrThrowException().recipes
     }
 }

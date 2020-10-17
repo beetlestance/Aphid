@@ -8,6 +8,8 @@ import com.beetlestance.domain.executors.FetchRecipes
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import com.beetlestance.domain.invoke
+import com.beetlestance.spoonacular_kotlin.SpoonacularImageHelper
+import com.beetlestance.spoonacular_kotlin.constants.SpoonacularImageSize
 import timber.log.Timber
 
 class MainActivityViewModel @ViewModelInject constructor(
@@ -18,8 +20,28 @@ class MainActivityViewModel @ViewModelInject constructor(
         viewModelScope.launch {
             val recipes = fetchRecipes().firstOrNull() ?: return@launch
             setState {
-                this.copy(breakfastRecipes = recipes)
+                this.copy(breakfastRecipes = recipes.map { recipeInformation ->
+                    Recipe(
+                        id = recipeInformation.id,
+                        name = recipeInformation.title,
+                        image = SpoonacularImageHelper.generateRecipeImageUrl(
+                            id = recipeInformation.id?.toLong() ?: 0,
+                            imageSize = SpoonacularImageSize.Recipe.MEDIUM_QUALITY,
+                            imageType = recipeInformation.imageType ?: ""
+                        )
+                    )
+                })
             }
         }
     }
 }
+
+data class Recipe(
+    val id: Int?,
+    val name: String? = null,
+    val rating: Int? = null,
+    val serving: Int? = null,
+    val time: Long? = null,
+    val calories: Long? = null,
+    val image: String? = null
+)

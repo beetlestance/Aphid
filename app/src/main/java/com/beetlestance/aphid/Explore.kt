@@ -55,13 +55,14 @@ import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.text.input.TextFieldValue
+import timber.log.Timber
 
 /**
  * If possible manage all the states in the top level composable for the screen
  */
 @OptIn(ExperimentalFocus::class)
 @Composable
-fun Explore() {
+fun Explore(state: ExploreViewState) {
     Surface(color = MaterialTheme.colors.surface) {
         ScrollableColumn(
             modifier = Modifier.fillMaxSize(),
@@ -71,7 +72,7 @@ fun Explore() {
                 alignment = Alignment.Top
             )
         ) {
-
+            Timber.d("$state")
             val searchState = rememberSearchState()
             val searchQuery = savedInstanceState(saver = TextFieldValue.Saver) {
                 TextFieldValue(searchState.query)
@@ -88,8 +89,9 @@ fun Explore() {
 
             Filters()
 
-
-            BreakFastWithHeader()
+            if (state.breakfastRecipes.isNotEmpty()) {
+                BreakFastWithHeader(state.breakfastRecipes)
+            }
 
             MoodContent()
 
@@ -232,7 +234,7 @@ class Filter(
 
 
 @Composable
-fun BreakFastWithHeader() {
+fun BreakFastWithHeader(breakfastRecipes: List<Recipe>) {
 
     Text(
         text = stringResource(id = R.string.explore_breaksfast_header),
@@ -246,13 +248,13 @@ fun BreakFastWithHeader() {
         )
     ) {
 
-        repeat(4) {
+        breakfastRecipes.forEach { recipe ->
             FoodCardWithDetails(
                 fraction = 0.7f,
                 imageResource = R.drawable.temp_brownie,
                 contentTags = "2 Serving • 40 Min • 331 Cal ",
                 rating = "4.3",
-                name = "Creamy Donut",
+                name = recipe.name ?: "",
             )
         }
     }
