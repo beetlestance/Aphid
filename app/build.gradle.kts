@@ -34,7 +34,7 @@ android {
         buildConfigField(
             type = "String",
             name = "SpoonacularApiKey",
-            value = project.property("SPOONACULAR_API_KEY") as? String ?: ""
+            value = "\"" + project.property("SPOONACULAR_API_KEY") + "\""
         )
 
         testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")

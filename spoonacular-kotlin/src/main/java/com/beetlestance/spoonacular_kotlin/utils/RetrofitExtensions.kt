@@ -15,9 +15,25 @@
  */
 package com.beetlestance.spoonacular_kotlin.utils
 
+import com.beetlestance.spoonacular_kotlin.models.ClientError
+import com.beetlestance.spoonacular_kotlin.models.Informational
+import com.beetlestance.spoonacular_kotlin.models.Redirection
+import com.beetlestance.spoonacular_kotlin.models.ServerError
 import com.beetlestance.spoonacular_kotlin.models.SpoonacularApiResponse
+import com.beetlestance.spoonacular_kotlin.models.Success
+import okhttp3.Response as OkHttpResponse
 import retrofit2.Response
 
 inline fun <reified T> Response<T>.toSpoonacularApiResponse(): SpoonacularApiResponse<T> {
-    return raw().toSpoonacularApiResponse()
+    val okHttpResponse: OkHttpResponse = raw()
+    return when {
+        okHttpResponse.isRedirect -> Redirection(code(), headers().toMultimap())
+        okHttpResponse.isInformational -> Informational(message(), code(), headers().toMultimap())
+        okHttpResponse.isSuccessful -> Success(body() as T, code(), headers().toMultimap())
+        okHttpResponse.isClientError -> ClientError(errorBody(), code(), headers().toMultimap())
+        okHttpResponse.isServerError -> ServerError(
+            null, errorBody(), code(), headers().toMultimap()
+        )
+        else -> throw IllegalStateException("Unknown error code ${code()}")
+    }
 }

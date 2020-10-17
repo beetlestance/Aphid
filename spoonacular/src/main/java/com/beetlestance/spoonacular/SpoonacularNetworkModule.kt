@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module(includes = [SpoonacularServiceModule::class])
@@ -12,8 +13,11 @@ object SpoonacularNetworkModule {
 
     @Provides
     @Singleton
-    fun provideSpoonacular(client: OkHttpClient): Spoonacular =
-        object : Spoonacular("") {
+    fun provideSpoonacular(
+        client: OkHttpClient,
+        @Named("spoonacular-api-key") apiKey: String
+    ): Spoonacular =
+        object : Spoonacular(apiKey) {
             override fun okHttpClient(): OkHttpClient {
                 return client.newBuilder().apply {
                     setOkHttpClientDefaults()
