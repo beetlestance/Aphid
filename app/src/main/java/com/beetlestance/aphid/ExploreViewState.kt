@@ -1,9 +1,9 @@
 package com.beetlestance.aphid
 
 import androidx.compose.runtime.Immutable
-import com.beetlestance.data.entities.Recipes
+import com.beetlestance.data.entities.Recipe
 
 @Immutable
 data class ExploreViewState(
-    val breakfastRecipes: List<Recipes> = emptyList()
+    val breakfastRecipes: List<Recipe> = emptyList()
 )
