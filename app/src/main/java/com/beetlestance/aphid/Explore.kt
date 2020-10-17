@@ -55,6 +55,7 @@ import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.text.input.TextFieldValue
+import com.beetlestance.data.entities.Recipes
 import timber.log.Timber
 
 /**
@@ -234,7 +235,7 @@ class Filter(
 
 
 @Composable
-fun BreakFastWithHeader(breakfastRecipes: List<Recipe>) {
+fun BreakFastWithHeader(breakfastRecipes: List<Recipes>) {
 
     Text(
         text = stringResource(id = R.string.explore_breaksfast_header),
