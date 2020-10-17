@@ -17,6 +17,9 @@ package com.beetlestance.data.repositories.recipes
 
 import com.beetlestance.base.extensions.executeWithRetry
 import com.beetlestance.base.result.Result
+import com.beetlestance.data.entities.Recipe
+import com.beetlestance.data.mapper.RecipeInformationToRecipe
+import com.beetlestance.data.mapper.forLists
 import com.beetlestance.data.toResult
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.RandomRecipes
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.RecipeInformation
@@ -25,12 +28,13 @@ import com.beetlestance.spoonacular_kotlin.utils.toSpoonacularApiResponse
 import javax.inject.Inject
 
 class RecipesDataSource @Inject constructor(
-    private val recipesService: RecipesService
+    private val recipesService: RecipesService,
+    private val recipeInformationToRecipe: RecipeInformationToRecipe
 ) {
-    suspend fun fetchRecipes(): Result<RandomRecipes> {
+    suspend fun fetchRecipes(): Result<List<Recipe>> {
         return recipesService.getRandomRecipes(number = 4)
             .executeWithRetry(shouldRetry = { false })
             .toSpoonacularApiResponse()
-            .toResult()
+            .toResult { (recipes) -> recipeInformationToRecipe.forLists().invoke(recipes) }
     }
 }

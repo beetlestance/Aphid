@@ -13,8 +13,6 @@ class RecipesRepository @Inject constructor(
 
     suspend fun fetchRecipes() {
         val recipeResult = recipesDataSource.fetchRecipes()
-        recipeResult.dataOrThrowException {
-            //ToDo: Store these values into recipe table
-        }
+        recipeResult.dataOrThrowException(recipesStore::saveRecipes)
     }
 }

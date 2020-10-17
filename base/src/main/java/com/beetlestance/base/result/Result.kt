@@ -44,7 +44,7 @@ data class Failure<T>(val throwable: Throwable) : Result<T>()
  *
  * Performs the give [block] if the instance is [Success]
  */
-fun <T> Result<T>.dataOrThrowException(block: T.() -> Unit = {}) = when (this) {
+suspend fun <T> Result<T>.dataOrThrowException(block: suspend T.() -> Unit = {}) = when (this) {
     is Success -> {
         block(data)
         data
