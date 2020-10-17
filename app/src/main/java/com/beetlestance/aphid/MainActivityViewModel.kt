@@ -26,7 +26,7 @@ class MainActivityViewModel @ViewModelInject constructor(
                         name = recipeInformation.title,
                         image = SpoonacularImageHelper.generateRecipeImageUrl(
                             id = recipeInformation.id?.toLong() ?: 0,
-                            imageSize = SpoonacularImageSize.Recipe.MEDIUM_QUALITY,
+                            imageSize = SpoonacularImageSize.Recipe.ULTRA_HIGH_QUALITY,
                             imageType = recipeInformation.imageType ?: ""
                         )
                     )

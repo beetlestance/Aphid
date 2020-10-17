@@ -124,7 +124,7 @@ dependencies {
     implementation(Libs.AndroidX.Compose.livedata)
 
     // Coil
-    implementation(Libs.Coil.coil)
+    implementation(Libs.Accompanist.coil)
 
     // Kotlin
     implementation(Libs.Kotlin.stdlib)
