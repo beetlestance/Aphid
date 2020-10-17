@@ -45,6 +45,6 @@ object DatabaseDaoModule {
 abstract class DatabaseModuleBinds {
 
     @Binds
-    abstract fun bindTiviDatabase(db: AphidRoomDatabase): AphidDatabase
+    abstract fun bindAphidDatabase(db: AphidRoomDatabase): AphidDatabase
 
 }

@@ -12,7 +12,7 @@ import com.beetlestance.data.AphidTables
         Index(value = ["recipe_id"], unique = true)
     ]
 )
-data class Recipes(
+data class Recipe(
 
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0,
 
