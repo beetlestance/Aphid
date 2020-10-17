@@ -1,10 +1,10 @@
 package com.beetlestance.data
 
-import com.beetlestance.data.daos.RecipesDao
+import com.beetlestance.data.daos.RecipeDao
 
 interface AphidDatabase {
 
-    fun recipesDao(): RecipesDao
+    fun recipesDao(): RecipeDao
 
 }
 
