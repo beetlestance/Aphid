@@ -11,8 +11,10 @@ class RecipesRepository @Inject constructor(
 ) {
     fun observeRecipes() = recipesStore.observeRecipes()
 
-    suspend fun fetchRecipes(): List<RecipeInformation> {
+    suspend fun fetchRecipes() {
         val recipeResult = recipesDataSource.fetchRecipes()
-        return recipeResult.dataOrThrowException().recipes
+        recipeResult.dataOrThrowException {
+            //ToDo: Store these values into recipe table
+        }
     }
 }

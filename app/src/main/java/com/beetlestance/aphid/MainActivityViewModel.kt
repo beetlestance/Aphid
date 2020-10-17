@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import com.beetlestance.domain.invoke
 import com.beetlestance.domain.observers.ObserveRecipes
+import com.beetlestance.domain.watchStatus
 import com.beetlestance.spoonacular_kotlin.SpoonacularImageHelper
 import com.beetlestance.spoonacular_kotlin.constants.SpoonacularImageSize
 import kotlinx.coroutines.flow.collect
@@ -21,7 +22,11 @@ class MainActivityViewModel @ViewModelInject constructor(
 
     init {
         viewModelScope.launch {
-            fetchRecipes().firstOrNull() ?: return@launch
+            fetchRecipes().watchStatus(
+                onStarted = {},
+                onSuccess = {},
+                onError = {}
+            )
         }
 
         observeRecipes()
