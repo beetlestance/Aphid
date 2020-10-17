@@ -89,8 +89,8 @@ dependencies {
 
     // Local projects
     implementation(project(":base"))
-    implementation(project(":data"))
     implementation(project(":base-android"))
+    implementation(project(":data"))
     implementation(project(":data-android"))
     implementation(project(":domain"))
     implementation(project(":spoonacular"))

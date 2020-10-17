@@ -10,11 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
 
 @InstallIn(ApplicationComponent::class)
-@Module(
-    includes = [
-        SpoonacularNetworkModule::class
-    ]
-)
+@Module
 object AppModule {
 
     @Singleton

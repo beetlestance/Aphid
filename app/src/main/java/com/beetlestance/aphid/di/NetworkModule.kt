@@ -2,6 +2,7 @@ package com.beetlestance.aphid.di
 
 import android.content.Context
 import com.beetlestance.aphid.BuildConfig
+import com.beetlestance.spoonacular.SpoonacularNetworkModule
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +19,11 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @InstallIn(ApplicationComponent::class)
-@Module
+@Module(
+    includes = [
+        SpoonacularNetworkModule::class
+    ]
+)
 object NetworkModule {
     @Singleton
     @Provides
