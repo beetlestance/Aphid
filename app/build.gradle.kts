@@ -34,7 +34,7 @@ android {
         buildConfigField(
             type = "String",
             name = "SpoonacularApiKey",
-            value = "\"" + project.property("SPOONACULAR_API_KEY") + "\""
+            value = "\"" + (project.findProperty("SPOONACULAR_API_KEY") ?: "") + "\""
         )
 
         testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
@@ -124,7 +124,7 @@ dependencies {
     implementation(Libs.AndroidX.Compose.livedata)
 
     // Coil
-    implementation(Libs.Coil.coil)
+    implementation(Libs.Accompanist.coil)
 
     // Kotlin
     implementation(Libs.Kotlin.stdlib)

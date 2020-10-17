@@ -33,6 +33,7 @@ import com.beetlestance.spoonacular_kotlin.models.response.recipe.CreateRecipeCa
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.GuessNutritionByDishName
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.ParseIngredients
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.QuickAnswer
+import com.beetlestance.spoonacular_kotlin.models.response.recipe.RandomRecipes
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.RecipeEquipment
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.RecipeInformation
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.RecipeIngredients
@@ -309,7 +310,7 @@ interface RecipesService {
         @Query("limitLicense") limitLicense: Boolean? = null,
         @Query("tags") tags: String? = null,
         @Query("number") number: Int? = null
-    ): Call<List<RecipeInformation>>
+    ): Call<RandomRecipes>
 
     /**
      * Get Recipe Information Bulk

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.FlowCrossAxisAlignment
 import androidx.compose.foundation.layout.FlowMainAxisAlignment
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.SizeMode
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredWidth
@@ -26,6 +27,7 @@ import androidx.compose.material.ProvideEmphasis
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ConfigurationAmbient
@@ -34,12 +36,14 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
 fun FoodCardWithDetails(
     modifier: Modifier = Modifier,
     fraction: Float = 1f,
     verticalItemSpace: Dp = 4.dp,
+    imageUrl: String? = null,
     @DrawableRes imageResource: Int,
     cardShape: Shape = RoundedCornerShape(16.dp),
     onCheckedChange: (Boolean) -> Unit = {},
@@ -48,7 +52,7 @@ fun FoodCardWithDetails(
     name: String
 ) {
     // per item width in row
-    val itemWidth = (ConfigurationAmbient.current.screenWidthDp * fraction).dp
+    val itemWidth: Dp = (ConfigurationAmbient.current.screenWidthDp * fraction).dp
 
     Column(
         modifier = modifier.preferredWidth(itemWidth).fillMaxWidth(),
@@ -59,7 +63,8 @@ fun FoodCardWithDetails(
     ) {
 
         FoodCardWithFavIcon(
-            imageResource = imageResource,
+            imageSrc = imageUrl ?: imageResource,
+            itemWidth = itemWidth,
             cardShape = cardShape,
             onCheckChanged = onCheckedChange
         )
@@ -74,16 +79,18 @@ fun FoodCardWithDetails(
 
 @Composable
 fun FoodCardWithFavIcon(
-    @DrawableRes imageResource: Int,
+    imageSrc: Any,
+    itemWidth: Dp,
     cardShape: Shape = RoundedCornerShape(16.dp),
     onCheckChanged: (Boolean) -> Unit = {}
 ) {
     Card(shape = cardShape) {
         Box {
-            Image(
-                modifier = Modifier.fillMaxWidth(),
-                asset = imageResource(id = imageResource),
-                contentScale = ContentScale.Crop
+            CoilImage(
+                data = imageSrc,
+                fadeIn = true,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.preferredWidth(itemWidth).aspectRatio(3 / 4f).clip(cardShape)
             )
 
             ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {

@@ -1,9 +1,8 @@
 package com.beetlestance.aphid
 
-import com.beetlestance.spoonacular_kotlin.models.response.recipe.RecipeInformation
+import androidx.compose.runtime.Immutable
 
+@Immutable
 data class ExploreViewState(
-    val breakfastRecipes: List<RecipeInformation> = emptyList(),
-    val cousines: List<RecipeInformation> = emptyList(),
-    val timelyRecipes: List<RecipeInformation> = emptyList()
+    val breakfastRecipes: List<Recipe> = emptyList()
 )

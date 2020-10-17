@@ -137,6 +137,11 @@ object Libs {
         const val coil = "io.coil-kt:coil:$version"
     }
 
+    object Accompanist {
+        private const val version = "0.3.1"
+        const val coil = "dev.chrisbanes.accompanist:accompanist-coil:$version"
+    }
+
     object Dagger {
         private const val version = "2.29.1"
         const val dagger = "com.google.dagger:dagger:$version"
