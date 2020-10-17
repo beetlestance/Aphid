@@ -253,11 +253,11 @@ fun BreakFastWithHeader(breakfastRecipes: List<Recipe>) {
             FoodCardWithDetails(
                 fraction = 0.7f,
                 imageRatio = 0.7f,
-                imageUrl = recipe.image,
+                imageUrl = recipe.imageName,
                 imageResource = R.drawable.temp_brownie,
                 contentTags = "2 Serving • 40 Min • 331 Cal ",
                 rating = "4.3",
-                name = recipe.name ?: "",
+                name = recipe.title ?: "",
             )
         }
     }

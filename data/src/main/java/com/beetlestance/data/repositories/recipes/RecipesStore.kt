@@ -12,4 +12,6 @@ class RecipesStore @Inject constructor(
 
     suspend fun saveRecipes(recipes: List<Recipe>) =
         recipesDao.insertAll(recipes)
+
+    suspend fun numberOfRecipesSaved() = recipesDao.allRecipes().size
 }

@@ -12,6 +12,8 @@ class RecipesRepository @Inject constructor(
     fun observeRecipes() = recipesStore.observeRecipes()
 
     suspend fun fetchRecipes() {
+        // For testing only, will remove once explore layer is created
+        if (recipesStore.numberOfRecipesSaved() > 0) return
         val recipeResult = recipesDataSource.fetchRecipes()
         recipeResult.dataOrThrowException(recipesStore::saveRecipes)
     }

@@ -10,7 +10,7 @@ import dev.matrix.roomigrant.GenerateRoomMigrations
     entities = [
         Recipe::class
     ],
-    version = 26
+    version = 1
 )
 @GenerateRoomMigrations
 abstract class AphidRoomDatabase : RoomDatabase(), AphidDatabase
