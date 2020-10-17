@@ -18,8 +18,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AmbientEmphasisLevels
 import androidx.compose.material.Card
-import androidx.compose.material.EmphasisAmbient
 import androidx.compose.material.IconToggleButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ProvideEmphasis
@@ -86,7 +86,7 @@ fun FoodCardWithFavIcon(
                 contentScale = ContentScale.Crop
             )
 
-            ProvideEmphasis(emphasis = EmphasisAmbient.current.medium) {
+            ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {
                 IconToggleButton(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
