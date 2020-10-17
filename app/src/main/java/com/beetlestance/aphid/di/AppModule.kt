@@ -23,7 +23,7 @@ object AppModule {
         main = Dispatchers.Main
     )
 
-    @Named("spoonacular-api-key")
+    @Named("spoonacular_api_key")
     @Singleton
     @Provides
     fun provideSpoonacularApi() = BuildConfig.SpoonacularApiKey

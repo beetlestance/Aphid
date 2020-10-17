@@ -15,7 +15,7 @@ object SpoonacularNetworkModule {
     @Singleton
     fun provideSpoonacular(
         client: OkHttpClient,
-        @Named("spoonacular-api-key") apiKey: String
+        @Named("spoonacular_api_key") apiKey: String
     ): Spoonacular =
         object : Spoonacular(apiKey) {
             override fun okHttpClient(): OkHttpClient {
