@@ -60,6 +60,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.beetlestance.aphid.commoncompose.Pager
 import com.beetlestance.aphid.commoncompose.PagerState
+import com.beetlestance.aphid.commoncompose.ViewPagerTransition
 import com.beetlestance.data.entities.Recipe
 import com.beetlestance.spoonacular_kotlin.SpoonacularImageHelper
 import com.beetlestance.spoonacular_kotlin.constants.SpoonacularImageSize
@@ -275,7 +276,8 @@ fun BreakFastWithHeader(
 
         FoodCardWithDetailsPage(
             modifier = Modifier.padding(4.dp)
-                .fillMaxHeight(),
+                .fillMaxHeight()
+                .scalePagerItems(ViewPagerTransition.DEPTH_TRANSFORM),
             horizontalOffset = 16.dp,
             fraction = 0.9f,
             horizontalOffsetFraction = 0.05f,
@@ -299,6 +301,14 @@ fun MoodContent() {
 
         val topGuideline = createGuidelineFromTop(fraction = 0.15f)
 
+        Image(
+            modifier = Modifier.constrainAs(image) {
+                linkTo(start = parent.start, end = parent.end, bias = 1f)
+                width = Dimension.percent(0.2f)
+            }.aspectRatio(1f),
+            asset = vectorResource(id = R.drawable.ic_cookie)
+        )
+
         Text(
             modifier = Modifier
                 .constrainAs(text) {
@@ -312,14 +322,6 @@ fun MoodContent() {
                 ).padding(16.dp),
             text = "What Are You In Mood For Today ?",
             style = MaterialTheme.typography.h5
-        )
-
-        Image(
-            modifier = Modifier.constrainAs(image) {
-                linkTo(start = parent.start, end = parent.end, bias = 1f)
-                width = Dimension.percent(0.2f)
-            }.aspectRatio(1f),
-            asset = vectorResource(id = R.drawable.ic_cookie)
         )
     }
 

@@ -1,15 +1,11 @@
 package com.beetlestance.aphid.commoncompose
 
-import android.graphics.Matrix
-import android.util.Log
 import androidx.compose.animation.AnimatedFloatModel
 import androidx.compose.animation.core.AnimationClockObservable
 import androidx.compose.animation.core.AnimationEndReason
 import androidx.compose.animation.core.fling
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
@@ -23,18 +19,13 @@ import androidx.compose.ui.Layout
 import androidx.compose.ui.Measurable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.ParentDataModifier
-import androidx.compose.ui.WithConstraints
 import androidx.compose.ui.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
-import androidx.compose.ui.graphics.drawscope.scale
-import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.drawscope.withTransform
-import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.util.lerp
-import androidx.core.graphics.translationMatrix
 import java.lang.Math.abs
 import kotlin.math.roundToInt
 
@@ -237,7 +228,7 @@ class PagerScope(
      */
     fun Modifier.scalePagerItems(
         pageTransition: ViewPagerTransition
-    ): Modifier = Modifier.drawWithContent {
+    ): Modifier = drawWithContent {
         if (selectionState == PagerState.SelectionState.Selected) {
             // If the pager is 'selected', it's stationary so we use a simple if check
             if (page != currentPage) {

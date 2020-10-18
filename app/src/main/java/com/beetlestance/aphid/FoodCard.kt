@@ -142,7 +142,7 @@ fun FoodCardWithFavIcon(
                 fadeIn = true,
                 contentScale = ContentScale.Crop,
                 modifier = modifier
-                    .aspectRatio(3 / 4f)
+                    .aspectRatio(2 / 3f)
                     .clipToBounds()
             )
 
