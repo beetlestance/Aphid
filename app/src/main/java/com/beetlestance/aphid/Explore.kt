@@ -263,14 +263,14 @@ fun BreakFastWithHeader(
     ) {
         val recipe = breakfastRecipes[page]
 
-        val recipeImageUrl: String? = recipe.imageUrl?.let { imageUrl ->
-            val imageId = SpoonacularImageHelper.imageNameFrom(url = imageUrl)?.toLong()
-            SpoonacularImageHelper.generateRecipeImageUrl(
-                id = imageId ?: return@let null,
+        val recipeImageUrl: String? = run {
+            return@run SpoonacularImageHelper.generateRecipeImageUrl(
+                id = recipe.recipeId?.toLong() ?: return@run null,
                 imageSize = SpoonacularImageSize.Recipe.ULTRA_HIGH_QUALITY,
-                imageType = recipe.imageType ?: return@let null
+                imageType = recipe.imageType ?: return@run null
             )
         }
+
         FoodCardWithDetails(
             imageUrl = recipeImageUrl ?: recipe.imageUrl,
             imageResource = R.drawable.temp_brownie,
