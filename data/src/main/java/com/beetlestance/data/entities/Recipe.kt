@@ -28,7 +28,7 @@ data class Recipe(
 
     @ColumnInfo(name = "calories") val calories: Long? = null,
 
-    @ColumnInfo(name = "image_name") val imageName: String? = null,
+    @ColumnInfo(name = "image_url") val imageUrl: String? = null,
 
     @ColumnInfo(name = "image_type") val imageType: String? = null
 

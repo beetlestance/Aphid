@@ -62,6 +62,11 @@ object SpoonacularImageHelper {
     private const val RECIPE: String = "/recipeImages"
 
     /**
+     * Basic image type for all spoonacular images
+     */
+    private const val IMAGE_TYPE_JPG = "jpg"
+
+    /**
      * The recipe instruction endpoint will give you information about the equipment used for
      * cooking the dish. You will only receive the image name for the equipment.
      * You have to build the full URL by adding the base path to the beginning.
@@ -75,7 +80,7 @@ object SpoonacularImageHelper {
      * */
     fun generateEquipmentImageUrl(
         @EquipmentImageSize imageSize: String,
-        imageName: String
+        imageName: String?
     ): String {
         return "$IMAGE_URL$EQUIPMENT$imageSize/$imageName"
     }
@@ -93,7 +98,7 @@ object SpoonacularImageHelper {
      * */
     fun generateIngredientImageUrl(
         @IngredientImageSize imageSize: String,
-        imageName: String
+        imageName: String?
     ): String {
         return "$IMAGE_URL$INGREDIENTS$imageSize/$imageName"
     }
@@ -115,9 +120,9 @@ object SpoonacularImageHelper {
     fun generateGroceryImageUrl(
         id: Long,
         @GroceryImageSize imageSize: String,
-        imageType: String
+        imageType: String?
     ): String {
-        return "$IMAGE_URL$GROCERY/$id-$imageSize.$imageType"
+        return "$IMAGE_URL$GROCERY/$id-$imageSize.${imageType ?: IMAGE_TYPE_JPG}"
     }
 
     /**
@@ -138,9 +143,9 @@ object SpoonacularImageHelper {
     fun generateMenuItemsImageUrl(
         id: Long,
         @MenuItemImageSize imageSize: String,
-        imageType: String
+        imageType: String?
     ): String {
-        return "$MENU_ITEMS_IMAGE_URL$MENU_ITEMS/$id-$imageSize.$imageType"
+        return "$MENU_ITEMS_IMAGE_URL$MENU_ITEMS/$id-$imageSize.${imageType ?: IMAGE_TYPE_JPG}"
     }
 
     /**
@@ -160,8 +165,21 @@ object SpoonacularImageHelper {
     fun generateRecipeImageUrl(
         id: Long,
         @RecipeImageSize imageSize: String,
-        imageType: String
+        imageType: String?
     ): String {
-        return "$IMAGE_URL$RECIPE/$id-$imageSize.$imageType"
+        return "$IMAGE_URL$RECIPE/$id-$imageSize.${imageType ?: IMAGE_TYPE_JPG}"
+    }
+
+    /**
+     *
+     * Provides name from url to create size specific image
+     *
+     * @param url image url for extracting image name
+     * @return String
+     * */
+    fun imageNameFrom(url: String): String? {
+        val image = url.split("/").lastOrNull() ?: return null
+        val imageWithSpecifiedSize = image.split(".").firstOrNull() ?: return null
+        return imageWithSpecifiedSize.split("-").firstOrNull()
     }
 }

@@ -64,6 +64,8 @@ import com.beetlestance.aphid.commoncompose.Pager
 import com.beetlestance.aphid.commoncompose.PagerState
 import com.beetlestance.aphid.commoncompose.ViewPagerTransition
 import com.beetlestance.data.entities.Recipe
+import com.beetlestance.spoonacular_kotlin.SpoonacularImageHelper
+import com.beetlestance.spoonacular_kotlin.constants.SpoonacularImageSize
 import timber.log.Timber
 
 /**
@@ -74,7 +76,7 @@ import timber.log.Timber
 fun Explore(state: ExploreViewState) {
     Surface(color = MaterialTheme.colors.surface) {
         ScrollableColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().animateContentSize(),
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(
                 space = 24.dp,
@@ -264,8 +266,17 @@ fun BreakFastWithHeader(
     ) {
         val selected = page == currentPage
         val recipe = breakfastRecipes[page]
+
+        val recipeImageUrl: String? = run {
+            return@run SpoonacularImageHelper.generateRecipeImageUrl(
+                id = recipe.recipeId?.toLong() ?: return@run null,
+                imageSize = SpoonacularImageSize.Recipe.ULTRA_HIGH_QUALITY,
+                imageType = recipe.imageType
+            )
+        }
+
         FoodCardWithDetails(
-            imageUrl = recipe.imageName,
+            imageUrl = recipeImageUrl ?: recipe.imageUrl,
             imageResource = R.drawable.temp_brownie,
             contentTags = "2 Serving • 40 Min • 331 Cal ",
             rating = "4.3",

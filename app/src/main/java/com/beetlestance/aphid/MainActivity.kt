@@ -15,11 +15,11 @@
  */
 package com.beetlestance.aphid
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.Recomposer
-import androidx.compose.runtime.State
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.setContent
@@ -33,11 +33,24 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // disabled dark theme temporarily
+        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_NO -> {
+                // Night mode is not active, we're using the light theme
+            }
+            Configuration.UI_MODE_NIGHT_YES -> {
+                // Night mode is active, we're using dark theme
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        }
+
+        resources.configuration.uiMode = Configuration.UI_MODE_NIGHT_NO
         setContent {
             MdcTheme {
                 val viewState by viewModel.liveData.observeAsState()
                 if (viewState != null) {
-                    Explore(viewState!!)
+                    Explore(viewState ?: return@MdcTheme)
                 }
             }
         }
