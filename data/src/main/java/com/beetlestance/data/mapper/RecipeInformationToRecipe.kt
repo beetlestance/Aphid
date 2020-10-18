@@ -16,7 +16,7 @@ class RecipeInformationToRecipe @Inject constructor() : Mapper<RecipeInformation
         serving = from.servings,
         readyInMinutes = from.readyInMinutes,
         calories = null,
-        imageName = from.image,
+        imageUrl = from.image,
         imageType = from.imageType
     )
 }

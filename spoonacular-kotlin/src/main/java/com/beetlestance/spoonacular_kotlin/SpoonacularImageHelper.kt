@@ -172,7 +172,7 @@ object SpoonacularImageHelper {
      * @param url image url for extracting image name
      * @return String
      * */
-    fun imageUrlToImageName(url: String): String? {
+    fun imageNameFrom(url: String): String? {
         val image = url.split("/").lastOrNull() ?: return null
         val imageWithSpecifiedSize = image.split(".").firstOrNull() ?: return null
         return imageWithSpecifiedSize.split("-").firstOrNull()

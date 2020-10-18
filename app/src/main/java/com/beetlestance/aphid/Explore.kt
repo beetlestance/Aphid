@@ -61,6 +61,8 @@ import androidx.compose.ui.unit.dp
 import com.beetlestance.aphid.commoncompose.Pager
 import com.beetlestance.aphid.commoncompose.PagerState
 import com.beetlestance.data.entities.Recipe
+import com.beetlestance.spoonacular_kotlin.SpoonacularImageHelper
+import com.beetlestance.spoonacular_kotlin.constants.SpoonacularImageSize
 import timber.log.Timber
 
 /**
@@ -260,8 +262,17 @@ fun BreakFastWithHeader(
             .preferredHeight(550.dp)
     ) {
         val recipe = breakfastRecipes[page]
+
+        val recipeImageUrl: String? = recipe.imageUrl?.let { imageUrl ->
+            val imageId = SpoonacularImageHelper.imageNameFrom(url = imageUrl)?.toLong()
+            SpoonacularImageHelper.generateRecipeImageUrl(
+                id = imageId ?: return@let null,
+                imageSize = SpoonacularImageSize.Recipe.ULTRA_HIGH_QUALITY,
+                imageType = recipe.imageType ?: return@let null
+            )
+        }
         FoodCardWithDetails(
-            imageUrl = recipe.imageName,
+            imageUrl = recipeImageUrl ?: recipe.imageUrl,
             imageResource = R.drawable.temp_brownie,
             contentTags = "2 Serving • 40 Min • 331 Cal ",
             rating = "4.3",
