@@ -65,7 +65,7 @@ subprojects {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
         kotlinOptions {
             // Treat all Kotlin warnings as errors
-            allWarningsAsErrors = true
+            allWarningsAsErrors = false
 
             // Enable experimental coroutines APIs, including Flow
             if (project.name != "mdc-theme-lint" && project.name != "spoonacular-kotlin") {

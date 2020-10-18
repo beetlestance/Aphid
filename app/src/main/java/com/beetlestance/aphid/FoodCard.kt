@@ -24,11 +24,13 @@ import androidx.compose.material.Card
 import androidx.compose.material.IconToggleButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ProvideEmphasis
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.draw.drawShadow
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ConfigurationAmbient
@@ -44,6 +46,7 @@ fun FoodCardWithDetails(
     modifier: Modifier = Modifier,
     verticalItemSpace: Dp = 4.dp,
     imageUrl: String? = null,
+    elevation: Dp = 4.dp,
     @DrawableRes imageResource: Int,
     cardShape: Shape = RoundedCornerShape(16.dp),
     onCheckedChange: (Boolean) -> Unit = {},
@@ -54,26 +57,27 @@ fun FoodCardWithDetails(
     // per item width in row
     //  val itemWidth: Dp = (ConfigurationAmbient.current.screenWidthDp * fraction).dp
 
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(
-            space = verticalItemSpace,
-            alignment = Alignment.Top
-        )
-    ) {
+    Surface(elevation = elevation, modifier = modifier.clip(cardShape)) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(
+                space = verticalItemSpace,
+                alignment = Alignment.Top
+            )
+        ) {
 
-        FoodCardWithFavIcon(
-            imageSrc = imageUrl ?: imageResource,
-            cardShape = cardShape,
-            onCheckChanged = onCheckedChange,
-            modifier = Modifier.fillMaxWidth()
-        )
+            FoodCardWithFavIcon(
+                imageSrc = imageUrl ?: imageResource,
+                cardShape = cardShape,
+                onCheckChanged = onCheckedChange,
+                modifier = Modifier.fillMaxWidth()
+            )
 
-        FoodCardContentsDetails(
-            contentTags = contentTags,
-            rating = rating,
-            name = name
-        )
+            FoodCardContentsDetails(
+                contentTags = contentTags,
+                rating = rating,
+                name = name
+            )
+        }
     }
 }
 

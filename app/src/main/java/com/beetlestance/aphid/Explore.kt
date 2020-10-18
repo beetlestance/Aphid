@@ -1,5 +1,6 @@
 package com.beetlestance.aphid
 
+import androidx.compose.animation.animate
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Icon
@@ -43,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.drawLayer
 import androidx.compose.ui.focus.ExperimentalFocus
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.isFocused
@@ -60,6 +62,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.beetlestance.aphid.commoncompose.Pager
 import com.beetlestance.aphid.commoncompose.PagerState
+import com.beetlestance.aphid.commoncompose.ViewPagerTransition
 import com.beetlestance.data.entities.Recipe
 import timber.log.Timber
 
@@ -259,16 +262,18 @@ fun BreakFastWithHeader(
             .fillMaxWidth()
             .preferredHeight(550.dp)
     ) {
+        val selected = page == currentPage
         val recipe = breakfastRecipes[page]
         FoodCardWithDetails(
             imageUrl = recipe.imageName,
             imageResource = R.drawable.temp_brownie,
             contentTags = "2 Serving • 40 Min • 331 Cal ",
             rating = "4.3",
+            elevation = if (selected) 16.dp else 4.dp,
             name = recipe.title ?: "",
             modifier = Modifier.padding(4.dp)
                 .fillMaxHeight()
-                .scalePagerItems(unselectedScale = 0.8f)
+                .scalePagerItems(ViewPagerTransition.DEPTH_TRANSFORM)
         )
     }
 }

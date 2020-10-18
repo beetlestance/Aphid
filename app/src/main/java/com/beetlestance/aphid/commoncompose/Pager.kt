@@ -1,11 +1,15 @@
 package com.beetlestance.aphid.commoncompose
 
+import android.graphics.Matrix
+import android.util.Log
 import androidx.compose.animation.AnimatedFloatModel
 import androidx.compose.animation.core.AnimationClockObservable
 import androidx.compose.animation.core.AnimationEndReason
 import androidx.compose.animation.core.fling
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
@@ -19,17 +23,32 @@ import androidx.compose.ui.Layout
 import androidx.compose.ui.Measurable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.ParentDataModifier
+import androidx.compose.ui.WithConstraints
 import androidx.compose.ui.drawWithContent
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.graphics.drawscope.scale
+import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.graphics.drawscope.withTransform
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.util.lerp
+import androidx.core.graphics.translationMatrix
+import java.lang.Math.abs
 import kotlin.math.roundToInt
 
 /**
  * Stole from jetpack compose samples - JetCaster
  */
+
+data class PageTransformState(
+    val alpha: Float = 1f,
+    val scaleX: Float = 1f,
+    val scaleY: Float = 1f,
+    val translationX: Float = 0f,
+    val translationY: Float = 0f
+)
 
 class PagerState(
     clock: AnimationClockObservable,
@@ -189,6 +208,7 @@ fun Pager(
 /**
  * Scope for [Pager] content.
  */
+@Suppress("UNUSED_PARAMETER")
 class PagerScope(
     private val state: PagerState,
     val page: Int
@@ -211,22 +231,20 @@ class PagerScope(
     val selectionState: PagerState.SelectionState
         get() = state.selectionState
 
-
     /**
      * Modifier which scales pager items according to their offset position. Similar in effect
      * to a carousel.
      */
     fun Modifier.scalePagerItems(
-        unselectedScale: Float
+        pageTransition: ViewPagerTransition
     ): Modifier = Modifier.drawWithContent {
         if (selectionState == PagerState.SelectionState.Selected) {
             // If the pager is 'selected', it's stationary so we use a simple if check
             if (page != currentPage) {
-                scale(
-                    scaleX = unselectedScale,
-                    scaleY = unselectedScale,
-                    Offset(center.x, center.y)
-                ) {
+                this.withTransform(transformBlock = {
+                    this.translate(top = -200f, left = if (page > currentPage) -200f else 200f)
+                    this.scale(scaleX = 0.8f, scaleY = 0.8f, pivot = Offset(center.x, center.y))
+                }) {
                     this@drawWithContent.drawContent()
                 }
             } else {
@@ -240,7 +258,7 @@ class PagerScope(
             val scale = if (offsetForPage < 0) {
                 // If the page is to the left of the current page, we scale from min -> 1f
                 lerp(
-                    start = unselectedScale,
+                    start = 0.8f,
                     stop = 1f,
                     fraction = (1f + offsetForPage).coerceIn(0f, 1f)
                 )
@@ -248,12 +266,119 @@ class PagerScope(
                 // If the page is to the right of the current page, we scale from 1f -> min
                 lerp(
                     start = 1f,
-                    stop = unselectedScale,
+                    stop = 0.8f,
                     fraction = offsetForPage.coerceIn(0f, 1f)
                 )
             }
-            scale(scale, scale, Offset(center.x, center.y)) {
+
+            val translateY = if (offsetForPage < 0) {
+                // If the page is to the left of the current page, we scale from min -> 1f
+                lerp(
+                    start = -200f,
+                    stop = 0f,
+                    fraction = (1f + offsetForPage).coerceIn(0f, 1f)
+                )
+            } else {
+                // If the page is to the right of the current page, we scale from 1f -> min
+                lerp(
+                    start = 0f,
+                    stop = -200f,
+                    fraction = offsetForPage.coerceIn(0f, 1f)
+                )
+            }
+
+            val translateX = if (offsetForPage < 0) {
+                // If the page is to the left of the current page, we scale from min -> 1f
+                lerp(
+                    start = 200f,
+                    stop = 0f,
+                    fraction = (1f + offsetForPage).coerceIn(0f, 1f)
+                )
+            } else {
+                // If the page is to the right of the current page, we scale from 1f -> min
+                lerp(
+                    start = 0f,
+                    stop = -200f,
+                    fraction = offsetForPage.coerceIn(0f, 1f)
+                )
+            }
+
+            this.withTransform(transformBlock = {
+                this.translate(top = translateY, left = translateX)
+                this.scale(scaleX = scale, scaleY = scale, pivot = Offset(center.x, center.y))
+            }) {
                 this@drawWithContent.drawContent()
+            }
+        }
+    }
+}
+
+private const val MIN_SCALE = 0.75f
+
+private const val MIN_SCALE_ZOOM = 0.9f
+private const val MIN_ALPHA = 0.7f
+
+interface ViewPagerTransition {
+    fun transformPage(position: Float, size: Size): PageTransformState
+
+    companion object {
+        val NONE = object : ViewPagerTransition {
+            override fun transformPage(
+                position: Float,
+                size: Size
+            ): PageTransformState {
+                return PageTransformState()
+            }
+        }
+
+        val DEPTH_TRANSFORM = object : ViewPagerTransition {
+            override fun transformPage(
+                position: Float,
+                size: Size
+            ): PageTransformState {
+                return when {
+                    position <= 0 -> PageTransformState()
+                    position <= 1 -> {
+                        val scaleFactor = (MIN_SCALE + (1 - MIN_SCALE) * (1 - kotlin.math.abs(
+                            position
+                        )))
+                        PageTransformState(
+                            1 - position, scaleFactor, scaleFactor,
+                            size.width * -position
+                        )
+                    }
+                    else -> PageTransformState(0f, 0f, 0f)
+                }
+            }
+        }
+
+        val ZOOM_OUT = object : ViewPagerTransition {
+            override fun transformPage(
+                position: Float,
+                size: Size
+            ): PageTransformState {
+                return when {
+                    position <= 1 && position >= -1 -> {
+                        val scaleFactor = MIN_SCALE_ZOOM.coerceAtLeast(1 - abs(position))
+                        val vertMargin = size.height * (1 - scaleFactor) / 2
+                        val horzMargin = size.width * (1 - scaleFactor) / 2
+                        val translationX = if (position < 0) {
+                            horzMargin - vertMargin / 2
+                        } else {
+                            horzMargin + vertMargin / 2
+                        }
+
+                        val alpha = (MIN_ALPHA +
+                                (((scaleFactor - MIN_SCALE_ZOOM) / (1 - MIN_SCALE_ZOOM)) * (1 - MIN_ALPHA)))
+                        PageTransformState(
+                            alpha,
+                            scaleFactor,
+                            scaleFactor,
+                            translationX
+                        )
+                    }
+                    else -> PageTransformState(0f, 0f, 0f)
+                }
             }
         }
     }
