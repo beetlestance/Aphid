@@ -73,7 +73,7 @@ import timber.log.Timber
 fun Explore(state: ExploreViewState) {
     Surface(color = MaterialTheme.colors.surface) {
         ScrollableColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().animateContentSize(),
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(
                 space = 24.dp,
