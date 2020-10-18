@@ -1,8 +1,8 @@
 package com.beetlestance.aphid
 
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.animate
 import androidx.compose.foundation.Icon
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.SizeMode
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.preferredWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,77 +25,125 @@ import androidx.compose.material.Card
 import androidx.compose.material.IconToggleButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ProvideEmphasis
-import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.draw.drawShadow
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ConfigurationAmbient
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
-fun FoodCardWithDetails(
+fun FoodCardWithDetailsPage(
     modifier: Modifier = Modifier,
-    verticalItemSpace: Dp = 4.dp,
-    imageUrl: String? = null,
-    elevation: Dp = 4.dp,
-    @DrawableRes imageResource: Int,
-    cardShape: Shape = RoundedCornerShape(16.dp),
-    onCheckedChange: (Boolean) -> Unit = {},
-    contentTags: String,
+    fraction: Float,
+    horizontalOffset: Dp,
+    horizontalOffsetFraction: Float,
+    aspectRatio: Float = 4 / 5f,
     rating: String,
-    name: String
+    name: String,
+    imageUrl: String? = null,
+    contentTags: String,
+    @DrawableRes imageResource: Int,
+    onCheckedChange: (Boolean) -> Unit = {},
+    cardShape: Shape = RoundedCornerShape(16.dp),
+    isSelected: Boolean
+) {
+    val itemWidth: Dp =
+        (ConfigurationAmbient.current.screenWidthDp * fraction).dp - horizontalOffset.times(2)
+
+    val width = if (isSelected) itemWidth else itemWidth - itemWidth.times(horizontalOffsetFraction)
+    val height = itemWidth / aspectRatio
+    val animateElevation = if (isSelected) 12.dp else 2.dp
+
+    FoodCardWithDetails(
+        elevation = animateElevation,
+        modifier = modifier
+            .preferredWidth(animate(width))
+            .preferredHeight(animate(height))
+            .padding(16.dp),
+        fraction = null,
+        horizontalOffset = horizontalOffset,
+        rating = rating,
+        name = name,
+        imageUrl = imageUrl,
+        contentTags = contentTags,
+        imageResource = imageResource,
+        onCheckedChange = onCheckedChange,
+        cardShape = cardShape
+    )
+}
+
+@Composable
+fun FoodCardWithDetails(
+    elevation: Dp = 4.dp,
+    modifier: Modifier = Modifier,
+    fraction: Float?,
+    horizontalOffset: Dp,
+    rating: String,
+    name: String,
+    imageUrl: String? = null,
+    contentTags: String,
+    @DrawableRes imageResource: Int,
+    onCheckedChange: (Boolean) -> Unit = {},
+    cardShape: Shape = RoundedCornerShape(16.dp)
 ) {
     // per item width in row
-    //  val itemWidth: Dp = (ConfigurationAmbient.current.screenWidthDp * fraction).dp
+    if (fraction != null) {
+        val itemWidth: Dp =
+            (ConfigurationAmbient.current.screenWidthDp * fraction).dp - horizontalOffset.times(2)
+        modifier.preferredWidth(itemWidth).fillMaxWidth()
+    }
 
-    Surface(elevation = elevation, modifier = modifier.clip(cardShape)) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(
-                space = verticalItemSpace,
-                alignment = Alignment.Top
-            )
-        ) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(
+            space = 4.dp,
+            alignment = Alignment.Top
+        )
+    ) {
 
-            FoodCardWithFavIcon(
-                imageSrc = imageUrl ?: imageResource,
-                cardShape = cardShape,
-                onCheckChanged = onCheckedChange,
-                modifier = Modifier.fillMaxWidth()
-            )
+        FoodCardWithFavIcon(
+            elevation = elevation,
+            imageSrc = imageUrl ?: imageResource,
+            cardShape = cardShape,
+            onCheckChanged = onCheckedChange,
+            modifier = Modifier.fillMaxWidth()
+        )
 
-            FoodCardContentsDetails(
-                contentTags = contentTags,
-                rating = rating,
-                name = name
-            )
-        }
+        FoodCardContentsDetails(
+            contentTags = contentTags,
+            rating = rating,
+            name = name
+        )
     }
 }
 
 @Composable
 fun FoodCardWithFavIcon(
+    elevation: Dp,
     imageSrc: Any,
     cardShape: Shape = RoundedCornerShape(16.dp),
     onCheckChanged: (Boolean) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    Card(shape = cardShape, modifier = Modifier.aspectRatio(4 / 5f)) {
+    Card(
+        elevation = animate(elevation),
+        shape = cardShape
+    ) {
         Box {
             CoilImage(
                 data = imageSrc,
                 fadeIn = true,
                 contentScale = ContentScale.Crop,
-                modifier = modifier.clipToBounds()
+                modifier = modifier
+                    .aspectRatio(3 / 4f)
+                    .clipToBounds()
             )
 
             ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {
