@@ -268,6 +268,7 @@ fun BreakFastWithHeader(
             name = recipe.title ?: "",
             modifier = Modifier.padding(4.dp)
                 .fillMaxHeight()
+                .scalePagerItems(unselectedScale = 0.8f)
         )
     }
 }

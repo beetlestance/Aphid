@@ -19,8 +19,12 @@ import androidx.compose.ui.Layout
 import androidx.compose.ui.Measurable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.ParentDataModifier
+import androidx.compose.ui.drawWithContent
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
+import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.util.lerp
 import kotlin.math.roundToInt
 
 /**
@@ -206,4 +210,51 @@ class PagerScope(
      */
     val selectionState: PagerState.SelectionState
         get() = state.selectionState
+
+
+    /**
+     * Modifier which scales pager items according to their offset position. Similar in effect
+     * to a carousel.
+     */
+    fun Modifier.scalePagerItems(
+        unselectedScale: Float
+    ): Modifier = Modifier.drawWithContent {
+        if (selectionState == PagerState.SelectionState.Selected) {
+            // If the pager is 'selected', it's stationary so we use a simple if check
+            if (page != currentPage) {
+                scale(
+                    scaleX = unselectedScale,
+                    scaleY = unselectedScale,
+                    Offset(center.x, center.y)
+                ) {
+                    this@drawWithContent.drawContent()
+                }
+            } else {
+                drawContent()
+            }
+        } else {
+            // Otherwise the pager is being scrolled, so we need to look at the swipe progress
+            // and interpolate between the sizes
+            val offsetForPage = page - currentPage + currentPageOffset
+
+            val scale = if (offsetForPage < 0) {
+                // If the page is to the left of the current page, we scale from min -> 1f
+                lerp(
+                    start = unselectedScale,
+                    stop = 1f,
+                    fraction = (1f + offsetForPage).coerceIn(0f, 1f)
+                )
+            } else {
+                // If the page is to the right of the current page, we scale from 1f -> min
+                lerp(
+                    start = 1f,
+                    stop = unselectedScale,
+                    fraction = offsetForPage.coerceIn(0f, 1f)
+                )
+            }
+            scale(scale, scale, Offset(center.x, center.y)) {
+                this@drawWithContent.drawContent()
+            }
+        }
+    }
 }
