@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.Dimension
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -60,7 +59,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.beetlestance.aphid.commoncompose.Pager
 import com.beetlestance.aphid.commoncompose.PagerState
-import com.beetlestance.aphid.commoncompose.ViewPagerTransition
 import com.beetlestance.data.entities.Recipe
 import com.beetlestance.spoonacular_kotlin.SpoonacularImageHelper
 import com.beetlestance.spoonacular_kotlin.constants.SpoonacularImageSize
@@ -253,14 +251,21 @@ fun BreakFastWithHeader(
     )
 
     val clock = AnimationClockAmbient.current
-    val maxPage = (breakfastRecipes.size - 1).coerceAtLeast(0)
-    val pagerState = remember(clock) { PagerState(clock, 0, 0, maxPage) }
+    val pagerState =
+        remember(clock) { PagerState(clock = clock, maxPage = breakfastRecipes.lastIndex) }
+
+    val offset = 16.dp
+    val fraction = 0.9f
+    val foodCard = FoodCard(
+        horizontalOffset = offset,
+        fraction = fraction,
+        horizontalOffsetFraction = 0.1f,
+        maxWidth = widthPercentage(fraction = fraction, excludeRootPadding = offset)
+    )
 
     Pager(
         state = pagerState,
-        modifier = Modifier
-            .fillMaxWidth()
-            .preferredHeight(550.dp)
+        modifier = Modifier.preferredHeight(foodCard.maxHeight)
     ) {
         val recipe = breakfastRecipes[page]
 
@@ -275,12 +280,8 @@ fun BreakFastWithHeader(
         val isSelected = page == currentPage
 
         FoodCardWithDetailsPage(
-            modifier = Modifier.padding(4.dp)
-                .fillMaxHeight()
-                .scalePagerItems(ViewPagerTransition.DEPTH_TRANSFORM),
-            horizontalOffset = 16.dp,
-            fraction = 0.9f,
-            horizontalOffsetFraction = 0.05f,
+            modifier = Modifier,
+            foodCard = foodCard,
             isSelected = isSelected,
             name = recipe.title ?: "",
             imageUrl = recipeImageUrl ?: recipe.imageUrl,

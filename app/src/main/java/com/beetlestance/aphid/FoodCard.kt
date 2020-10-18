@@ -31,20 +31,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.ConfigurationAmbient
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.coil.CoilImage
 
+data class FoodCard(
+    val fraction: Float,
+    val selectedPageElevation: Dp = 12.dp,
+    val pageElevation: Dp = 2.dp,
+    val horizontalOffset: Dp,
+    val horizontalOffsetFraction: Float,
+    val aspectRatio: Float = 13 / 20f,
+    val maxWidth: Dp
+) {
+    val minWidth: Dp = maxWidth - maxWidth.times(horizontalOffsetFraction)
+
+    val maxHeight = maxWidth / aspectRatio
+
+    val minHeight = minWidth / aspectRatio
+}
+
 @Composable
 fun FoodCardWithDetailsPage(
     modifier: Modifier = Modifier,
-    fraction: Float,
-    horizontalOffset: Dp,
-    horizontalOffsetFraction: Float,
-    aspectRatio: Float = 4 / 5f,
+    foodCard: FoodCard,
     rating: String,
     name: String,
     imageUrl: String? = null,
@@ -54,21 +66,19 @@ fun FoodCardWithDetailsPage(
     cardShape: Shape = RoundedCornerShape(16.dp),
     isSelected: Boolean
 ) {
-    val itemWidth: Dp =
-        (ConfigurationAmbient.current.screenWidthDp * fraction).dp - horizontalOffset.times(2)
-
-    val width = if (isSelected) itemWidth else itemWidth - itemWidth.times(horizontalOffsetFraction)
-    val height = itemWidth / aspectRatio
     val animateElevation = if (isSelected) 12.dp else 2.dp
+
+    val width = if (isSelected) foodCard.maxWidth else foodCard.minWidth
+    val height = if (isSelected) foodCard.maxHeight else foodCard.minHeight
 
     FoodCardWithDetails(
         elevation = animateElevation,
         modifier = modifier
             .preferredWidth(animate(width))
             .preferredHeight(animate(height))
-            .padding(16.dp),
+            .padding(horizontal = 16.dp),
         fraction = null,
-        horizontalOffset = horizontalOffset,
+        horizontalOffset = foodCard.horizontalOffset,
         rating = rating,
         name = name,
         imageUrl = imageUrl,
@@ -95,8 +105,10 @@ fun FoodCardWithDetails(
 ) {
     // per item width in row
     if (fraction != null) {
-        val itemWidth: Dp =
-            (ConfigurationAmbient.current.screenWidthDp * fraction).dp - horizontalOffset.times(2)
+        val itemWidth: Dp = widthPercentage(
+            fraction = fraction,
+            excludeRootPadding = horizontalOffset
+        )
         modifier.preferredWidth(itemWidth).fillMaxWidth()
     }
 
@@ -142,7 +154,7 @@ fun FoodCardWithFavIcon(
                 fadeIn = true,
                 contentScale = ContentScale.Crop,
                 modifier = modifier
-                    .aspectRatio(2 / 3f)
+                    .aspectRatio(5 / 7f)
                     .clipToBounds()
             )
 
