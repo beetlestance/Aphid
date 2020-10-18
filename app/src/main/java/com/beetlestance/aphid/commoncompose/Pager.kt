@@ -246,13 +246,16 @@ class PagerScope(
      * to a carousel.
      */
     fun Modifier.scalePagerItems(
-        pageTransition: ViewPagerTransition
+        pageTransition: ViewPagerTransition,
+        overflow: Boolean
     ): Modifier = drawWithContent {
         if (selectionState == PagerState.SelectionState.Selected) {
             // If the pager is 'selected', it's stationary so we use a simple if check
             if (page != currentPage) {
                 this.withTransform(transformBlock = {
-                    this.translate(top = -200f, left = if (page > currentPage) -200f else 200f)
+                    if (overflow) {
+                        this.translate(top = 0f, left = if (page > currentPage) -200f else 200f)
+                    }
                     this.scale(scaleX = 0.8f, scaleY = 0.8f, pivot = Offset(center.x, center.y))
                 }) {
                     this@drawWithContent.drawContent()
@@ -281,22 +284,6 @@ class PagerScope(
                 )
             }
 
-            val translateY = if (offsetForPage < 0) {
-                // If the page is to the left of the current page, we scale from min -> 1f
-                lerp(
-                    start = -200f,
-                    stop = 0f,
-                    fraction = (1f + offsetForPage).coerceIn(0f, 1f)
-                )
-            } else {
-                // If the page is to the right of the current page, we scale from 1f -> min
-                lerp(
-                    start = 0f,
-                    stop = -200f,
-                    fraction = offsetForPage.coerceIn(0f, 1f)
-                )
-            }
-
             val translateX = if (offsetForPage < 0) {
                 // If the page is to the left of the current page, we scale from min -> 1f
                 lerp(
@@ -314,7 +301,9 @@ class PagerScope(
             }
 
             this.withTransform(transformBlock = {
-                this.translate(top = translateY, left = translateX)
+                if (overflow) {
+                    this.translate(top = 0f, left = translateX)
+                }
                 this.scale(scaleX = scale, scaleY = scale, pivot = Offset(center.x, center.y))
             }) {
                 this@drawWithContent.drawContent()
