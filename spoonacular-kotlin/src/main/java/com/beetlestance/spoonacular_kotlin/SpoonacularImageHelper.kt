@@ -164,4 +164,17 @@ object SpoonacularImageHelper {
     ): String {
         return "$IMAGE_URL$RECIPE/$id-$imageSize.$imageType"
     }
+
+    /**
+     *
+     * Provides name from url to create size specific image
+     *
+     * @param url image url for extracting image name
+     * @return String
+     * */
+    fun imageUrlToImageName(url: String): String? {
+        val image = url.split("/").lastOrNull() ?: return null
+        val imageWithSpecifiedSize = image.split(".").firstOrNull() ?: return null
+        return imageWithSpecifiedSize.split("-").firstOrNull()
+    }
 }
