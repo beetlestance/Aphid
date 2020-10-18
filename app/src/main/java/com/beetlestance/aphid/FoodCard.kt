@@ -48,9 +48,9 @@ data class FoodCard(
 ) {
     val minWidth: Dp = maxWidth - maxWidth.times(horizontalOffsetFraction)
 
-    val maxHeight = maxWidth / aspectRatio
+    val maxHeight: Dp = maxWidth / aspectRatio
 
-    val minHeight = minWidth / aspectRatio
+    val minHeight: Dp = minWidth / aspectRatio
 }
 
 @Composable

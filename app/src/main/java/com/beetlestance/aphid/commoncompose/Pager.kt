@@ -136,7 +136,25 @@ fun Pager(
             val minPage = (state.currentPage - offscreenLimit).coerceAtLeast(state.minPage)
             val maxPage = (state.currentPage + offscreenLimit).coerceAtMost(state.maxPage)
 
+            val pages: MutableList<Int> = mutableListOf()
+
+            // Always draw selected page after its next hint
             for (page in minPage..maxPage) {
+                when {
+                    page == state.currentPage + 1 -> {
+                        pages.add(page)
+                        pages.add(state.currentPage)
+                    }
+                    page != state.currentPage -> {
+                        pages.add(page)
+                    }
+                    page == maxPage -> {
+                        pages.add(page)
+                    }
+                }
+            }
+
+            pages.forEach { page ->
                 val pageData = PageData(page)
                 val scope = PagerScope(state, page)
                 key(pageData) {
@@ -145,6 +163,7 @@ fun Pager(
                     }
                 }
             }
+
         },
         modifier = modifier.draggable(
             orientation = Orientation.Horizontal,
