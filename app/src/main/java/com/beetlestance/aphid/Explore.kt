@@ -267,7 +267,7 @@ fun BreakFastWithHeader(
             return@run SpoonacularImageHelper.generateRecipeImageUrl(
                 id = recipe.recipeId?.toLong() ?: return@run null,
                 imageSize = SpoonacularImageSize.Recipe.ULTRA_HIGH_QUALITY,
-                imageType = recipe.imageType ?: return@run null
+                imageType = recipe.imageType
             )
         }
 
