@@ -16,9 +16,11 @@ import androidx.compose.foundation.layout.Dimension
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.preferredWidth
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.selection.toggleable
@@ -47,6 +49,7 @@ import androidx.compose.ui.focus.isFocused
 import androidx.compose.ui.focusObserver
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.AnimationClockAmbient
 import androidx.compose.ui.platform.ConfigurationAmbient
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.imageResource
@@ -55,6 +58,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.beetlestance.aphid.commoncompose.Pager
+import com.beetlestance.aphid.commoncompose.PagerState
 import com.beetlestance.data.entities.Recipe
 import timber.log.Timber
 
@@ -91,7 +96,7 @@ fun Explore(state: ExploreViewState) {
             Filters()
 
             if (state.breakfastRecipes.isNotEmpty()) {
-                BreakFastWithHeader(state.breakfastRecipes)
+                BreakFastWithHeader(breakfastRecipes = state.breakfastRecipes)
             }
 
             MoodContent()
@@ -235,31 +240,35 @@ class Filter(
 
 
 @Composable
-fun BreakFastWithHeader(breakfastRecipes: List<Recipe>) {
+fun BreakFastWithHeader(
+    breakfastRecipes: List<Recipe>
+) {
 
     Text(
         text = stringResource(id = R.string.explore_breaksfast_header),
         style = MaterialTheme.typography.h6,
     )
 
-    ScrollableRow(
-        horizontalArrangement = Arrangement.spacedBy(
-            space = 16.dp,
-            alignment = Alignment.Start
-        )
-    ) {
+    val clock = AnimationClockAmbient.current
+    val maxPage = (breakfastRecipes.size - 1).coerceAtLeast(0)
+    val pagerState = remember(clock) { PagerState(clock, 0, 0, maxPage) }
 
-        breakfastRecipes.forEach { recipe ->
-            FoodCardWithDetails(
-                fraction = 0.7f,
-                imageRatio = 0.7f,
-                imageUrl = recipe.imageName,
-                imageResource = R.drawable.temp_brownie,
-                contentTags = "2 Serving • 40 Min • 331 Cal ",
-                rating = "4.3",
-                name = recipe.title ?: "",
-            )
-        }
+    Pager(
+        state = pagerState,
+        modifier = Modifier
+            .fillMaxWidth()
+            .preferredHeight(550.dp)
+    ) {
+        val recipe = breakfastRecipes[page]
+        FoodCardWithDetails(
+            imageUrl = recipe.imageName,
+            imageResource = R.drawable.temp_brownie,
+            contentTags = "2 Serving • 40 Min • 331 Cal ",
+            rating = "4.3",
+            name = recipe.title ?: "",
+            modifier = Modifier.padding(4.dp)
+                .fillMaxHeight()
+        )
     }
 }
 
@@ -378,7 +387,6 @@ fun QuickRecipesWithHeader() {
 
         repeat(4) {
             FoodCardWithDetails(
-                fraction = 0.8f,
                 imageResource = R.drawable.temp_noodles,
                 contentTags = "1 Serving • 20 Min • 205 Cal",
                 rating = "4.4",
@@ -460,7 +468,6 @@ fun RecentlyViewedRecipesWithHeader() {
 
         repeat(4) {
             FoodCardWithDetails(
-                fraction = 0.8f,
                 imageResource = R.drawable.temp_pasta,
                 contentTags = "1 Serving • 25 Min • 190 Cal",
                 rating = "4.4",

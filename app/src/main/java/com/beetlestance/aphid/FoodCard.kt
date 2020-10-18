@@ -28,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ConfigurationAmbient
@@ -41,10 +42,8 @@ import dev.chrisbanes.accompanist.coil.CoilImage
 @Composable
 fun FoodCardWithDetails(
     modifier: Modifier = Modifier,
-    fraction: Float = 1f,
     verticalItemSpace: Dp = 4.dp,
     imageUrl: String? = null,
-    imageRatio: Float = 1f,
     @DrawableRes imageResource: Int,
     cardShape: Shape = RoundedCornerShape(16.dp),
     onCheckedChange: (Boolean) -> Unit = {},
@@ -53,10 +52,10 @@ fun FoodCardWithDetails(
     name: String
 ) {
     // per item width in row
-    val itemWidth: Dp = (ConfigurationAmbient.current.screenWidthDp * fraction).dp
+    //  val itemWidth: Dp = (ConfigurationAmbient.current.screenWidthDp * fraction).dp
 
     Column(
-        modifier = modifier.preferredWidth(itemWidth).fillMaxWidth(),
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(
             space = verticalItemSpace,
             alignment = Alignment.Top
@@ -65,10 +64,9 @@ fun FoodCardWithDetails(
 
         FoodCardWithFavIcon(
             imageSrc = imageUrl ?: imageResource,
-            itemWidth = itemWidth,
             cardShape = cardShape,
-            imageRatio = imageRatio,
-            onCheckChanged = onCheckedChange
+            onCheckChanged = onCheckedChange,
+            modifier = Modifier.fillMaxWidth()
         )
 
         FoodCardContentsDetails(
@@ -82,21 +80,17 @@ fun FoodCardWithDetails(
 @Composable
 fun FoodCardWithFavIcon(
     imageSrc: Any,
-    itemWidth: Dp,
-    imageRatio: Float,
     cardShape: Shape = RoundedCornerShape(16.dp),
-    onCheckChanged: (Boolean) -> Unit = {}
+    onCheckChanged: (Boolean) -> Unit = {},
+    modifier: Modifier = Modifier
 ) {
-    Card(shape = cardShape) {
+    Card(shape = cardShape, modifier = Modifier.aspectRatio(4 / 5f)) {
         Box {
             CoilImage(
                 data = imageSrc,
                 fadeIn = true,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .preferredWidth(itemWidth)
-                    .aspectRatio(imageRatio)
-                    .clip(cardShape)
+                modifier = modifier.clipToBounds()
             )
 
             ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {
