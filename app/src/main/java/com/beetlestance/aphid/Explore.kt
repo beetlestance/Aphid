@@ -1,14 +1,21 @@
 package com.beetlestance.aphid
 
+import android.util.Log
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.FloatDecayAnimationSpec
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.ScrollableRow
 import androidx.compose.foundation.Text
+import androidx.compose.foundation.animation.FlingConfig
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.ScrollableController
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ConstraintLayout
@@ -22,6 +29,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.preferredWidth
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.LazyRowFor
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -47,6 +58,8 @@ import androidx.compose.ui.focus.ExperimentalFocus
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.isFocused
 import androidx.compose.ui.focusObserver
+import androidx.compose.ui.gesture.ScrollCallback
+import androidx.compose.ui.gesture.scrollGestureFilter
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.AnimationClockAmbient
@@ -280,19 +293,14 @@ fun BreakFastWithHeader(
             )
         }
 
-        val isSelected = page == currentPage
+        val isSelected = isSelectedPage(page)
 
-        if (isSelected) {
-            LaunchedTask {
-                delay(5000L)
-                pagerState.nextPage(velocity = 5f, loop = true)
-            }
-        }
+        Log.d("selected", "${recipe.title} $isSelected")
 
         FoodCardWithDetailsPage(
             modifier = Modifier.scalePagerItems(
                 pageTransition = ViewPagerTransition.DEPTH_TRANSFORM,
-                overflow = true
+                overflow = false
             ),
             foodCard = foodCard,
             isSelected = isSelected,
@@ -302,6 +310,13 @@ fun BreakFastWithHeader(
             contentTags = "2 Serving • 40 Min • 331 Cal ",
             rating = "4.3"
         )
+
+        if (isSelected) {
+            LaunchedTask {
+                delay(2000L)
+                this@Pager.nextPage(velocity = 5f)
+            }
+        }
     }
 }
 

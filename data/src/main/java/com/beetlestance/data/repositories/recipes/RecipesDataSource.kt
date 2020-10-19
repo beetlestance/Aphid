@@ -32,7 +32,7 @@ class RecipesDataSource @Inject constructor(
     private val recipeInformationToRecipe: RecipeInformationToRecipe
 ) {
     suspend fun fetchRecipes(): Result<List<Recipe>> {
-        return recipesService.getRandomRecipes(number = 4)
+        return recipesService.getRandomRecipes(number = 20)
             .executeWithRetry(shouldRetry = { false })
             .toSpoonacularApiResponse()
             .toResult { (recipes) -> recipeInformationToRecipe.forLists().invoke(recipes) }
