@@ -8,6 +8,7 @@ import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.LaunchedTask
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -26,6 +27,7 @@ import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.util.lerp
+import kotlinx.coroutines.delay
 import java.lang.Math.abs
 import kotlin.math.roundToInt
 
@@ -127,6 +129,9 @@ private val Measurable.page: Int
 fun Pager(
     state: PagerState,
     offscreenLimit: Int = 2,
+    infiniteScroll: Boolean = false,
+    autoScroll: Boolean = false,
+    autoScrollDuration: Long = 5000L,
     modifier: Modifier = Modifier,
     pageContent: @Composable PagerScope.() -> Unit
 ) {
@@ -151,6 +156,24 @@ fun Pager(
                     page == maxPage -> {
                         pages.add(page)
                     }
+                }
+            }
+
+            if (infiniteScroll) {
+//                if (state.currentPage == minPage) {
+//                    pages.add(minPage, maxPage)
+//                } else if (state.currentPage == maxPage) {
+//                    pages.add(maxPage, minPage + maxPage)
+//                }
+            }
+
+            if (autoScroll) {
+                val pageData = PageData(state.currentPage)
+                LaunchedTask(key = pageData) {
+                    delay(autoScrollDuration)
+                    val nextPage =
+                        if (state.currentPage == maxPage) 0 else state.currentPage + 1
+                    state.currentPage = nextPage
                 }
             }
 
