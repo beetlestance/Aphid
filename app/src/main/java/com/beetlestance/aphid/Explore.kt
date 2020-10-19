@@ -295,7 +295,9 @@ fun BreakFastWithHeader(
 
         val isSelected = isSelectedPage(page)
 
-        Log.d("selected", "${recipe.title} $isSelected")
+        if(page == 1){
+            Log.d("selected", "$isSelected")
+        }
 
         FoodCardWithDetailsPage(
             modifier = Modifier.scalePagerItems(

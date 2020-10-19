@@ -90,9 +90,6 @@ class PagerState(
     fun selectPage(pageOffset: Int) {
         currentPage -= pageOffset
         currentPageOffset = 0f
-        if(currentPage >= listSize){
-            Log.d("state","")
-        }
         selectionState = SelectionState.Selected
     }
 
@@ -157,6 +154,10 @@ private data class PageData(val page: Int) : ParentDataModifier {
 private val Measurable.page: Int
     get() = (parentData as? PageData)?.page ?: error("no PageData for measurable $this")
 
+fun getActualPosition(page: Int, listSize: Int, isRepeat: Boolean): Int {
+    return if (isRepeat) page - listSize - 1 else page
+}
+
 @Composable
 fun Pager(
     state: PagerState,
@@ -172,24 +173,21 @@ fun Pager(
             val maxPage = (state.currentPage + offscreenLimit).coerceAtMost(state.maxPage)
 
             for (page in minPage..maxPage) {
-                val pageData = PageData(page)
-                val scope =
-                    PagerScope(
-                        state,
-                        if (page > state.listSize) page - state.listSize - 1 else page
-                    )
+                val isRepeat = page > state.listSize
+                val actualPagePosition = getActualPosition(page, state.listSize, isRepeat)
+                val pageData = PageData(actualPagePosition)
+                val scope = PagerScope(state, actualPagePosition, isRepeat)
                 key(pageData) {
                     Box(
                         alignment = Alignment.Center,
                         modifier = pageData
                             // Always draw selected page after its next hint
-                            .zIndex(animate(if (page == state.currentPage) 1f else 0f))
+                            .zIndex(animate(if (scope.isSelectedPage(page)) 1f else 0f))
                     ) {
                         scope.pageContent()
                     }
                 }
             }
-
         },
         modifier = modifier.draggable(
             orientation = Orientation.Horizontal,
@@ -230,7 +228,14 @@ fun Pager(
                         pageSize = placeable.width
                     }
 
-                    val xItemOffset = ((page + offset - currentPage) * placeable.width).roundToInt()
+                    val actualPage = if (currentPage >= state.listSize && page in 0..2) {
+                        page + state.listSize + 1
+                    } else {
+                        page
+                    }
+
+                    val xItemOffset =
+                        ((actualPage + offset - currentPage) * placeable.width).roundToInt()
 
                     placeable.place(
                         x = xCenterOffset + xItemOffset,
@@ -249,7 +254,8 @@ fun Pager(
 @Suppress("UNUSED_PARAMETER")
 class PagerScope(
     private val state: PagerState,
-    val page: Int
+    val page: Int,
+    val resetState: Boolean = false
 ) {
     /**
      * Returns the current selected page
@@ -271,11 +277,17 @@ class PagerScope(
 
     fun isSelectedPage(page: Int): Boolean {
         val current =
-            if (currentPage > state.listSize) currentPage - state.listSize - 1 else currentPage
+            if (currentPage > state.listSize)
+                currentPage - state.listSize - 1
+            else
+                currentPage
         return current == page
     }
 
     fun nextPage(velocity: Float) {
+        if (state.currentPage == state.listSize + 2)
+            state.currentPage = 1
+
         state.nextPage()
     }
 
@@ -290,9 +302,6 @@ class PagerScope(
         overflow: Boolean
     ): Modifier = drawWithContent {
         val current = if (isSelectedPage(page)) page else currentPage
-        if(currentPage > state.listSize){
-            Log.d("state", "$selectionState")
-        }
         if (selectionState == PagerState.SelectionState.Selected) {
             // If the pager is 'selected', it's stationary so we use a simple if check
             if (isSelectedPage(page).not()) {
@@ -353,9 +362,6 @@ class PagerScope(
                 this@drawWithContent.drawContent()
             }
         }
-
-        if (state.currentPage == state.listSize + 2)
-            state.currentPage = 1
     }
 }
 
