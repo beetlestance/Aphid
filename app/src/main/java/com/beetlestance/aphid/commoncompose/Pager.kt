@@ -1,6 +1,7 @@
 package com.beetlestance.aphid.commoncompose
 
 import androidx.compose.animation.AnimatedFloatModel
+import androidx.compose.animation.animate
 import androidx.compose.animation.core.AnimationClockObservable
 import androidx.compose.animation.core.AnimationEndReason
 import androidx.compose.animation.core.fling
@@ -27,6 +28,7 @@ import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.util.lerp
+import androidx.compose.ui.zIndex
 import kotlinx.coroutines.delay
 import java.lang.Math.abs
 import kotlin.math.roundToInt
@@ -141,32 +143,6 @@ fun Pager(
             val minPage = (state.currentPage - offscreenLimit).coerceAtLeast(state.minPage)
             val maxPage = (state.currentPage + offscreenLimit).coerceAtMost(state.maxPage)
 
-            val pages: MutableList<Int> = mutableListOf()
-
-            // Always draw selected page after its next hint
-            for (page in minPage..maxPage) {
-                when {
-                    page == state.currentPage + 1 -> {
-                        pages.add(page)
-                        pages.add(state.currentPage)
-                    }
-                    page != state.currentPage -> {
-                        pages.add(page)
-                    }
-                    page == maxPage -> {
-                        pages.add(page)
-                    }
-                }
-            }
-
-            if (infiniteScroll) {
-//                if (state.currentPage == minPage) {
-//                    pages.add(minPage, maxPage)
-//                } else if (state.currentPage == maxPage) {
-//                    pages.add(maxPage, minPage + maxPage)
-//                }
-            }
-
             if (autoScroll) {
                 val pageData = PageData(state.currentPage)
                 LaunchedTask(key = pageData) {
@@ -177,11 +153,16 @@ fun Pager(
                 }
             }
 
-            pages.forEach { page ->
+            for (page in minPage..maxPage) {
                 val pageData = PageData(page)
                 val scope = PagerScope(state, page)
                 key(pageData) {
-                    Box(alignment = Alignment.Center, modifier = pageData) {
+                    Box(
+                        alignment = Alignment.Center,
+                        modifier = pageData
+                            // Always draw selected page after its next hint
+                            .zIndex(animate(if (page == state.currentPage) 1f else 0f))
+                    ) {
                         scope.pageContent()
                     }
                 }

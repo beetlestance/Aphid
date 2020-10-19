@@ -266,8 +266,8 @@ fun BreakFastWithHeader(
 
     Pager(
         state = pagerState,
-        autoScroll = true,
-        infiniteScroll = true,
+        autoScroll = false,
+        infiniteScroll = false,
         modifier = Modifier.preferredHeight(foodCard.maxHeight)
     ) {
         val recipe = breakfastRecipes[page]
