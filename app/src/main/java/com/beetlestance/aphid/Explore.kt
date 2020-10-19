@@ -32,6 +32,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedTask
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -63,6 +64,7 @@ import com.beetlestance.aphid.commoncompose.ViewPagerTransition
 import com.beetlestance.data.entities.Recipe
 import com.beetlestance.spoonacular_kotlin.SpoonacularImageHelper
 import com.beetlestance.spoonacular_kotlin.constants.SpoonacularImageSize
+import kotlinx.coroutines.delay
 import timber.log.Timber
 
 /**
@@ -266,8 +268,6 @@ fun BreakFastWithHeader(
 
     Pager(
         state = pagerState,
-        autoScroll = false,
-        infiniteScroll = false,
         modifier = Modifier.preferredHeight(foodCard.maxHeight)
     ) {
         val recipe = breakfastRecipes[page]
@@ -281,6 +281,13 @@ fun BreakFastWithHeader(
         }
 
         val isSelected = page == currentPage
+
+        if (isSelected) {
+            LaunchedTask {
+                delay(5000L)
+                pagerState.nextPage(velocity = 5f, loop = true)
+            }
+        }
 
         FoodCardWithDetailsPage(
             modifier = Modifier.scalePagerItems(

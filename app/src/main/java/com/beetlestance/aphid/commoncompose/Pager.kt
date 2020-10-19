@@ -9,7 +9,6 @@ import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.LaunchedTask
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -29,7 +28,6 @@ import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.util.lerp
 import androidx.compose.ui.zIndex
-import kotlinx.coroutines.delay
 import java.lang.Math.abs
 import kotlin.math.roundToInt
 
@@ -102,6 +100,28 @@ class PagerState(
             _currentPageOffset.snapTo(value.coerceIn(min, max))
         }
 
+    fun nextPage(velocity: Float, loop: Boolean) {
+        if (loop && currentPage == maxPage) {
+            currentPage = 0
+            currentPageOffset = 0f
+            selectionState = SelectionState.Selected
+        } else {
+            selectionState = SelectionState.Undecided
+            fling(-velocity)
+        }
+    }
+
+    fun previousPage(velocity: Float, loop: Boolean) {
+        if (loop && currentPage == maxPage) {
+            currentPage = 0
+            currentPageOffset = 0f
+            selectionState = SelectionState.Selected
+        } else {
+            selectionState = SelectionState.Undecided
+            fling(velocity)
+        }
+    }
+
     fun fling(velocity: Float) {
         if (velocity < 0 && currentPage == maxPage) return
         if (velocity > 0 && currentPage == minPage) return
@@ -131,9 +151,6 @@ private val Measurable.page: Int
 fun Pager(
     state: PagerState,
     offscreenLimit: Int = 2,
-    infiniteScroll: Boolean = false,
-    autoScroll: Boolean = false,
-    autoScrollDuration: Long = 5000L,
     modifier: Modifier = Modifier,
     pageContent: @Composable PagerScope.() -> Unit
 ) {
@@ -142,16 +159,6 @@ fun Pager(
         children = {
             val minPage = (state.currentPage - offscreenLimit).coerceAtLeast(state.minPage)
             val maxPage = (state.currentPage + offscreenLimit).coerceAtMost(state.maxPage)
-
-            if (autoScroll) {
-                val pageData = PageData(state.currentPage)
-                LaunchedTask(key = pageData) {
-                    delay(autoScrollDuration)
-                    val nextPage =
-                        if (state.currentPage == maxPage) 0 else state.currentPage + 1
-                    state.currentPage = nextPage
-                }
-            }
 
             for (page in minPage..maxPage) {
                 val pageData = PageData(page)
