@@ -74,6 +74,7 @@ import androidx.compose.ui.unit.dp
 import com.beetlestance.aphid.commoncompose.Pager
 import com.beetlestance.aphid.commoncompose.PagerState
 import com.beetlestance.aphid.commoncompose.ViewPagerTransition
+import com.beetlestance.aphid.commoncompose.rememberPagerState
 import com.beetlestance.data.entities.Recipe
 import com.beetlestance.spoonacular_kotlin.SpoonacularImageHelper
 import com.beetlestance.spoonacular_kotlin.constants.SpoonacularImageSize
@@ -266,9 +267,7 @@ fun BreakFastWithHeader(
         style = MaterialTheme.typography.h6,
     )
 
-    val clock = AnimationClockAmbient.current
-    val pagerState =
-        remember(clock) { PagerState(clock = clock, maxPage = breakfastRecipes.lastIndex) }
+    val pagerState = rememberPagerState(maxPage = breakfastRecipes.lastIndex)
 
     val offset = 16.dp
     val fraction = 0.9f
@@ -293,19 +292,13 @@ fun BreakFastWithHeader(
             )
         }
 
-        val isSelected = isSelectedPage(page)
-
-        if(page == 1){
-            Log.d("selected", "$isSelected")
-        }
-
         FoodCardWithDetailsPage(
             modifier = Modifier.scalePagerItems(
                 pageTransition = ViewPagerTransition.DEPTH_TRANSFORM,
                 overflow = false
             ),
             foodCard = foodCard,
-            isSelected = isSelected,
+            isSelected = isSelectedPage,
             name = recipe.title ?: "",
             imageUrl = recipeImageUrl ?: recipe.imageUrl,
             imageResource = R.drawable.temp_brownie,
@@ -313,10 +306,10 @@ fun BreakFastWithHeader(
             rating = "4.3"
         )
 
-        if (isSelected) {
+        if (isSelectedPage) {
             LaunchedTask {
                 delay(2000L)
-                this@Pager.nextPage(velocity = 5f)
+                this@Pager.nextPage(velocity = 5f, true)
             }
         }
     }
