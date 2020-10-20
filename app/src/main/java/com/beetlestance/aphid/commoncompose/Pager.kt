@@ -197,9 +197,9 @@ fun Pager(
 
             for (page in minPage..maxPage) {
                 val isRepeat = page > state.numberOfPages
-                val actualPagePosition = getActualPosition(page, state.numberOfPages, isRepeat)
-                val pageData = PageData(actualPagePosition)
-                val scope = PagerScope(state, actualPagePosition)
+                val pageInList = if (isRepeat) page - state.numberOfPages - 1 else page
+                val pageData = PageData(pageInList)
+                val scope = PagerScope(state, pageInList, isRepeat)
                 key(pageData) {
                     Box(
                         alignment = Alignment.Center,
@@ -276,7 +276,8 @@ fun Pager(
 @Suppress("UNUSED_PARAMETER")
 class PagerScope(
     private val state: PagerState,
-    val page: Int
+    val page: Int,
+    val isRepeatPage: Boolean
 ) {
     /**
      * Returns the current selected page
@@ -323,13 +324,16 @@ class PagerScope(
         pageTransition: ViewPagerTransition,
         overflow: Boolean
     ): Modifier = drawWithContent {
-        val current = if (isSelectedPage) page else currentPage
+        val pagerPage = if (isRepeatPage) page + state.numberOfPages + 1 else page
         if (selectionState == PagerState.SelectionState.Selected) {
             // If the pager is 'selected', it's stationary so we use a simple if check
             if (isSelectedPage.not()) {
                 this.withTransform(transformBlock = {
                     if (overflow) {
-                        this.translate(top = 0f, left = if (page > current) -200f else 200f)
+                        this.translate(
+                            top = 0f,
+                            left = if (pagerPage > currentPage) -200f else 200f
+                        )
                     }
                     this.scale(scaleX = 0.8f, scaleY = 0.8f, pivot = Offset(center.x, center.y))
                 }) {
@@ -341,7 +345,7 @@ class PagerScope(
         } else {
             // Otherwise the pager is being scrolled, so we need to look at the swipe progress
             // and interpolate between the sizes
-            val offsetForPage = page - current + currentPageOffset
+            val offsetForPage = pagerPage - currentPage + currentPageOffset
 
             val scale = if (offsetForPage < 0) {
                 // If the page is to the left of the current page, we scale from min -> 1f
