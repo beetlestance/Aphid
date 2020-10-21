@@ -71,6 +71,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.beetlestance.aphid.commoncompose.Carousel
 import com.beetlestance.aphid.commoncompose.Pager
 import com.beetlestance.aphid.commoncompose.PagerState
 import com.beetlestance.aphid.commoncompose.ViewPagerTransition
@@ -267,7 +268,7 @@ fun BreakFastWithHeader(
         style = MaterialTheme.typography.h6,
     )
 
-    val pagerState = rememberPagerState(maxPage = breakfastRecipes.lastIndex)
+    //val pagerState = rememberPagerState(maxPage = breakfastRecipes.lastIndex)
 
     val offset = 16.dp
     val fraction = 0.9f
@@ -278,12 +279,10 @@ fun BreakFastWithHeader(
         maxWidth = widthPercentage(fraction = fraction, excludeRootPadding = offset)
     )
 
-    Pager(
+    Carousel(
         items = breakfastRecipes,
-        state = pagerState,
         modifier = Modifier.preferredHeight(foodCard.maxHeight)
-    ) {
-        val recipe = breakfastRecipes[page]
+    ) { recipe ->
 
         val recipeImageUrl: String? = run {
             return@run SpoonacularImageHelper.generateRecipeImageUrl(
@@ -307,7 +306,7 @@ fun BreakFastWithHeader(
         if (isSelectedPage) {
             LaunchedTask {
                 delay(2000L)
-                this@Pager.nextPage(velocity = 5f, true)
+                this@Carousel.nextPage(velocity = 5f, true)
             }
         }
     }
