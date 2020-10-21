@@ -293,7 +293,7 @@ fun BreakFastWithHeader(
         }
 
         FoodCardWithDetailsPage(
-            modifier = Modifier.transitionPageItem(),
+            modifier = Modifier.transitionPageItem(ViewPagerTransition.ZOOM_OUT),
             foodCard = foodCard,
             isSelected = isSelectedPage,
             name = recipe.title ?: "",

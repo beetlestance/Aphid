@@ -403,6 +403,13 @@ private const val MIN_SCALE = 0.75f
 private const val MIN_SCALE_ZOOM = 0.9f
 private const val MIN_ALPHA = 0.7f
 
+
+/**
+ * Offset meaning:
+ * less than 0 : specifies that the page is in left side of the current page
+ * equals to 0 : specifies that it is current page
+ * greater than 0 : specifies that page is on the right side of the current page
+ */
 interface ViewPagerTransition {
     fun transformPage(offset: Float, size: Size): PageTransformState
 
@@ -452,6 +459,7 @@ interface ViewPagerTransition {
                         val translationX = if (offset < 0) {
                             horzMargin - vertMargin / 2
                         } else {
+                            // if page is on the right side do not apply any translation
                             //horzMargin + vertMargin / 2
                             0f
                         }
