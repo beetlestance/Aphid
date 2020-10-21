@@ -204,8 +204,8 @@ fun Pager(
                     Box(
                         alignment = Alignment.Center,
                         modifier = pageData
-                            // Always draw selected page after its next hint
-                            .zIndex(animate(if (scope.isSelectedPage) 1f else 0f))
+                        // Always draw selected page after its next hint
+                        //.zIndex(animate(if (scope.isSelectedPage) 1f else 0f))
                     ) {
                         scope.pageContent()
                     }
@@ -320,12 +320,19 @@ class PagerScope(
      * Modifier which scales pager items according to their offset position. Similar in effect
      * to a carousel.
      */
-    fun Modifier.scalePagerItems(
-        pageTransition: ViewPagerTransition,
-        overflow: Boolean
+    fun Modifier.transitionPageItem(
+        pageTransition: ViewPagerTransition = ViewPagerTransition.NONE
     ): Modifier = drawWithContent {
         val pagerPage = if (isRepeatPage) page + state.numberOfPages + 1 else page
-        if (selectionState == PagerState.SelectionState.Selected) {
+        val offsetForPage = pagerPage - currentPage + currentPageOffset
+        val transform = pageTransition.transformPage(offsetForPage, size)
+        this.withTransform(transformBlock = {
+            this.scale(transform.scaleX, transform.scaleY, Offset(center.x, center.y))
+            this.translate(transform.translationX, transform.translationY)
+        }) {
+            this@drawWithContent.drawContent()
+        }
+        /*if (selectionState == PagerState.SelectionState.Selected) {
             // If the pager is 'selected', it's stationary so we use a simple if check
             if (isSelectedPage.not()) {
                 this.withTransform(transformBlock = {
@@ -387,7 +394,7 @@ class PagerScope(
             }) {
                 this@drawWithContent.drawContent()
             }
-        }
+        }*/
     }
 }
 
@@ -397,12 +404,12 @@ private const val MIN_SCALE_ZOOM = 0.9f
 private const val MIN_ALPHA = 0.7f
 
 interface ViewPagerTransition {
-    fun transformPage(position: Float, size: Size): PageTransformState
+    fun transformPage(offset: Float, size: Size): PageTransformState
 
     companion object {
         val NONE = object : ViewPagerTransition {
             override fun transformPage(
-                position: Float,
+                offset: Float,
                 size: Size
             ): PageTransformState {
                 return PageTransformState()
@@ -411,39 +418,42 @@ interface ViewPagerTransition {
 
         val DEPTH_TRANSFORM = object : ViewPagerTransition {
             override fun transformPage(
-                position: Float,
+                offset: Float,
                 size: Size
             ): PageTransformState {
                 return when {
-                    position <= 0 -> PageTransformState()
-                    position <= 1 -> {
+                    offset == 0f -> PageTransformState()
+                    offset < 0f -> {
                         val scaleFactor = (MIN_SCALE + (1 - MIN_SCALE) * (1 - kotlin.math.abs(
-                            position
+                            offset
                         )))
                         PageTransformState(
-                            1 - position, scaleFactor, scaleFactor,
-                            size.width * -position
+                            1 - offset, scaleFactor, scaleFactor,
+                            size.width * -offset
                         )
                     }
-                    else -> PageTransformState(0f, 0f, 0f)
+                    else -> {
+                        PageTransformState()
+                    }
                 }
             }
         }
 
         val ZOOM_OUT = object : ViewPagerTransition {
             override fun transformPage(
-                position: Float,
+                offset: Float,
                 size: Size
             ): PageTransformState {
                 return when {
-                    position <= 1 && position >= -1 -> {
-                        val scaleFactor = MIN_SCALE_ZOOM.coerceAtLeast(1 - abs(position))
+                    offset <= 1 && offset >= -1 -> {
+                        val scaleFactor = MIN_SCALE_ZOOM.coerceAtLeast(1 - abs(offset))
                         val vertMargin = size.height * (1 - scaleFactor) / 2
                         val horzMargin = size.width * (1 - scaleFactor) / 2
-                        val translationX = if (position < 0) {
+                        val translationX = if (offset < 0) {
                             horzMargin - vertMargin / 2
                         } else {
-                            horzMargin + vertMargin / 2
+                            //horzMargin + vertMargin / 2
+                            0f
                         }
 
                         val alpha = (MIN_ALPHA +
