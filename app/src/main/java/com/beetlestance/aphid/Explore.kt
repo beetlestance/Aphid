@@ -278,7 +278,7 @@ fun BreakFastWithHeader(
     )
 
     Carousel(
-        items = breakfastRecipes.take(3),
+        items = breakfastRecipes,
         offscreenLimit = 10,
         modifier = Modifier.preferredHeight(foodCard.maxHeight)
     ) { recipe ->
@@ -300,13 +300,6 @@ fun BreakFastWithHeader(
             contentTags = "2 Serving • 40 Min • 331 Cal ",
             rating = "4.3"
         )
-
-        if (isSelectedPage) {
-            LaunchedTask {
-                delay(5000L)
-                this@Carousel.nextPage(velocity = 5f, true)
-            }
-        }
     }
 }
 
