@@ -279,6 +279,7 @@ fun BreakFastWithHeader(
     )
 
     Pager(
+        items = breakfastRecipes,
         state = pagerState,
         modifier = Modifier.preferredHeight(foodCard.maxHeight)
     ) {

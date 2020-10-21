@@ -33,6 +33,7 @@ import androidx.compose.ui.util.lerp
 import androidx.compose.ui.zIndex
 import com.beetlestance.aphid.SearchState
 import java.lang.Math.abs
+import java.lang.Math.min
 import kotlin.math.roundToInt
 
 /**
@@ -74,8 +75,6 @@ class PagerState(
     maxPage: Int = 0,
     val isInfiniteScroll: Boolean = false
 ) {
-    private val pagesToShow = if (isInfiniteScroll) maxPage + 3 else maxPage
-
     private var _minPage by mutableStateOf(minPage)
     var minPage: Int
         get() = _minPage
@@ -84,7 +83,7 @@ class PagerState(
             _currentPage = _currentPage.coerceIn(_minPage, _maxPage)
         }
 
-    private var _maxPage by mutableStateOf(pagesToShow, structuralEqualityPolicy())
+    private var _maxPage by mutableStateOf(maxPage, structuralEqualityPolicy())
     var maxPage: Int
         get() = _maxPage
         set(value) {
@@ -92,7 +91,7 @@ class PagerState(
             _currentPage = _currentPage.coerceIn(_minPage, maxPage)
         }
 
-    private var _currentPage by mutableStateOf(currentPage.coerceIn(minPage, pagesToShow))
+    private var _currentPage by mutableStateOf(currentPage.coerceIn(minPage, maxPage))
     var currentPage: Int
         get() = _currentPage
         set(value) {
@@ -111,7 +110,8 @@ class PagerState(
     }
 
     fun selectPage(pageOffset: Int) {
-        currentPage -= pageOffset
+        val page = currentPage - pageOffset
+        currentPage = if (page > maxPage) minPage else if (page < minPage) maxPage else page
         currentPageOffset = 0f
         selectionState = SelectionState.Selected
     }
@@ -129,16 +129,8 @@ class PagerState(
             _currentPageOffset.snapTo(value.coerceIn(min, max))
         }
 
-    fun resetIfScrollEnd() {
-        if (isInfiniteScroll) {
-            if (currentPage == maxPage - 1) currentPage = 1
-        } else {
-            currentPage = 0
-        }
-    }
 
     fun nextPage(velocity: Float = 5f) {
-        if (isInfiniteScroll) resetIfScrollEnd()
         fling(-velocity)
     }
 
@@ -147,9 +139,6 @@ class PagerState(
     }
 
     fun fling(velocity: Float) {
-        if (velocity < 0 && currentPage == maxPage && isInfiniteScroll.not()) return
-        if (velocity > 0 && currentPage == minPage) return
-
         selectionState = SelectionState.Undecided
 
         _currentPageOffset.fling(velocity) { reason, _, _ ->
@@ -182,20 +171,43 @@ fun getActualPosition(page: Int, listSize: Int, isRepeat: Boolean): Int {
 }
 
 @Composable
-fun Pager(
+fun <T> Pager(
+    items: List<T>,
     state: PagerState,
     offscreenLimit: Int = 2,
     modifier: Modifier = Modifier,
-    pageContent: @Composable PagerScope.() -> Unit
+    pageContent: @Composable PagerScope.(T) -> Unit
 ) {
     var pageSize by remember { mutableStateOf(0) }
 
     Layout(
         children = {
+            val minPageInfinite = state.currentPage - offscreenLimit
+            val maxPageInfinite = state.currentPage + offscreenLimit
             val minPage = (state.currentPage - offscreenLimit).coerceAtLeast(state.minPage)
             val maxPage = (state.currentPage + offscreenLimit).coerceAtMost(state.maxPage)
 
-            for (page in minPage..maxPage) {
+            for (page in minPageInfinite..maxPageInfinite) {
+                val index = when {
+                    page < state.minPage -> items.size + page
+                    page > state.maxPage -> page - state.maxPage - 1
+                    else -> page
+                }
+                val pageData = PageData(index)
+                val scope = PagerScope(state, index, false)
+                key(pageData) {
+                    Box(
+                        alignment = Alignment.Center,
+                        modifier = pageData
+                        // Always draw selected page after its next hint
+                        //.zIndex(animate(if (scope.isSelectedPage) 1f else 0f))
+                    ) {
+                        scope.pageContent(items[index])
+                    }
+                }
+            }
+
+            /*for (page in minPage..maxPage) {
                 val isRepeat = page > state.numberOfPages
                 val pageInList = if (isRepeat) page - state.numberOfPages - 1 else page
                 val pageData = PageData(pageInList)
@@ -210,7 +222,7 @@ fun Pager(
                         scope.pageContent()
                     }
                 }
-            }
+            }*/
         },
         modifier = modifier.draggable(
             orientation = Orientation.Horizontal,
@@ -251,15 +263,22 @@ fun Pager(
                         pageSize = placeable.width
                     }
 
-                    // add current page offset to calculate child offset correctly
-                    val actualPage = if (currentPage >= state.numberOfPages && page in 0..2) {
-                        page + state.numberOfPages + 1
-                    } else {
-                        page
+                    val isEndOfList = currentPage in (state.maxPage - 10)..state.maxPage
+                    val isStartingList = currentPage in (state.minPage)..state.minPage
+
+                    val pageOffset = when {
+                        isEndOfList && page < state.minPage + 10 -> {
+                            (state.maxPage + page + 1) - currentPage + offset
+                        }
+
+                        isStartingList && page > state.maxPage - 10 -> {
+                            (state.maxPage - page - 1) - currentPage + offset
+                        }
+
+                        else -> page - currentPage + offset
                     }
 
-                    val xItemOffset =
-                        ((actualPage + offset - currentPage) * placeable.width).roundToInt()
+                    val xItemOffset = (pageOffset * placeable.width).roundToInt()
 
                     placeable.place(
                         x = xCenterOffset + xItemOffset,
