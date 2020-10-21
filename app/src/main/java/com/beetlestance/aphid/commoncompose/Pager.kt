@@ -390,15 +390,17 @@ fun pageOffsetWithCurrent(
     minPage: Int,
     currentPageOffset: Float
 ): Float {
-    val isEndOfList = currentPage in (maxPage - 3)..maxPage
-    val isStartingList = currentPage in minPage..(minPage + 3)
+    val offsetFromEnd = maxPage - currentPage
+    val offsetFromStart = currentPage - minPage
+    val isEndOfList = offsetFromEnd <= offsetFromStart
+    val isStartingList = offsetFromStart < offsetFromEnd
 
     return when {
-        isEndOfList && page < minPage + 3 -> {
+        isEndOfList && page == minPage -> {
             (maxPage + page + 1) - currentPage + currentPageOffset
         }
 
-        isStartingList && page > maxPage - 3 -> {
+        isStartingList && page == maxPage -> {
             (maxPage - page - 1) - currentPage + currentPageOffset
         }
 

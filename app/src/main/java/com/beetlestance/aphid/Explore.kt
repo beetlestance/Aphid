@@ -268,8 +268,6 @@ fun BreakFastWithHeader(
         style = MaterialTheme.typography.h6,
     )
 
-    //val pagerState = rememberPagerState(maxPage = breakfastRecipes.lastIndex)
-
     val offset = 16.dp
     val fraction = 0.9f
     val foodCard = FoodCard(
@@ -281,9 +279,9 @@ fun BreakFastWithHeader(
 
     Carousel(
         items = breakfastRecipes,
+        offscreenLimit = 2,
         modifier = Modifier.preferredHeight(foodCard.maxHeight)
     ) { recipe ->
-
         val recipeImageUrl: String? = run {
             return@run SpoonacularImageHelper.generateRecipeImageUrl(
                 id = recipe.recipeId?.toLong() ?: return@run null,
@@ -305,7 +303,7 @@ fun BreakFastWithHeader(
 
         if (isSelectedPage) {
             LaunchedTask {
-                delay(2000L)
+                delay(5000L)
                 this@Carousel.nextPage(velocity = 5f, true)
             }
         }
