@@ -457,7 +457,7 @@ interface ViewPagerTransition {
                         val vertMargin = size.height * (1 - scaleFactor) / 2
                         val horzMargin = size.width * (1 - scaleFactor) / 2
                         val translationX = if (offset < 0) {
-                            horzMargin - vertMargin / 2
+                            0f
                         } else {
                             // if page is on the right side do not apply any translation
                             //horzMargin + vertMargin / 2

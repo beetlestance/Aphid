@@ -68,8 +68,8 @@ fun FoodCardWithDetailsPage(
 ) {
     val animateElevation = if (isSelected) 12.dp else 2.dp
 
-    val width = if (isSelected) foodCard.maxWidth else foodCard.minWidth
-    val height = if (isSelected) foodCard.maxHeight else foodCard.minHeight
+    val width = if (isSelected) foodCard.maxWidth else foodCard.maxWidth
+    val height = if (isSelected) foodCard.maxHeight else foodCard.maxHeight
 
     FoodCardWithDetails(
         elevation = animateElevation,
