@@ -40,16 +40,6 @@ import kotlin.math.roundToInt
 /**
  * Stole from jetpack compose samples - JetCaster
  */
-
-
-data class PageTransformState(
-    val alpha: Float = 1f,
-    val scaleX: Float = 1f,
-    val scaleY: Float = 1f,
-    val translationX: Float = 0f,
-    val translationY: Float = 0f
-)
-
 class PagerState(
     val clock: AnimationClockObservable,
     currentPage: Int = 0,
@@ -226,12 +216,13 @@ fun <T> Carousel(
     modifier: Modifier = Modifier,
     pageContent: @Composable (PagerScope.(T) -> Unit)
 ) {
+    if (items.size < 3) throw IllegalArgumentException("Carousel needs at least 3 items")
     var pageSize by remember { mutableStateOf(0) }
 
     Layout(
         children = {
-            val minPageInfinite = state.currentPage - offscreenLimit
-            val maxPageInfinite = state.currentPage + offscreenLimit
+            val minPageInfinite = state.currentPage - offscreenLimit.coerceAtMost(items.size / 2)
+            val maxPageInfinite = state.currentPage + offscreenLimit.coerceAtMost(items.size / 2)
 
             for (page in minPageInfinite..maxPageInfinite) {
                 val index = when {
@@ -383,7 +374,7 @@ fun Pager(
 }
 
 
-fun pageOffsetWithCurrent(
+internal fun pageOffsetWithCurrent(
     currentPage: Int,
     page: Int,
     maxPage: Int,
@@ -392,7 +383,7 @@ fun pageOffsetWithCurrent(
 ): Float {
     val offsetFromEnd = maxPage - currentPage
     val offsetFromStart = currentPage - minPage
-    val isEndOfList = offsetFromEnd <= offsetFromStart
+    val isEndOfList = offsetFromEnd < offsetFromStart
     val isStartingList = offsetFromStart < offsetFromEnd
 
     return when {
@@ -401,7 +392,7 @@ fun pageOffsetWithCurrent(
         }
 
         isStartingList && page == maxPage -> {
-            (maxPage - page - 1) - currentPage + currentPageOffset
+            -1 + currentPageOffset
         }
 
         else -> page - currentPage + currentPageOffset
@@ -536,6 +527,13 @@ private const val MIN_SCALE = 0.75f
 private const val MIN_SCALE_ZOOM = 0.9f
 private const val MIN_ALPHA = 0.7f
 
+data class PageTransformState(
+    val alpha: Float = 1f,
+    val scaleX: Float = 1f,
+    val scaleY: Float = 1f,
+    val translationX: Float = 0f,
+    val translationY: Float = 0f
+)
 
 /**
  * Offset meaning:
