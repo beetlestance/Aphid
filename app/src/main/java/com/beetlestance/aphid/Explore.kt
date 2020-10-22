@@ -279,7 +279,7 @@ fun BreakFastWithHeader(
 
     Carousel(
         items = breakfastRecipes,
-        offscreenLimit = 10,
+        offscreenLimit = 2,
         modifier = Modifier.preferredHeight(foodCard.maxHeight)
     ) { recipe ->
         val recipeImageUrl: String? = run {

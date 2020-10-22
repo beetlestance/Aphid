@@ -1,8 +1,6 @@
 package com.beetlestance.aphid.commoncompose
 
-import android.util.Log
 import androidx.compose.animation.AnimatedFloatModel
-import androidx.compose.animation.animate
 import androidx.compose.animation.core.AnimationClockObservable
 import androidx.compose.animation.core.AnimationEndReason
 import androidx.compose.animation.core.fling
@@ -22,7 +20,6 @@ import androidx.compose.ui.Layout
 import androidx.compose.ui.Measurable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.ParentDataModifier
-import androidx.compose.ui.WithConstraints
 import androidx.compose.ui.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -30,11 +27,7 @@ import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.platform.AnimationClockAmbient
 import androidx.compose.ui.unit.Density
-import androidx.compose.ui.util.lerp
-import androidx.compose.ui.zIndex
-import com.beetlestance.aphid.SearchState
 import java.lang.Math.abs
-import java.lang.Math.min
 import kotlin.math.roundToInt
 
 /**
@@ -388,11 +381,11 @@ internal fun pageOffsetWithCurrent(
 
     return when {
         isEndOfList && page == minPage -> {
-            (maxPage + page + 1) - currentPage + currentPageOffset
+            offsetFromEnd + page + 1 + currentPageOffset
         }
 
         isStartingList && page == maxPage -> {
-            -1 + currentPageOffset
+            -1 - currentPage + currentPageOffset
         }
 
         else -> page - currentPage + currentPageOffset
