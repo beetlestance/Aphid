@@ -109,7 +109,7 @@ fun <T> Carousel(
                 }
             }
         },
-        isCarousel = false,
+        isCarousel = true,
         minPage = minPage,
         maxPage = maxPage
     )
