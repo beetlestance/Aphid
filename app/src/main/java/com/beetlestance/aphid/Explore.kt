@@ -57,7 +57,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.beetlestance.aphid.commoncompose.Carousel
-import com.beetlestance.aphid.commoncompose.ViewPagerTransition
+import com.beetlestance.aphid.commoncompose.PageTransformation
 import com.beetlestance.data.entities.Recipe
 import com.beetlestance.spoonacular_kotlin.SpoonacularImageHelper
 import com.beetlestance.spoonacular_kotlin.constants.SpoonacularImageSize
@@ -276,7 +276,7 @@ fun BreakFastWithHeader(
         }
 
         FoodCardWithDetailsPage(
-            modifier = Modifier.transitionPageItem(ViewPagerTransition.ZOOM_OUT),
+            modifier = Modifier.transformPage(PageTransformation.ZOOM_OUT),
             foodCard = foodCard,
             isSelected = isSelectedPage,
             name = recipe.title ?: "",
