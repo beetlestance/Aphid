@@ -10,7 +10,6 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Measurable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.ParentDataModifier
 import androidx.compose.ui.platform.AnimationClockAmbient
@@ -120,9 +119,6 @@ fun <T> Carousel(
 private data class CarouselPageData(val page: Int) : ParentDataModifier {
     override fun Density.modifyParentData(parentData: Any?): Any? = this@CarouselPageData
 }
-
-private val Measurable.page: Int
-    get() = (parentData as? CarouselPageData)?.page ?: error("no PageData for measurable $this")
 
 class CarouselScope(
     carouselState: CarouselState,
