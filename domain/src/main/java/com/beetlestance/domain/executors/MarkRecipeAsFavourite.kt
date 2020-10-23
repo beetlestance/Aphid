@@ -5,6 +5,7 @@ import com.beetlestance.data.entities.Recipe
 import com.beetlestance.data.repositories.recipes.RecipesRepository
 import com.beetlestance.domain.UseCase
 import com.beetlestance.domain.executors.MarkRecipeAsFavourite.MarkRecipeAsFavouriteParams
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MarkRecipeAsFavourite @Inject constructor(
@@ -13,7 +14,9 @@ class MarkRecipeAsFavourite @Inject constructor(
 ) : UseCase<MarkRecipeAsFavouriteParams>() {
 
     override suspend fun doWork(params: MarkRecipeAsFavouriteParams) {
-        recipesRepository.updateRecipe(params.recipe.copy(isFavourite = params.isFavourite))
+        withContext(appCoroutineDispatchers.io) {
+            recipesRepository.updateRecipe(params.recipe.copy(isFavourite = params.isFavourite))
+        }
     }
 
     data class MarkRecipeAsFavouriteParams(
