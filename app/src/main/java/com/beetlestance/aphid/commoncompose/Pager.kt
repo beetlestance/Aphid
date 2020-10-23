@@ -1,11 +1,12 @@
 package com.beetlestance.aphid.commoncompose
 
 import androidx.compose.animation.AnimatedFloatModel
+import androidx.compose.animation.animate
 import androidx.compose.animation.core.AnimationClockObservable
 import androidx.compose.animation.core.AnimationEndReason
 import androidx.compose.animation.core.fling
 import androidx.compose.foundation.gestures.draggable
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
@@ -14,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.structuralEqualityPolicy
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Layout
 import androidx.compose.ui.Measurable
 import androidx.compose.ui.Modifier
@@ -24,6 +26,7 @@ import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.platform.AnimationClockAmbient
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.zIndex
 import kotlin.math.roundToInt
 
 /**
@@ -78,6 +81,8 @@ open class PagerState(
     protected var _currentPageOffset = AnimatedFloatModel(0f, clock = clock).apply {
         setBounds(-1f, 1f)
     }
+
+    open fun offset(page: Int): Float = page - (currentPage - currentPageOffset)
 
     var currentPageOffset: Float
         get() = _currentPageOffset.value
@@ -152,20 +157,49 @@ fun Pager(
     modifier: Modifier = Modifier,
     pageContent: @Composable PagerScope.() -> Unit
 ) {
+    val minPage = (state.currentPage - offscreenLimit).coerceAtLeast(state.minPage)
+    val maxPage = (state.currentPage + offscreenLimit).coerceAtMost(state.maxPage)
+
+    PageLayout(
+        state = state,
+        offscreenLimit = offscreenLimit,
+        modifier = modifier,
+        child = { page ->
+            val pageData = PageData(page)
+            val scope = PagerScope(state, page)
+            key(pageData) {
+                Box(
+                    alignment = Alignment.Center,
+                    modifier = pageData
+                        // Always draw selected page after its next hint
+                        .zIndex(animate(if (page == state.currentPage) 1f else 0f))
+                ) {
+                    scope.pageContent()
+                }
+            }
+        },
+        isCarousel = false,
+        minPage = minPage,
+        maxPage = maxPage
+    )
+}
+
+@Composable
+fun PageLayout(
+    state: PagerState,
+    offscreenLimit: Int = 2,
+    modifier: Modifier = Modifier,
+    minPage: Int,
+    maxPage: Int,
+    isCarousel: Boolean,
+    child: @Composable (Int) -> Unit
+) {
     var pageSize by remember { mutableStateOf(0) }
+
     Layout(
         children = {
-            val minPage = (state.currentPage - offscreenLimit).coerceAtLeast(state.minPage)
-            val maxPage = (state.currentPage + offscreenLimit).coerceAtMost(state.maxPage)
-
             for (page in minPage..maxPage) {
-                val pageData = PageData(page)
-                val scope = PagerScope(state, page)
-                key(pageData) {
-                    Column(modifier = pageData) {
-                        scope.pageContent()
-                    }
-                }
+                child(page)
             }
         },
         modifier = modifier.draggable(
@@ -181,8 +215,10 @@ fun Pager(
         ) { dy ->
             with(state) {
                 val pos = pageSize * currentPageOffset
-                val max = if (currentPage == minPage) 0 else pageSize * offscreenLimit
-                val min = if (currentPage == maxPage) 0 else -pageSize * offscreenLimit
+                val maxDragSize = pageSize * offscreenLimit
+                val minDragSize = -pageSize * offscreenLimit
+                val max = if (currentPage == minPage && isCarousel.not()) 0 else maxDragSize
+                val min = if (currentPage == maxPage && isCarousel.not()) 0 else minDragSize
                 val newPos = (pos + dy).coerceIn(min.toFloat(), max.toFloat())
                 currentPageOffset = newPos / pageSize
             }
@@ -190,7 +226,6 @@ fun Pager(
     ) { measurables, constraints ->
         layout(constraints.maxWidth, constraints.maxHeight) {
             val currentPage = state.currentPage
-            val offset = state.currentPageOffset
             val childConstraints = constraints.copy(minWidth = 0, minHeight = 0)
 
             measurables
@@ -208,7 +243,7 @@ fun Pager(
                     }
 
                     placeable.place(
-                        x = xCenterOffset + ((page - (currentPage - offset)) * placeable.width).roundToInt(),
+                        x = xCenterOffset + (state.offset(page) * placeable.width).roundToInt(),
                         y = yCenterOffset
                     )
                 }
@@ -250,8 +285,6 @@ open class PagerScope(
 
     fun previousPage(velocity: Float) = state.previousPage(velocity)
 
-    protected open fun offset(): Float = page - (currentPage - currentPageOffset)
-
     /**
      * Modifier which scales pager items according to their offset position. Similar in effect
      * to a carousel.
@@ -259,7 +292,7 @@ open class PagerScope(
     fun Modifier.transformPage(
         pageTransition: PageTransformation = PageTransformation.NONE
     ): Modifier = drawWithContent {
-        val transform = pageTransition.transformPage(offset(), size)
+        val transform = pageTransition.transformPage(state.offset(page), size)
         this.withTransform(transformBlock = {
             this.scale(transform.scaleX, transform.scaleY, Offset(center.x, center.y))
             this.translate(transform.translationX, transform.translationY)
