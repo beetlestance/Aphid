@@ -216,32 +216,6 @@ fun Pager(
     }
 }
 
-
-internal fun pageOffsetWithCurrent(
-    currentPage: Int,
-    page: Int,
-    maxPage: Int,
-    minPage: Int,
-    currentPageOffset: Float
-): Float {
-    val offsetFromEnd = maxPage - currentPage
-    val offsetFromStart = currentPage - minPage
-    val isEndOfList = offsetFromEnd < offsetFromStart
-    val isStartingList = offsetFromStart < offsetFromEnd
-
-    return when {
-        isEndOfList && page == minPage -> {
-            offsetFromEnd + page + 1 + currentPageOffset
-        }
-
-        isStartingList && page == maxPage -> {
-            -1 - currentPage + currentPageOffset
-        }
-
-        else -> page - currentPage + currentPageOffset
-    }
-}
-
 /**
  * Scope for [Pager] content.
  */
@@ -272,17 +246,11 @@ open class PagerScope(
         get() = currentPage == page
 
 
-    fun nextPage(velocity: Float, resetIfSrollEnd: Boolean) = state.nextPage()
+    fun nextPage(velocity: Float) = state.nextPage()
 
     fun previousPage(velocity: Float) = state.previousPage(velocity)
 
-    protected open fun offset(): Float = pageOffsetWithCurrent(
-        currentPage,
-        page,
-        state.maxPage,
-        state.minPage,
-        currentPageOffset
-    )
+    protected open fun offset(): Float = page - (currentPage - currentPageOffset)
 
     /**
      * Modifier which scales pager items according to their offset position. Similar in effect

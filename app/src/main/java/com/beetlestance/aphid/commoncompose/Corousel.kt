@@ -187,3 +187,28 @@ class CarouselScope(
         currentPageOffset
     )
 }
+
+internal fun pageOffsetWithCurrent(
+    currentPage: Int,
+    page: Int,
+    maxPage: Int,
+    minPage: Int,
+    currentPageOffset: Float
+): Float {
+    val offsetFromEnd = maxPage - currentPage
+    val offsetFromStart = currentPage - minPage
+    val isEndOfList = offsetFromEnd < offsetFromStart
+    val isStartingList = offsetFromStart < offsetFromEnd
+
+    return when {
+        isEndOfList && page == minPage -> {
+            offsetFromEnd + page + 1 + currentPageOffset
+        }
+
+        isStartingList && page == maxPage -> {
+            -1 - currentPage + currentPageOffset
+        }
+
+        else -> page - currentPage + currentPageOffset
+    }
+}
