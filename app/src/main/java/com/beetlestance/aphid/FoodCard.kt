@@ -5,6 +5,7 @@ import androidx.compose.animation.animate
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,6 +44,7 @@ data class FoodCard(
     val pageElevation: Dp = 2.dp,
     val horizontalOffset: Dp,
     val horizontalOffsetFraction: Float,
+    val enableDefaultAnimation: Boolean = false,
     val aspectRatio: Float = 13 / 20f,
     val maxWidth: Dp
 ) {
@@ -61,6 +63,7 @@ fun FoodCardWithDetailsPage(
     name: String,
     imageUrl: String? = null,
     contentTags: String,
+    isFavourite: Boolean,
     @DrawableRes imageResource: Int,
     onCheckedChange: (Boolean) -> Unit = {},
     cardShape: Shape = RoundedCornerShape(16.dp),
@@ -68,14 +71,14 @@ fun FoodCardWithDetailsPage(
 ) {
     val animateElevation = if (isSelected) 12.dp else 2.dp
 
-    val width = if (isSelected) foodCard.maxWidth else foodCard.maxWidth
-    val height = if (isSelected) foodCard.maxHeight else foodCard.maxHeight
+    val width = if (isSelected) foodCard.maxWidth else foodCard.minWidth
+    val height = if (isSelected) foodCard.maxHeight else foodCard.minHeight
 
     FoodCardWithDetails(
         elevation = animateElevation,
         modifier = modifier
-            .preferredWidth(animate(width))
-            .preferredHeight(animate(height))
+            .preferredWidth(if (foodCard.enableDefaultAnimation) animate(width) else foodCard.maxWidth)
+            .preferredHeight(if (foodCard.enableDefaultAnimation) animate(height) else foodCard.maxHeight)
             .padding(horizontal = 16.dp),
         fraction = null,
         horizontalOffset = foodCard.horizontalOffset,
@@ -84,6 +87,7 @@ fun FoodCardWithDetailsPage(
         imageUrl = imageUrl,
         contentTags = contentTags,
         imageResource = imageResource,
+        isFavourite = isFavourite,
         onCheckedChange = onCheckedChange,
         cardShape = cardShape
     )
@@ -99,6 +103,7 @@ fun FoodCardWithDetails(
     name: String,
     imageUrl: String? = null,
     contentTags: String,
+    isFavourite: Boolean,
     @DrawableRes imageResource: Int,
     onCheckedChange: (Boolean) -> Unit = {},
     cardShape: Shape = RoundedCornerShape(16.dp)
@@ -124,6 +129,7 @@ fun FoodCardWithDetails(
             elevation = elevation,
             imageSrc = imageUrl ?: imageResource,
             cardShape = cardShape,
+            isFavourite = isFavourite,
             onCheckChanged = onCheckedChange,
             modifier = Modifier.fillMaxWidth()
         )
@@ -140,6 +146,7 @@ fun FoodCardWithDetails(
 fun FoodCardWithFavIcon(
     elevation: Dp,
     imageSrc: Any,
+    isFavourite: Boolean,
     cardShape: Shape = RoundedCornerShape(16.dp),
     onCheckChanged: (Boolean) -> Unit = {},
     modifier: Modifier = Modifier
@@ -163,6 +170,9 @@ fun FoodCardWithFavIcon(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(16.dp)
+                        .clickable {
+
+                        }
                         .background(
                             shape = CircleShape,
                             color = colorResource(id = R.color.grey_400_alpha_30)
@@ -170,10 +180,10 @@ fun FoodCardWithFavIcon(
                     icon = {
                         Icon(
                             asset = vectorResource(id = R.drawable.ic_like),
-                            tint = colorResource(R.color.deep_orange_a200)
+                            tint = colorResource(if (isFavourite) R.color.deep_orange_a200 else R.color.white)
                         )
                     },
-                    checked = false,
+                    checked = isFavourite,
                     onCheckedChange = onCheckChanged
                 )
             }

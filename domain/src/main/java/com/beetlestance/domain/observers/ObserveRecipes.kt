@@ -9,6 +9,7 @@ import javax.inject.Inject
 class ObserveRecipes @Inject constructor(
     private val recipesRepository: RecipesRepository
 ) : ObserveUseCase<Unit, List<Recipe>>() {
+
     override fun createObservable(params: Unit): Flow<List<Recipe>> {
         return recipesRepository.observeRecipes()
     }

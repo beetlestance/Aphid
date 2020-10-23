@@ -1,21 +1,14 @@
 package com.beetlestance.aphid
 
-import android.util.Log
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.FloatDecayAnimationSpec
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.ScrollableRow
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.animation.FlingConfig
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.gestures.ScrollableController
-import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ConstraintLayout
@@ -29,10 +22,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.preferredWidth
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.LazyRowFor
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,7 +32,6 @@ import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedTask
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -58,11 +46,8 @@ import androidx.compose.ui.focus.ExperimentalFocus
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.isFocused
 import androidx.compose.ui.focusObserver
-import androidx.compose.ui.gesture.ScrollCallback
-import androidx.compose.ui.gesture.scrollGestureFilter
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.AnimationClockAmbient
 import androidx.compose.ui.platform.ConfigurationAmbient
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.imageResource
@@ -72,14 +57,10 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.beetlestance.aphid.commoncompose.Carousel
-import com.beetlestance.aphid.commoncompose.Pager
-import com.beetlestance.aphid.commoncompose.PagerState
 import com.beetlestance.aphid.commoncompose.ViewPagerTransition
-import com.beetlestance.aphid.commoncompose.rememberPagerState
 import com.beetlestance.data.entities.Recipe
 import com.beetlestance.spoonacular_kotlin.SpoonacularImageHelper
 import com.beetlestance.spoonacular_kotlin.constants.SpoonacularImageSize
-import kotlinx.coroutines.delay
 import timber.log.Timber
 
 /**
@@ -115,7 +96,10 @@ fun Explore(state: ExploreViewState) {
             Filters()
 
             if (state.breakfastRecipes.isNotEmpty()) {
-                BreakFastWithHeader(breakfastRecipes = state.breakfastRecipes)
+                BreakFastWithHeader(
+                    breakfastRecipes = state.breakfastRecipes,
+                    markRecipeAsFavourite = state.markRecipeAsFavourite
+                )
             }
 
             MoodContent()
@@ -260,7 +244,8 @@ class Filter(
 
 @Composable
 fun BreakFastWithHeader(
-    breakfastRecipes: List<Recipe>
+    breakfastRecipes: List<Recipe>,
+    markRecipeAsFavourite: (Recipe, Boolean) -> Unit
 ) {
 
     Text(
@@ -298,7 +283,9 @@ fun BreakFastWithHeader(
             imageUrl = recipeImageUrl ?: recipe.imageUrl,
             imageResource = R.drawable.temp_brownie,
             contentTags = "2 Serving • 40 Min • 331 Cal ",
-            rating = "4.3"
+            rating = "4.3",
+            isFavourite = recipe.isFavourite == true,
+            onCheckedChange = { isFavourite -> markRecipeAsFavourite(recipe, isFavourite) }
         )
     }
 }
@@ -423,7 +410,8 @@ fun QuickRecipesWithHeader() {
                 rating = "4.4",
                 name = "Asian Pesto Noodles",
                 fraction = 0.7f,
-                horizontalOffset = 16.dp
+                horizontalOffset = 16.dp,
+                isFavourite = false
             )
         }
     }
@@ -506,7 +494,8 @@ fun RecentlyViewedRecipesWithHeader() {
                 rating = "4.4",
                 name = "One Pot Pasta",
                 fraction = 0.7f,
-                horizontalOffset = 16.dp
+                horizontalOffset = 16.dp,
+                isFavourite = false
             )
         }
     }

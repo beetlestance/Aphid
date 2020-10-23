@@ -30,6 +30,8 @@ data class Recipe(
 
     @ColumnInfo(name = "image_url") val imageUrl: String? = null,
 
-    @ColumnInfo(name = "image_type") val imageType: String? = null
+    @ColumnInfo(name = "image_type") val imageType: String? = null,
+
+    @ColumnInfo(name = "is_favourite") val isFavourite: Boolean? = false
 
 ) : AphidEntity

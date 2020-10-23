@@ -3,15 +3,18 @@ package com.beetlestance.aphid
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.beetlestance.base_android.AphidViewModel
+import com.beetlestance.data.entities.Recipe
 import com.beetlestance.domain.executors.FetchRecipes
-import kotlinx.coroutines.launch
+import com.beetlestance.domain.executors.MarkRecipeAsFavourite
 import com.beetlestance.domain.invoke
 import com.beetlestance.domain.observers.ObserveRecipes
 import com.beetlestance.domain.watchStatus
+import kotlinx.coroutines.launch
 
 class MainActivityViewModel @ViewModelInject constructor(
     fetchRecipes: FetchRecipes,
-    observeRecipes: ObserveRecipes
+    observeRecipes: ObserveRecipes,
+    private val markRecipeAsFavourite: MarkRecipeAsFavourite
 ) : AphidViewModel<ExploreViewState>(ExploreViewState()) {
 
     init {
@@ -25,7 +28,23 @@ class MainActivityViewModel @ViewModelInject constructor(
 
         observeRecipes()
         viewModelScope.launch {
-            observeRecipes.observe().collectAndSetState { copy(breakfastRecipes = it) }
+            observeRecipes.observe().collectAndSetState {
+                copy(
+                    breakfastRecipes = it,
+                    markRecipeAsFavourite = ::markRecipeAsFavourite
+                )
+            }
+        }
+    }
+
+    private fun markRecipeAsFavourite(recipe: Recipe, isFavourite: Boolean) {
+        viewModelScope.launch {
+            markRecipeAsFavourite.executeSync(
+                params = MarkRecipeAsFavourite.MarkRecipeAsFavouriteParams(
+                    recipe = recipe,
+                    isFavourite = isFavourite
+                )
+            )
         }
     }
 }
