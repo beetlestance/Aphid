@@ -125,7 +125,7 @@ open class PagerState(
 }
 
 @Immutable
-private data class PageData(val page: Int) : ParentDataModifier {
+internal data class PageData(val page: Int) : ParentDataModifier {
     override fun Density.modifyParentData(parentData: Any?): Any? = this@PageData
 }
 
@@ -164,17 +164,19 @@ fun Pager(
         state = state,
         offscreenLimit = offscreenLimit,
         modifier = modifier,
-        child = { page ->
-            val pageData = PageData(page)
-            val scope = PagerScope(state, page)
-            key(pageData) {
-                Box(
-                    alignment = Alignment.Center,
-                    modifier = pageData
-                        // Always draw selected page after its next hint
-                        .zIndex(animate(if (page == state.currentPage) 1f else 0f))
-                ) {
-                    scope.pageContent()
+        children = {
+            for (page in minPage..maxPage) {
+                val pageData = PageData(page)
+                val scope = PagerScope(state, page)
+                key(pageData) {
+                    Box(
+                        alignment = Alignment.Center,
+                        modifier = pageData
+                            // Always draw selected page after its next hint
+                            .zIndex(animate(if (page == state.currentPage) 1f else 0f))
+                    ) {
+                        scope.pageContent()
+                    }
                 }
             }
         },
@@ -192,16 +194,12 @@ fun PageLayout(
     minPage: Int,
     maxPage: Int,
     isCarousel: Boolean,
-    child: @Composable (Int) -> Unit
+    children: @Composable () -> Unit
 ) {
     var pageSize by remember { mutableStateOf(0) }
 
     Layout(
-        children = {
-            for (page in minPage..maxPage) {
-                child(page)
-            }
-        },
+        children = children,
         modifier = modifier.draggable(
             orientation = Orientation.Horizontal,
             onDragStarted = {

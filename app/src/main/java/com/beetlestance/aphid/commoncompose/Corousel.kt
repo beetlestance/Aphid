@@ -6,14 +6,11 @@ import androidx.compose.animation.core.AnimationEndReason
 import androidx.compose.animation.core.fling
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.ParentDataModifier
 import androidx.compose.ui.platform.AnimationClockAmbient
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.zIndex
 import kotlin.math.roundToInt
 
@@ -89,23 +86,25 @@ fun <T> Carousel(
         state = state,
         offscreenLimit = offscreenLimit,
         modifier = modifier,
-        child = { page ->
-            val index = when {
-                page < state.minPage -> items.size + page
-                page > state.maxPage -> page - state.maxPage - 1
-                else -> page
-            }
+        children = {
+            for (page in minPage..maxPage) {
+                val index = when {
+                    page < state.minPage -> items.size + page
+                    page > state.maxPage -> page - state.maxPage - 1
+                    else -> page
+                }
 
-            val pageData = CarouselPageData(index)
-            val scope = CarouselScope(state, index)
-            key(pageData) {
-                Box(
-                    alignment = Alignment.Center,
-                    modifier = pageData
-                        // Always draw selected page after its next hint
-                        .zIndex(animate(if (page == state.currentPage) 1f else 0f))
-                ) {
-                    scope.pageContent(items[index])
+                val pageData = PageData(index)
+                val scope = CarouselScope(state, index)
+                key(pageData) {
+                    Box(
+                        alignment = Alignment.Center,
+                        modifier = pageData
+                            // Always draw selected page after its next hint
+                            .zIndex(animate(if (page == state.currentPage) 1f else 0f))
+                    ) {
+                        scope.pageContent(items[index])
+                    }
                 }
             }
         },
@@ -113,11 +112,6 @@ fun <T> Carousel(
         minPage = minPage,
         maxPage = maxPage
     )
-}
-
-@Immutable
-private data class CarouselPageData(val page: Int) : ParentDataModifier {
-    override fun Density.modifyParentData(parentData: Any?): Any? = this@CarouselPageData
 }
 
 class CarouselScope(
