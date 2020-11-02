@@ -111,7 +111,7 @@ object Libs {
         object Mdc {
             const val material: String = "com.google.android.material:material:1.3.0-alpha03"
             const val composeThemeAdapter =
-                "com.google.android.material:compose-theme-adapter:1.0.0-alpha04"
+                "com.google.android.material:compose-theme-adapter:1.0.0-alpha06"
         }
 
         object PlayServices {
