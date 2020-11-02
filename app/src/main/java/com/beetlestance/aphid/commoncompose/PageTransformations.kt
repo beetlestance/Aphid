@@ -1,6 +1,7 @@
 package com.beetlestance.aphid.commoncompose
 
 import androidx.compose.ui.geometry.Size
+import kotlin.math.abs
 
 private const val MIN_SCALE = 0.75f
 
@@ -26,7 +27,7 @@ interface PageTransformation {
     fun transformPage(offset: Float, size: Size): PageTransformState
 
     companion object {
-        val NONE = object : PageTransformation {
+        val NONE: PageTransformation = object : PageTransformation {
             override fun transformPage(
                 offset: Float,
                 size: Size
@@ -35,7 +36,7 @@ interface PageTransformation {
             }
         }
 
-        val DEPTH_TRANSFORM = object : PageTransformation {
+        val DEPTH_TRANSFORM: PageTransformation = object : PageTransformation {
             override fun transformPage(
                 offset: Float,
                 size: Size
@@ -43,7 +44,7 @@ interface PageTransformation {
                 return when {
                     offset == 0f -> PageTransformState()
                     offset < 0f -> {
-                        val scaleFactor = (MIN_SCALE + (1 - MIN_SCALE) * (1 - kotlin.math.abs(
+                        val scaleFactor = (MIN_SCALE + (1 - MIN_SCALE) * (1 - abs(
                             offset
                         )))
                         PageTransformState(
@@ -58,21 +59,21 @@ interface PageTransformation {
             }
         }
 
-        val ZOOM_OUT = object : PageTransformation {
+        val ZOOM_OUT: PageTransformation = object : PageTransformation {
             override fun transformPage(
                 offset: Float,
                 size: Size
             ): PageTransformState {
                 return when {
                     offset <= 1 && offset >= -1 -> {
-                        val scaleFactor = MIN_SCALE_ZOOM.coerceAtLeast(1 - Math.abs(offset))
-                        val vertMargin = size.height * (1 - scaleFactor) / 2
-                        val horzMargin = size.width * (1 - scaleFactor) / 2
+                        val scaleFactor = MIN_SCALE_ZOOM.coerceAtLeast(1 - abs(offset))
+                        // val vertMargin = size.height * (1 - scaleFactor) / 2
+                        // val horzMargin = size.width * (1 - scaleFactor) / 2
                         val translationX = if (offset < 0) {
                             0f
                         } else {
                             // if page is on the right side do not apply any translation
-                            //horzMargin + vertMargin / 2
+                            // horzMargin + vertMargin / 2
                             0f
                         }
 
