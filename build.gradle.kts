@@ -20,7 +20,7 @@ buildscript {
 }
 
 plugins {
-    id("com.diffplug.spotless") version "5.6.1"
+    id("com.diffplug.spotless") version "5.7.0"
     id("com.github.ben-manes.versions") version "0.33.0"
 }
 
@@ -46,6 +46,8 @@ subprojects {
             targetExclude("bin/**/*.kt")
 
             ktlint(com.beetlestance.buildsrc.Versions.ktlint)
+                // Disable paren-spacing rule for NonParenthesizedAnnotationsOnFunctionalTypes
+                .userData(mapOf("disabled_rules" to "paren-spacing"))
             /* ./gradlew spotlessApply */
             licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
         }
@@ -65,7 +67,9 @@ subprojects {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
         kotlinOptions {
             // Treat all Kotlin warnings as errors
-            allWarningsAsErrors = false
+            gradle.taskGraph.whenReady {
+                allWarningsAsErrors = hasTask(":app:assembleDebug").not()
+            }
 
             // Enable experimental coroutines APIs, including Flow
             if (project.name != "mdc-theme-lint" && project.name != "spoonacular-kotlin") {
