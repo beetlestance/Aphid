@@ -16,7 +16,7 @@ object Aphid {
 
 object Libs {
 
-    const val androidGradlePlugin: String = "com.android.tools.build:gradle:4.2.0-alpha13"
+    const val androidGradlePlugin: String = "com.android.tools.build:gradle:4.2.0-alpha15"
 
     const val leakCanary: String = "com.squareup.leakcanary:leakcanary-android:2.2"
 
@@ -75,7 +75,7 @@ object Libs {
         }
 
         object Compose {
-            const val version = "1.0.0-alpha05"
+            const val version = "1.0.0-alpha06"
 
             const val compiler = "androidx.compose.compiler:compiler:$version"
 
@@ -133,7 +133,7 @@ object Libs {
     }
 
     object Coil {
-        private const val version = "1.0.0-rc3"
+        private const val version = "1.0.0"
         const val coil = "io.coil-kt:coil:$version"
     }
 
@@ -186,14 +186,14 @@ object Libs {
     }
 
     object Coroutines {
-        private const val version = "1.3.9"
+        private const val version = "1.4.0"
         const val core: String = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
         const val android: String = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
         const val test: String = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
     }
 
     object Lint {
-        private const val version = "27.2.0-alpha13"
+        private const val version = "27.2.0-alpha15"
         const val api: String = "com.android.tools.lint:lint-api:$version"
         const val checks: String = "com.android.tools.lint:lint-checks:$version"
     }
