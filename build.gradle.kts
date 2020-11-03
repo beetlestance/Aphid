@@ -55,8 +55,9 @@ subprojects {
 
     tasks.withType<JavaCompile> {
         // Remove once kotlin supports jvm 15
-        sourceCompatibility = JavaVersion.VERSION_1_8.toString()
-        targetCompatibility = JavaVersion.VERSION_1_8.toString()
+        sourceCompatibility = JavaVersion.VERSION_11.toString()
+        targetCompatibility = JavaVersion.VERSION_11.toString()
+        //enable compilation in a separate daemon process
         options.isFork = true
     }
 

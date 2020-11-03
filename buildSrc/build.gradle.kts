@@ -26,8 +26,8 @@ kotlinDslPluginOptions {
 @Suppress("UnstableApiUsage")
 java {
     toolchain {
-        // set jvm to 15
-        languageVersion.set(JavaLanguageVersion.of(15))
+        // set jvm to 15 once kotlin supports jvm 15
+        languageVersion.set(JavaLanguageVersion.of(11))
     }
 }
 
