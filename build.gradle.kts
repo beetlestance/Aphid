@@ -87,6 +87,7 @@ subprojects {
             )
 
             // Set JVM target to 11
+            // Set to 14 once org.objectweb.asm.ClassReader increase its major opt code 12 to 14
             jvmTarget = "11"
         }
     }
