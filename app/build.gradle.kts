@@ -65,14 +65,6 @@ android {
 
         // Lint doesn"t seem to handle Kotlin int types + string format very well
         disable("StringFormatMatches")
-
-        // The crash seems to involve the detector
-        // androidx.activity.lint.ActivityResultFragmentVersionDetector.
-        // Added a new InvalidFragmentVersionForActivityResult lint check that verifies that you are
-        // using Fragment 1.3.0-alpha07 when using the Activity Result API, avoiding runtime crashes due
-        // to “invalid request code” issues and non-functioning permission requests caused by using
-        // older versions of Fragments.
-        disable("InvalidFragmentVersionForActivityResult")
     }
 
     buildFeatures {

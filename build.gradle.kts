@@ -85,8 +85,8 @@ subprojects {
                 "-Xjvm-default=all"
             )
 
-            // Set JVM target to 1.8
-            jvmTarget = "1.8"
+            // Set JVM target to 11
+            jvmTarget = "11"
         }
     }
 }

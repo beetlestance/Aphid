@@ -23,13 +23,13 @@ kotlinDslPluginOptions {
     experimentalWarning.set(false)
 }
 
-// Enable once kotlin supports jvm 15
-//@Suppress("UnstableApiUsage")
-//java {
-//    toolchain {
-//        languageVersion.set(JavaLanguageVersion.of(15))
-//    }
-//}
+@Suppress("UnstableApiUsage")
+java {
+    toolchain {
+        // Update to 15 once kotlin supports jvm 15
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
+}
 
 repositories {
     // The org.jetbrains.kotlin.jvm plugin requires a repository
