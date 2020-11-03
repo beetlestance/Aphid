@@ -5,7 +5,7 @@ object Versions {
 }
 
 object Aphid {
-    const val buildToolsVersion = "30.0.2"
+    const val buildToolsVersion: String = "30.0.2"
     const val minSdkVersion: Int = 21
     const val targetSdkVersion: Int = 29
     const val compileSdkVersion: Int = 29
@@ -75,42 +75,43 @@ object Libs {
         }
 
         object Compose {
-            const val version = "1.0.0-alpha06"
+            const val version: String = "1.0.0-alpha06"
 
-            const val compiler = "androidx.compose.compiler:compiler:$version"
+            const val compiler: String = "androidx.compose.compiler:compiler:$version"
 
-            const val runtime = "androidx.compose.runtime:runtime:$version"
-            const val livedata = "androidx.compose.runtime:runtime-livedata:$version"
+            const val runtime: String = "androidx.compose.runtime:runtime:$version"
+            const val livedata: String = "androidx.compose.runtime:runtime-livedata:$version"
 
-            const val foundation = "androidx.compose.foundation:foundation:$version"
-            const val layout = "androidx.compose.foundation:foundation-layout:$version"
+            const val foundation: String = "androidx.compose.foundation:foundation:$version"
+            const val layout: String = "androidx.compose.foundation:foundation-layout:$version"
 
-            const val ui = "androidx.compose.ui:ui:$version"
-            const val material = "androidx.compose.material:material:$version"
+            const val ui: String = "androidx.compose.ui:ui:$version"
+            const val material: String = "androidx.compose.material:material:$version"
 
-            const val animation = "androidx.compose.animation:animation:$version"
+            const val animation: String = "androidx.compose.animation:animation:$version"
 
-            const val tooling = "androidx.ui:ui-tooling:$version"
-            const val test = "androidx.ui:ui-test:$version"
+            const val tooling: String = "androidx.ui:ui-tooling:$version"
+            const val test: String = "androidx.ui:ui-test:$version"
         }
 
         object Hilt {
             private const val version = "1.0.0-alpha02"
-            const val work = "androidx.hilt:hilt-work:$version"
-            const val viewmodel = "androidx.hilt:hilt-lifecycle-viewmodel:$version"
-            const val compiler = "androidx.hilt:hilt-compiler:$version"
+            const val work: String = "androidx.hilt:hilt-work:$version"
+            const val viewmodel: String = "androidx.hilt:hilt-lifecycle-viewmodel:$version"
+            const val compiler: String = "androidx.hilt:hilt-compiler:$version"
         }
     }
 
     object Google {
 
-        const val openSourceLicensesPlugin = "com.google.android.gms:oss-licenses-plugin:0.10.2"
-        const val openSourceLicensesLibrary =
+        const val openSourceLicensesPlugin: String =
+            "com.google.android.gms:oss-licenses-plugin:0.10.2"
+        const val openSourceLicensesLibrary: String =
             "com.google.android.gms:play-services-oss-licenses:17.0.0"
 
         object Mdc {
             const val material: String = "com.google.android.material:material:1.3.0-alpha03"
-            const val composeThemeAdapter =
+            const val composeThemeAdapter: String =
                 "com.google.android.material:compose-theme-adapter:1.0.0-alpha06"
         }
 
@@ -134,30 +135,30 @@ object Libs {
 
     object Coil {
         private const val version = "1.0.0"
-        const val coil = "io.coil-kt:coil:$version"
+        const val coil: String = "io.coil-kt:coil:$version"
     }
 
     object Accompanist {
-        private const val version = "0.3.1"
-        const val coil = "dev.chrisbanes.accompanist:accompanist-coil:$version"
+        private const val version = "0.3.2"
+        const val coil: String = "dev.chrisbanes.accompanist:accompanist-coil:$version"
     }
 
     object Dagger {
         private const val version = "2.29.1"
-        const val dagger = "com.google.dagger:dagger:$version"
-        const val compiler = "com.google.dagger:dagger-compiler:$version"
+        const val dagger: String = "com.google.dagger:dagger:$version"
+        const val compiler: String = "com.google.dagger:dagger-compiler:$version"
     }
 
     object Hilt {
         private const val version = "2.29.1-alpha"
-        const val library = "com.google.dagger:hilt-android:$version"
-        const val compiler = "com.google.dagger:hilt-android-compiler:$version"
-        const val testing = "com.google.dagger:hilt-android-testing:$version"
-        const val gradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:$version"
+        const val library: String = "com.google.dagger:hilt-android:$version"
+        const val compiler: String = "com.google.dagger:hilt-android-compiler:$version"
+        const val testing: String = "com.google.dagger:hilt-android-testing:$version"
+        const val gradlePlugin: String = "com.google.dagger:hilt-android-gradle-plugin:$version"
     }
 
     object Kotlin {
-        const val version = "1.4.10"
+        const val version: String = "1.4.10"
         const val stdlib: String = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val reflect: String = "org.jetbrains.kotlin:kotlin-reflect:$version"
         const val extensions: String = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
@@ -167,14 +168,14 @@ object Libs {
     object Retrofit {
         private const val version = "2.9.0"
         const val retrofit: String = "com.squareup.retrofit2:retrofit:$version"
-        const val moshiConverter = "com.squareup.retrofit2:converter-moshi:$version"
+        const val moshiConverter: String = "com.squareup.retrofit2:converter-moshi:$version"
     }
 
     object Moshi {
         private const val version = "1.11.0"
-        const val moshi = "com.squareup.moshi:moshi:$version"
-        const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:$version"
-        const val moshiAdapters = "com.squareup.moshi:moshi-adapters:$version"
+        const val moshi: String = "com.squareup.moshi:moshi:$version"
+        const val moshiKotlin: String = "com.squareup.moshi:moshi-kotlin:$version"
+        const val moshiAdapters: String = "com.squareup.moshi:moshi-adapters:$version"
 
     }
 
@@ -203,7 +204,7 @@ object Libs {
          * We use a fork which has been migrated to AndroidX Room
          */
         private const val version = "master-SNAPSHOT"
-        const val library = "com.github.chrisbanes.Roomigrant:RoomigrantLib:$version"
-        const val compiler = "com.github.chrisbanes.Roomigrant:RoomigrantCompiler:$version"
+        const val library: String = "com.github.chrisbanes.Roomigrant:RoomigrantLib:$version"
+        const val compiler: String = "com.github.chrisbanes.Roomigrant:RoomigrantCompiler:$version"
     }
 }

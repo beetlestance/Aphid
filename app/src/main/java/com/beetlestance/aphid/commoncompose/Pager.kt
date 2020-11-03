@@ -63,7 +63,7 @@ open class PagerState(
 
     enum class SelectionState { Selected, Undecided }
 
-    var selectionState by mutableStateOf(SelectionState.Selected)
+    var selectionState: SelectionState by mutableStateOf(SelectionState.Selected)
 
     inline fun <R> selectPage(block: PagerState.() -> R): R = try {
         selectionState = SelectionState.Undecided
@@ -78,9 +78,10 @@ open class PagerState(
         selectionState = SelectionState.Selected
     }
 
-    protected var _currentPageOffset = AnimatedFloatModel(0f, clock = clock).apply {
-        setBounds(-1f, 1f)
-    }
+    protected var _currentPageOffset: AnimatedFloatModel =
+        AnimatedFloatModel(0f, clock = clock).apply {
+            setBounds(-1f, 1f)
+        }
 
     open fun offset(page: Int): Float = page - (currentPage - currentPageOffset)
 
@@ -252,10 +253,9 @@ fun PageLayout(
 /**
  * Scope for [Pager] content.
  */
-@Suppress("UNUSED_PARAMETER")
 open class PagerScope(
     private val state: PagerState,
-    val page: Int
+    private val page: Int
 ) {
     /**
      * Returns the current selected page
@@ -279,9 +279,9 @@ open class PagerScope(
         get() = currentPage == page
 
 
-    fun nextPage(velocity: Float) = state.nextPage()
+    fun nextPage(velocity: Float): Unit = state.nextPage(velocity)
 
-    fun previousPage(velocity: Float) = state.previousPage(velocity)
+    fun previousPage(velocity: Float): Unit = state.previousPage(velocity)
 
     /**
      * Modifier which scales pager items according to their offset position. Similar in effect
