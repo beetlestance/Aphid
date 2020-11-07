@@ -16,9 +16,6 @@ dependencies {
     implementation(project(":base"))
     implementation(project(":spoonacular-kotlin"))
 
-    // Kotlin
-    implementation(Libs.Kotlin.stdlib)
-
     // Dagger
     kapt(Libs.Dagger.compiler)
 

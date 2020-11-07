@@ -37,7 +37,4 @@ dependencies {
     testImplementation(Libs.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.espressoCore)
-
-    // Kotlin
-    implementation(Libs.Kotlin.stdlib)
 }

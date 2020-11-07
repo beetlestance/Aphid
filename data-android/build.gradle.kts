@@ -46,9 +46,6 @@ dependencies {
     androidTestImplementation(Libs.AndroidX.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.espressoCore)
 
-    // Kotlin
-    implementation(Libs.Kotlin.stdlib)
-
     // Room
     api(Libs.AndroidX.Room.runtime)
     implementation(Libs.AndroidX.Room.ktx)

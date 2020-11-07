@@ -480,7 +480,7 @@ fun PlanYourMealAheadWithHeader() {
 fun RecentlyViewedRecipesWithHeader() {
 
     Text(
-        text = stringResource(id = R.string.explore_quick_recipes_header),
+        text = stringResource(id = R.string.explore_recently_viewed_recipes_header),
         style = MaterialTheme.typography.h6,
     )
 
