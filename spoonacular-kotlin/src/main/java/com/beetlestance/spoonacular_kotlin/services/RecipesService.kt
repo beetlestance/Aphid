@@ -707,7 +707,7 @@ interface RecipesService {
      */
     @GET(Recipes.SEARCH_RECIPES_COMPLEX)
     fun searchRecipesComplex(
-        @Query("query") query: String,
+        @Query("query") query: String? = null,
         @Query("cuisine") cuisine: String? = null,
         @Query("excludeCuisine") excludeCuisine: String? = null,
         @Query("diet") diet: String? = null,
