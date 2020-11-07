@@ -1,5 +1,5 @@
-import com.beetlestance.buildsrc.Aphid
-import com.beetlestance.buildsrc.Libs
+import com.beetlestance.aphid.buildsrc.Aphid
+import com.beetlestance.aphid.buildsrc.Libs
 
 plugins {
     id("com.android.library")

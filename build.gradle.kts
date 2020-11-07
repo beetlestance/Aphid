@@ -9,10 +9,10 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath(com.beetlestance.buildsrc.Libs.androidGradlePlugin)
-        classpath(com.beetlestance.buildsrc.Libs.Kotlin.gradlePlugin)
-        classpath(com.beetlestance.buildsrc.Libs.Kotlin.extensions)
-        classpath(com.beetlestance.buildsrc.Libs.Hilt.gradlePlugin)
+        classpath(com.beetlestance.aphid.buildsrc.Libs.androidGradlePlugin)
+        classpath(com.beetlestance.aphid.buildsrc.Libs.Kotlin.gradlePlugin)
+        classpath(com.beetlestance.aphid.buildsrc.Libs.Kotlin.extensions)
+        classpath(com.beetlestance.aphid.buildsrc.Libs.Hilt.gradlePlugin)
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle.kts files
@@ -45,7 +45,7 @@ subprojects {
             targetExclude("$buildDir/**/*.kt")
             targetExclude("bin/**/*.kt")
 
-            ktlint(com.beetlestance.buildsrc.Versions.ktlint)
+            ktlint(com.beetlestance.aphid.buildsrc.Versions.ktlint)
                 // Disable paren-spacing rule for NonParenthesizedAnnotationsOnFunctionalTypes
                 .userData(mapOf("disabled_rules" to "paren-spacing"))
             /* ./gradlew spotlessApply */

@@ -2,13 +2,13 @@ package com.beetlestance.aphid
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
-import com.beetlestance.base_android.AphidViewModel
-import com.beetlestance.data.entities.Recipe
-import com.beetlestance.domain.executors.FetchRecipes
-import com.beetlestance.domain.executors.MarkRecipeAsFavourite
-import com.beetlestance.domain.invoke
-import com.beetlestance.domain.observers.ObserveRecipes
-import com.beetlestance.domain.watchStatus
+import com.beetlestance.aphid.base_android.AphidViewModel
+import com.beetlestance.aphid.data.entities.Recipe
+import com.beetlestance.aphid.domain.executors.FetchRecipes
+import com.beetlestance.aphid.domain.executors.MarkRecipeAsFavourite
+import com.beetlestance.aphid.domain.invoke
+import com.beetlestance.aphid.domain.observers.ObserveRecipes
+import com.beetlestance.aphid.domain.watchStatus
 import kotlinx.coroutines.launch
 
 class MainActivityViewModel @ViewModelInject constructor(

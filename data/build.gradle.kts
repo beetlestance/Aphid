@@ -1,4 +1,4 @@
-import com.beetlestance.buildsrc.Libs
+import com.beetlestance.aphid.buildsrc.Libs
 
 plugins {
     id("kotlin")

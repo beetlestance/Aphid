@@ -1,7 +1,7 @@
 package com.beetlestance.aphid.di
 
 import com.beetlestance.aphid.BuildConfig
-import com.beetlestance.base.utils.AppCoroutineDispatchers
+import com.beetlestance.aphid.base.utils.AppCoroutineDispatchers
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

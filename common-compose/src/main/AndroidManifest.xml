@@ -1,4 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.beetlestance.common_compose">
-
-</manifest>
+<manifest package="com.beetlestance.aphid.common_compose" />
