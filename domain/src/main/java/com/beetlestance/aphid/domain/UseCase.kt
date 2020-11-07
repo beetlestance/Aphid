@@ -50,30 +50,6 @@ abstract class UseCase<in P> {
     protected abstract suspend fun doWork(params: P)
 }
 
-sealed class Status {
-    object Started : Status()
-    object Success : Status()
-    data class Error(val t: Throwable) : Status()
-}
-
-suspend fun Flow<Status>.watchStatus(
-    onStarted: () -> Unit = {},
-    onSuccess: () -> Unit = {},
-    onError: (e: Throwable) -> Unit = {}
-) = collect {
-    when (it) {
-        is Status.Started -> {
-            onStarted()
-        }
-        is Status.Success -> {
-            onSuccess()
-        }
-        is Status.Error -> {
-            onError(it.t)
-        }
-    }
-}
-
 /**
  * To be used to perform work with a result type [R]
  *
