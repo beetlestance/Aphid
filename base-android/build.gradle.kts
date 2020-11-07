@@ -41,7 +41,4 @@ dependencies {
 
     // Material Design
     implementation(Libs.Google.Mdc.material)
-
-    // Kotlin
-    implementation(Libs.Kotlin.stdlib)
 }

@@ -44,9 +44,6 @@ dependencies {
     androidTestImplementation(Libs.AndroidX.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.espressoCore)
 
-    // Kotlin
-    implementation(Libs.Kotlin.stdlib)
-
     // Compose
     api(Libs.AndroidX.Compose.runtime)
     api(Libs.AndroidX.Compose.foundation)

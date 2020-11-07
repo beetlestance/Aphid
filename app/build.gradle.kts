@@ -104,8 +104,7 @@ dependencies {
     implementation(Libs.Google.Mdc.material)
     implementation(Libs.Google.Mdc.composeThemeAdapter)
 
-    // Kotlin
-    implementation(Libs.Kotlin.stdlib)
+    // Lifecycle
     implementation(Libs.AndroidX.Lifecycle.viewmodelKtx)
 
     // Hilt
