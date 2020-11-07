@@ -21,7 +21,12 @@ import com.beetlestance.aphid.data.entities.Recipe
 import com.beetlestance.aphid.data.mapper.RecipeInformationToRecipe
 import com.beetlestance.aphid.data.mapper.forLists
 import com.beetlestance.aphid.data.toResult
+import com.beetlestance.spoonacular_kotlin.models.response.recipe.RecipeInformation
+import com.beetlestance.spoonacular_kotlin.models.response.recipe.SearchRecipeComplex
 import com.beetlestance.spoonacular_kotlin.services.RecipesService
+import com.beetlestance.spoonacular_kotlin.utils.serializedCopy
+import com.beetlestance.spoonacular_kotlin.utils.serializedMapper
+import com.beetlestance.spoonacular_kotlin.utils.serializedTransform
 import com.beetlestance.spoonacular_kotlin.utils.toSpoonacularApiResponse
 import javax.inject.Inject
 
@@ -35,5 +40,19 @@ class RecipesDataSource @Inject constructor(
             .executeWithRetry(shouldRetry = { false })
             .toSpoonacularApiResponse()
             .toResult { (recipes) -> recipeInformationToRecipe.forLists().invoke(recipes) }
+    }
+
+    suspend fun fetchBreakfast(): Result<List<Recipe>> {
+        return recipesService.searchRecipesComplex(
+            query = "breakfast",
+            number = 10
+        ).executeWithRetry(shouldRetry = { false })
+            .toSpoonacularApiResponse()
+            .toResult { complexRecipe ->
+                val recipes: List<RecipeInformation> =
+                    complexRecipe.results?.serializedMapper<SearchRecipeComplex.ResultsItem?, RecipeInformation, RecipeInformation> { it }
+                        ?: emptyList()
+                recipeInformationToRecipe.forLists().invoke(recipes)
+            }
     }
 }
