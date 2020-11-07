@@ -1,4 +1,4 @@
-package com.beetlestance.aphid
+package com.beetlestance.aphid.feature_explore
 
 import androidx.compose.runtime.Immutable
 import com.beetlestance.aphid.data.entities.Recipe

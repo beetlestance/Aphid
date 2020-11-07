@@ -1,5 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Explore" type="ComposePreviewRunConfiguration" activateToolWindowBeforeRun="false" singleton="false">
+  <configuration name="Explore" activateToolWindowBeforeRun="false" default="false"
+      singleton="false" type="ComposePreviewRunConfiguration">
     <module name="Aphid.app" />
     <option name="DEPLOY" value="true" />
     <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
@@ -9,7 +10,8 @@
     <option name="ALL_USERS" value="false" />
     <option name="ALWAYS_INSTALL_WITH_PM" value="false" />
     <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
-    <option name="ACTIVITY_EXTRA_FLAGS" value="--es composable com.beetlestance.aphid.ExploreKt.Explore" />
+    <option name="ACTIVITY_EXTRA_FLAGS"
+        value="--es composable com.beetlestance.aphid.feature_explore.ExploreKt.Explore" />
     <option name="MODE" value="specific_activity" />
     <option name="CLEAR_LOGCAT" value="false" />
     <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
@@ -53,7 +55,8 @@
     <option name="ACTIVITY_CLASS" value="androidx.ui.tooling.preview.PreviewActivity" />
     <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="true" />
     <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
-    <compose-preview-run-configuration composable-fqn="com.beetlestance.aphid.ExploreKt.Explore" />
+    <compose-preview-run-configuration
+        composable-fqn="com.beetlestance.aphid.feature_explore.ExploreKt.Explore" />
     <method v="2">
       <option name="Make" enabled="true" />
       <option name="Android.Gradle.BeforeRunTask" enabled="true" />

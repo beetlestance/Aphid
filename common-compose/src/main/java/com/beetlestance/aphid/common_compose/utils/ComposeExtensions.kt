@@ -1,4 +1,4 @@
-package com.beetlestance.aphid
+package com.beetlestance.aphid.common_compose.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.ConfigurationAmbient

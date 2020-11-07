@@ -1,4 +1,4 @@
-package com.beetlestance.aphid
+package com.beetlestance.aphid.feature_explore
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
@@ -56,8 +56,12 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.beetlestance.aphid.commoncompose.Carousel
-import com.beetlestance.aphid.commoncompose.PageTransformation
+import com.beetlestance.aphid.common_compose.FoodCard
+import com.beetlestance.aphid.common_compose.FoodCardWithDetails
+import com.beetlestance.aphid.common_compose.FoodCardWithDetailsPage
+import com.beetlestance.aphid.common_compose.pager.Carousel
+import com.beetlestance.aphid.common_compose.pager.PageTransformation
+import com.beetlestance.aphid.common_compose.utils.widthPercentage
 import com.beetlestance.aphid.data.entities.Recipe
 import com.beetlestance.spoonacular_kotlin.SpoonacularImageHelper
 import com.beetlestance.spoonacular_kotlin.constants.SpoonacularImageSize

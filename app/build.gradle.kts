@@ -79,9 +79,11 @@ dependencies {
     // Local projects
     implementation(project(":base"))
     implementation(project(":base-android"))
+    implementation(project(":common-compose"))
     implementation(project(":data"))
     implementation(project(":data-android"))
     implementation(project(":domain"))
+    implementation(project(":feature-explore"))
     implementation(project(":spoonacular"))
     implementation(project(":spoonacular-kotlin"))
 
@@ -101,19 +103,6 @@ dependencies {
     // Material Design
     implementation(Libs.Google.Mdc.material)
     implementation(Libs.Google.Mdc.composeThemeAdapter)
-
-    // Compose
-    implementation(Libs.AndroidX.Compose.runtime)
-    implementation(Libs.AndroidX.Compose.foundation)
-    implementation(Libs.AndroidX.Compose.ui)
-    implementation(Libs.AndroidX.Compose.layout)
-    implementation(Libs.AndroidX.Compose.material)
-    implementation(Libs.AndroidX.Compose.animation)
-    implementation(Libs.AndroidX.Compose.tooling)
-    implementation(Libs.AndroidX.Compose.livedata)
-
-    // Coil
-    implementation(Libs.Accompanist.coil)
 
     // Kotlin
     implementation(Libs.Kotlin.stdlib)

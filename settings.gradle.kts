@@ -8,6 +8,7 @@ include(
     ":data",
     ":data-android",
     ":domain",
+    ":feature-explore",
     ":mdc-theme-lint",
     ":spoonacular",
     ":spoonacular-kotlin"

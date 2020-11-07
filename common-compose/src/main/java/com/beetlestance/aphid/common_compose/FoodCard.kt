@@ -1,4 +1,4 @@
-package com.beetlestance.aphid
+package com.beetlestance.aphid.common_compose
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animate
@@ -36,6 +36,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.beetlestance.aphid.common_compose.utils.widthPercentage
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 data class FoodCard(

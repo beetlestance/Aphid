@@ -1,4 +1,4 @@
-package com.beetlestance.aphid.commoncompose
+package com.beetlestance.aphid.common_compose.pager
 
 import androidx.compose.animation.animate
 import androidx.compose.animation.core.AnimationClockObservable

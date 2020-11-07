@@ -1,4 +1,4 @@
-package com.beetlestance.aphid.commoncompose
+package com.beetlestance.aphid.common_compose.pager
 
 import androidx.compose.ui.geometry.Size
 import kotlin.math.abs

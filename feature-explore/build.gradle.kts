@@ -29,6 +29,9 @@ dependencies {
     // Local projects
     implementation(project(":base"))
     implementation(project(":base-android"))
+    implementation(project(":common-compose"))
+    implementation(project(":data"))
+    implementation(project(":spoonacular-kotlin"))
 
     // Testing
     testImplementation(Libs.Test.junit)
@@ -37,18 +40,5 @@ dependencies {
 
     // Kotlin
     implementation(Libs.Kotlin.stdlib)
-
-    // Compose
-    api(Libs.AndroidX.Compose.runtime)
-    api(Libs.AndroidX.Compose.foundation)
-    api(Libs.AndroidX.Compose.ui)
-    api(Libs.AndroidX.Compose.layout)
-    api(Libs.AndroidX.Compose.material)
-    api(Libs.AndroidX.Compose.animation)
-    api(Libs.AndroidX.Compose.tooling)
-    api(Libs.AndroidX.Compose.livedata)
-
-    // Coil
-    api(Libs.Accompanist.coil)
 
 }
