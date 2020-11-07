@@ -45,7 +45,8 @@ class RecipesDataSource @Inject constructor(
     suspend fun fetchBreakfast(): Result<List<Recipe>> {
         return recipesService.searchRecipesComplex(
             query = "breakfast",
-            number = 10
+            number = 10,
+            addRecipeInformation = true
         ).executeWithRetry(shouldRetry = { false })
             .toSpoonacularApiResponse()
             .toResult { complexRecipe ->
