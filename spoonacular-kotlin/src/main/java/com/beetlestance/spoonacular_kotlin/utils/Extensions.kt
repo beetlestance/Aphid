@@ -15,10 +15,12 @@ inline fun <T, reified R, C> T.serializedTransform(
     return transform(serializedCopy<T, R>(isNullSafe) ?: return null)
 }
 
-inline fun <T : Collection<T>, reified R : Collection<R>, C> T.serializedMapper(
+inline fun <T, reified R, C> Iterable<T>.serializedMapper(
     isNullSafe: Boolean = true,
     transform: (R) -> C
 ): List<C>? {
-    val result = serializedCopy<T, R>(isNullSafe) ?: return null
-    return result.mapNotNull { data -> transform(data) }
+    return mapNotNull { data ->
+        val result: R = data.serializedCopy(isNullSafe) ?: return@mapNotNull null
+        transform(result)
+    }
 }
