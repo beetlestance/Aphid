@@ -7,7 +7,7 @@ plugins {
 dependencies {
 
     // Kotlin
-    implementation(Libs.Kotlin.stdlib)
+    api(Libs.Kotlin.stdlib)
 
     // Co-Routines
     api(Libs.Coroutines.core)
