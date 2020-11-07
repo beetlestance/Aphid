@@ -33,7 +33,7 @@ class MoshiSerializer {
 
         @JvmStatic
         val moshi: Moshi = Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
+            .addLast(KotlinJsonAdapterFactory())
             .add(Date::class.java, Rfc3339DateJsonAdapter().nullSafe())
             .build()
     }

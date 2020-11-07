@@ -22,11 +22,8 @@ import com.beetlestance.aphid.data.mapper.RecipeInformationToRecipe
 import com.beetlestance.aphid.data.mapper.forLists
 import com.beetlestance.aphid.data.toResult
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.RecipeInformation
-import com.beetlestance.spoonacular_kotlin.models.response.recipe.SearchRecipeComplex
 import com.beetlestance.spoonacular_kotlin.services.RecipesService
 import com.beetlestance.spoonacular_kotlin.utils.serializedCopy
-import com.beetlestance.spoonacular_kotlin.utils.serializedMapper
-import com.beetlestance.spoonacular_kotlin.utils.serializedTransform
 import com.beetlestance.spoonacular_kotlin.utils.toSpoonacularApiResponse
 import javax.inject.Inject
 
@@ -51,8 +48,7 @@ class RecipesDataSource @Inject constructor(
             .toSpoonacularApiResponse()
             .toResult { complexRecipe ->
                 val recipes: List<RecipeInformation> =
-                    complexRecipe.results?.serializedMapper<SearchRecipeComplex.ResultsItem?, RecipeInformation, RecipeInformation> { it }
-                        ?: emptyList()
+                    complexRecipe.results?.serializedCopy() ?: emptyList()
                 recipeInformationToRecipe.forLists().invoke(recipes)
             }
     }
