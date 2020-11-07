@@ -15,7 +15,9 @@
  */
 package com.beetlestance.aphid.domain
 
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -113,15 +115,18 @@ abstract class ResultUseCase<in P, out R> {
  * ```
  */
 abstract class ObserveUseCase<P : Any, T> {
-    private val paramState = MutableStateFlow<P?>(null)
+    private val paramState = MutableSharedFlow<P>(
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
 
     operator fun invoke(params: P) {
-        paramState.value = params
+        paramState.tryEmit(params)
     }
 
     protected abstract fun createObservable(params: P): Flow<T>
 
-    fun observe(): Flow<T> = paramState.filterNotNull().flatMapLatest {
+    fun observe(): Flow<T> = paramState.flatMapLatest {
         createObservable(it).catch { throwable ->
             Timber.e(throwable)
         }
