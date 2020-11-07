@@ -29,13 +29,13 @@ data class AnalyzeRecipeInstructions(
     val equipment: List<EquipmentItem?>? = null
 ) {
 
-    data class EquipmentItem(
+    data class ParsedInstructionsItem(
 
         @Json(name = "name")
         val name: String? = null,
 
-        @Json(name = "id")
-        val id: Int? = null
+        @Json(name = "steps")
+        val steps: List<StepsItem?>? = null
     )
 
     data class StepsItem(
@@ -62,12 +62,12 @@ data class AnalyzeRecipeInstructions(
         val id: Int? = null
     )
 
-    data class ParsedInstructionsItem(
+    data class EquipmentItem(
 
         @Json(name = "name")
         val name: String? = null,
 
-        @Json(name = "steps")
-        val steps: List<StepsItem?>? = null
+        @Json(name = "id")
+        val id: Int? = null
     )
 }

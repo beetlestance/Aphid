@@ -26,7 +26,7 @@ data class RecipeInformation(
     val sustainable: Boolean? = null,
 
     @Json(name = "analyzedInstructions")
-    val analyzedInstructions: List<Any?>? = null,
+    val analyzedInstructions: List<AnalyzedRecipeInstructions?>? = null,
 
     @Json(name = "glutenFree")
     val glutenFree: Boolean? = null,
@@ -41,7 +41,7 @@ data class RecipeInformation(
     val healthScore: Double? = null,
 
     @Json(name = "diets")
-    val diets: List<Any?>? = null,
+    val diets: List<String?>? = null,
 
     @Json(name = "aggregateLikes")
     val aggregateLikes: Int? = null,
@@ -101,7 +101,7 @@ data class RecipeInformation(
     val gaps: String? = null,
 
     @Json(name = "cuisines")
-    val cuisines: List<Any?>? = null,
+    val cuisines: List<String?>? = null,
 
     @Json(name = "lowFodmap")
     val lowFodmap: Boolean? = null,
@@ -113,7 +113,7 @@ data class RecipeInformation(
     val weightWatcherSmartPoints: Int? = null,
 
     @Json(name = "occasions")
-    val occasions: List<Any?>? = null,
+    val occasions: List<String?>? = null,
 
     @Json(name = "spoonacularScore")
     val spoonacularScore: Double? = null,
@@ -131,15 +131,6 @@ data class RecipeInformation(
     val ketogenic: Boolean? = null
 ) {
 
-    data class Measures(
-
-        @Json(name = "metric")
-        val metric: Metric? = null,
-
-        @Json(name = "us")
-        val us: Us? = null
-    )
-
     data class WinePairing(
 
         @Json(name = "productMatches")
@@ -150,18 +141,6 @@ data class RecipeInformation(
 
         @Json(name = "pairedWines")
         val pairedWines: List<String?>? = null
-    )
-
-    data class Metric(
-
-        @Json(name = "amount")
-        val amount: Double? = null,
-
-        @Json(name = "unitShort")
-        val unitShort: String? = null,
-
-        @Json(name = "unitLong")
-        val unitLong: String? = null
     )
 
     data class ProductMatchesItem(
@@ -194,22 +173,7 @@ data class RecipeInformation(
         val ratingCount: Double? = null
     )
 
-    data class Us(
-
-        @Json(name = "amount")
-        val amount: Double? = null,
-
-        @Json(name = "unitShort")
-        val unitShort: String? = null,
-
-        @Json(name = "unitLong")
-        val unitLong: String? = null
-    )
-
     data class ExtendedIngredientsItem(
-
-        @Json(name = "originalName")
-        val originalName: String? = null,
 
         @Json(name = "image")
         val image: String? = null,
@@ -217,28 +181,71 @@ data class RecipeInformation(
         @Json(name = "amount")
         val amount: Double? = null,
 
-        @Json(name = "measures")
-        val measures: Measures? = null,
+        @Json(name = "original")
+        val original: String? = null,
+
+        @Json(name = "aisle")
+        val aisle: String? = null,
+
+        @Json(name = "consistency")
+        val consistency: String? = null,
+
+        @Json(name = "originalName")
+        val originalName: String? = null,
 
         @Json(name = "unit")
         val unit: String? = null,
 
-        @Json(name = "original")
-        val original: String? = null,
-
-        @Json(name = "consitency")
-        val consitency: String? = null,
+        @Json(name = "measures")
+        val measures: Measures? = null,
 
         @Json(name = "meta")
-        val meta: List<Any?>? = null,
+        val meta: List<String?>? = null,
 
         @Json(name = "name")
         val name: String? = null,
 
+        @Json(name = "originalString")
+        val originalString: String? = null,
+
         @Json(name = "id")
         val id: Int? = null,
 
-        @Json(name = "aisle")
-        val aisle: String? = null
-    )
+        @Json(name = "metaInformation")
+        val metaInformation: List<String?>? = null
+    ) {
+        data class Measures(
+
+            @Json(name = "metric")
+            val metric: Metric? = null,
+
+            @Json(name = "us")
+            val us: Us? = null
+        )
+
+        data class Metric(
+
+            @Json(name = "amount")
+            val amount: Double? = null,
+
+            @Json(name = "unitShort")
+            val unitShort: String? = null,
+
+            @Json(name = "unitLong")
+            val unitLong: String? = null
+        )
+
+
+        data class Us(
+
+            @Json(name = "amount")
+            val amount: Double? = null,
+
+            @Json(name = "unitShort")
+            val unitShort: String? = null,
+
+            @Json(name = "unitLong")
+            val unitLong: String? = null
+        )
+    }
 }
