@@ -60,7 +60,7 @@ android {
         // Ignore any tests
         isIgnoreTestSources = true
 
-        // Lint doesn"t seem to handle Kotlin int types + string format very well
+        // Lint doesn't seem to handle Kotlin int types + string format very well
         disable("StringFormatMatches")
     }
 

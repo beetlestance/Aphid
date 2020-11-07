@@ -22,6 +22,15 @@ android {
         testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
         consumerProguardFiles("consumer-rules.pro")
     }
+
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerVersion = Libs.Kotlin.version
+        kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
+    }
 }
 
 dependencies {
