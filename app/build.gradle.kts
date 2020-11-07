@@ -14,12 +14,9 @@ kapt {
     useBuildCache = true
 }
 
-extra {
-    var ci: Boolean by extra
-    @Suppress("UnstableApiUsage")
-    // CI Always set to true for github actions so check only if flag is present
-    ci = providers.environmentVariable("CI").forUseAtConfigurationTime().isPresent
-}
+@Suppress("UnstableApiUsage")
+// CI Always set to true for github actions so check only if flag is present
+val ci: Boolean by extra(providers.environmentVariable("CI").forUseAtConfigurationTime().isPresent)
 
 android {
     compileSdkVersion(Aphid.compileSdkVersion)
@@ -52,7 +49,7 @@ android {
 
     dexOptions {
         // Don"t pre-dex on CI
-        preDexLibraries != extra.get("ci")
+        preDexLibraries != ci
     }
 
     lintOptions {

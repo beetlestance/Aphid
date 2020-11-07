@@ -4,6 +4,7 @@ include(
     ":app",
     ":base",
     ":base-android",
+    ":common-compose",
     ":data",
     ":data-android",
     ":domain",

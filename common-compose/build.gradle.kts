@@ -28,20 +28,27 @@ dependencies {
 
     // Local projects
     implementation(project(":base"))
-    implementation(project(":data"))
+    implementation(project(":base-android"))
 
     // Testing
     testImplementation(Libs.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.espressoCore)
 
-    // AndroidX
-    implementation(Libs.AndroidX.Lifecycle.viewmodelKtx)
-    implementation(Libs.AndroidX.Lifecycle.livedataKtx)
-
-    // Material Design
-    implementation(Libs.Google.Mdc.material)
-
     // Kotlin
     implementation(Libs.Kotlin.stdlib)
+
+    // Compose
+    implementation(Libs.AndroidX.Compose.runtime)
+    implementation(Libs.AndroidX.Compose.foundation)
+    implementation(Libs.AndroidX.Compose.ui)
+    implementation(Libs.AndroidX.Compose.layout)
+    implementation(Libs.AndroidX.Compose.material)
+    implementation(Libs.AndroidX.Compose.animation)
+    implementation(Libs.AndroidX.Compose.tooling)
+    implementation(Libs.AndroidX.Compose.livedata)
+
+    // Coil
+    implementation(Libs.Accompanist.coil)
+
 }
