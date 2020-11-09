@@ -27,10 +27,9 @@ import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 
 /**
- * To be used for performing work without any result for the work
+ * To be used when we just want to observe state of the work not the result
  *
- * [executeSync] performs the work synchronously
- * [invoke] returns flowable which will auto cancel once the block is complete
+ * as [flow] is cold flow that means every new subscriber will execute the code again.
  */
 abstract class UseCase<in P> {
     operator fun invoke(params: P): Flow<Status> {
@@ -51,18 +50,10 @@ abstract class UseCase<in P> {
 }
 
 /**
- * To be used to perform work with a result type [R]
+ * To be used when we want the result for a work
  *
- * This use case can be used for both synchronous and asynchronous call backs
- * ```
- * for synchronous, use terminal operators which returns result:
- * resultUseCase.invoke(input).first()
- *
- * for asynchronous
- * resultUseCase.invoke(input).collect{
- *      # do work
- * }
- * ```
+ * @sample
+ * resultUseCase(param).first() this will also auto cancels the flow
  */
 abstract class ResultUseCase<in P, out R> {
     operator fun invoke(params: P): Flow<R> {
@@ -80,14 +71,14 @@ abstract class ResultUseCase<in P, out R> {
  * To be used for observing values from database or any source
  *
  * ```
- * listen to observable
+ * subscribe to the flow
  * observeUseCase.observe().collect{
  *      # do work
  * }
  *
  * set the parameters for creating observable
+ * we can call this multiple times without subscribing to flow again
  * observeUseCase.invoke(input)
- *
  * ```
  */
 abstract class ObserveUseCase<P : Any, T> {
@@ -110,10 +101,9 @@ abstract class ObserveUseCase<P : Any, T> {
 }
 
 /**
- * To be used for work that are suspendable and has to be excecuted multiple times with different params
- * This is like result use case, but observe will be called once and work can be executed multiple times
+ * To be used for performing suspending work
  *
- * Does not take flowable in [createObservable] but creates one
+ * Use when a work need to be executed with different params
  */
 abstract class SuspendableWorkUseCase<P : Any, T> : ObserveUseCase<P, T>() {
     override fun createObservable(params: P): Flow<T> = flow {
