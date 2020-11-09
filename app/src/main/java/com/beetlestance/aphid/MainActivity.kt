@@ -51,7 +51,9 @@ class MainActivity : AppCompatActivity() {
             MdcTheme {
                 val viewState by viewModel.liveData.observeAsState()
                 if (viewState != null) {
-                    Explore(viewState ?: return@MdcTheme)
+                    Explore(viewState ?: return@MdcTheme) {
+                        viewModel.submitAction(it)
+                    }
                 }
             }
         }

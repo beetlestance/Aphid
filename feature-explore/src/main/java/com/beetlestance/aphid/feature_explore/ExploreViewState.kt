@@ -5,6 +5,5 @@ import com.beetlestance.aphid.data.entities.Recipe
 
 @Immutable
 data class ExploreViewState(
-    val breakfastRecipes: List<Recipe> = emptyList(),
-    val markRecipeAsFavourite: (Recipe, Boolean) -> Unit = { _, _ -> }
+    val breakfastRecipes: List<Recipe> = emptyList()
 )

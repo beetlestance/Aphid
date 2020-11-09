@@ -51,6 +51,15 @@ class MainActivityViewModel @ViewModelInject constructor(
         observeRecipes()
     }
 
+
+    internal fun submitAction(action: ExploreActions) {
+        viewModelScope.launch {
+            if (!pendingActions.isClosedForSend) {
+                pendingActions.send(action)
+            }
+        }
+    }
+
     private fun updateBreakfastRecipes(recipes: List<Recipe>) {
         viewModelScope.launchSetState {
             copy(breakfastRecipes = recipes)

@@ -77,7 +77,10 @@ import timber.log.Timber
  */
 @OptIn(ExperimentalFocus::class)
 @Composable
-fun Explore(state: ExploreViewState) {
+fun Explore(
+    state: ExploreViewState,
+    action: (ExploreActions) -> Unit
+) {
     Surface(color = MaterialTheme.colors.surface) {
         ScrollableColumn(
             modifier = Modifier.fillMaxSize().animateContentSize(),
@@ -107,7 +110,9 @@ fun Explore(state: ExploreViewState) {
             if (state.breakfastRecipes.isNotEmpty()) {
                 BreakFastWithHeader(
                     breakfastRecipes = state.breakfastRecipes,
-                    markRecipeAsFavourite = state.markRecipeAsFavourite
+                    markRecipeAsFavourite = { recipe, isFavourite ->
+                        action(MarkFavourite(recipe, isFavourite))
+                    }
                 )
             }
 
