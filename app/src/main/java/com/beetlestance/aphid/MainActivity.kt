@@ -23,7 +23,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.setContent
-import com.beetlestance.aphid.feature_explore.Explore
 import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -51,7 +50,7 @@ class MainActivity : AppCompatActivity() {
             MdcTheme {
                 val viewState by viewModel.liveData.observeAsState()
                 if (viewState != null) {
-                    Explore(viewState ?: return@MdcTheme) {
+                    AphidHome(viewState ?: return@MdcTheme) {
                         viewModel.submitAction(it)
                     }
                 }

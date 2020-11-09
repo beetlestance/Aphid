@@ -74,6 +74,11 @@ object Libs {
             const val runtimeKtx: String = "androidx.work:work-runtime-ktx:$version"
         }
 
+        object Navigation {
+            private const val version = "1.0.0-alpha01"
+            const val navigation: String = "androidx.navigation:navigation-compose:$version"
+        }
+
         object Compose {
             const val version: String = "1.0.0-alpha06"
 
