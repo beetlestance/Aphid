@@ -10,7 +10,7 @@ class RecipesStore @Inject constructor(
 
     fun observeRecipes() = recipesDao.recipesObservable()
 
-    fun observeRecipesReadyIn(time: Long) = recipesDao.recipesReadyInTimeObservable(time)
+    fun observeRecipesWithReadyTime(time: Long) = recipesDao.quickRecipesObservable(time)
 
     suspend fun saveRecipes(recipes: List<Recipe>) =
         recipesDao.insertAll(recipes)

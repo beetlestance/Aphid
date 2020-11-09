@@ -61,6 +61,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.nativeClass
 import com.beetlestance.aphid.common_compose.FoodCardWithDetails
 import com.beetlestance.aphid.common_compose.FoodCardWithDetailsPage
 import com.beetlestance.aphid.common_compose.pager.Carousel
@@ -122,7 +123,7 @@ fun Explore(
 
             PlanYourMealAheadWithHeader()
 
-            QuickRecipesWithHeader()
+            QuickRecipesWithHeader(state.readyInTimeRecipes)
 
             RecentlyViewedRecipesWithHeader()
         }
@@ -405,7 +406,10 @@ fun CuisineDetails() {
 }
 
 @Composable
-fun QuickRecipesWithHeader() {
+fun QuickRecipesWithHeader(
+    recipes: List<Recipe>
+) {
+    if (recipes.isEmpty()) return
 
     Text(
         text = stringResource(id = R.string.explore_quick_recipes_header),
@@ -419,15 +423,24 @@ fun QuickRecipesWithHeader() {
         )
     ) {
 
-        repeat(4) {
+        recipes.forEach { recipe ->
+            val recipeImageUrl: String? = run {
+                return@run SpoonacularImageHelper.generateRecipeImageUrl(
+                    id = recipe.recipeId?.toLong() ?: return@run null,
+                    imageSize = SpoonacularImageSize.Recipe.ULTRA_HIGH_QUALITY,
+                    imageType = recipe.imageType
+                )
+            }
+
             FoodCardWithDetails(
                 imageResource = R.drawable.temp_noodles,
                 fraction = 0.7f,
+                imageUrl = recipeImageUrl ?: "",
                 horizontalOffset = 16.dp,
                 isFavourite = false
             ) {
                 FoodCardContentsDetails(
-                    name = "Asian Pesto Noodles",
+                    name = recipe.title ?: "",
                     contentTags = "1 Serving • 20 Min • 205 Cal",
                     rating = "4.4"
                 )
