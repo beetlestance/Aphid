@@ -12,21 +12,6 @@ inline fun <reified T, reified R> T.serializedCopy(): R? {
     return MoshiSerializer.moshi.fromJson(sourceJson)
 }
 
-inline fun <reified T, reified R, C> T.serializedTransform(
-    transform: (R) -> C
-): C? {
-    return transform(serializedCopy<T, R>() ?: return null)
-}
-
-inline fun <reified T, C, reified R> Iterable<T>.serializedMapper(
-    transform: (R) -> C
-): List<C>? {
-    return mapNotNull { data ->
-        val result: R = data.serializedCopy() ?: return@mapNotNull null
-        transform(result)
-    }
-}
-
 open class TypeToken<T> {
     /**
      * Gets the generic super class type.
