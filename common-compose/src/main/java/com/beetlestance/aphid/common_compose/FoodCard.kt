@@ -99,7 +99,7 @@ fun FoodCardWithDetails(
             cardShape = cardShape,
             isFavourite = isFavourite,
             onCheckChanged = onCheckedChange,
-            modifier = Modifier.fillMaxWidth().fillMaxHeight(0.9f)
+            modifier = Modifier.fillMaxWidth().fillMaxHeight(0.9f).padding(bottom = 8.dp)
         )
 
         children()
