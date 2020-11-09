@@ -1,7 +1,5 @@
 package com.beetlestance.aphid
 
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -16,6 +14,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
+import com.beetlestance.aphid.common_compose.bottomnavigation.CurvedCutBottomNavigation
+import com.beetlestance.aphid.common_compose.bottomnavigation.CurvedCutBottomNavigationItem
 import com.beetlestance.aphid.feature_explore.Explore
 import com.beetlestance.aphid.feature_explore.ExploreActions
 import com.beetlestance.aphid.feature_explore.ExploreViewState
@@ -29,14 +29,14 @@ fun AphidHome(
 
     Scaffold(
         bottomBar = {
-            BottomNavigation(
+            CurvedCutBottomNavigation(
                 backgroundColor = MaterialTheme.colors.surface
             ) {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
                 navItems.forEach { screen ->
                     val isSelected = currentRoute == screen.route
-                    BottomNavigationItem(
+                    CurvedCutBottomNavigationItem(
                         icon = {
                             val resId = if (isSelected) screen.iconFilled else screen.iconOutlined
                             val color = if (isSelected) MaterialTheme.colors.primarySurface
