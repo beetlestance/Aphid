@@ -80,6 +80,8 @@ abstract class ResultUseCase<in P, out R> {
  * we can call this multiple times without subscribing to flow again
  * observeUseCase.invoke(input)
  * ```
+ *
+ * @Warning Always start observing before invoke
  */
 abstract class ObserveUseCase<P : Any, T> {
     private val paramState = MutableSharedFlow<P>(

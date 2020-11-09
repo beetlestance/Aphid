@@ -12,7 +12,11 @@ abstract class RecipeDao : EntityDao<Recipe>() {
 
     @Transaction
     @Query(value = ALL_RECIPE_QUERY)
-    abstract fun recipes(): Flow<List<Recipe>>
+    abstract fun recipesObservable(): Flow<List<Recipe>>
+
+    @Transaction
+    @Query(value = "$ALL_RECIPE_QUERY WHERE ready_in_minutes <= :time")
+    abstract fun recipesReadyInTimeObservable(time: Long): Flow<List<Recipe>>
 
     @Query(value = ALL_RECIPE_QUERY)
     abstract suspend fun allRecipes(): List<Recipe>

@@ -8,7 +8,9 @@ class RecipesStore @Inject constructor(
     private val recipesDao: RecipeDao
 ) {
 
-    fun observeRecipes() = recipesDao.recipes()
+    fun observeRecipes() = recipesDao.recipesObservable()
+
+    fun observeRecipesReadyIn(time: Long) = recipesDao.recipesReadyInTimeObservable(time)
 
     suspend fun saveRecipes(recipes: List<Recipe>) =
         recipesDao.insertAll(recipes)

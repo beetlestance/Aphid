@@ -11,10 +11,20 @@ class RecipesRepository @Inject constructor(
 ) {
     fun observeRecipes(): Flow<List<Recipe>> = recipesStore.observeRecipes()
 
-    suspend fun fetchRecipes() {
+    fun observeRecipesReadyIn(time: Long) = recipesStore.observeRecipesReadyIn(time)
+
+    suspend fun fetchRecipes(
+        maxReadyTime: Long?,
+        type: String?,
+        numberOfRecipes: Int
+    ) {
         // For testing only, will remove once explore layer is created
         if (recipesStore.numberOfRecipesSaved() > 0) return
-        val recipeResult = recipesDataSource.fetchBreakfast()
+        val recipeResult = recipesDataSource.fetchRecipes(
+            maxReadyTime = maxReadyTime,
+            type = type,
+            numberOfRecipes = numberOfRecipes
+        )
         recipeResult.dataOrThrowException(recipesStore::saveRecipes)
     }
 

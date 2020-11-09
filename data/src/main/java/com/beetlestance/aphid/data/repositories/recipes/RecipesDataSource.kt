@@ -26,6 +26,7 @@ import com.beetlestance.spoonacular_kotlin.models.response.recipe.RecipeInformat
 import com.beetlestance.spoonacular_kotlin.services.RecipesService
 import com.beetlestance.spoonacular_kotlin.utils.serializedCopy
 import com.beetlestance.spoonacular_kotlin.utils.toSpoonacularApiResponse
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class RecipesDataSource @Inject constructor(
@@ -33,17 +34,22 @@ class RecipesDataSource @Inject constructor(
     private val recipeInformationToRecipe: RecipeInformationToRecipe
 ) {
 
-    suspend fun fetchRecipes(): Result<List<Recipe>> {
+    suspend fun fetchRandomRecipes(): Result<List<Recipe>> {
         return recipesService.getRandomRecipes(number = 20)
             .executeWithRetry(shouldRetry = { false })
             .toSpoonacularApiResponse()
             .toResult { (recipes) -> recipeInformationToRecipe.forLists().invoke(recipes) }
     }
 
-    suspend fun fetchBreakfast(): Result<List<Recipe>> {
+    suspend fun fetchRecipes(
+        maxReadyTime: Long?,
+        type: String?,
+        numberOfRecipes: Int
+    ): Result<List<Recipe>> {
         return recipesService.searchRecipesComplex(
-            type = MealType.BREAKFAST,
-            number = 10,
+            type = type,
+            number = numberOfRecipes,
+            maxReadyTime = maxReadyTime,
             addRecipeInformation = true
         ).executeWithRetry(shouldRetry = { false })
             .toSpoonacularApiResponse()
@@ -53,4 +59,5 @@ class RecipesDataSource @Inject constructor(
                 recipeInformationToRecipe.forLists().invoke(recipes)
             }
     }
+
 }
