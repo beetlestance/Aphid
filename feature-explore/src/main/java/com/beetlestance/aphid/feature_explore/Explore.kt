@@ -12,8 +12,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ConstraintLayout
 import androidx.compose.foundation.layout.Dimension
+import androidx.compose.foundation.layout.ExperimentalLayout
+import androidx.compose.foundation.layout.FlowCrossAxisAlignment
+import androidx.compose.foundation.layout.FlowMainAxisAlignment
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.SizeMode
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -56,10 +61,10 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.beetlestance.aphid.common_compose.FoodCard
 import com.beetlestance.aphid.common_compose.FoodCardWithDetails
 import com.beetlestance.aphid.common_compose.FoodCardWithDetailsPage
 import com.beetlestance.aphid.common_compose.pager.Carousel
+import com.beetlestance.aphid.common_compose.pager.PageConfig
 import com.beetlestance.aphid.common_compose.pager.PageTransformation
 import com.beetlestance.aphid.common_compose.utils.widthPercentage
 import com.beetlestance.aphid.data.entities.Recipe
@@ -257,19 +262,18 @@ fun BreakFastWithHeader(
         style = MaterialTheme.typography.h6,
     )
 
-    val offset = 16.dp
-    val fraction = 0.9f
-    val foodCard = FoodCard(
-        horizontalOffset = offset,
-        fraction = fraction,
+    val foodCardPageConfig = PageConfig(
+        horizontalOffset = 16.dp,
+        fraction = 0.9f,
         horizontalOffsetFraction = 0.1f,
-        maxWidth = widthPercentage(fraction = fraction, excludeRootPadding = offset)
+        aspectRatio = 13f / 20f,
+        maxWidth = widthPercentage(fraction = 0.9f, excludeRootPadding = 16.dp)
     )
 
     Carousel(
         items = breakfastRecipes,
         offscreenLimit = 2,
-        modifier = Modifier.preferredHeight(foodCard.maxHeight)
+        modifier = Modifier.preferredHeight(foodCardPageConfig.maxHeight)
     ) { recipe ->
         val recipeImageUrl: String? = run {
             return@run SpoonacularImageHelper.generateRecipeImageUrl(
@@ -281,16 +285,19 @@ fun BreakFastWithHeader(
 
         FoodCardWithDetailsPage(
             modifier = Modifier.transformPage(PageTransformation.ZOOM_OUT),
-            foodCard = foodCard,
+            pageConfig = foodCardPageConfig,
             isSelected = isSelectedPage,
-            name = recipe.title ?: "",
             imageUrl = recipeImageUrl ?: recipe.imageUrl,
             imageResource = R.drawable.temp_brownie,
-            contentTags = "2 Serving • 40 Min • 331 Cal ",
-            rating = "4.3",
             isFavourite = recipe.isFavourite == true,
             onCheckedChange = { isFavourite -> markRecipeAsFavourite(recipe, isFavourite) }
-        )
+        ) {
+            FoodCardContentsDetails(
+                name = recipe.title ?: "",
+                contentTags = "2 Serving • 40 Min • 331 Cal ",
+                rating = "4.3",
+            )
+        }
     }
 }
 
@@ -410,13 +417,16 @@ fun QuickRecipesWithHeader() {
         repeat(4) {
             FoodCardWithDetails(
                 imageResource = R.drawable.temp_noodles,
-                contentTags = "1 Serving • 20 Min • 205 Cal",
-                rating = "4.4",
-                name = "Asian Pesto Noodles",
                 fraction = 0.7f,
                 horizontalOffset = 16.dp,
                 isFavourite = false
-            )
+            ) {
+                FoodCardContentsDetails(
+                    name = "Asian Pesto Noodles",
+                    contentTags = "1 Serving • 20 Min • 205 Cal",
+                    rating = "4.4"
+                )
+            }
         }
     }
 }
@@ -494,13 +504,54 @@ fun RecentlyViewedRecipesWithHeader() {
         repeat(4) {
             FoodCardWithDetails(
                 imageResource = R.drawable.temp_pasta,
-                contentTags = "1 Serving • 25 Min • 190 Cal",
-                rating = "4.4",
-                name = "One Pot Pasta",
                 fraction = 0.7f,
                 horizontalOffset = 16.dp,
                 isFavourite = false
-            )
+            ) {
+                FoodCardContentsDetails(
+                    name = "One Pot Pasta",
+                    contentTags = "1 Serving • 25 Min • 190 Cal",
+                    rating = "4.4"
+                )
+            }
         }
     }
+}
+
+@OptIn(ExperimentalLayout::class)
+@Composable
+fun FoodCardContentsDetails(
+    contentTags: String,
+    rating: String,
+    name: String
+) {
+    FlowRow(
+        mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween,
+        mainAxisSize = SizeMode.Expand,
+        crossAxisAlignment = FlowCrossAxisAlignment.Center,
+        crossAxisSpacing = 4.dp
+    ) {
+        Text(
+            text = contentTags,
+            style = MaterialTheme.typography.body2,
+            color = colorResource(id = com.beetlestance.aphid.common_compose.R.color.grey_700)
+        )
+
+        Text(
+            modifier = Modifier
+                .background(
+                    color = colorResource(id = com.beetlestance.aphid.common_compose.R.color.deep_orange_a200),
+                    shape = RoundedCornerShape(10.dp)
+                )
+                .padding(horizontal = 12.dp, vertical = 2.dp),
+            text = rating,
+            style = MaterialTheme.typography.subtitle2,
+            color = MaterialTheme.colors.surface
+        )
+    }
+
+    Text(
+        text = name,
+        style = MaterialTheme.typography.body1
+    )
 }

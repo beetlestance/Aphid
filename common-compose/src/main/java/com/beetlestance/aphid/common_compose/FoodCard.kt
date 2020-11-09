@@ -2,18 +2,13 @@ package com.beetlestance.aphid.common_compose
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animate
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayout
-import androidx.compose.foundation.layout.FlowCrossAxisAlignment
-import androidx.compose.foundation.layout.FlowMainAxisAlignment
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.SizeMode
-import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
@@ -24,7 +19,6 @@ import androidx.compose.material.AmbientEmphasisLevels
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconToggleButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ProvideEmphasis
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,61 +30,36 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.beetlestance.aphid.common_compose.pager.PageConfig
 import com.beetlestance.aphid.common_compose.utils.widthPercentage
 import dev.chrisbanes.accompanist.coil.CoilImage
-
-data class FoodCard(
-    val fraction: Float,
-    val selectedPageElevation: Dp = 12.dp,
-    val pageElevation: Dp = 2.dp,
-    val horizontalOffset: Dp,
-    val horizontalOffsetFraction: Float,
-    val enableDefaultAnimation: Boolean = false,
-    val aspectRatio: Float = 13 / 20f,
-    val maxWidth: Dp
-) {
-    val minWidth: Dp = maxWidth - maxWidth.times(horizontalOffsetFraction)
-
-    val maxHeight: Dp = maxWidth / aspectRatio
-
-    val minHeight: Dp = minWidth / aspectRatio
-}
 
 @Composable
 fun FoodCardWithDetailsPage(
     modifier: Modifier = Modifier,
-    foodCard: FoodCard,
-    rating: String,
-    name: String,
+    pageConfig: PageConfig,
+    isSelected: Boolean,
     imageUrl: String? = null,
-    contentTags: String,
     isFavourite: Boolean,
     @DrawableRes imageResource: Int,
     onCheckedChange: (Boolean) -> Unit = {},
     cardShape: Shape = RoundedCornerShape(16.dp),
-    isSelected: Boolean
+    children: @Composable ColumnScope.() -> Unit
 ) {
-    val animateElevation = if (isSelected) 12.dp else 2.dp
-
-    val width = if (isSelected) foodCard.maxWidth else foodCard.minWidth
-    val height = if (isSelected) foodCard.maxHeight else foodCard.minHeight
-
     FoodCardWithDetails(
-        elevation = if (foodCard.enableDefaultAnimation) animateElevation else 4.dp,
+        elevation = pageConfig.elevation(isSelected = isSelected),
         modifier = modifier
-            .preferredWidth(if (foodCard.enableDefaultAnimation) animate(width) else foodCard.maxWidth)
-            .preferredHeight(if (foodCard.enableDefaultAnimation) animate(height) else foodCard.maxHeight)
+            .preferredWidth(pageConfig.width(isSelected = isSelected))
+            .preferredHeight(pageConfig.height(isSelected = isSelected))
             .padding(horizontal = 16.dp),
         fraction = null,
-        horizontalOffset = foodCard.horizontalOffset,
-        rating = rating,
-        name = name,
+        horizontalOffset = pageConfig.horizontalOffset,
         imageUrl = imageUrl,
-        contentTags = contentTags,
         imageResource = imageResource,
         isFavourite = isFavourite,
         onCheckedChange = onCheckedChange,
-        cardShape = cardShape
+        cardShape = cardShape,
+        children = children
     )
 }
 
@@ -100,14 +69,12 @@ fun FoodCardWithDetails(
     modifier: Modifier = Modifier,
     fraction: Float?,
     horizontalOffset: Dp,
-    rating: String,
-    name: String,
     imageUrl: String? = null,
-    contentTags: String,
     isFavourite: Boolean,
     @DrawableRes imageResource: Int,
     onCheckedChange: (Boolean) -> Unit = {},
-    cardShape: Shape = RoundedCornerShape(16.dp)
+    cardShape: Shape = RoundedCornerShape(16.dp),
+    children: @Composable ColumnScope.() -> Unit
 ) {
     // per item width in row
     if (fraction != null) {
@@ -132,14 +99,10 @@ fun FoodCardWithDetails(
             cardShape = cardShape,
             isFavourite = isFavourite,
             onCheckChanged = onCheckedChange,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().fillMaxHeight(0.9f)
         )
 
-        FoodCardContentsDetails(
-            contentTags = contentTags,
-            rating = rating,
-            name = name
-        )
+        children()
     }
 }
 
@@ -153,6 +116,7 @@ fun FoodCardWithFavIcon(
     modifier: Modifier = Modifier
 ) {
     Card(
+        modifier = modifier,
         elevation = animate(elevation),
         shape = cardShape
     ) {
@@ -161,9 +125,7 @@ fun FoodCardWithFavIcon(
                 data = imageSrc,
                 fadeIn = true,
                 contentScale = ContentScale.Crop,
-                modifier = modifier
-                    .aspectRatio(5 / 7f)
-                    .clipToBounds()
+                modifier = Modifier.matchParentSize().clipToBounds()
             )
 
             ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {
@@ -190,42 +152,4 @@ fun FoodCardWithFavIcon(
             }
         }
     }
-}
-
-@OptIn(ExperimentalLayout::class)
-@Composable
-fun FoodCardContentsDetails(
-    contentTags: String,
-    rating: String,
-    name: String
-) {
-    FlowRow(
-        mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween,
-        mainAxisSize = SizeMode.Expand,
-        crossAxisAlignment = FlowCrossAxisAlignment.Center,
-        crossAxisSpacing = 4.dp
-    ) {
-        Text(
-            text = contentTags,
-            style = MaterialTheme.typography.body2,
-            color = colorResource(id = R.color.grey_700)
-        )
-
-        Text(
-            modifier = Modifier
-                .background(
-                    color = colorResource(id = R.color.deep_orange_a200),
-                    shape = RoundedCornerShape(10.dp)
-                )
-                .padding(horizontal = 12.dp, vertical = 2.dp),
-            text = rating,
-            style = MaterialTheme.typography.subtitle2,
-            color = MaterialTheme.colors.surface
-        )
-    }
-
-    Text(
-        text = name,
-        style = MaterialTheme.typography.body1
-    )
 }
