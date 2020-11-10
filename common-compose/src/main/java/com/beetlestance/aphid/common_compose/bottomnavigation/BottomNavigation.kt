@@ -32,7 +32,6 @@ import androidx.compose.ui.graphics.PaintingStyle
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.lerp
-import androidx.compose.ui.onSizeChanged
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
@@ -58,9 +57,7 @@ fun CurvedCutBottomNavigation(
         modifier = modifier
     ) {
         Layout(
-            modifier = Modifier.fillMaxWidth().preferredHeight(BottomNavigationHeight)
-                .setCurve()
-                .drawCurve(),
+            modifier = Modifier.fillMaxWidth().preferredHeight(BottomNavigationHeight).setCurve(),
             children = content
         ) { measurables, constraints ->
             layout(constraints.maxWidth, constraints.maxHeight) {
@@ -69,13 +66,14 @@ fun CurvedCutBottomNavigation(
 
                 // Calculate center x for curve
                 val menuItemCenterX = menuItemWidth / 2
-                val centerOffsetX = menuItemWidth * 1 + menuItemCenterX
+                val centerOffsetX = menuItemWidth * selectedItem + menuItemCenterX
 
                 // Compute curve for first time
                 computeCurve(centerOffsetX, constraints.maxWidth, constraints.maxHeight)
 
                 // Place navigation menu items
                 measurables.forEachIndexed { index, measurable ->
+                    // set width of menu item
                     val placeable = measurable.measure(constraints.copy(minWidth = menuItemWidth))
                     placeable.place(x = index * menuItemWidth, y = 0)
                 }
@@ -88,7 +86,7 @@ fun CurvedCutBottomNavigation(
 fun CurvedCutBottomNavigationItem(
     icon: @Composable () -> Unit,
     selected: Boolean,
-    onClick: () -> Unit,
+    onClick: () -> Int,
     modifier: Modifier = Modifier,
     interactionState: InteractionState = remember { InteractionState() },
     selectedContentColor: Color = AmbientContentColor.current,
@@ -100,7 +98,9 @@ fun CurvedCutBottomNavigationItem(
     Row(
         modifier = modifier.selectable(
             selected = selected,
-            onClick = onClick,
+            onClick = {
+                selectedItem = onClick()
+            },
             interactionState = interactionState,
             indication = null
         ).fillMaxHeight(),
@@ -142,11 +142,6 @@ private fun Modifier.setCurve() = drawWithContent {
         it.drawPath(path, navPaint)
     }
     drawContent()
-}
-
-@Composable
-private fun Modifier.drawCurve() = onSizeChanged { (width, height) ->
-//    computeCurve(width, height)
 }
 
 private fun computeCurve(offsetX: Int, width: Int, height: Int) {
@@ -257,6 +252,8 @@ private val BottomNavigationHeight = 56.dp
 private val BottomNavigationElevation = 8.dp
 
 private var bottomNavigationColor = Color.White
+
+private var selectedItem: Int = 1
 
 // the radius of the FloatingActionButton
 private var fabRadius = 0f

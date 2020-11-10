@@ -54,6 +54,7 @@ fun AphidHome(
                             if (currentRoute != screen.route) {
                                 navController.navigate(screen.route)
                             }
+                            navItems.indexOf(screen)
                         }
                     )
                 }
