@@ -1,26 +1,21 @@
 package com.beetlestance.aphid.common_compose.bottomnavigation
 
 import android.graphics.PointF
-import androidx.compose.animation.animate
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.VectorizedAnimationSpec
-import androidx.compose.foundation.AmbientContentColor
 import androidx.compose.foundation.InteractionState
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.material.AmbientEmphasisLevels
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Layout
@@ -31,7 +26,6 @@ import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.PaintingStyle
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
@@ -89,51 +83,18 @@ fun CurvedCutBottomNavigationItem(
     onClick: () -> Int,
     modifier: Modifier = Modifier,
     interactionState: InteractionState = remember { InteractionState() },
-    selectedContentColor: Color = AmbientContentColor.current,
-    unselectedContentColor: Color = AmbientEmphasisLevels.current.medium.applyEmphasis(
-        selectedContentColor
-    )
 ) {
 
-    Row(
+    Box(
         modifier = modifier.selectable(
             selected = selected,
-            onClick = {
-                selectedItem = onClick()
-            },
+            onClick = { selectedItem = onClick() },
             interactionState = interactionState,
             indication = null
         ).fillMaxHeight(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        CurvedCutBottomNavigationTransition(
-            selectedContentColor,
-            unselectedContentColor,
-            selected
-        ) { progress ->
-            icon()
-        }
-    }
-}
-
-@Composable
-private fun CurvedCutBottomNavigationTransition(
-    activeColor: Color,
-    inactiveColor: Color,
-    selected: Boolean,
-    content: @Composable (animationProgress: Float) -> Unit
-) {
-    val animationProgress = animate(
-        target = if (selected) 1f else 0f,
-        animSpec = BottomNavigationAnimationSpec
+        alignment = Alignment.Center,
+        children = { icon() }
     )
-
-    val color = lerp(inactiveColor, activeColor, animationProgress)
-
-    Providers(AmbientContentColor provides color) {
-        content(animationProgress)
-    }
 }
 
 @Composable
