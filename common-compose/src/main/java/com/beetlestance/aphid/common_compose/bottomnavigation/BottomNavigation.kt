@@ -2,16 +2,20 @@ package com.beetlestance.aphid.common_compose.bottomnavigation
 
 import android.graphics.PointF
 import androidx.compose.animation.animate
-import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.VectorizedAnimationSpec
 import androidx.compose.foundation.InteractionState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.preferredHeight
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.FloatingActionButtonConstants
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.primarySurface
@@ -22,9 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Layout
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.drawWithContent
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Paint
@@ -35,6 +37,7 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.platform.DensityAmbient
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import kotlin.math.roundToInt
@@ -50,25 +53,43 @@ fun CurvedCutBottomNavigation(
     fabBackgroundColor: Color = MaterialTheme.colors.primarySurface,
     elevation: Dp = BottomNavigationElevation,
     defaultSelection: Int = 0,
+    defaultSelectedIcon: @Composable () -> Unit,
     content: @Composable () -> Unit
 ) {
     BottomNavigationColor = backgroundColor
-    FabBackgroundColor = fabBackgroundColor
     selectedItem = defaultSelection
 
     fabRadius = DensityAmbient.current.density * FabRadius.value
     val bottomNavigationTopOffsetY = fabRadius
     val curveBottomOffset = DensityAmbient.current.density * CurvedBottomNavigationOffset.value
+    val layoutHeight = BottomNavigationHeight + FabRadius
 
     Box(modifier = modifier) {
         val currentOffsetX = remember { mutableStateOf(0f) }
+        val currentFabOffsetX = remember { mutableStateOf(0.dp) }
 
-        val offsetX = animate(
+        val menuItemOffsetX = animate(
             target = currentOffsetX.value,
-            animSpec = remember { BottomNavigationAnimationSpec }
+            animSpec = remember { bottomNavigationAnimationSpec() }
         )
 
-        computeCurve(offsetX, curveBottomOffset, bottomNavigationTopOffsetY)
+        val fabOffsetX = animate(currentFabOffsetX.value)
+
+        val fabOffsetY = animate(if (fabOffsetX == currentFabOffsetX.value) 8.dp else layoutHeight)
+
+        computeCurve(menuItemOffsetX, curveBottomOffset, bottomNavigationTopOffsetY)
+
+        FloatingActionButton(
+            onClick = {},
+            modifier = modifier.size(FabRadius.times(2))
+                .offset(x = fabOffsetX, y = fabOffsetY),
+            backgroundColor = fabBackgroundColor,
+            elevation = FloatingActionButtonConstants.defaultElevation(
+                defaultElevation = FabElevation,
+                pressedElevation = FabPressedElevation
+            ),
+            icon = selectedIcon ?: defaultSelectedIcon
+        )
 
         Surface(
             color = backgroundColor,
@@ -78,12 +99,12 @@ fun CurvedCutBottomNavigation(
                     return Outline.Generic(path)
                 }
             },
-            modifier = Modifier.fillMaxWidth().setCurve(offsetX)
+            modifier = Modifier.fillMaxWidth().drawCurve()
         ) {
 
             Layout(
                 modifier = Modifier.fillMaxWidth()
-                    .preferredHeight(BottomNavigationHeight + FabRadius),
+                    .preferredHeight(layoutHeight),
                 children = content
             ) { measurables, constraints ->
                 layout(constraints.maxWidth, constraints.maxHeight) {
@@ -92,8 +113,9 @@ fun CurvedCutBottomNavigation(
 
                     // Calculate center x for curve
                     val menuItemCenterX = menuItemWidth / 2
-                    val centerOffsetX = menuItemWidth * selectedItem + menuItemCenterX
-                    currentOffsetX.value = centerOffsetX.toFloat()
+                    val cellCentreOffsetX = menuItemWidth * selectedItem + menuItemCenterX
+                    currentOffsetX.value = cellCentreOffsetX.toFloat()
+                    currentFabOffsetX.value = cellCentreOffsetX.toDp() - FabRadius
 
                     layoutSize = IntSize(
                         width = constraints.maxWidth,
@@ -110,11 +132,12 @@ fun CurvedCutBottomNavigation(
                             )
                         )
 
-                        val iconOffsetY = if (index == selectedItem) fabRadius.roundToInt() else 0
-                        placeable.place(
+                        val offset = IntOffset(
                             x = index * menuItemWidth,
-                            y = fabRadius.roundToInt() - iconOffsetY
+                            y = fabRadius.roundToInt()
                         )
+
+                        placeable.place(offset)
                     }
                 }
             }
@@ -134,7 +157,10 @@ fun CurvedCutBottomNavigationItem(
     Box(
         modifier = modifier.selectable(
             selected = selected,
-            onClick = { selectedItem = onClick() },
+            onClick = {
+                selectedIcon = icon
+                selectedItem = onClick()
+            },
             interactionState = interactionState,
             indication = null
         ).fillMaxHeight(),
@@ -144,10 +170,10 @@ fun CurvedCutBottomNavigationItem(
 }
 
 @Composable
-private fun Modifier.setCurve(offsetX: Float) = drawWithContent {
+private fun Modifier.drawCurve() = drawWithContent {
 
     drawIntoCanvas {
-        drawCurve(offsetX, it)
+        it.drawPath(path, navPaint)
     }
 
     drawContent()
@@ -249,23 +275,13 @@ fun computeCurve(
     path.close()
 }
 
-fun drawCurve(offsetX: Float, canvas: Canvas) {
-    canvas.drawCircle(
-        center = Offset(x = offsetX, y = firstCurveStart.y),
-        radius = fabRadius,
-        paint = fabPaint
-    )
-
-    canvas.drawPath(path, navPaint)
-}
-
 /**
  * [VectorizedAnimationSpec] controlling the transition between unselected and selected
  * [BottomNavigationItem]s.
  */
-private val BottomNavigationAnimationSpec = TweenSpec<Float>(
+private fun bottomNavigationAnimationSpec() = TweenSpec<Float>(
     durationMillis = 300,
-    easing = FastOutSlowInEasing
+    easing = CubicBezierEasing(0.2f, 0f, 0.8f, 1f)
 )
 
 private val BottomNavigationHeight = 56.dp
@@ -278,11 +294,15 @@ private var BottomNavigationColor = Color.White
 
 private val FabRadius = 56.dp.div(2)
 
-private var FabBackgroundColor = Color.White
+private var FabElevation = 12.dp
+
+private var FabPressedElevation = 6.dp
 
 private var layoutSize: IntSize = IntSize.Zero
 
 private var selectedItem: Int = 0
+
+private var selectedIcon: (@Composable () -> Unit)? = null
 
 // the radius of the FloatingActionButton
 private var fabRadius: Float = 0f
@@ -307,7 +327,3 @@ private val navPaint = Paint().apply {
     color = BottomNavigationColor
 }
 
-private val fabPaint = Paint().apply {
-    style = PaintingStyle.Fill
-    color = FabBackgroundColor
-}
