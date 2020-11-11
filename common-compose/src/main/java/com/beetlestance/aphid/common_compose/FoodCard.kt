@@ -3,7 +3,6 @@ package com.beetlestance.aphid.common_compose
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animate
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -133,9 +132,6 @@ fun FoodCardWithFavIcon(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(16.dp)
-                        .clickable {
-
-                        }
                         .background(
                             shape = CircleShape,
                             color = colorResource(id = R.color.grey_400_alpha_30)
