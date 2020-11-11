@@ -75,7 +75,8 @@ class MainActivity : AppCompatActivity() {
         Scaffold(
             bottomBar = {
                 CurvedCutBottomNavigation(
-                    backgroundColor = MaterialTheme.colors.surface
+                    backgroundColor = MaterialTheme.colors.surface,
+                    defaultSelection = navItems.indexOf(Screen.Explore)
                 ) {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)

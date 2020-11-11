@@ -1,6 +1,7 @@
 package com.beetlestance.aphid.common_compose.bottomnavigation
 
 import android.graphics.PointF
+import androidx.compose.animation.animate
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.VectorizedAnimationSpec
@@ -16,6 +17,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Layout
@@ -41,18 +43,25 @@ fun CurvedCutBottomNavigation(
     modifier: Modifier = Modifier,
     backgroundColor: Color = MaterialTheme.colors.primarySurface,
     elevation: Dp = BottomNavigationElevation,
+    defaultSelection: Int = 0,
     content: @Composable () -> Unit
 ) {
     FabRadius = Density(ContextAmbient.current).density * 36
     BottomNavigationColor = backgroundColor
+    selectedItem = defaultSelection
 
     Surface(
         color = Color.Transparent,
         elevation = elevation,
         modifier = modifier
     ) {
+
+        val currentOffsetX = remember { mutableStateOf(0) }
+        val offsetX = animate(target = currentOffsetX.value)
+
         Layout(
-            modifier = Modifier.fillMaxWidth().preferredHeight(BottomNavigationHeight).setCurve(),
+            modifier = Modifier.fillMaxWidth().preferredHeight(BottomNavigationHeight)
+                .setCurve(offsetX),
             children = content
         ) { measurables, constraints ->
             layout(constraints.maxWidth, constraints.maxHeight) {
@@ -62,8 +71,7 @@ fun CurvedCutBottomNavigation(
                 // Calculate center x for curve
                 val menuItemCenterX = menuItemWidth / 2
                 val centerOffsetX = menuItemWidth * selectedItem + menuItemCenterX
-                if (centerOffsetX != CurrentOffsetX) PreviousOffsetX = CurrentOffsetX
-                CurrentOffsetX = centerOffsetX
+                currentOffsetX.value = centerOffsetX
 
                 bottomNavigationSize = IntSize(
                     width = constraints.maxWidth,
@@ -103,10 +111,10 @@ fun CurvedCutBottomNavigationItem(
 }
 
 @Composable
-private fun Modifier.setCurve() = drawWithContent {
+private fun Modifier.setCurve(offsetX: Int) = drawWithContent {
 
     // Compute curve for first time
-    computeCurve(CurrentOffsetX)
+    computeCurve(offsetX)
 
     drawIntoCanvas {
         it.drawPath(path, navPaint)
@@ -254,6 +262,3 @@ private val navPaint = Paint().apply {
     style = PaintingStyle.Fill
     color = BottomNavigationColor
 }
-
-private var PreviousOffsetX = 0
-private var CurrentOffsetX = 0
