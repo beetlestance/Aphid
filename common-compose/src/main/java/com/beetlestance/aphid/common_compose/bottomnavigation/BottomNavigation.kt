@@ -23,12 +23,17 @@ import androidx.compose.ui.Layout
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.drawWithContent
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.PaintingStyle
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.platform.DensityAmbient
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
@@ -51,56 +56,66 @@ fun CurvedCutBottomNavigation(
     FabBackgroundColor = fabBackgroundColor
     selectedItem = defaultSelection
 
-    Surface(
-        color = Color.Transparent,
-        contentColor = Color.Transparent,
-        modifier = modifier
-    ) {
+    fabRadius = DensityAmbient.current.density * FabRadius.value
+    val bottomNavigationTopOffsetY = fabRadius
+    val curveBottomOffset = DensityAmbient.current.density * CurvedBottomNavigationOffset.value
 
-        val currentOffsetX = remember { mutableStateOf(0) }
+    Box(modifier = modifier) {
+        val currentOffsetX = remember { mutableStateOf(0f) }
+
         val offsetX = animate(
             target = currentOffsetX.value,
             animSpec = remember { BottomNavigationAnimationSpec }
         )
 
-        Layout(
-            modifier = Modifier.fillMaxWidth()
-                .preferredHeight(BottomNavigationHeight + FabRadius)
-                .setCurve(offsetX),
-            children = content
-        ) { measurables, constraints ->
-            layout(constraints.maxWidth, constraints.maxHeight) {
-                // Calculate single item size
-                val menuItemWidth = constraints.maxWidth / measurables.size
+        computeCurve(offsetX, curveBottomOffset, bottomNavigationTopOffsetY)
 
-                // Calculate center x for curve
-                val menuItemCenterX = menuItemWidth / 2
-                val centerOffsetX = menuItemWidth * selectedItem + menuItemCenterX
-                currentOffsetX.value = centerOffsetX
+        Surface(
+            color = backgroundColor,
+            elevation = elevation,
+            shape = object : Shape {
+                override fun createOutline(size: Size, density: Density): Outline {
+                    return Outline.Generic(path)
+                }
+            },
+            modifier = Modifier.fillMaxWidth().setCurve(offsetX)
+        ) {
 
-                fabRadius = FabRadius.toPx()
-                bottomNavigationTopOffsetY = FabRadius.toPx()
+            Layout(
+                modifier = Modifier.fillMaxWidth()
+                    .preferredHeight(BottomNavigationHeight + FabRadius),
+                children = content
+            ) { measurables, constraints ->
+                layout(constraints.maxWidth, constraints.maxHeight) {
+                    // Calculate single item size
+                    val menuItemWidth = constraints.maxWidth / measurables.size
 
-                layoutSize = IntSize(
-                    width = constraints.maxWidth,
-                    height = constraints.maxHeight
-                )
+                    // Calculate center x for curve
+                    val menuItemCenterX = menuItemWidth / 2
+                    val centerOffsetX = menuItemWidth * selectedItem + menuItemCenterX
+                    currentOffsetX.value = centerOffsetX.toFloat()
 
-                // Place navigation menu items
-                measurables.forEachIndexed { index, measurable ->
-                    // set width of menu item
-                    val placeable = measurable.measure(
-                        constraints.copy(
-                            minWidth = menuItemWidth,
-                            minHeight = constraints.maxHeight - fabRadius.roundToInt()
+                    layoutSize = IntSize(
+                        width = constraints.maxWidth,
+                        height = constraints.maxHeight
+                    )
+
+                    // Place navigation menu items
+                    measurables.forEachIndexed { index, measurable ->
+                        // set width of menu item
+                        val placeable = measurable.measure(
+                            constraints.copy(
+                                minWidth = menuItemWidth,
+                                minHeight = constraints.maxHeight - fabRadius.roundToInt()
+                            )
                         )
-                    )
 
-                    val iconOffsetY = if (index == selectedItem) fabRadius.roundToInt() else 0
-                    placeable.place(
-                        x = index * menuItemWidth,
-                        y = fabRadius.roundToInt() - iconOffsetY
-                    )
+                        val iconOffsetY = if (index == selectedItem) fabRadius.roundToInt() else 0
+                        placeable.place(
+                            x = index * menuItemWidth,
+                            y = fabRadius.roundToInt() - iconOffsetY
+                        )
+                    }
                 }
             }
         }
@@ -129,7 +144,7 @@ fun CurvedCutBottomNavigationItem(
 }
 
 @Composable
-private fun Modifier.setCurve(offsetX: Int) = drawWithContent {
+private fun Modifier.setCurve(offsetX: Float) = drawWithContent {
 
     drawIntoCanvas {
         drawCurve(offsetX, it)
@@ -138,38 +153,42 @@ private fun Modifier.setCurve(offsetX: Int) = drawWithContent {
     drawContent()
 }
 
-fun drawCurve(offsetX: Int, canvas: Canvas) {
+fun computeCurve(
+    offsetX: Float,
+    curveBottomOffset: Float,
+    bottomNavOffsetY: Float
+) {
     // Max height and width
     val width: Int = layoutSize.width
     val height: Int = layoutSize.height
 
     // offset of the first control point (top part)
     val topControlX = fabRadius + fabRadius.div(2)
-    val topControlY = fabRadius.div(6)
+    val topControlY = bottomNavOffsetY + fabRadius.div(6)
 
     // offset of the second control point (bottom part)
     val bottomControlX = fabRadius + fabRadius.div(2)
     val bottomControlY = fabRadius.div(4)
 
     // width of the curve
-    val curveOffset = fabRadius * 2 + (fabRadius / 6)
+    val fabMargin = height - fabRadius.times(2) - curveBottomOffset
+    val curveHalfWidth = fabRadius * 2 + fabMargin
 
     // first curve
     // set the starting point of the curve (P2)
     firstCurveStart.apply {
-        // we want the curve to start at CURVE_OFFSET before the center of the view
-        x = offsetX - curveOffset
-        y = bottomNavigationTopOffsetY
+        x = offsetX - curveHalfWidth
+        y = bottomNavOffsetY
     }
     // set the end point for the first curve (P3)
     firstCurveEnd.apply {
-        x = offsetX.toFloat()
-        y = bottomNavigationTopOffsetY + fabRadius + (fabRadius / 4)
+        x = offsetX
+        y = height - curveBottomOffset
     }
     // set the first control point (C1)
     firstCurveControlPoint1.apply {
         x = firstCurveStart.x + topControlX
-        y = bottomNavigationTopOffsetY + topControlY
+        y = topControlY
     }
     // set the second control point (C2)
     firstCurveControlPoint2.apply {
@@ -182,8 +201,8 @@ fun drawCurve(offsetX: Int, canvas: Canvas) {
     secondCurveStart.set(firstCurveEnd.x, firstCurveEnd.y)
     // end of the second curve (P4)
     secondCurveEnd.apply {
-        x = offsetX + curveOffset
-        y = bottomNavigationTopOffsetY
+        x = offsetX + curveHalfWidth
+        y = bottomNavOffsetY
     }
     // set the first control point of second curve (C4)
     secondCurveControlPoint1.apply {
@@ -193,13 +212,13 @@ fun drawCurve(offsetX: Int, canvas: Canvas) {
     // set the second control point (C3)
     secondCurveControlPoint2.apply {
         x = secondCurveEnd.x - topControlX
-        y = bottomNavigationTopOffsetY + topControlY
+        y = topControlY
     }
 
     // clear any previous path
     path.reset()
     // start from P1 of the BottomNavigationView
-    path.moveTo(0f, bottomNavigationTopOffsetY)
+    path.moveTo(0f, bottomNavOffsetY)
     // horizontal line from P1 to P2
     path.lineTo(firstCurveStart.x, firstCurveStart.y)
     // bezier curve with (P2, C1, C2, P3)
@@ -221,16 +240,18 @@ fun drawCurve(offsetX: Int, canvas: Canvas) {
         secondCurveEnd.y
     )
     // line from P4 to P5
-    path.lineTo(width.toFloat(), bottomNavigationTopOffsetY)
+    path.lineTo(width.toFloat(), bottomNavOffsetY)
     // line from P5 to P6
     path.lineTo(width.toFloat(), height.toFloat())
     // line from P6 to P7
     path.lineTo(0f, height.toFloat())
     // complete the path
     path.close()
+}
 
+fun drawCurve(offsetX: Float, canvas: Canvas) {
     canvas.drawCircle(
-        center = Offset(x = offsetX.toFloat(), y = firstCurveStart.y),
+        center = Offset(x = offsetX, y = firstCurveStart.y),
         radius = fabRadius,
         paint = fabPaint
     )
@@ -242,22 +263,22 @@ fun drawCurve(offsetX: Int, canvas: Canvas) {
  * [VectorizedAnimationSpec] controlling the transition between unselected and selected
  * [BottomNavigationItem]s.
  */
-private val BottomNavigationAnimationSpec = TweenSpec<Int>(
+private val BottomNavigationAnimationSpec = TweenSpec<Float>(
     durationMillis = 300,
     easing = FastOutSlowInEasing
 )
 
 private val BottomNavigationHeight = 56.dp
 
+private val CurvedBottomNavigationOffset = 12.dp
+
 private val BottomNavigationElevation = 8.dp
 
 private var BottomNavigationColor = Color.White
 
-private val FabRadius = 36.dp
+private val FabRadius = 56.dp.div(2)
 
 private var FabBackgroundColor = Color.White
-
-private var bottomNavigationTopOffsetY = 0f
 
 private var layoutSize: IntSize = IntSize.Zero
 
@@ -279,7 +300,7 @@ private val secondCurveControlPoint1 = PointF()
 private val secondCurveControlPoint2 = PointF()
 
 // path to represent the background including the curve
-private val path: Path = Path()
+internal val path: Path = Path()
 
 private val navPaint = Paint().apply {
     style = PaintingStyle.Fill
