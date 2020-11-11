@@ -99,6 +99,7 @@ dependencies {
     implementation(Libs.AndroidX.appcompat)
     implementation(Libs.AndroidX.coreKtx)
     implementation(Libs.AndroidX.Fragment.fragmentKtx)
+    implementation(Libs.AndroidX.Navigation.navigation)
 
     // Material Design
     implementation(Libs.Google.Mdc.material)

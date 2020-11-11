@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Aphid</string>
+    <string name="feature_chat">Chat</string>
+    <string name="feature_explore">Explore</string>
+    <string name="feature_meal_planner">Meals</string>
+    <string name="feature_grocery">Grocery</string>
+    <string name="feature_profile">Profile</string>
 </resources>
