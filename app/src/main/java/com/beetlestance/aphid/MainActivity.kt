@@ -76,8 +76,14 @@ class MainActivity : AppCompatActivity() {
             bottomBar = {
                 CurvedCutBottomNavigation(
                     backgroundColor = MaterialTheme.colors.surface,
-                    fabBackgroundColor = MaterialTheme.colors.surface,
-                    defaultSelection = navItems.indexOf(Screen.Explore)
+                    fabBackgroundColor = MaterialTheme.colors.primarySurface,
+                    defaultSelection = navItems.indexOf(Screen.Explore),
+                    defaultSelectedIcon = {
+                        Icon(
+                            asset = vectorResource(id = Screen.Explore.iconFilled),
+                            tint = MaterialTheme.colors.surface
+                        )
+                    }
                 ) {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
@@ -87,7 +93,7 @@ class MainActivity : AppCompatActivity() {
                             icon = {
                                 val resId =
                                     if (isSelected) screen.iconFilled else screen.iconOutlined
-                                val color = if (isSelected) MaterialTheme.colors.primarySurface
+                                val color = if (isSelected) MaterialTheme.colors.surface
                                 else MaterialTheme.colors.background
 
                                 Icon(asset = vectorResource(id = resId), tint = color)
