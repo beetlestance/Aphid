@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 
 /**
@@ -42,8 +43,8 @@ fun CurvedCutBottomNavigation(
     elevation: Dp = BottomNavigationElevation,
     content: @Composable () -> Unit
 ) {
-    fabRadius = Density(ContextAmbient.current).density * 36
-    bottomNavigationColor = backgroundColor
+    FabRadius = Density(ContextAmbient.current).density * 36
+    BottomNavigationColor = backgroundColor
 
     Surface(
         color = Color.Transparent,
@@ -61,9 +62,13 @@ fun CurvedCutBottomNavigation(
                 // Calculate center x for curve
                 val menuItemCenterX = menuItemWidth / 2
                 val centerOffsetX = menuItemWidth * selectedItem + menuItemCenterX
+                if (centerOffsetX != CurrentOffsetX) PreviousOffsetX = CurrentOffsetX
+                CurrentOffsetX = centerOffsetX
 
-                // Compute curve for first time
-                computeCurve(centerOffsetX, constraints.maxWidth, constraints.maxHeight)
+                bottomNavigationSize = IntSize(
+                    width = constraints.maxWidth,
+                    height = constraints.maxHeight
+                )
 
                 // Place navigation menu items
                 measurables.forEachIndexed { index, measurable ->
@@ -99,23 +104,32 @@ fun CurvedCutBottomNavigationItem(
 
 @Composable
 private fun Modifier.setCurve() = drawWithContent {
+
+    // Compute curve for first time
+    computeCurve(CurrentOffsetX)
+
     drawIntoCanvas {
         it.drawPath(path, navPaint)
     }
+
     drawContent()
 }
 
-private fun computeCurve(offsetX: Int, width: Int, height: Int) {
+private fun computeCurve(offsetX: Int) {
+    // Max height and width
+    val width: Int = bottomNavigationSize.width
+    val height: Int = bottomNavigationSize.height
+
     // offset of the first control point (top part)
-    val topControlX = fabRadius + fabRadius.div(2)
-    val topControlY = fabRadius.div(6)
+    val topControlX = FabRadius + FabRadius.div(2)
+    val topControlY = FabRadius.div(6)
 
     // offset of the second control point (bottom part)
-    val bottomControlX = fabRadius + fabRadius.div(2)
-    val bottomControlY = fabRadius.div(4)
+    val bottomControlX = FabRadius + FabRadius.div(2)
+    val bottomControlY = FabRadius.div(4)
 
     // width of the curve
-    val curveOffset = fabRadius * 2 + (fabRadius / 6)
+    val curveOffset = FabRadius * 2 + (FabRadius / 6)
 
     // first curve
     // set the starting point of the curve (P2)
@@ -127,7 +141,7 @@ private fun computeCurve(offsetX: Int, width: Int, height: Int) {
     // set the end point for the first curve (P3)
     firstCurveEnd.apply {
         x = offsetX.toFloat()
-        y = fabRadius + (fabRadius / 4)
+        y = FabRadius + (FabRadius / 4)
     }
     // set the first control point (C1)
     firstCurveControlPoint1.apply {
@@ -212,12 +226,14 @@ private val BottomNavigationHeight = 56.dp
  */
 private val BottomNavigationElevation = 8.dp
 
-private var bottomNavigationColor = Color.White
+private var BottomNavigationColor = Color.White
 
-private var selectedItem: Int = 1
+private var bottomNavigationSize: IntSize = IntSize.Zero
+
+private var selectedItem: Int = 0
 
 // the radius of the FloatingActionButton
-private var fabRadius = 0f
+private var FabRadius = 0f
 
 // first bezier curve
 private val firstCurveStart = PointF()
@@ -236,5 +252,8 @@ private val path: Path = Path()
 
 private val navPaint = Paint().apply {
     style = PaintingStyle.Fill
-    color = bottomNavigationColor
+    color = BottomNavigationColor
 }
+
+private var PreviousOffsetX = 0
+private var CurrentOffsetX = 0
