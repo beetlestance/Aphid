@@ -1,7 +1,6 @@
 package com.beetlestance.aphid.common_compose.pager
 
 import androidx.compose.animation.AnimatedFloatModel
-import androidx.compose.animation.animate
 import androidx.compose.animation.core.AnimationClockObservable
 import androidx.compose.animation.core.AnimationEndReason
 import androidx.compose.animation.core.fling
@@ -156,6 +155,7 @@ fun Pager(
     state: PagerState,
     offscreenLimit: Int = 2,
     modifier: Modifier = Modifier,
+    drawSelectedPageAtLast: Boolean = false, // for overlap-transformations
     pageContent: @Composable PagerScope.() -> Unit
 ) {
     val minPage = (state.currentPage - offscreenLimit).coerceAtLeast(state.minPage)
@@ -172,9 +172,9 @@ fun Pager(
                 key(pageData) {
                     Box(
                         alignment = Alignment.Center,
-                        modifier = pageData
+                        modifier = if (drawSelectedPageAtLast) pageData
                             // Always draw selected page after its next hint
-                            .zIndex(animate(if (page == state.currentPage) 1f else 0f))
+                            .zIndex(if (page == state.currentPage) 1f else 0f) else pageData
                     ) {
                         scope.pageContent()
                     }
@@ -255,7 +255,7 @@ fun PageLayout(
  */
 open class PagerScope(
     private val state: PagerState,
-    private val page: Int
+    val page: Int
 ) {
     /**
      * Returns the current selected page

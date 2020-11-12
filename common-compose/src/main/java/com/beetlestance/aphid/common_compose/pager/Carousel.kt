@@ -1,6 +1,5 @@
 package com.beetlestance.aphid.common_compose.pager
 
-import androidx.compose.animation.animate
 import androidx.compose.animation.core.AnimationClockObservable
 import androidx.compose.animation.core.AnimationEndReason
 import androidx.compose.animation.core.fling
@@ -75,6 +74,7 @@ fun <T> Carousel(
     offscreenLimit: Int = 2,
     state: CarouselState = rememberCarouselState(maxPage = items.lastIndex),
     modifier: Modifier = Modifier,
+    drawSelectedPageAtLast: Boolean = false, // for overlap-transformations
     pageContent: @Composable (CarouselScope.(T) -> Unit)
 ) {
     if (items.size < 3) throw IllegalArgumentException("Carousel needs at least 3 items")
@@ -99,9 +99,9 @@ fun <T> Carousel(
                 key(pageData) {
                     Box(
                         alignment = Alignment.Center,
-                        modifier = pageData
+                        modifier = if (drawSelectedPageAtLast) pageData
                             // Always draw selected page after its next hint
-                            .zIndex(animate(if (page == state.currentPage) 1f else 0f))
+                            .zIndex(if (page == state.currentPage) 1f else 0f) else pageData
                     ) {
                         scope.pageContent(items[index])
                     }

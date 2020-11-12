@@ -59,6 +59,36 @@ interface PageTransformation {
             }
         }
 
+        val CAROUSEL_TRANSFORM: PageTransformation = object : PageTransformation {
+            override fun transformPage(
+                offset: Float,
+                size: Size
+            ): PageTransformState {
+                return when {
+                    offset == 0f -> PageTransformState()
+                    offset < 0f -> {
+                        val scaleFactor = (MIN_SCALE + (1 - MIN_SCALE) * (1 - abs(
+                            offset
+                        )))
+                        PageTransformState(
+                            1 - offset, scaleFactor, scaleFactor,
+                            size.width.div(4).times(-offset)
+                        )
+                    }
+                    offset > 0f -> {
+                        val scaleFactor = (MIN_SCALE + (1 - MIN_SCALE) * (1 - abs(
+                            offset
+                        )))
+                        PageTransformState(
+                            1 - offset, scaleFactor, scaleFactor,
+                            size.width.div(4).times(-offset)
+                        )
+                    }
+                    else -> PageTransformState()
+                }
+            }
+        }
+
         val ZOOM_OUT: PageTransformation = object : PageTransformation {
             override fun transformPage(
                 offset: Float,
