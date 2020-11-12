@@ -134,7 +134,7 @@ fun FoodPosterCard(
                     icon = {
                         Icon(
                             asset = vectorResource(id = R.drawable.ic_like),
-                            tint = colorResource(if (isFavourite) R.color.deep_orange_a200 else R.color.white)
+                            tint = animate(target = colorResource(if (isFavourite) R.color.deep_orange_a200 else R.color.white))
                         )
                     },
                     checked = isFavourite,

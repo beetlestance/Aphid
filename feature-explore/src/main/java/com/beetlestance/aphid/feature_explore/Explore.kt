@@ -303,7 +303,8 @@ fun BreakFastWithHeader(
     Carousel(
         items = breakfastRecipes,
         offscreenLimit = 2,
-        modifier = Modifier.preferredHeight(foodCardPageConfig.maxHeight)
+        modifier = Modifier.preferredHeight(foodCardPageConfig.maxHeight),
+        drawSelectedPageAtLast = true
     ) { recipe ->
         val recipeImageUrl: String? = run {
             return@run SpoonacularImageHelper.generateRecipeImageUrl(
@@ -314,7 +315,7 @@ fun BreakFastWithHeader(
         }
 
         FoodCardPage(
-            modifier = Modifier.transformPage(PageTransformation.ZOOM_OUT),
+            modifier = Modifier.transformPage(PageTransformation.DEPTH_TRANSFORM),
             pageConfig = foodCardPageConfig,
             isSelected = isSelectedPage,
             imageUrl = recipeImageUrl ?: recipe.imageUrl,
@@ -505,8 +506,7 @@ fun QuickRecipesWithHeader(
 
     Pager(
         state = state,
-        modifier = Modifier.preferredHeight(pageConfig.maxHeight),
-        drawSelectedPageAtLast = true
+        modifier = Modifier.preferredHeight(pageConfig.maxHeight)
     ) {
         val recipe = quickRecipes[page]
         val recipeImageUrl: String? = run {
@@ -518,7 +518,7 @@ fun QuickRecipesWithHeader(
         }
 
         FoodCardPage(
-            modifier = Modifier.transformPage(PageTransformation.DEPTH_TRANSFORM),
+            modifier = Modifier.transformPage(PageTransformation.ZOOM_OUT),
             pageConfig = pageConfig,
             placeholder = R.drawable.temp_noodles,
             isSelected = page == currentPage,

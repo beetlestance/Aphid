@@ -43,12 +43,12 @@ interface PageTransformation {
             ): PageTransformState {
                 return when {
                     offset < 0f -> {
-                        val scaleFactor = (MIN_SCALE + (1 - MIN_SCALE) * (1 - abs(
-                            offset
-                        )))
+                        val scaleFactor = (MIN_SCALE + (1 - MIN_SCALE) * (1 - offset))
                         PageTransformState(
-                            1 - offset, scaleFactor, scaleFactor,
-                            size.width * -offset
+                            alpha = 1 - offset,
+                            scaleX = scaleFactor,
+                            scaleY = scaleFactor,
+                            translationX = size.width * -offset
                         )
                     }
                     else -> {
@@ -65,12 +65,12 @@ interface PageTransformation {
             ): PageTransformState {
                 return when {
                     offset != 0f -> {
-                        val scaleFactor = (MIN_SCALE + (1 - MIN_SCALE) * (1 - abs(
-                            offset
-                        )))
+                        val scaleFactor = (MIN_SCALE + (1 - MIN_SCALE) * (1 - abs(offset)))
                         PageTransformState(
-                            1 - offset, scaleFactor, scaleFactor,
-                            size.width.div(4).times(-offset)
+                            alpha = 1 - offset,
+                            scaleX = scaleFactor,
+                            scaleY = scaleFactor,
+                            translationX = size.width.div(4).times(-offset)
                         )
                     }
                     else -> PageTransformState()
@@ -86,14 +86,11 @@ interface PageTransformation {
                 return when {
                     offset <= 1 && offset >= -1 -> {
                         val scaleFactor = MIN_SCALE_ZOOM.coerceAtLeast(1 - abs(offset))
-                        // val vertMargin = size.height * (1 - scaleFactor) / 2
-                        // val horzMargin = size.width * (1 - scaleFactor) / 2
-                        val translationX = if (offset < 0) {
-                            0f
-                        } else {
+                        val vertMargin = size.height * (1 - scaleFactor) / 2
+                        val horzMargin = size.width * (1 - scaleFactor) / 2
+                        val translationX = if (offset < 0) horzMargin + vertMargin / 2 else {
                             // if page is on the right side do not apply any translation
-                            // horzMargin + vertMargin / 2
-                            0f
+                            -horzMargin - vertMargin / 2
                         }
 
                         val alpha = (MIN_ALPHA +
