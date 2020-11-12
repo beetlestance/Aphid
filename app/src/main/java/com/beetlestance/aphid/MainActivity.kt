@@ -20,8 +20,10 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -31,6 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.VectorAsset
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -78,19 +81,15 @@ class MainActivity : AppCompatActivity() {
                     backgroundColor = MaterialTheme.colors.surface,
                     fabBackgroundColor = MaterialTheme.colors.primarySurface,
                     defaultSelection = navItems.indexOf(Screen.Explore),
-                    defaultSelectedIcon = {
-                        Icon(
-                            asset = vectorResource(id = Screen.Explore.iconFilled),
-                            tint = MaterialTheme.colors.surface
-                        )
-                    }
-                ) {
+                    menuItems = 5
+                ) { state ->
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
-                    navItems.forEach { screen ->
-                        val isSelected = currentRoute == screen.route
+                    navItems.forEachIndexed { index, screen ->
+
                         CurvedCutBottomNavigationItem(
                             icon = {
+                                val isSelected = currentRoute == screen.route
                                 val resId =
                                     if (isSelected) screen.iconFilled else screen.iconOutlined
                                 val color = if (isSelected) MaterialTheme.colors.surface
@@ -98,7 +97,9 @@ class MainActivity : AppCompatActivity() {
 
                                 Icon(asset = vectorResource(id = resId), tint = color)
                             },
-                            selected = isSelected,
+                            index = index,
+                            state = state,
+                            selected = currentRoute == screen.route,
                             onClick = {
                                 // This if check gives us a "singleTop" behavior where we do not create a
                                 // second instance of the composable if we are already on that destination
