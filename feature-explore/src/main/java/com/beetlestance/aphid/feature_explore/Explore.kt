@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.SizeMode
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -60,13 +61,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.nativeClass
-import com.beetlestance.aphid.common_compose.FoodCardWithDetails
-import com.beetlestance.aphid.common_compose.FoodCardWithDetailsPage
+import com.beetlestance.aphid.common_compose.FoodCard
+import com.beetlestance.aphid.common_compose.FoodCardPage
 import com.beetlestance.aphid.common_compose.pager.Carousel
 import com.beetlestance.aphid.common_compose.pager.PageConfig
 import com.beetlestance.aphid.common_compose.pager.PageTransformation
+import com.beetlestance.aphid.common_compose.pager.Pager
+import com.beetlestance.aphid.common_compose.pager.rememberPagerState
 import com.beetlestance.aphid.common_compose.utils.widthPercentage
 import com.beetlestance.aphid.data.entities.Recipe
 import com.beetlestance.spoonacular_kotlin.SpoonacularImageHelper
@@ -123,9 +126,19 @@ fun Explore(
 
             PlanYourMealAheadWithHeader()
 
-            QuickRecipesWithHeader(state.readyInTimeRecipes)
+            if (state.readyInTimeRecipes.isNotEmpty()) {
+                QuickRecipesWithHeader(
+                    quickRecipes = state.readyInTimeRecipes,
+                    markRecipeAsFavourite = { recipe, isFavourite ->
+                        action(MarkFavourite(recipe, isFavourite))
+                    }
+                )
+            }
 
             RecentlyViewedRecipesWithHeader()
+
+            // for bottomNavigation
+            Spacer(modifier = Modifier.preferredHeight(100.dp))
         }
     }
 }
@@ -289,14 +302,15 @@ fun BreakFastWithHeader(
             )
         }
 
-        FoodCardWithDetailsPage(
+        FoodCardPage(
             modifier = Modifier.transformPage(PageTransformation.ZOOM_OUT),
             pageConfig = foodCardPageConfig,
             isSelected = isSelectedPage,
             imageUrl = recipeImageUrl ?: recipe.imageUrl,
-            imageResource = R.drawable.temp_brownie,
+            placeholder = R.drawable.temp_brownie,
             isFavourite = recipe.isFavourite == true,
-            onCheckedChange = { isFavourite -> markRecipeAsFavourite(recipe, isFavourite) }
+            onCheckedChange = { isFavourite -> markRecipeAsFavourite(recipe, isFavourite) },
+            childPreferredHeight = FOOD_CARD_DETAILS_HEIGHT
         ) {
             FoodCardContentsDetails(
                 name = recipe.title ?: "",
@@ -407,44 +421,53 @@ fun CuisineDetails() {
 
 @Composable
 fun QuickRecipesWithHeader(
-    recipes: List<Recipe>
+    quickRecipes: List<Recipe>,
+    markRecipeAsFavourite: (Recipe, Boolean) -> Unit
 ) {
-    if (recipes.isEmpty()) return
-
     Text(
         text = stringResource(id = R.string.explore_quick_recipes_header),
         style = MaterialTheme.typography.h6,
     )
 
-    ScrollableRow(
-        horizontalArrangement = Arrangement.spacedBy(
-            space = 16.dp,
-            alignment = Alignment.Start
-        )
+    val pageConfig = PageConfig(
+        horizontalOffset = 16.dp,
+        fraction = 0.9f,
+        horizontalOffsetFraction = 0.1f,
+        aspectRatio = 3 / 2f,
+        maxWidth = widthPercentage(fraction = 0.9f, excludeRootPadding = 16.dp)
+    )
+
+    val state = rememberPagerState(maxPage = quickRecipes.lastIndex)
+
+    Pager(
+        state = state,
+        modifier = Modifier.preferredHeight(pageConfig.maxHeight),
+        drawSelectedPageAtLast = true
     ) {
+        val recipe = quickRecipes[page]
+        val recipeImageUrl: String? = run {
+            return@run SpoonacularImageHelper.generateRecipeImageUrl(
+                id = recipe.recipeId?.toLong() ?: return@run null,
+                imageSize = SpoonacularImageSize.Recipe.ULTRA_HIGH_QUALITY,
+                imageType = recipe.imageType
+            )
+        }
 
-        recipes.forEach { recipe ->
-            val recipeImageUrl: String? = run {
-                return@run SpoonacularImageHelper.generateRecipeImageUrl(
-                    id = recipe.recipeId?.toLong() ?: return@run null,
-                    imageSize = SpoonacularImageSize.Recipe.ULTRA_HIGH_QUALITY,
-                    imageType = recipe.imageType
-                )
-            }
-
-            FoodCardWithDetails(
-                imageResource = R.drawable.temp_noodles,
-                fraction = 0.7f,
-                imageUrl = recipeImageUrl ?: "",
-                horizontalOffset = 16.dp,
-                isFavourite = false
-            ) {
-                FoodCardContentsDetails(
-                    name = recipe.title ?: "",
-                    contentTags = "1 Serving • 20 Min • 205 Cal",
-                    rating = "4.4"
-                )
-            }
+        FoodCardPage(
+            modifier = Modifier.transformPage(PageTransformation.CAROUSEL_TRANSFORM),
+            pageConfig = pageConfig,
+            placeholder = R.drawable.temp_noodles,
+            isSelected = page == currentPage,
+            imageUrl = recipeImageUrl ?: "",
+            onCheckedChange = { isFavourite -> markRecipeAsFavourite(recipe, isFavourite) },
+            isFavourite = recipe.isFavourite == true,
+            childPreferredHeight = FOOD_CARD_DETAILS_HEIGHT
+        ) {
+            FoodCardContentsDetails(
+                name = recipe.title ?: "",
+                contentTags = "1 Serving • 20 Min • 205 Cal",
+                rating = "4.4"
+            )
         }
     }
 }
@@ -520,10 +543,8 @@ fun RecentlyViewedRecipesWithHeader() {
     ) {
 
         repeat(4) {
-            FoodCardWithDetails(
-                imageResource = R.drawable.temp_pasta,
-                fraction = 0.7f,
-                horizontalOffset = 16.dp,
+            FoodCard(
+                placeholder = R.drawable.temp_pasta,
                 isFavourite = false
             ) {
                 FoodCardContentsDetails(
@@ -570,6 +591,10 @@ fun FoodCardContentsDetails(
 
     Text(
         text = name,
-        style = MaterialTheme.typography.body1
+        style = MaterialTheme.typography.body1,
+        overflow = TextOverflow.Ellipsis,
+        maxLines = 1
     )
 }
+
+private val FOOD_CARD_DETAILS_HEIGHT = 80.dp

@@ -30,60 +30,53 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.beetlestance.aphid.common_compose.pager.PageConfig
-import com.beetlestance.aphid.common_compose.utils.widthPercentage
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
-fun FoodCardWithDetailsPage(
+fun FoodCardPage(
     modifier: Modifier = Modifier,
     pageConfig: PageConfig,
     isSelected: Boolean,
     imageUrl: String? = null,
     isFavourite: Boolean,
-    @DrawableRes imageResource: Int,
+    @DrawableRes placeholder: Int,
     onCheckedChange: (Boolean) -> Unit = {},
     cardShape: Shape = RoundedCornerShape(16.dp),
+    childPreferredHeight: Dp,
     children: @Composable ColumnScope.() -> Unit
 ) {
-    FoodCardWithDetails(
-        elevation = pageConfig.elevation(isSelected = isSelected),
+    val pageElevation = pageConfig.elevation(isSelected = isSelected)
+    val pageWidth = pageConfig.width(isSelected = isSelected)
+    val pageHeight = pageConfig.height(isSelected = isSelected) + childPreferredHeight
+
+    FoodCard(
+        elevation = if (pageConfig.enableDefaultAnimation) animate(pageElevation) else pageElevation,
         modifier = modifier
-            .preferredWidth(pageConfig.width(isSelected = isSelected))
-            .preferredHeight(pageConfig.height(isSelected = isSelected))
+            .preferredWidth(if (pageConfig.enableDefaultAnimation) animate(pageWidth) else pageWidth)
+            .preferredHeight(if (pageConfig.enableDefaultAnimation) animate(pageHeight) else pageHeight)
             .padding(horizontal = 16.dp),
-        fraction = null,
-        horizontalOffset = pageConfig.horizontalOffset,
         imageUrl = imageUrl,
-        imageResource = imageResource,
+        placeholder = placeholder,
         isFavourite = isFavourite,
         onCheckedChange = onCheckedChange,
+        imageHeightFraction = (pageHeight - childPreferredHeight).value / pageHeight.value,
         cardShape = cardShape,
         children = children
     )
 }
 
 @Composable
-fun FoodCardWithDetails(
+fun FoodCard(
     elevation: Dp = 4.dp,
     modifier: Modifier = Modifier,
-    fraction: Float?,
-    horizontalOffset: Dp,
     imageUrl: String? = null,
+    imageHeightFraction: Float = 1f,
     isFavourite: Boolean,
-    @DrawableRes imageResource: Int,
+    @DrawableRes placeholder: Int,
     onCheckedChange: (Boolean) -> Unit = {},
     cardShape: Shape = RoundedCornerShape(16.dp),
     children: @Composable ColumnScope.() -> Unit
 ) {
-    // per item width in row
-    if (fraction != null) {
-        val itemWidth: Dp = widthPercentage(
-            fraction = fraction,
-            excludeRootPadding = horizontalOffset
-        )
-        modifier.preferredWidth(itemWidth).fillMaxWidth()
-    }
-
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(
@@ -92,13 +85,15 @@ fun FoodCardWithDetails(
         )
     ) {
 
-        FoodCardWithFavIcon(
+        FoodPosterCard(
             elevation = elevation,
-            imageSrc = imageUrl ?: imageResource,
+            imageSrc = imageUrl ?: placeholder,
             cardShape = cardShape,
             isFavourite = isFavourite,
             onCheckChanged = onCheckedChange,
-            modifier = Modifier.fillMaxWidth().fillMaxHeight(0.9f).padding(bottom = 8.dp)
+            modifier = Modifier.fillMaxWidth()
+                .fillMaxHeight(imageHeightFraction)
+                .padding(bottom = 8.dp)
         )
 
         children()
@@ -106,7 +101,7 @@ fun FoodCardWithDetails(
 }
 
 @Composable
-fun FoodCardWithFavIcon(
+fun FoodPosterCard(
     elevation: Dp,
     imageSrc: Any,
     isFavourite: Boolean,

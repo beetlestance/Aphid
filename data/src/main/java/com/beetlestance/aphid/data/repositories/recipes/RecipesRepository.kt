@@ -11,7 +11,8 @@ class RecipesRepository @Inject constructor(
 ) {
     fun observeRecipes(): Flow<List<Recipe>> = recipesStore.observeRecipes()
 
-    fun observeRecipesWithReadyTime(time: Long) = recipesStore.observeRecipesWithReadyTime(time)
+    fun observeRecipesWithReadyTime(time: Long): Flow<List<Recipe>> =
+        recipesStore.observeRecipesWithReadyTime(time)
 
     suspend fun fetchRecipes(
         maxReadyTime: Long?,

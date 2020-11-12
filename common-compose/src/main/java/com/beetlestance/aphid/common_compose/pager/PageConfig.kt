@@ -1,6 +1,5 @@
 package com.beetlestance.aphid.common_compose.pager
 
-import androidx.compose.animation.animate
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -24,21 +23,16 @@ data class PageConfig(
 
     @Composable
     fun elevation(isSelected: Boolean): Dp {
-        val elevation = if (isSelected || enableDefaultAnimation.not()) currentPageElevation
-        else pageElevation
-
-        return if (enableDefaultAnimation) animate(target = elevation) else elevation
+        return if (isSelected || enableDefaultAnimation.not()) currentPageElevation else pageElevation
     }
 
     @Composable
     fun width(isSelected: Boolean): Dp {
-        val width = if (isSelected || enableDefaultAnimation.not()) maxWidth else minWidth
-        return if (enableDefaultAnimation) animate(target = width) else width
+        return if (isSelected || enableDefaultAnimation.not()) maxWidth else minWidth
     }
 
     @Composable
     fun height(isSelected: Boolean): Dp {
-        val height = if (isSelected || enableDefaultAnimation.not()) maxHeight else minHeight
-        return if (enableDefaultAnimation) animate(target = height) else height
+        return if (isSelected || enableDefaultAnimation.not()) maxHeight else minHeight
     }
 }
