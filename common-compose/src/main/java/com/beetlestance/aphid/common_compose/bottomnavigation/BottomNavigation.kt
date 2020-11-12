@@ -29,10 +29,9 @@ import androidx.compose.ui.drawWithContent
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
-import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.graphics.PaintingStyle
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.platform.DensityAmbient
 import androidx.compose.ui.unit.Density
@@ -46,6 +45,7 @@ import kotlin.math.roundToInt
  *  Taken from a wonderful detailed article about creating curved cut bottom navigation from
  *  https://medium.com/swlh/curved-cut-out-bottom-navigation-with-animation-in-android-c630c867958c
  */
+
 @Composable
 fun CurvedCutBottomNavigation(
     modifier: Modifier = Modifier,
@@ -73,9 +73,10 @@ fun CurvedCutBottomNavigation(
             animSpec = remember { bottomNavigationAnimationSpec() }
         )
 
-        val fabOffsetX = animate(currentFabOffsetX.value)
+        val fabOffsetX = animate(target = currentFabOffsetX.value)
 
-        val fabOffsetY = animate(if (fabOffsetX == currentFabOffsetX.value) 8.dp else layoutHeight)
+        val fabOffsetY =
+            animate(target = if (fabOffsetX == currentFabOffsetX.value) 8.dp else layoutHeight)
 
         computeCurve(menuItemOffsetX, curveBottomOffset, bottomNavigationTopOffsetY)
 
@@ -101,7 +102,6 @@ fun CurvedCutBottomNavigation(
             },
             modifier = Modifier.fillMaxWidth().drawCurve()
         ) {
-
             Layout(
                 modifier = Modifier.fillMaxWidth()
                     .preferredHeight(layoutHeight),
@@ -171,11 +171,7 @@ fun CurvedCutBottomNavigationItem(
 
 @Composable
 private fun Modifier.drawCurve() = drawWithContent {
-
-    drawIntoCanvas {
-        it.drawPath(path, navPaint)
-    }
-
+    drawPath(path, SolidColor(BottomNavigationColor))
     drawContent()
 }
 
@@ -280,7 +276,7 @@ fun computeCurve(
  * [BottomNavigationItem]s.
  */
 private fun bottomNavigationAnimationSpec() = TweenSpec<Float>(
-    durationMillis = 300,
+    durationMillis = 400,
     easing = CubicBezierEasing(0.2f, 0f, 0.8f, 1f)
 )
 
@@ -321,9 +317,3 @@ private val secondCurveControlPoint2 = PointF()
 
 // path to represent the background including the curve
 internal val path: Path = Path()
-
-private val navPaint = Paint().apply {
-    style = PaintingStyle.Fill
-    color = BottomNavigationColor
-}
-

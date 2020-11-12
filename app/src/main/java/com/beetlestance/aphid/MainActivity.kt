@@ -20,6 +20,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.material.Icon
@@ -71,7 +72,6 @@ class MainActivity : AppCompatActivity() {
     @Composable
     fun AphidHome() {
         val navController = rememberNavController()
-
         Scaffold(
             bottomBar = {
                 CurvedCutBottomNavigation(
@@ -100,15 +100,15 @@ class MainActivity : AppCompatActivity() {
                             },
                             selected = isSelected,
                             onClick = {
-                                // This is the equivalent to popUpTo the start destination
-                                navController.popBackStack(
-                                    navController.graph.startDestination,
-                                    false
-                                )
-
                                 // This if check gives us a "singleTop" behavior where we do not create a
                                 // second instance of the composable if we are already on that destination
                                 if (currentRoute != screen.route) {
+                                    // This is the equivalent to popUpTo the start destination
+                                    navController.popBackStack(
+                                        navController.graph.startDestination,
+                                        false
+                                    )
+
                                     navController.navigate(screen.route)
                                 }
                                 navItems.indexOf(screen)
