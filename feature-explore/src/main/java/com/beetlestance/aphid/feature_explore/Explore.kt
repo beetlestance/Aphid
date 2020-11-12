@@ -1,7 +1,11 @@
 package com.beetlestance.aphid.feature_explore
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollableColumn
@@ -514,7 +518,7 @@ fun QuickRecipesWithHeader(
         }
 
         FoodCardPage(
-            modifier = Modifier.transformPage(PageTransformation.CAROUSEL_TRANSFORM),
+            modifier = Modifier.transformPage(PageTransformation.DEPTH_TRANSFORM),
             pageConfig = pageConfig,
             placeholder = R.drawable.temp_noodles,
             isSelected = page == currentPage,
@@ -569,7 +573,7 @@ fun RecentlyViewedRecipesWithHeader(
         }
 
         FoodCardPage(
-            modifier = Modifier.transformPage(PageTransformation.DEPTH_TRANSFORM),
+            modifier = Modifier.transformPage(PageTransformation.STAIRCASE_TRANSFORM),
             pageConfig = pageConfig,
             placeholder = R.drawable.temp_noodles,
             isSelected = page == currentPage,
@@ -578,12 +582,18 @@ fun RecentlyViewedRecipesWithHeader(
             isFavourite = recipe.isFavourite == true,
             childPreferredHeight = FOOD_CARD_DETAILS_HEIGHT
         ) {
-            if (page == currentPage) {
-                FoodCardContentsDetails(
-                    name = recipe.title ?: "",
-                    contentTags = "1 Serving • 20 Min • 205 Cal",
-                    rating = "4.4"
-                )
+            AnimatedVisibility(
+                visible = page == currentPage,
+                enter = fadeIn() + expandVertically(),
+                exit = fadeOut(),
+            ) {
+                Column {
+                    FoodCardContentsDetails(
+                        name = recipe.title ?: "",
+                        contentTags = "1 Serving • 20 Min • 205 Cal",
+                        rating = "4.4"
+                    )
+                }
             }
         }
     }
