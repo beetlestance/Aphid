@@ -1,5 +1,6 @@
 package com.beetlestance.aphid.feature_explore
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -63,7 +64,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.beetlestance.aphid.common_compose.FoodCard
 import com.beetlestance.aphid.common_compose.FoodCardPage
 import com.beetlestance.aphid.common_compose.pager.Carousel
 import com.beetlestance.aphid.common_compose.pager.PageConfig
@@ -135,10 +135,17 @@ fun Explore(
                 )
             }
 
-            RecentlyViewedRecipesWithHeader()
+            if (state.recentlyViewedRecipes.isNotEmpty()) {
+                RecentlyViewedRecipesWithHeader(
+                    recentlyViewedRecipes = state.recentlyViewedRecipes,
+                    markRecipeAsFavourite = { recipe, isFavourite ->
+                        action(MarkFavourite(recipe, isFavourite))
+                    }
+                )
+            }
 
             // for bottomNavigation
-            Spacer(modifier = Modifier.preferredHeight(100.dp))
+            Spacer(modifier = Modifier.preferredHeight(64.dp))
         }
     }
 }
@@ -420,6 +427,59 @@ fun CuisineDetails() {
 }
 
 @Composable
+fun PlanYourMealAheadWithHeader() {
+
+    Text(
+        text = stringResource(id = R.string.explore_plan_your_meal_ahead),
+        style = MaterialTheme.typography.h6,
+    )
+
+    ScrollableRow(
+        horizontalArrangement = Arrangement.spacedBy(
+            space = 16.dp,
+            alignment = Alignment.CenterHorizontally
+        )
+    ) {
+        // per item width in row
+        val itemWidth = (ConfigurationAmbient.current.screenWidthDp * 1f).dp - 32.dp
+
+        Card(
+            modifier = Modifier.preferredWidth(itemWidth).fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            elevation = 4.dp,
+            backgroundColor = colorResource(id = R.color.gun_powder)
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+
+                Text(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .align(Alignment.CenterVertically)
+                        .weight(0.4f)
+                        .wrapContentSize(),
+                    text = "Plan Your Lunch",
+                    color = Color.White,
+                    style = MaterialTheme.typography.h5
+                )
+
+                Image(
+                    modifier = Modifier.fillMaxWidth()
+                        .clipToBounds()
+                        .align(Alignment.Bottom)
+                        .weight(0.6f)
+                        .padding(top = 16.dp),
+                    asset = vectorResource(id = R.drawable.ic_plan_your_meal),
+                    contentScale = ContentScale.Crop
+                )
+            }
+        }
+
+    }
+}
+
+@Composable
 fun QuickRecipesWithHeader(
     quickRecipes: List<Recipe>,
     markRecipeAsFavourite: (Recipe, Boolean) -> Unit
@@ -473,83 +533,55 @@ fun QuickRecipesWithHeader(
 }
 
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun PlanYourMealAheadWithHeader() {
-
-    Text(
-        text = stringResource(id = R.string.explore_plan_your_meal_ahead),
-        style = MaterialTheme.typography.h6,
-    )
-
-    ScrollableRow(
-        horizontalArrangement = Arrangement.spacedBy(
-            space = 16.dp,
-            alignment = Alignment.CenterHorizontally
-        )
-    ) {
-        // per item width in row
-        val itemWidth = (ConfigurationAmbient.current.screenWidthDp * 1f).dp - 32.dp
-
-        Card(
-            modifier = Modifier.preferredWidth(itemWidth).fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
-            elevation = 4.dp,
-            backgroundColor = colorResource(id = R.color.gun_powder)
-        ) {
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-
-                Text(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .align(Alignment.CenterVertically)
-                        .weight(0.4f)
-                        .wrapContentSize(),
-                    text = "Plan Your Lunch",
-                    color = Color.White,
-                    style = MaterialTheme.typography.h5
-                )
-
-                Image(
-                    modifier = Modifier.fillMaxWidth()
-                        .clipToBounds()
-                        .align(Alignment.Bottom)
-                        .weight(0.6f)
-                        .padding(top = 16.dp),
-                    asset = vectorResource(id = R.drawable.ic_plan_your_meal),
-                    contentScale = ContentScale.Crop
-                )
-            }
-        }
-
-    }
-}
-
-
-@Composable
-fun RecentlyViewedRecipesWithHeader() {
+fun RecentlyViewedRecipesWithHeader(
+    recentlyViewedRecipes: List<Recipe>,
+    markRecipeAsFavourite: (Recipe, Boolean) -> Unit
+) {
 
     Text(
         text = stringResource(id = R.string.explore_recently_viewed_recipes_header),
         style = MaterialTheme.typography.h6,
     )
 
-    ScrollableRow(
-        horizontalArrangement = Arrangement.spacedBy(
-            space = 16.dp,
-            alignment = Alignment.Start
-        )
-    ) {
+    val pageConfig = PageConfig(
+        horizontalOffset = 16.dp,
+        fraction = 0.9f,
+        horizontalOffsetFraction = 0.1f,
+        aspectRatio = 3 / 2f,
+        maxWidth = widthPercentage(fraction = 0.9f, excludeRootPadding = 16.dp)
+    )
 
-        repeat(4) {
-            FoodCard(
-                placeholder = R.drawable.temp_pasta,
-                isFavourite = false
-            ) {
+    val state = rememberPagerState(maxPage = recentlyViewedRecipes.lastIndex)
+
+    Pager(
+        state = state,
+        modifier = Modifier.preferredHeight(pageConfig.maxHeight)
+    ) {
+        val recipe = recentlyViewedRecipes[page]
+        val recipeImageUrl: String? = run {
+            return@run SpoonacularImageHelper.generateRecipeImageUrl(
+                id = recipe.recipeId?.toLong() ?: return@run null,
+                imageSize = SpoonacularImageSize.Recipe.ULTRA_HIGH_QUALITY,
+                imageType = recipe.imageType
+            )
+        }
+
+        FoodCardPage(
+            modifier = Modifier.transformPage(PageTransformation.DEPTH_TRANSFORM),
+            pageConfig = pageConfig,
+            placeholder = R.drawable.temp_noodles,
+            isSelected = page == currentPage,
+            imageUrl = recipeImageUrl ?: "",
+            onCheckedChange = { isFavourite -> markRecipeAsFavourite(recipe, isFavourite) },
+            isFavourite = recipe.isFavourite == true,
+            childPreferredHeight = FOOD_CARD_DETAILS_HEIGHT
+        ) {
+            if (page == currentPage) {
                 FoodCardContentsDetails(
-                    name = "One Pot Pasta",
-                    contentTags = "1 Serving • 25 Min • 190 Cal",
+                    name = recipe.title ?: "",
+                    contentTags = "1 Serving • 20 Min • 205 Cal",
                     rating = "4.4"
                 )
             }

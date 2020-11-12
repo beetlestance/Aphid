@@ -2,20 +2,24 @@ package com.beetlestance.aphid.data.repositories.recipes
 
 import com.beetlestance.aphid.data.daos.RecipeDao
 import com.beetlestance.aphid.data.entities.Recipe
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class RecipesStore @Inject constructor(
     private val recipesDao: RecipeDao
 ) {
 
-    fun observeRecipes() = recipesDao.recipesObservable()
+    fun observeRecipes(): Flow<List<Recipe>> = recipesDao.recipesObservable()
 
-    fun observeRecipesWithReadyTime(time: Long) = recipesDao.quickRecipesObservable(time)
+    fun observeRecentlyViewedRecipes(limit: Int): Flow<List<Recipe>> =
+        recipesDao.favouriteRecipesObservable(limit)
 
-    suspend fun saveRecipes(recipes: List<Recipe>) =
-        recipesDao.insertAll(recipes)
+    fun observeRecipesWithReadyTime(time: Long): Flow<List<Recipe>> =
+        recipesDao.quickRecipesObservable(time)
 
-    suspend fun numberOfRecipesSaved() = recipesDao.allRecipes().size
+    suspend fun saveRecipes(recipes: List<Recipe>): Unit = recipesDao.insertAll(recipes)
 
-    suspend fun updateRecipe(recipe: Recipe) = recipesDao.update(entity = recipe)
+    suspend fun numberOfRecipesSaved(): Int = recipesDao.allRecipes().size
+
+    suspend fun updateRecipe(recipe: Recipe): Unit = recipesDao.update(entity = recipe)
 }

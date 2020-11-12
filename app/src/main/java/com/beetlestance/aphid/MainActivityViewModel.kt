@@ -6,6 +6,7 @@ import com.beetlestance.aphid.base_android.AphidViewModel
 import com.beetlestance.aphid.domain.executors.FetchRecipes
 import com.beetlestance.aphid.domain.executors.MarkRecipeAsFavourite
 import com.beetlestance.aphid.domain.invoke
+import com.beetlestance.aphid.domain.observers.ObserveRecentlyViewed
 import com.beetlestance.aphid.domain.observers.ObserveRecipes
 import com.beetlestance.aphid.domain.observers.ObserveRecipesWithReadyTime
 import com.beetlestance.aphid.domain.watchStatus
@@ -22,6 +23,7 @@ class MainActivityViewModel @ViewModelInject constructor(
     fetchRecipes: FetchRecipes,
     observeRecipes: ObserveRecipes,
     observeQuickRecipes: ObserveRecipesWithReadyTime,
+    observeRecentlyViewed: ObserveRecentlyViewed,
     private val markRecipeAsFavourite: MarkRecipeAsFavourite
 ) : AphidViewModel<ExploreViewState>(ExploreViewState()) {
 
@@ -59,6 +61,14 @@ class MainActivityViewModel @ViewModelInject constructor(
         }
 
         observeQuickRecipes(30)
+
+        viewModelScope.launch {
+            observeRecentlyViewed.observe().collectAndSetState {
+                copy(recentlyViewedRecipes = it)
+            }
+        }
+
+        observeRecentlyViewed(5)
 
         viewModelScope.launch {
             pendingActions.consumeAsFlow().collect { action ->

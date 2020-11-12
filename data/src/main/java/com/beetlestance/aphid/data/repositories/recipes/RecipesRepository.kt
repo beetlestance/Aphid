@@ -11,6 +11,9 @@ class RecipesRepository @Inject constructor(
 ) {
     fun observeRecipes(): Flow<List<Recipe>> = recipesStore.observeRecipes()
 
+    fun observeRecentlyViewedRecipes(limit: Int): Flow<List<Recipe>> =
+        recipesStore.observeRecentlyViewedRecipes(limit)
+
     fun observeRecipesWithReadyTime(time: Long): Flow<List<Recipe>> =
         recipesStore.observeRecipesWithReadyTime(time)
 
