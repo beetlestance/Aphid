@@ -214,6 +214,9 @@ private fun Modifier.drawCurve(path: Path, fillColor: Color) = drawWithContent {
     drawContent()
 }
 
+/**
+ * bezier curve calculator [https://www.desmos.com/calculator/d1ofwre0fr]
+ */
 @Stable
 private fun computeCurve(
     size: IntSize,
@@ -240,17 +243,19 @@ private fun computeCurve(
     val width: Int = size.width
     val height: Int = size.height
 
-    // offset of the first control point (top part)
-    val topControlX = fabRadius + fabRadius.div(2)
-    val topControlY = bottomNavOffsetY + fabRadius.div(6)
-
-    // offset of the second control point (bottom part)
-    val bottomControlX = fabRadius + fabRadius.div(2)
-    val bottomControlY = fabRadius.div(4)
 
     // width of the curve
     val fabMargin = height - fabRadius.times(2) - curveBottomOffset
     val curveHalfWidth = fabRadius * 2 + fabMargin
+
+    // offset of the first control point (top part)
+    val topControlX = curveHalfWidth / 2
+    val topControlY = bottomNavOffsetY
+
+    // offset of the second control point (bottom part)
+    val bottomControlX = curveHalfWidth / 2
+    val bottomControlY = 0
+
 
     // first curve
     // set the starting point of the curve (P2)
@@ -258,12 +263,10 @@ private fun computeCurve(
         x = offsetX - curveHalfWidth
         y = bottomNavOffsetY
     }
-
-    val smoothenCurveOffset = 12
     // set the end point for the first curve (P3)
     firstCurveEnd.apply {
-        x = offsetX - smoothenCurveOffset
-        y = height - curveBottomOffset - (smoothenCurveOffset * height / width)
+        x = offsetX
+        y = height - curveBottomOffset
     }
     // set the first control point (C1)
     firstCurveControlPoint1.apply {
@@ -278,7 +281,7 @@ private fun computeCurve(
 
     // second curve
     // end of first curve and start of second curve is the same (P3)
-    secondCurveStart.set(offsetX + smoothenCurveOffset, firstCurveEnd.y)
+    secondCurveStart.set(firstCurveEnd.x, firstCurveEnd.y)
     // end of the second curve (P4)
     secondCurveEnd.apply {
         x = offsetX + curveHalfWidth
@@ -313,7 +316,7 @@ private fun computeCurve(
 
     path.quadraticBezierTo(
         offsetX,
-        height - curveBottomOffset + 0.5f,
+        height - curveBottomOffset,
         secondCurveStart.x,
         secondCurveStart.y
     )
