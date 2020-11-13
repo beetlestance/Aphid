@@ -1,13 +1,18 @@
 package com.beetlestance.aphid.common_compose.bottomnavigation
 
 import android.graphics.PointF
+import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animate
+import androidx.compose.animation.core.AnimatedFloat
 import androidx.compose.animation.core.CubicBezierEasing
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.VectorizedAnimationSpec
-import androidx.compose.foundation.ScrollableRow
-import androidx.compose.foundation.background
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,7 +20,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.FloatingActionButtonConstants
@@ -40,7 +44,6 @@ import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.platform.DensityAmbient
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
@@ -67,9 +70,8 @@ fun CurvedCutBottomNavigation(
     val curveBottomOffset = CurvedBottomNavigationOffset.toPx()
 
     WithConstraints(modifier = modifier.clipToBounds()) {
-        val state: CurvedCutBottomNavigationState = remember {
-            CurvedCutBottomNavigationState(defaultSelection)
-        }
+        val state: CurvedCutBottomNavigationState =
+            remember { CurvedCutBottomNavigationState(defaultSelection) }
 
         val menuItemWidth = constraints.maxWidth / menuItems
         val fabRadius = (menuItemWidth / 3).toFloat().coerceAtMost(FabRadius.toPx())
@@ -95,8 +97,11 @@ fun CurvedCutBottomNavigation(
 
         // this should be calculated as offset from curve not top
         // calculation should be changed
+
+        val fabIsInPosition = fabOffsetX == currentFabOffsetX
+
         val fabOffsetY =
-            animate(target = if (fabOffsetX == currentFabOffsetX) 8.dp else layoutHeight)
+            animate(target = if (fabIsInPosition) 8.dp else layoutHeight)
 
         val path =
             computeCurve(layoutSize, menuItemOffsetX, curveBottomOffset, fabRadius, fabRadius)
@@ -111,7 +116,7 @@ fun CurvedCutBottomNavigation(
                 defaultElevation = FabElevation,
                 pressedElevation = FabPressedElevation
             ),
-            icon = state.selectedItemIcon
+            icon = if (fabIsInPosition) state.selectedItemIcon else ({})
         )
 
         Surface(
@@ -161,11 +166,17 @@ fun CurvedCutBottomNavigation(
 fun CurvedCutBottomNavigationItem(
     index: Int,
     icon: @Composable () -> Unit,
+    fabIcon: @Composable () -> Unit,
     selected: Boolean,
     onClick: () -> Unit,
     state: CurvedCutBottomNavigationState,
     modifier: Modifier = Modifier
 ) {
+    if (selected) {
+        state.selectedItem = index
+        state.selectedItemIcon = fabIcon
+    }
+
     // TODO: Replace with [BottomNavigationItem]
     // Have to first replace Layout with Row in CurvedCutBottomNavigation
     Box(
@@ -174,13 +185,9 @@ fun CurvedCutBottomNavigationItem(
             onClick = onClick,
             indication = null
         ).fillMaxHeight(),
-        alignment = Alignment.Center,
-        children = { if (selected.not()) icon() }
-    )
-
-    if (selected) {
-        state.selectedItem = index
-        state.selectedItemIcon = icon
+        alignment = Alignment.Center
+    ) {
+        icon()
     }
 }
 
@@ -352,6 +359,11 @@ private fun computeCurve(
 private fun bottomNavigationAnimationSpec() = TweenSpec<Float>(
     durationMillis = 300,
     easing = CubicBezierEasing(0.2f, 0f, 0.8f, 1f)
+)
+
+private fun iconAnimationSpec() = TweenSpec<Float>(
+    durationMillis = 1000,
+    easing = LinearEasing
 )
 
 private val BottomNavigationHeight = 56.dp
