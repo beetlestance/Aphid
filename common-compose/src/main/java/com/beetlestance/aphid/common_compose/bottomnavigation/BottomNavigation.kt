@@ -54,31 +54,6 @@ import kotlin.math.roundToInt
  *  Taken from a wonderful detailed article about creating curved cut bottom navigation from
  *  https://medium.com/swlh/curved-cut-out-bottom-navigation-with-animation-in-android-c630c867958c
  */
-
-/**
- * @param defaultSelectedItem is the first selected item
- */
-@Stable
-class CurvedCutBottomNavigationState(
-    defaultSelectedItem: Int
-) {
-    // state to remember selected item
-    private var _selectedItem by mutableStateOf(defaultSelectedItem)
-    var selectedItem: Int
-        get() = _selectedItem
-        set(value) {
-            _selectedItem = value
-        }
-
-    // icon for the current selected position
-    private var _selectedItemIcon: (@Composable () -> Unit) by mutableStateOf({})
-    var selectedItemIcon: (@Composable () -> Unit)
-        get() = _selectedItemIcon
-        set(value) {
-            _selectedItemIcon = value
-        }
-}
-
 @Composable
 fun CurvedCutBottomNavigation(
     modifier: Modifier = Modifier,
@@ -207,6 +182,31 @@ fun CurvedCutBottomNavigationItem(
         state.selectedItem = index
         state.selectedItemIcon = icon
     }
+}
+
+
+/**
+ * @param defaultSelectedItem is the first selected item
+ */
+@Stable
+class CurvedCutBottomNavigationState(
+    defaultSelectedItem: Int
+) {
+    // state to remember selected item
+    private var _selectedItem by mutableStateOf(defaultSelectedItem)
+    var selectedItem: Int
+        get() = _selectedItem
+        set(value) {
+            _selectedItem = value
+        }
+
+    // icon for the current selected position
+    private var _selectedItemIcon: (@Composable () -> Unit) by mutableStateOf({})
+    var selectedItemIcon: (@Composable () -> Unit)
+        get() = _selectedItemIcon
+        set(value) {
+            _selectedItemIcon = value
+        }
 }
 
 @Composable
