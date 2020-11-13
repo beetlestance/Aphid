@@ -20,4 +20,4 @@ fun heightPercentage(fraction: Float, excludeRootPadding: Dp): Dp {
 fun Dp.toPx(): Float = with(DensityAmbient.current) { this@toPx.toPx() }
 
 @Composable
-fun Float.toDp() = with(DensityAmbient.current) { this@toDp.toDp() }
+fun Float.toDp(): Dp = with(DensityAmbient.current) { this@toDp.toDp() }
