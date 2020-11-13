@@ -350,7 +350,7 @@ private fun computeCurve(
  * [BottomNavigationItem]s.
  */
 private fun bottomNavigationAnimationSpec() = TweenSpec<Float>(
-    durationMillis = 400,
+    durationMillis = 300,
     easing = CubicBezierEasing(0.2f, 0f, 0.8f, 1f)
 )
 
