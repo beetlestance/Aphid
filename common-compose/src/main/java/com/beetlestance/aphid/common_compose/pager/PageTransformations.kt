@@ -43,7 +43,7 @@ interface PageTransformation {
             ): PageTransformState {
                 return when {
                     offset < 0f -> {
-                        val scaleFactor = (MIN_SCALE + (1 - MIN_SCALE) * (1 - offset))
+                        val scaleFactor = (MIN_SCALE + (1 - MIN_SCALE) * (1 - abs(offset)))
                         PageTransformState(
                             alpha = 1 - offset,
                             scaleX = scaleFactor,

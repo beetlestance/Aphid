@@ -515,7 +515,7 @@ fun QuickRecipesWithHeader(
         lastPage = quickRecipes.lastIndex,
         modifier = Modifier.preferredHeight(pageConfig.maxHeight)
     ) {
-        val recipe = quickRecipes[page]
+        val recipe = quickRecipes.getOrNull(page) ?: return@Pager
         val recipeImageUrl: String? = run {
             return@run SpoonacularImageHelper.generateRecipeImageUrl(
                 id = recipe.recipeId?.toLong() ?: return@run null,
