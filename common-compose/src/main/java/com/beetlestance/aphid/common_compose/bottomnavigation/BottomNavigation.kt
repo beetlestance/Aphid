@@ -116,6 +116,8 @@ fun CurvedCutBottomNavigation(
 
         val fabOffsetX = animate(target = currentFabOffsetX)
 
+        // this should be calculated as offset from curve not top
+        // calculation should be changed
         val fabOffsetY =
             animate(target = if (fabOffsetX == currentFabOffsetX) 8.dp else layoutHeight)
 
