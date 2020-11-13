@@ -1,6 +1,7 @@
 package com.beetlestance.aphid.common_compose.pager
 
 import androidx.compose.animation.AnimatedFloatModel
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.AnimationClockObservable
 import androidx.compose.animation.core.AnimationEndReason
 import androidx.compose.animation.core.fling
@@ -215,27 +216,29 @@ fun PageLayout(
 
     Layout(
         children = children,
-        modifier = modifier.draggable(
-            orientation = Orientation.Horizontal,
-            onDragStarted = {
-                state.selectionState = PagerState.SelectionState.Undecided
-            },
-            onDragStopped = { velocity ->
-                // Velocity is in pixels per second, but we deal in percentage offsets, so we
-                // need to scale the velocity to match
-                state.fling(velocity / pageSize)
+        modifier = modifier
+            .animateContentSize()
+            .draggable(
+                orientation = Orientation.Horizontal,
+                onDragStarted = {
+                    state.selectionState = PagerState.SelectionState.Undecided
+                },
+                onDragStopped = { velocity ->
+                    // Velocity is in pixels per second, but we deal in percentage offsets, so we
+                    // need to scale the velocity to match
+                    state.fling(velocity / pageSize)
+                }
+            ) { dy ->
+                with(state) {
+                    val pos = pageSize * currentPageOffset
+                    val maxDragSize = pageSize * offscreenLimit
+                    val minDragSize = -pageSize * offscreenLimit
+                    val max = if (currentPage == minPage && isCarousel.not()) 0 else maxDragSize
+                    val min = if (currentPage == maxPage && isCarousel.not()) 0 else minDragSize
+                    val newPos = (pos + dy).coerceIn(min.toFloat(), max.toFloat())
+                    currentPageOffset = newPos / pageSize
+                }
             }
-        ) { dy ->
-            with(state) {
-                val pos = pageSize * currentPageOffset
-                val maxDragSize = pageSize * offscreenLimit
-                val minDragSize = -pageSize * offscreenLimit
-                val max = if (currentPage == minPage && isCarousel.not()) 0 else maxDragSize
-                val min = if (currentPage == maxPage && isCarousel.not()) 0 else minDragSize
-                val newPos = (pos + dy).coerceIn(min.toFloat(), max.toFloat())
-                currentPageOffset = newPos / pageSize
-            }
-        }
     ) { measurables, constraints ->
         layout(constraints.maxWidth, constraints.maxHeight) {
             val currentPage = state.currentPage
