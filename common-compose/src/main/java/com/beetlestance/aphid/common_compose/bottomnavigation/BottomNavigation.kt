@@ -39,6 +39,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.WithConstraints
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.drawWithContent
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
@@ -270,8 +272,8 @@ fun computeCurve(
     }
     // set the end point for the first curve (P3)
     firstCurveEnd.apply {
-        x = offsetX
-        y = height - curveBottomOffset
+        x = offsetX - 16
+        y = height - curveBottomOffset - 4
     }
     // set the first control point (C1)
     firstCurveControlPoint1.apply {
@@ -286,7 +288,7 @@ fun computeCurve(
 
     // second curve
     // end of first curve and start of second curve is the same (P3)
-    secondCurveStart.set(firstCurveEnd.x, firstCurveEnd.y)
+    secondCurveStart.set(offsetX + 16, firstCurveEnd.y)
     // end of the second curve (P4)
     secondCurveEnd.apply {
         x = offsetX + curveHalfWidth
@@ -317,6 +319,13 @@ fun computeCurve(
         firstCurveControlPoint2.y,
         firstCurveEnd.x,
         firstCurveEnd.y
+    )
+
+    path.quadraticBezierTo(
+        offsetX,
+        height - curveBottomOffset - 2,
+        secondCurveStart.x,
+        secondCurveStart.y
     )
     // bezier curve with (P3, C4, C3, P4)
     path.cubicTo(
