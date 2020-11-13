@@ -1,26 +1,19 @@
 package com.beetlestance.aphid.common_compose.bottomnavigation
 
 import android.graphics.PointF
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animate
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.VectorizedAnimationSpec
-import androidx.compose.foundation.AmbientContentColor
-import androidx.compose.foundation.InteractionState
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.ScrollableRow
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.FloatingActionButtonConstants
@@ -39,22 +32,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.WithConstraints
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.drawWithContent
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.platform.AnimationClockAmbient
 import androidx.compose.ui.platform.DensityAmbient
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import kotlin.math.roundToInt
 
 /**
@@ -129,12 +118,7 @@ fun CurvedCutBottomNavigation(
             val fabOffsetY =
                 animate(target = if (fabOffsetX == currentFabOffsetX) 8.dp else layoutHeight)
 
-            val path = computeCurve(
-                menuItemOffsetX,
-                curveBottomOffset,
-                fabRadius,
-                fabRadius
-            )
+            val path = computeCurve(menuItemOffsetX, curveBottomOffset, fabRadius, fabRadius)
 
             Box {
                 // have to provide click behaviour in case to reset the nav controller destination.
@@ -224,11 +208,15 @@ fun CurvedCutBottomNavigationItem(
 
 @Composable
 private fun Modifier.drawCurve(path: Path) = drawWithContent {
-    drawPath(path, SolidColor(BottomNavigationColor))
+    drawPath(
+        path = path,
+        brush = SolidColor(BottomNavigationColor)
+    )
     drawContent()
 }
 
-fun computeCurve(
+@Stable
+private fun computeCurve(
     offsetX: Float,
     curveBottomOffset: Float,
     bottomNavOffsetY: Float,
@@ -270,10 +258,12 @@ fun computeCurve(
         x = offsetX - curveHalfWidth
         y = bottomNavOffsetY
     }
+
+    val smoothenCurveOffset = 12
     // set the end point for the first curve (P3)
     firstCurveEnd.apply {
-        x = offsetX - 16
-        y = height - curveBottomOffset - 4
+        x = offsetX - smoothenCurveOffset
+        y = height - curveBottomOffset - (smoothenCurveOffset * height / width)
     }
     // set the first control point (C1)
     firstCurveControlPoint1.apply {
@@ -288,7 +278,7 @@ fun computeCurve(
 
     // second curve
     // end of first curve and start of second curve is the same (P3)
-    secondCurveStart.set(offsetX + 16, firstCurveEnd.y)
+    secondCurveStart.set(offsetX + smoothenCurveOffset, firstCurveEnd.y)
     // end of the second curve (P4)
     secondCurveEnd.apply {
         x = offsetX + curveHalfWidth
@@ -323,7 +313,7 @@ fun computeCurve(
 
     path.quadraticBezierTo(
         offsetX,
-        height - curveBottomOffset - 2,
+        height - curveBottomOffset + 0.5f,
         secondCurveStart.x,
         secondCurveStart.y
     )
