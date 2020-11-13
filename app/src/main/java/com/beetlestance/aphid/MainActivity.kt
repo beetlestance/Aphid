@@ -33,6 +33,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
+import androidx.compose.foundation.layout.preferredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Icon
@@ -114,7 +115,7 @@ class MainActivity : AppCompatActivity() {
                                 val color = MaterialTheme.colors.surface
                                 CoilImage(
                                     data = resId,
-                                    modifier = Modifier.wrapContentSize(),
+                                    modifier = Modifier.preferredSize(24.dp),
                                     colorFilter = ColorFilter.tint(color)
                                 )
                             },
