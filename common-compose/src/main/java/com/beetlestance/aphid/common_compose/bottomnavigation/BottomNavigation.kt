@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import com.beetlestance.aphid.common_compose.utils.computeCurve
 import com.beetlestance.aphid.common_compose.utils.toDp
 import com.beetlestance.aphid.common_compose.utils.toPx
 import kotlin.math.roundToInt
