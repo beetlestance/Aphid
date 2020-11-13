@@ -1,14 +1,10 @@
 package com.beetlestance.aphid.common_compose.bottomnavigation
 
-import android.graphics.PointF
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animate
 import androidx.compose.animation.core.CubicBezierEasing
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.VectorizedAnimationSpec
-import androidx.compose.foundation.ScrollableRow
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,7 +12,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.FloatingActionButtonConstants
@@ -34,22 +29,14 @@ import androidx.compose.ui.Layout
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.WithConstraints
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Outline
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.platform.DensityAmbient
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import com.beetlestance.aphid.common_compose.utils.computeCurve
+import com.beetlestance.aphid.common_compose.utils.CurveCut
 import com.beetlestance.aphid.common_compose.utils.toDp
 import com.beetlestance.aphid.common_compose.utils.toPx
 import kotlin.math.roundToInt
@@ -105,12 +92,6 @@ fun CurvedCutBottomNavigation(
             animate(target = if (fabIsInPosition) 8.dp else layoutHeight)
 
         val rect = Rect(offset = Offset(x = 0f, y = fabRadius), size = layoutSize)
-        val path = rect.computeCurve(
-            offsetX = menuItemOffsetX,
-            curveBottomOffset = curveBottomOffset,
-            bottomNavOffsetY = fabRadius,
-            radius = fabRadius
-        )
 
         // have to provide click behaviour in case to reset the nav controller destination.
         FloatingActionButton(
@@ -129,11 +110,12 @@ fun CurvedCutBottomNavigation(
             modifier = Modifier.preferredHeight(layoutHeight),
             color = backgroundColor,
             elevation = elevation,
-            shape = object : Shape {
-                override fun createOutline(size: Size, density: Density): Outline {
-                    return Outline.Generic(path)
-                }
-            }
+            shape = CurveCut(
+                rect = rect,
+                offsetX = menuItemOffsetX,
+                curveBottomOffset = curveBottomOffset,
+                radius = fabRadius
+            )
         ) {
             // this can now be replaced by Row or any other composable
             // The only problem the handling fab button click for selected item
@@ -229,11 +211,6 @@ class CurvedCutBottomNavigationState(
 private fun bottomNavigationAnimationSpec() = TweenSpec<Float>(
     durationMillis = 300,
     easing = CubicBezierEasing(0.2f, 0f, 0.8f, 1f)
-)
-
-private fun iconAnimationSpec() = TweenSpec<Float>(
-    durationMillis = 1000,
-    easing = LinearEasing
 )
 
 private val BottomNavigationHeight = 56.dp
