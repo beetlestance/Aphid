@@ -89,25 +89,27 @@ fun CurvedCutBottomNavigation(
     menuItems: Int,
     content: @Composable (CurvedCutBottomNavigationState) -> Unit
 ) {
-    val fabRadius = FabRadius.toPx()
     val curveBottomOffset = CurvedBottomNavigationOffset.toPx()
-    val layoutHeight = BottomNavigationHeight + FabRadius
 
     WithConstraints(modifier = modifier.clipToBounds()) {
         val state: CurvedCutBottomNavigationState = remember {
             CurvedCutBottomNavigationState(defaultSelection)
         }
 
+        val menuItemWidth = constraints.maxWidth / menuItems
+        val fabRadius = (menuItemWidth / 3).toFloat().coerceAtMost(FabRadius.toPx())
+
+        val layoutHeight = BottomNavigationHeight + fabRadius.toDp()
+
         val layoutSize = IntSize(
             width = constraints.maxWidth,
             height = layoutHeight.toPx().toInt()
         )
 
-        val menuItemWidth = constraints.maxWidth / menuItems
         val menuItemCenterX = menuItemWidth / 2
         val cellCentreOffsetX = menuItemWidth * state.selectedItem + menuItemCenterX
         val currentOffsetX = cellCentreOffsetX.toFloat()
-        val currentFabOffsetX = cellCentreOffsetX.toFloat().toDp() - FabRadius
+        val currentFabOffsetX = cellCentreOffsetX.toFloat().toDp() - fabRadius.toDp()
 
         val menuItemOffsetX = animate(
             target = currentOffsetX,
@@ -127,7 +129,7 @@ fun CurvedCutBottomNavigation(
         // have to provide click behaviour in case to reset the nav controller destination.
         FloatingActionButton(
             onClick = {},
-            modifier = Modifier.size(FabRadius.times(2))
+            modifier = Modifier.size(fabRadius.toDp().times(2))
                 .offset(x = fabOffsetX, y = fabOffsetY),
             backgroundColor = fabBackgroundColor,
             elevation = FloatingActionButtonConstants.defaultElevation(
