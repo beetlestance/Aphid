@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.Path
 fun Rect.computeCurve(
     offsetX: Float,
     curveBottomOffset: Float,
-    bottomNavOffsetY: Float,
     radius: Float
 ): Path {
     val path = Path()
@@ -24,7 +23,7 @@ fun Rect.computeCurve(
 
     // offset of the first control point (top part)
     val topControlX = curveHalfWidth / 2
-    val topControlY = 0 + bottomNavOffsetY
+    val topControlY = top
 
     // offset of the second control point (bottom part)
     val bottomControlX = curveHalfWidth / 2
@@ -35,7 +34,7 @@ fun Rect.computeCurve(
     // set the starting point of the curve (P2)
     val firstCurveStart = Offset(
         x = offsetX - curveHalfWidth,
-        y = bottomNavOffsetY
+        y = top
     )
     // set the end point for the first curve (P3)
     val firstCurveEnd = Offset(
@@ -59,7 +58,7 @@ fun Rect.computeCurve(
     // end of the second curve (P4)
     val secondCurveEnd = Offset(
         x = offsetX + curveHalfWidth,
-        y = bottomNavOffsetY
+        y = top
     )
     // set the first control point of second curve (C4)
     val secondCurveControlPoint1 = Offset(
@@ -75,7 +74,7 @@ fun Rect.computeCurve(
     // clear any previous path
     path.reset()
     // start from P1 of the BottomNavigationView
-    path.moveTo(x = left, y = bottomNavOffsetY)
+    path.moveTo(x = left, y = top)
     // horizontal line from P1 to P2
     path.lineTo(x = firstCurveStart.x, y = firstCurveStart.y)
     // bezier curve with (P2, C1, C2, P3)
@@ -104,7 +103,7 @@ fun Rect.computeCurve(
         y3 = secondCurveEnd.y
     )
     // line from P4 to P5
-    path.lineTo(x = right, y = bottomNavOffsetY)
+    path.lineTo(x = right, y = top)
     // line from P5 to P6
     path.lineTo(x = right, y = bottom)
     // line from P6 to P7

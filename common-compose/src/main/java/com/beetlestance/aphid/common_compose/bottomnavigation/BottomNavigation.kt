@@ -33,13 +33,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Outline
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.beetlestance.aphid.common_compose.utils.computeCurve
+import com.beetlestance.aphid.common_compose.utils.CurveCut
 import com.beetlestance.aphid.common_compose.utils.toDp
 import com.beetlestance.aphid.common_compose.utils.toPx
 import kotlin.math.roundToInt
@@ -58,7 +55,7 @@ fun CurvedCutBottomNavigation(
     menuItems: Int,
     content: @Composable (CurvedCutBottomNavigationState) -> Unit
 ) {
-    val curveBottomOffset = CurvedBottomNavigationOffset.toPx()
+    val curveBottomOffset = CurveBottomPadding.toPx()
 
     WithConstraints(modifier = modifier.clipToBounds()) {
         val state: CurvedCutBottomNavigationState = remember {
@@ -89,16 +86,8 @@ fun CurvedCutBottomNavigation(
 
         // this should be calculated as offset from curve not top
         // calculation should be changed
-        val fabOffsetY =
-            animate(target = if (fabOffsetX == currentFabOffsetX) 8.dp else layoutHeight)
-
+        val fabOffsetY = animate(if (fabOffsetX == currentFabOffsetX) 8.dp else layoutHeight)
         val rect = Rect(offset = Offset(x = 0f, y = fabRadius), size = layoutSize)
-        val path = rect.computeCurve(
-            offsetX = menuItemOffsetX,
-            curveBottomOffset = curveBottomOffset,
-            bottomNavOffsetY = fabRadius,
-            radius = fabRadius
-        )
 
         // have to provide click behaviour in case to reset the nav controller destination.
         FloatingActionButton(
@@ -117,11 +106,12 @@ fun CurvedCutBottomNavigation(
             modifier = Modifier.preferredHeight(layoutHeight),
             color = backgroundColor,
             elevation = elevation,
-            shape = object : Shape {
-                override fun createOutline(size: Size, density: Density): Outline {
-                    return Outline.Generic(path)
-                }
-            }
+            shape = CurveCut(
+                rect = rect,
+                offsetX = menuItemOffsetX,
+                curveBottomOffset = curveBottomOffset,
+                radius = fabRadius
+            )
         ) {
             // this can now be replaced by Row or any other composable
             // The only problem the handling fab button click for selected item
@@ -219,7 +209,7 @@ private fun bottomNavigationAnimationSpec() = TweenSpec<Float>(
 
 private val BottomNavigationHeight = 56.dp
 
-private val CurvedBottomNavigationOffset = 12.dp
+private val CurveBottomPadding = 12.dp
 
 private val BottomNavigationElevation = 8.dp
 
