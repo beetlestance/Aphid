@@ -32,6 +32,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.preferredWidth
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyRowFor
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -59,6 +60,7 @@ import androidx.compose.ui.focus.isFocused
 import androidx.compose.ui.focusObserver
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.AnimationClockAmbient
 import androidx.compose.ui.platform.ConfigurationAmbient
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.imageResource
@@ -70,6 +72,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.beetlestance.aphid.common_compose.FoodCardPage
 import com.beetlestance.aphid.common_compose.pager.Carousel
+import com.beetlestance.aphid.common_compose.pager.CarouselState
 import com.beetlestance.aphid.common_compose.pager.PageConfig
 import com.beetlestance.aphid.common_compose.pager.PageTransformation
 import com.beetlestance.aphid.common_compose.pager.Pager
@@ -300,8 +303,14 @@ fun BreakFastWithHeader(
         maxWidth = widthPercentage(fraction = 0.9f, excludeRootPadding = 16.dp)
     )
 
+    val items = if (breakfastRecipes.any { it.isFavourite == true }) {
+        breakfastRecipes.take(4)
+    } else {
+        breakfastRecipes
+    }
+
     Carousel(
-        items = breakfastRecipes,
+        items = items,
         offscreenLimit = 2,
         modifier = Modifier.preferredHeight(foodCardPageConfig.maxHeight),
         drawSelectedPageAtLast = true
@@ -502,10 +511,8 @@ fun QuickRecipesWithHeader(
         maxWidth = widthPercentage(fraction = 0.9f, excludeRootPadding = 16.dp)
     )
 
-    val state = rememberPagerState(maxPage = quickRecipes.lastIndex)
-
     Pager(
-        state = state,
+        lastPage = quickRecipes.lastIndex,
         modifier = Modifier.preferredHeight(pageConfig.maxHeight)
     ) {
         val recipe = quickRecipes[page]
@@ -557,13 +564,11 @@ fun RecentlyViewedRecipesWithHeader(
         maxWidth = widthPercentage(fraction = 0.9f, excludeRootPadding = 16.dp)
     )
 
-    val state = rememberPagerState(maxPage = recentlyViewedRecipes.lastIndex)
-
     Pager(
-        state = state,
+        lastPage = recentlyViewedRecipes.lastIndex,
         modifier = Modifier.preferredHeight(pageConfig.maxHeight)
     ) {
-        val recipe = recentlyViewedRecipes.getOrNull(page) ?: return@Pager
+        val recipe = recentlyViewedRecipes[page]
         val recipeImageUrl: String? = run {
             return@run SpoonacularImageHelper.generateRecipeImageUrl(
                 id = recipe.recipeId?.toLong() ?: return@run null,
