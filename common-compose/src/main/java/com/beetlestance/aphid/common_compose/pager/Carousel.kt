@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.AnimationClockAmbient
 import androidx.compose.ui.zIndex
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 
@@ -58,7 +59,7 @@ fun rememberCarouselState(
     minPage: Int = 0,
     maxPage: Int = 0
 ): CarouselState {
-    return remember(clock) {
+    val state = remember(clock) {
         CarouselState(
             clock = clock,
             currentPage = currentPage,
@@ -66,6 +67,10 @@ fun rememberCarouselState(
             maxPage = maxPage
         )
     }
+
+    state.updateState(newMaxPage = maxPage)
+
+    return state
 }
 
 @Composable

@@ -120,6 +120,15 @@ open class PagerState(
         }
     }
 
+    fun updateState(
+        newMaxPage: Int
+    ) {
+        maxPage = newMaxPage
+        if (newMaxPage < currentPage) {
+            currentPage = newMaxPage
+        }
+    }
+
     override fun toString(): String = "PagerState{minPage=$minPage, maxPage=$maxPage, " +
             "currentPage=$currentPage, currentPageOffset=$currentPageOffset}"
 }
@@ -139,7 +148,7 @@ fun rememberPagerState(
     minPage: Int = 0,
     maxPage: Int = 0
 ): PagerState {
-    return remember(clock) {
+    val state = remember(clock) {
         PagerState(
             clock = clock,
             currentPage = currentPage,
@@ -147,13 +156,18 @@ fun rememberPagerState(
             maxPage = maxPage
         )
     }
+
+    state.updateState(newMaxPage = maxPage)
+
+    return state
 }
 
 
 @Composable
 fun Pager(
-    state: PagerState,
+    lastPage: Int,
     offscreenLimit: Int = 2,
+    state: PagerState = rememberPagerState(maxPage = lastPage),
     modifier: Modifier = Modifier,
     drawSelectedPageAtLast: Boolean = false, // for overlap-transformations
     pageContent: @Composable PagerScope.() -> Unit
