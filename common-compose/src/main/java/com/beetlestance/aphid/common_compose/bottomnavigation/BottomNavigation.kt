@@ -36,10 +36,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.beetlestance.aphid.common_compose.LogCompositions
+import com.beetlestance.aphid.common_compose.extensions.toDp
+import com.beetlestance.aphid.common_compose.extensions.toPx
 import com.beetlestance.aphid.common_compose.utils.CurveCut
-import com.beetlestance.aphid.common_compose.utils.toDp
-import com.beetlestance.aphid.common_compose.utils.toPx
-import kotlin.math.roundToInt
 
 /**
  *  Taken from a wonderful detailed article about creating curved cut bottom navigation from
