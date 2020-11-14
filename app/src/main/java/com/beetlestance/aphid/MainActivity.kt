@@ -51,21 +51,18 @@ import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.compose.KEY_ROUTE
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
-import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurvedCutBottomNavigation
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurvedCutBottomNavigationItem
 import com.beetlestance.aphid.feature_explore.Explore
 import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.accompanist.coil.CoilImage
-import dev.chrisbanes.accompanist.imageloading.AndroidDrawablePainter
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -108,7 +105,11 @@ class MainActivity : AppCompatActivity() {
                             icon = {
                                 val resId = screen.iconOutlined
                                 val color = MaterialTheme.colors.background
-                                Icon(asset = vectorResource(id = resId), tint = color)
+                                CoilImage(
+                                    data = resId,
+                                    modifier = Modifier.preferredSize(24.dp),
+                                    colorFilter = ColorFilter.tint(color)
+                                )
                             },
                             fabIcon = {
                                 val resId = screen.iconFilled

@@ -36,10 +36,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.beetlestance.aphid.common_compose.LogCompositions
+import com.beetlestance.aphid.common_compose.extensions.toDp
+import com.beetlestance.aphid.common_compose.extensions.toPx
 import com.beetlestance.aphid.common_compose.utils.CurveCut
-import com.beetlestance.aphid.common_compose.utils.toDp
-import com.beetlestance.aphid.common_compose.utils.toPx
-import kotlin.math.roundToInt
 
 /**
  *  Taken from a wonderful detailed article about creating curved cut bottom navigation from
@@ -55,16 +55,18 @@ fun CurvedCutBottomNavigation(
     menuItems: Int,
     content: @Composable (CurvedCutBottomNavigationState) -> Unit
 ) {
+    val state: CurvedCutBottomNavigationState =
+        remember { CurvedCutBottomNavigationState(defaultSelectedItem = defaultSelection) }
+
     val curveBottomOffset = CurvedBottomNavigationOffset.toPx()
+    val fabRadius = BottomNavigationHeight.div(2)
 
     WithConstraints(modifier = modifier.clipToBounds()) {
-        val state: CurvedCutBottomNavigationState =
-            remember { CurvedCutBottomNavigationState(defaultSelection) }
+        // This is logged 30 times for each menu item selection
+        LogCompositions(tag = "CurvedBottomNavigation")
 
         val menuItemWidth = constraints.maxWidth / menuItems
-        val fabRadius = (menuItemWidth / 3).toFloat().coerceAtMost(FabRadius.toPx())
-
-        val layoutHeight = BottomNavigationHeight + fabRadius.toDp()
+        val layoutHeight = BottomNavigationHeight + fabRadius
 
         val layoutSize = Size(
             width = constraints.maxWidth.toFloat(),
@@ -74,11 +76,11 @@ fun CurvedCutBottomNavigation(
         val menuItemCenterX = menuItemWidth / 2
         val cellCentreOffsetX = menuItemWidth * state.selectedItem + menuItemCenterX
         val currentOffsetX = cellCentreOffsetX.toFloat()
-        val currentFabOffsetX = cellCentreOffsetX.toFloat().toDp() - fabRadius.toDp()
+        val currentFabOffsetX = cellCentreOffsetX.toDp() - fabRadius
 
         val menuItemOffsetX = animate(
             target = currentOffsetX,
-            animSpec = remember { bottomNavigationAnimationSpec() }
+            animSpec = bottomNavigationAnimationSpec()
         )
 
         val fabOffsetX = animate(target = currentFabOffsetX)
@@ -91,12 +93,12 @@ fun CurvedCutBottomNavigation(
         val fabOffsetY =
             animate(target = if (fabIsInPosition) 8.dp else layoutHeight)
 
-        val rect = Rect(offset = Offset(x = 0f, y = fabRadius), size = layoutSize)
+        val rect = Rect(offset = Offset(x = 0f, y = fabRadius.toPx()), size = layoutSize)
 
         // have to provide click behaviour in case to reset the nav controller destination.
         FloatingActionButton(
             onClick = {},
-            modifier = Modifier.size(fabRadius.toDp().times(2))
+            modifier = Modifier.size(fabRadius.times(2))
                 .offset(x = fabOffsetX, y = fabOffsetY),
             backgroundColor = fabBackgroundColor,
             elevation = FloatingActionButtonConstants.defaultElevation(
@@ -114,12 +116,9 @@ fun CurvedCutBottomNavigation(
                 rect = rect,
                 offsetX = menuItemOffsetX,
                 curveBottomOffset = curveBottomOffset,
-                radius = fabRadius
+                radius = fabRadius.toPx()
             )
         ) {
-            // this can now be replaced by Row or any other composable
-            // The only problem the handling fab button click for selected item
-            // TODO: Replace with [Row]
             Layout(
                 modifier = Modifier.fillMaxWidth().preferredHeight(layoutHeight),
                 children = { content(state) }
@@ -128,16 +127,17 @@ fun CurvedCutBottomNavigation(
                     // Place navigation menu items
                     measurables.forEachIndexed { index, measurable ->
                         // set width of menu item
+                        // make the complete bottom navigation clickable
                         val placeable = measurable.measure(
                             constraints.copy(
                                 minWidth = menuItemWidth,
-                                minHeight = constraints.maxHeight - fabRadius.roundToInt()
+                                minHeight = constraints.maxHeight - fabRadius.toIntPx()
                             )
                         )
 
                         val offset = IntOffset(
                             x = index * menuItemWidth,
-                            y = (fabRadius / 2).roundToInt()
+                            y = fabRadius.toIntPx().div(2)
                         )
 
                         placeable.place(offset)
@@ -165,8 +165,6 @@ fun CurvedCutBottomNavigationItem(
         state.selectedItemIcon = fabIcon
     }
 
-    // TODO: Replace with [BottomNavigationItem]
-    // Have to first replace Layout with Row in CurvedCutBottomNavigation
     Box(
         modifier = modifier.selectable(
             selected = selected,
@@ -185,7 +183,7 @@ fun CurvedCutBottomNavigationItem(
  */
 @Stable
 class CurvedCutBottomNavigationState(
-    defaultSelectedItem: Int
+    defaultSelectedItem: Int = 0
 ) {
     // state to remember selected item
     private var _selectedItem by mutableStateOf(defaultSelectedItem)
@@ -202,6 +200,10 @@ class CurvedCutBottomNavigationState(
         set(value) {
             _selectedItemIcon = value
         }
+}
+
+class CurvedCutBottomNavigationScope {
+
 }
 
 /**
