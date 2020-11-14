@@ -44,6 +44,8 @@ dependencies {
     androidTestImplementation(Libs.AndroidX.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.espressoCore)
 
+    implementation(Libs.AndroidX.appcompat)
+
     // Compose
     api(Libs.AndroidX.Compose.runtime)
     api(Libs.AndroidX.Compose.foundation)
