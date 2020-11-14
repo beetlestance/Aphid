@@ -39,7 +39,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
-import com.beetlestance.aphid.common_compose.AndroidAVDIcon
+import com.beetlestance.aphid.common_compose.AndroidIcon
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurvedCutBottomNavigation
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurvedCutBottomNavigationItem
 import com.beetlestance.aphid.feature_explore.Explore
@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
                             fabIcon = {
                                 val resId = screen.iconFilled
                                 val color = MaterialTheme.colors.surface
-                                AndroidAVDIcon(drawableId = resId, tint = color)
+                                AndroidIcon(drawableId = resId, tint = color)
                             },
                             index = index,
                             state = state,
