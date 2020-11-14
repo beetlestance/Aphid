@@ -62,9 +62,6 @@ fun CurvedCutBottomNavigation(
     val fabRadius = BottomNavigationHeight.div(2)
 
     WithConstraints(modifier = modifier.clipToBounds()) {
-        // This is logged 30 times for each menu item selection
-        LogCompositions(tag = "CurvedBottomNavigation")
-
         val menuItemWidth = constraints.maxWidth / menuItems
         val layoutHeight = BottomNavigationHeight + fabRadius
 
@@ -101,7 +98,7 @@ fun CurvedCutBottomNavigation(
                 defaultElevation = FabElevation,
                 pressedElevation = FabPressedElevation
             ),
-            icon = if (fabIsInPosition) state.selectedItemIcon else ({})
+            icon = if (fabIsInPosition) state.selectedItemIcon else NoIcon
         )
 
         Surface(
@@ -190,7 +187,7 @@ class CurvedCutBottomNavigationState(
         }
 
     // icon for the current selected position
-    private var _selectedItemIcon: (@Composable () -> Unit) by mutableStateOf({})
+    private var _selectedItemIcon: (@Composable () -> Unit) by mutableStateOf(NoIcon)
     var selectedItemIcon: (@Composable () -> Unit)
         get() = _selectedItemIcon
         set(value) {
@@ -213,9 +210,9 @@ private val CurvedBottomNavigationOffset = 12.dp
 
 private val BottomNavigationElevation = 8.dp
 
-private val FabRadius = 56.dp.div(2)
-
 private val FabElevation = 12.dp
 
 private val FabPressedElevation = 6.dp
+
+internal val NoIcon: @Composable () -> Unit = {}
 
