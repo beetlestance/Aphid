@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.preferredHeight
+import androidx.compose.foundation.layout.preferredSize
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -30,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -45,6 +47,7 @@ import com.beetlestance.aphid.common_compose.bottomnavigation.CurvedCutBottomNav
 import com.beetlestance.aphid.feature_explore.Explore
 import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
+import dev.chrisbanes.accompanist.coil.CoilImage
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
