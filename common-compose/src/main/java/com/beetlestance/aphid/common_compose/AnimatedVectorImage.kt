@@ -1,7 +1,7 @@
 package com.beetlestance.aphid.common_compose
 
-import android.widget.ImageView
 import androidx.annotation.DrawableRes
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.compose.foundation.layout.preferredSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -45,12 +45,14 @@ fun AndroidImage(
         drawableId
     ) ?: return
 
-    val androidImageView = ImageView(ContextAmbient.current).apply {
-        setColorFilter(tint.toArgb())
-        setImageDrawable(animatedVectorDrawable)
-    }
+    val androidImageView = AppCompatImageView(ContextAmbient.current)
 
     AndroidView(viewBlock = { androidImageView }, modifier = modifier) {
+        with(it) {
+            setColorFilter(tint.toArgb())
+            setImageDrawable(animatedVectorDrawable)
+        }
+
         runCatching { animatedVectorDrawable.start() }
     }
 }
