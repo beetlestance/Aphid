@@ -16,7 +16,7 @@ object Aphid {
 
 object Libs {
 
-    const val androidGradlePlugin: String = "com.android.tools.build:gradle:4.2.0-alpha15"
+    const val androidGradlePlugin: String = "com.android.tools.build:gradle:4.2.0-alpha16"
 
     const val leakCanary: String = "com.squareup.leakcanary:leakcanary-android:2.2"
 
@@ -31,7 +31,7 @@ object Libs {
     object AndroidX {
         const val androidAnnotation: String = "androidx.annotation:annotation:1.2.0-alpha01"
         const val appcompat: String = "androidx.appcompat:appcompat:1.3.0-alpha02"
-        const val coreKtx: String = "androidx.core:core-ktx:1.5.0-alpha04"
+        const val coreKtx: String = "androidx.core:core-ktx:1.5.0-alpha05"
 
         object Fragment {
             private const val version = "1.3.0-beta01"
@@ -75,12 +75,12 @@ object Libs {
         }
 
         object Navigation {
-            private const val version = "1.0.0-alpha01"
+            private const val version = "1.0.0-alpha02"
             const val navigation: String = "androidx.navigation:navigation-compose:$version"
         }
 
         object Compose {
-            const val version: String = "1.0.0-alpha06"
+            const val version: String = "1.0.0-alpha07"
 
             const val compiler: String = "androidx.compose.compiler:compiler:$version"
 
@@ -117,7 +117,7 @@ object Libs {
         object Mdc {
             const val material: String = "com.google.android.material:material:1.3.0-alpha03"
             const val composeThemeAdapter: String =
-                "com.google.android.material:compose-theme-adapter:1.0.0-alpha06"
+                "com.google.android.material:compose-theme-adapter:1.0.0-alpha07"
         }
 
         object PlayServices {
@@ -144,7 +144,7 @@ object Libs {
     }
 
     object Accompanist {
-        private const val version = "0.3.2"
+        private const val version = "0.3.3.1"
         const val coil: String = "dev.chrisbanes.accompanist:accompanist-coil:$version"
     }
 
@@ -192,14 +192,14 @@ object Libs {
     }
 
     object Coroutines {
-        private const val version = "1.4.0"
+        private const val version = "1.4.1"
         const val core: String = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
         const val android: String = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
         const val test: String = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
     }
 
     object Lint {
-        private const val version = "27.2.0-alpha15"
+        private const val version = "27.2.0-alpha16"
         const val api: String = "com.android.tools.lint:lint-api:$version"
         const val checks: String = "com.android.tools.lint:lint-checks:$version"
     }

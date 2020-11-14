@@ -20,8 +20,8 @@ buildscript {
 }
 
 plugins {
-    id("com.diffplug.spotless") version "5.7.0"
-    id("com.github.ben-manes.versions") version "0.33.0"
+    id("com.diffplug.spotless") version "5.8.1"
+    id("com.github.ben-manes.versions") version "0.36.0"
 }
 
 allprojects {

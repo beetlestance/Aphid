@@ -36,10 +36,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.beetlestance.aphid.common_compose.LogCompositions
-import com.beetlestance.aphid.common_compose.extensions.toDp
-import com.beetlestance.aphid.common_compose.extensions.toPx
 import com.beetlestance.aphid.common_compose.utils.CurveCut
+import com.beetlestance.aphid.common_compose.utils.toDp
+import com.beetlestance.aphid.common_compose.utils.toPx
+import kotlin.math.roundToInt
 
 /**
  *  Taken from a wonderful detailed article about creating curved cut bottom navigation from
@@ -85,13 +85,9 @@ fun CurvedCutBottomNavigation(
 
         val fabOffsetX = animate(target = currentFabOffsetX)
 
-        // this should be calculated as offset from curve not top
-        // calculation should be changed
-
         val fabIsInPosition = fabOffsetX == currentFabOffsetX
 
-        val fabOffsetY =
-            animate(target = if (fabIsInPosition) 8.dp else layoutHeight)
+        val fabOffsetY = animate(if (fabIsInPosition) 8.dp else layoutHeight)
 
         val rect = Rect(offset = Offset(x = 0f, y = fabRadius.toPx()), size = layoutSize)
 
@@ -200,10 +196,6 @@ class CurvedCutBottomNavigationState(
         set(value) {
             _selectedItemIcon = value
         }
-}
-
-class CurvedCutBottomNavigationScope {
-
 }
 
 /**
