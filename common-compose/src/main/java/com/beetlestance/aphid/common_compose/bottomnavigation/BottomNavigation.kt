@@ -62,7 +62,7 @@ fun CurvedCutBottomNavigation(
             remember { CurvedCutBottomNavigationState(defaultSelection) }
 
         val menuItemWidth = constraints.maxWidth / menuItems
-        val fabRadius = (menuItemWidth / 3).toFloat().coerceAtMost(FabRadius.toPx())
+        val fabRadius = FabRadius.toPx()
 
         val layoutHeight = BottomNavigationHeight + fabRadius.toDp()
 
@@ -83,13 +83,9 @@ fun CurvedCutBottomNavigation(
 
         val fabOffsetX = animate(target = currentFabOffsetX)
 
-        // this should be calculated as offset from curve not top
-        // calculation should be changed
-
         val fabIsInPosition = fabOffsetX == currentFabOffsetX
 
-        val fabOffsetY =
-            animate(target = if (fabIsInPosition) 8.dp else layoutHeight)
+        val fabOffsetY = animate(if (fabIsInPosition) 8.dp else layoutHeight)
 
         val rect = Rect(offset = Offset(x = 0f, y = fabRadius), size = layoutSize)
 
