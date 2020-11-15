@@ -23,6 +23,7 @@ import com.beetlestance.spoonacular_kotlin.models.request.recipe.RequestVisualiz
 import com.beetlestance.spoonacular_kotlin.models.request.recipe.RequestVisualizeIngredients
 import com.beetlestance.spoonacular_kotlin.models.request.recipe.RequestVisualizePriceBreakdown
 import com.beetlestance.spoonacular_kotlin.models.request.recipe.RequestVisualizeRecipeNutrition
+import com.beetlestance.spoonacular_kotlin.models.request.recipe.RequestVisualizeRecipeTaste
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.AnalyzeARecipeSearchQuery
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.AnalyzeRecipeInstructions
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.AnalyzedRecipeInstructions
@@ -205,6 +206,20 @@ interface RecipesService {
      */
     @GET(Recipes.ById.VISUALIZE_RECIPE_PRICE_BREAKDOWN)
     fun visualizeRecipePriceBreakdownByID(
+        @Path("id") id: Long,
+        @Query("defaultCss") defaultCss: Boolean? = null
+    ): Call<String>
+
+
+    /**
+     * Visualize Recipe Taste by ID
+     * Visualize a recipe's price breakdown.
+     * @param id The recipe id.
+     * @param defaultCss Whether the default CSS should be added to the response. (optional)
+     * @return String
+     */
+    @GET(Recipes.ById.VISUALIZE_RECIPE_TASTE)
+    fun visualizeRecipeTasteByID(
         @Path("id") id: Long,
         @Query("defaultCss") defaultCss: Boolean? = null
     ): Call<String>
@@ -858,5 +873,16 @@ interface RecipesService {
     @POST(Recipes.VISUALIZE_RECIPE_NUTRITION)
     fun visualizeRecipeNutrition(
         @Body requestVisualizeRecipeNutrition: RequestVisualizeRecipeNutrition
+    ): Call<String>
+
+
+    /**
+     * Visualize Recipe Taste
+     * Visualize a recipe's taste information as HTML including CSS.
+     * @return String
+     */
+    @POST(Recipes.VISUALIZE_RECIPE_TASTE)
+    fun visualizeRecipeTaste(
+        @Body requestVisualizeRecipeTaste: RequestVisualizeRecipeTaste
     ): Call<String>
 }

@@ -29,9 +29,9 @@ internal object Recipes {
 
         const val GET_RECIPE_NUTRITION = "/recipes/{id}/nutritionWidget.json"
 
-        const val GET_RECIPE_TASTE = "/recipes/{id}/tasteWidget.json"
-
         const val GET_RECIPE_PRICE_BREAKDOWN = "/recipes/{id}/priceBreakdownWidget.json"
+
+        const val GET_RECIPE_TASTE = "/recipes/{id}/tasteWidget.json"
 
         const val GET_SIMILAR_RECIPES = "/recipes/{id}/similar"
 
@@ -44,6 +44,8 @@ internal object Recipes {
         const val VISUALIZE_RECIPE_NUTRITION = "/recipes/{id}/nutritionWidget"
 
         const val VISUALIZE_RECIPE_PRICE_BREAKDOWN = "/recipes/{id}/priceBreakdownWidget"
+
+        const val VISUALIZE_RECIPE_TASTE = "/recipes/{id}/tasteWidget"
     }
 
     const val ANALYZE_A_RECIPE_SEARCH_QUERY = "/recipes/queries/analyze"
@@ -85,4 +87,6 @@ internal object Recipes {
     const val VISUALIZE_PRICE_BREAKDOWN = "/recipes/visualizePriceEstimator"
 
     const val VISUALIZE_RECIPE_NUTRITION = "/recipes/visualizeNutrition"
+
+    const val VISUALIZE_RECIPE_TASTE = "/recipes/visualizeTaste"
 }
