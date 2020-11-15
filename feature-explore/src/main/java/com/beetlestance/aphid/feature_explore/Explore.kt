@@ -98,11 +98,13 @@ fun Explore(
             )
         ) {
             Timber.d("$state")
-            val searchState = rememberSearchState()
+            /*val searchState = rememberSearchState()
             val searchQuery = savedInstanceState(saver = TextFieldValue.Saver) {
                 TextFieldValue(searchState.query)
-            }
-            Search(
+            }*/
+
+            ExposeSearch()
+            /*Search(
                 value = searchQuery.value,
                 hint = searchState.hint,
                 onValueChange = {
@@ -110,7 +112,7 @@ fun Explore(
                     searchState.query = it.text
                 },
                 onFocusChange = { searchState.focused = it.isFocused }
-            )
+            )*/
 
             Filters()
 

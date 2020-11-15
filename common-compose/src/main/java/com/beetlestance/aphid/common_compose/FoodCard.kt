@@ -14,12 +14,15 @@ import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.preferredWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AmbientContentAlpha
 import androidx.compose.material.AmbientEmphasisLevels
 import androidx.compose.material.Card
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
 import androidx.compose.material.IconToggleButton
 import androidx.compose.material.ProvideEmphasis
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
@@ -122,7 +125,7 @@ fun FoodPosterCard(
                 modifier = Modifier.matchParentSize().clipToBounds()
             )
 
-            ProvideEmphasis(emphasis = AmbientEmphasisLevels.current.medium) {
+            Providers(AmbientContentAlpha provides ContentAlpha.high) {
                 IconToggleButton(
                     modifier = Modifier
                         .align(Alignment.TopEnd)

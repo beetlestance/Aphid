@@ -18,6 +18,7 @@ const val EnableDebugCompositionLogs = true
  *
  * @param tag Log tag used for [Log.d]
  */
+@Suppress("NOTHING_TO_INLINE")
 @Composable
 inline fun LogCompositions(tag: String) {
     if (EnableDebugCompositionLogs && BuildConfig.DEBUG) {
