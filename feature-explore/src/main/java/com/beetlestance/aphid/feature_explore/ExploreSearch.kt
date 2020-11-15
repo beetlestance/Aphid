@@ -1,23 +1,21 @@
 package com.beetlestance.aphid.feature_explore
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.savedinstancestate.savedInstanceState
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawShadow
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 
@@ -25,43 +23,55 @@ private val ExposeSearchBarShape = CircleShape
 
 @Preview
 @Composable
-fun ExposeSearch(
+fun ExposeSearchBar(
     modifier: Modifier = Modifier,
-    onValueChange: (String) -> Unit = {},
+    text: String = "",
+    searchClick: () -> Unit = {},
+    filterClick: () -> Unit = {}
 ) {
-    var searchQuery by savedInstanceState(saver = TextFieldValue.Saver) {
-        TextFieldValue("")
-    }
-
-    Box(
+    Row(
         modifier = modifier
-            .padding(8.dp)
-            .drawShadow(8.dp, ExposeSearchBarShape, false)
     ) {
-        TextField(
+        Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .clip(ExposeSearchBarShape),
-            value = searchQuery,
-            placeholder = {
-                Text(
-                    text = "Search for food",
-                    color = MaterialTheme.colors.onSurface
+                .weight(1f)
+                .padding(end = 8.dp)
+                .drawShadow(
+                    elevation = 8.dp,
+                    shape = ExposeSearchBarShape,
+                    clip = false
                 )
-            },
-            leadingIcon = {
-                Icon(
-                    asset = Icons.Outlined.Search,
-                    tint = MaterialTheme.colors.onSurface
+                .clip(ExposeSearchBarShape)
+                .clickable(onClick = searchClick)
+                .background(Color.White)
+                .padding(12.dp)
+                .align(Alignment.CenterVertically)
+        ) {
+            Icon(
+                asset = Icons.Outlined.Search,
+                tint = Color.Gray,
+                modifier = Modifier
+                    .padding(end = 16.dp)
+                    .align(Alignment.CenterVertically)
+            )
+
+            Text(
+                text = if (text.isEmpty()) "Search for food" else text,
+                modifier = Modifier.weight(1f),
+                color = Color.Gray
+            )
+        }
+
+        Icon(
+            asset = vectorResource(id = R.drawable.ic_filter),
+            tint = Color.Gray,
+            modifier = Modifier
+                .clip(CircleShape)
+                .clickable(
+                    onClick = filterClick
                 )
-            },
-            onValueChange = {
-                onValueChange(it.text)
-                searchQuery = it
-            },
-            backgroundColor = MaterialTheme.colors.surface,
-            activeColor = MaterialTheme.colors.onSurface,
-            inactiveColor = MaterialTheme.colors.surface
+                .padding(16.dp)
+                .align(Alignment.CenterVertically)
         )
     }
 }
