@@ -91,14 +91,14 @@ fun Explore(
     Surface(color = MaterialTheme.colors.surface) {
         ScrollableColumn(
             modifier = Modifier.fillMaxSize().animateContentSize(),
-            contentPadding = PaddingValues(16.dp),
+            //contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(
                 space = 24.dp,
                 alignment = Alignment.Top
             )
         ) {
             Timber.d("$state")
-            val searchState = rememberSearchState()
+            /*val searchState = rememberSearchState()
             val searchQuery = savedInstanceState(saver = TextFieldValue.Saver) {
                 TextFieldValue(searchState.query)
             }
@@ -111,9 +111,14 @@ fun Explore(
                     searchState.query = it.text
                 },
                 onFocusChange = { searchState.focused = it.isFocused }
+            )*/
+            Spacer(modifier = Modifier.preferredHeight(0.dp))
+
+            ExposeSearchBar(
+                modifier = Modifier.padding(horizontal = 8.dp)
             )
 
-            Filters()
+            //Filters()
 
             if (state.breakfastRecipes.isNotEmpty()) {
                 BreakFastWithHeader(
@@ -290,6 +295,7 @@ fun BreakFastWithHeader(
     Text(
         text = stringResource(id = R.string.explore_breaksfast_header),
         style = MaterialTheme.typography.h6,
+        modifier = Modifier.padding(horizontal = 16.dp)
     )
 
     val foodCardPageConfig = PageConfig(
@@ -341,21 +347,17 @@ fun BreakFastWithHeader(
 
 @Composable
 fun MoodContent() {
-    ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+    ) {
 
         val (text, image) = createRefs()
 
         val endGuideline = createGuidelineFromEnd(fraction = 0.05f)
 
         val topGuideline = createGuidelineFromTop(fraction = 0.15f)
-
-        Image(
-            modifier = Modifier.constrainAs(image) {
-                linkTo(start = parent.start, end = parent.end, bias = 1f)
-                width = Dimension.percent(0.2f)
-            }.aspectRatio(1f),
-            asset = vectorResource(id = R.drawable.ic_cookie)
-        )
 
         Text(
             modifier = Modifier
@@ -371,6 +373,14 @@ fun MoodContent() {
             text = "What Are You In Mood For Today ?",
             style = MaterialTheme.typography.h5
         )
+
+        Image(
+            modifier = Modifier.constrainAs(image) {
+                linkTo(start = parent.start, end = parent.end, bias = 1f)
+                width = Dimension.percent(0.2f)
+            }.aspectRatio(1f),
+            asset = vectorResource(id = R.drawable.ic_cookie)
+        )
     }
 
 }
@@ -381,15 +391,10 @@ fun Cuisine() {
     Text(
         text = stringResource(id = R.string.explore_cuisine_header),
         style = MaterialTheme.typography.h6,
+        modifier = Modifier.padding(horizontal = 16.dp)
     )
 
-    ScrollableRow(
-        horizontalArrangement = Arrangement.spacedBy(
-            space = 16.dp,
-            alignment = Alignment.Start
-        )
-    ) {
-
+    ScrollableRow {
         repeat(8) {
             CuisineContent()
         }
@@ -400,7 +405,9 @@ fun Cuisine() {
 fun CuisineContent() {
     val itemWidth = (ConfigurationAmbient.current.screenWidthDp * 0.3f).dp
     Column(
-        modifier = Modifier.preferredWidth(itemWidth).fillMaxWidth(),
+        modifier = Modifier
+            .preferredWidth(itemWidth)
+            .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(
             space = 4.dp,
             alignment = Alignment.Top
@@ -443,50 +450,42 @@ fun PlanYourMealAheadWithHeader() {
     Text(
         text = stringResource(id = R.string.explore_plan_your_meal_ahead),
         style = MaterialTheme.typography.h6,
+        modifier = Modifier.padding(horizontal = 16.dp)
     )
 
-    ScrollableRow(
-        horizontalArrangement = Arrangement.spacedBy(
-            space = 16.dp,
-            alignment = Alignment.CenterHorizontally
-        )
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        shape = RoundedCornerShape(16.dp),
+        elevation = 4.dp,
+        backgroundColor = colorResource(id = R.color.gun_powder)
     ) {
-        // per item width in row
-        val itemWidth = (ConfigurationAmbient.current.screenWidthDp * 1f).dp - 32.dp
-
-        Card(
-            modifier = Modifier.preferredWidth(itemWidth).fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
-            elevation = 4.dp,
-            backgroundColor = colorResource(id = R.color.gun_powder)
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
 
-                Text(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .align(Alignment.CenterVertically)
-                        .weight(0.4f)
-                        .wrapContentSize(),
-                    text = "Plan Your Lunch",
-                    color = Color.White,
-                    style = MaterialTheme.typography.h5
-                )
+            Text(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.CenterVertically)
+                    .weight(0.4f)
+                    .wrapContentSize(),
+                text = "Plan Your Lunch",
+                color = Color.White,
+                style = MaterialTheme.typography.h5
+            )
 
-                Image(
-                    modifier = Modifier.fillMaxWidth()
-                        .clipToBounds()
-                        .align(Alignment.Bottom)
-                        .weight(0.6f)
-                        .padding(top = 16.dp),
-                    asset = vectorResource(id = R.drawable.ic_plan_your_meal),
-                    contentScale = ContentScale.Crop
-                )
-            }
+            Image(
+                modifier = Modifier.fillMaxWidth()
+                    .clipToBounds()
+                    .align(Alignment.Bottom)
+                    .weight(0.6f)
+                    .padding(top = 16.dp),
+                asset = vectorResource(id = R.drawable.ic_plan_your_meal),
+                contentScale = ContentScale.Crop
+            )
         }
-
     }
 }
 
@@ -498,6 +497,7 @@ fun QuickRecipesWithHeader(
     Text(
         text = stringResource(id = R.string.explore_quick_recipes_header),
         style = MaterialTheme.typography.h6,
+        modifier = Modifier.padding(horizontal = 16.dp)
     )
 
     val pageConfig = PageConfig(
@@ -551,6 +551,7 @@ fun RecentlyViewedRecipesWithHeader(
     Text(
         text = stringResource(id = R.string.explore_recently_viewed_recipes_header),
         style = MaterialTheme.typography.h6,
+        modifier = Modifier.padding(horizontal = 16.dp)
     )
 
     val pageConfig = PageConfig(

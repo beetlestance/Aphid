@@ -35,7 +35,7 @@ fun ExposeSearchBar(
         Row(
             modifier = Modifier
                 .weight(1f)
-                .padding(end = 8.dp)
+                .padding(horizontal = 8.dp)
                 .drawShadow(
                     elevation = 8.dp,
                     shape = ExposeSearchBarShape,
@@ -44,20 +44,22 @@ fun ExposeSearchBar(
                 .clip(ExposeSearchBarShape)
                 .clickable(onClick = searchClick)
                 .background(Color.White)
-                .padding(12.dp)
+                .padding(8.dp)
                 .align(Alignment.CenterVertically)
         ) {
             Icon(
                 asset = Icons.Outlined.Search,
                 tint = Color.Gray,
                 modifier = Modifier
-                    .padding(end = 16.dp)
+                    .padding(start = 8.dp, end = 8.dp)
                     .align(Alignment.CenterVertically)
             )
 
             Text(
                 text = if (text.isEmpty()) "Search for food" else text,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 8.dp),
                 color = Color.Gray
             )
         }
@@ -70,7 +72,7 @@ fun ExposeSearchBar(
                 .clickable(
                     onClick = filterClick
                 )
-                .padding(16.dp)
+                .padding(8.dp)
                 .align(Alignment.CenterVertically)
         )
     }
