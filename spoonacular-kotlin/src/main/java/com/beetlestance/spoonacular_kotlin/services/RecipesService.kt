@@ -40,6 +40,7 @@ import com.beetlestance.spoonacular_kotlin.models.response.recipe.RecipeIngredie
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.RecipeNutrients
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.RecipePriceBreakdown
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.RecipeSearch
+import com.beetlestance.spoonacular_kotlin.models.response.recipe.RecipeTaste
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.SearchRecipeComplex
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.SearchRecipesByIngredients
 import com.beetlestance.spoonacular_kotlin.models.response.recipe.SearchRecipesByNutrients
@@ -111,6 +112,16 @@ interface RecipesService {
      */
     @GET(Recipes.ById.GET_RECIPE_NUTRITION)
     fun getRecipeNutritionWidgetByID(@Path("id") id: Long): Call<RecipeNutrients>
+
+
+    /**
+     * Get a recipe's taste.
+     * The tastes supported are sweet, salty, sour, bitter, savory, and fatty.
+     * @param id The recipe id.
+     * @return RecipeTaste
+     */
+    @GET(Recipes.ById.GET_RECIPE_TASTE)
+    fun getRecipeTasteWidgetByID(@Path("id") id: Long): Call<RecipeTaste>
 
     /**
      * Get Recipe Price Breakdown by ID

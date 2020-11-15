@@ -29,6 +29,8 @@ internal object Recipes {
 
         const val GET_RECIPE_NUTRITION = "/recipes/{id}/nutritionWidget.json"
 
+        const val GET_RECIPE_TASTE = "/recipes/{id}/tasteWidget.json"
+
         const val GET_RECIPE_PRICE_BREAKDOWN = "/recipes/{id}/priceBreakdownWidget.json"
 
         const val GET_SIMILAR_RECIPES = "/recipes/{id}/similar"
