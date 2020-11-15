@@ -38,6 +38,7 @@ dependencies {
     // Local projects
     implementation(project(":base"))
     implementation(project(":base-android"))
+    implementation("androidx.palette:palette-ktx:1.0.0")
 
     // Testing
     testImplementation(Libs.Test.junit)
@@ -45,6 +46,7 @@ dependencies {
     androidTestImplementation(Libs.AndroidX.Test.espressoCore)
 
     implementation(Libs.AndroidX.appcompat)
+    implementation(Libs.AndroidX.coreKtx)
 
     // Compose
     api(Libs.AndroidX.Compose.runtime)

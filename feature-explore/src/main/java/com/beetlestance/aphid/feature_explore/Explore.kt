@@ -300,10 +300,10 @@ fun BreakFastWithHeader(
 
     val foodCardPageConfig = PageConfig(
         horizontalOffset = 16.dp,
-        fraction = 0.9f,
+        fraction = 0.7f,
         horizontalOffsetFraction = 0.1f,
         aspectRatio = 13f / 20f,
-        maxWidth = widthPercentage(fraction = 0.9f, excludeRootPadding = 16.dp)
+        maxWidth = widthPercentage(fraction = 0.95f, excludeRootPadding = 16.dp)
     )
 
     val items = if (breakfastRecipes.any { it.isFavourite == true }) {
@@ -326,7 +326,22 @@ fun BreakFastWithHeader(
             )
         }
 
-        FoodCardPage(
+        ExploreBreakfastCard(
+            modifier = Modifier
+                .preferredHeight(foodCardPageConfig.maxHeight)
+                .transformPage(PageTransformation.DEPTH_TRANSFORM),
+            imageSrc = recipeImageUrl ?: recipe.imageUrl ?: "",
+            isFavourite = recipe.isFavourite ?: false,
+            title = recipe.title ?: "",
+            subTitle = "2 Serving • 40 Min • 331 Cal",
+            onMarkFavourite = {
+                markRecipeAsFavourite(recipe, it)
+            },
+            description =
+            "A unique experience of taste  and delicious ingredients prepared for you. Liven up your life with nutrition."
+        )
+
+        /*FoodCardPage(
             modifier = Modifier.transformPage(PageTransformation.DEPTH_TRANSFORM),
             pageConfig = foodCardPageConfig,
             isSelected = isSelectedPage,
@@ -341,7 +356,7 @@ fun BreakFastWithHeader(
                 contentTags = "2 Serving • 40 Min • 331 Cal ",
                 rating = "4.3",
             )
-        }
+        }*/
     }
 }
 
