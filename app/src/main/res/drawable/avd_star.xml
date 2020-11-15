@@ -3,8 +3,8 @@
     <aapt:attr name="android:drawable">
         <vector
             android:name="vector"
-            android:width="206dp"
-            android:height="206dp"
+            android:width="24dp"
+            android:height="24dp"
             android:viewportWidth="206"
             android:viewportHeight="206">
             <group android:name="group">
@@ -33,17 +33,17 @@
         <aapt:attr name="android:animation">
             <set>
                 <objectAnimator
-                    android:duration="1600"
+                    android:duration="600"
                     android:interpolator="@android:anim/linear_interpolator"
                     android:propertyName="pathData"
                     android:valueFrom="M 103 103 M 95 103 C 95 100.879 95.843 98.843 97.343 97.343 C 98.843 95.843 100.879 95 103 95 C 105.121 95 107.157 95.843 108.657 97.343 C 110.157 98.843 111 100.879 111 103 C 111 105.121 110.157 107.157 108.657 108.657 C 107.157 110.157 105.121 111 103 111 C 100.879 111 98.843 110.157 97.343 108.657 C 95.843 107.157 95 105.121 95 103"
                     android:valueTo="M 103 103 M 0 103 C 0 75.693 10.859 49.477 30.168 30.168 C 49.477 10.859 75.693 0 103 0 C 130.307 0 156.523 10.859 175.832 30.168 C 195.141 49.477 206 75.693 206 103 C 206 130.307 195.141 156.523 175.832 175.832 C 156.523 195.141 130.307 206 103 206 C 75.693 206 49.477 195.141 30.168 175.832 C 10.859 156.523 0 130.307 0 103"
                     android:valueType="pathType" />
                 <objectAnimator
-                    android:duration="1600"
+                    android:duration="600"
                     android:interpolator="@android:anim/linear_interpolator"
                     android:propertyName="pathData"
-                    android:startOffset="1600"
+                    android:startOffset="600"
                     android:valueFrom="M 103 103 M 0 103 C 0 75.693 10.859 49.477 30.168 30.168 C 49.477 10.859 75.693 0 103 0 C 130.307 0 156.523 10.859 175.832 30.168 C 195.141 49.477 206 75.693 206 103 C 206 130.307 195.141 156.523 175.832 175.832 C 156.523 195.141 130.307 206 103 206 C 75.693 206 49.477 195.141 30.168 175.832 C 10.859 156.523 0 130.307 0 103"
                     android:valueTo="M 103 103 M 95 103 C 95 100.879 95.843 98.843 97.343 97.343 C 98.843 95.843 100.879 95 103 95 C 105.121 95 107.157 95.843 108.657 97.343 C 110.157 98.843 111 100.879 111 103 C 111 105.121 110.157 107.157 108.657 108.657 C 107.157 110.157 105.121 111 103 111 C 100.879 111 98.843 110.157 97.343 108.657 C 95.843 107.157 95 105.121 95 103"
                     android:valueType="pathType" />
@@ -54,17 +54,17 @@
         <aapt:attr name="android:animation">
             <set>
                 <objectAnimator
-                    android:duration="1600"
+                    android:duration="600"
                     android:interpolator="@android:interpolator/fast_out_slow_in"
                     android:propertyName="pathData"
                     android:valueFrom="M 103 103 M 79.5 103 C 79.5 96.77 81.978 90.788 86.383 86.383 C 90.788 81.978 96.77 79.5 103 79.5 C 109.23 79.5 115.212 81.978 119.617 86.383 C 124.022 90.788 126.5 96.77 126.5 103 C 126.5 109.23 124.022 115.212 119.617 119.617 C 115.212 124.022 109.23 126.5 103 126.5 C 96.77 126.5 90.788 124.022 86.383 119.617 C 81.978 115.212 79.5 109.23 79.5 103"
                     android:valueTo="M 104 103 M 29.5 103 C 29.5 83.249 37.354 64.287 51.321 50.321 C 65.287 36.354 84.249 28.5 104 28.5 C 123.751 28.5 142.713 36.354 156.679 50.321 C 170.646 64.287 178.5 83.249 178.5 103 C 178.5 122.751 170.646 141.713 156.679 155.679 C 142.713 169.646 123.751 177.5 104 177.5 C 84.249 177.5 65.287 169.646 51.321 155.679 C 37.354 141.713 29.5 122.751 29.5 103"
                     android:valueType="pathType" />
                 <objectAnimator
-                    android:duration="1600"
+                    android:duration="600"
                     android:interpolator="@android:interpolator/fast_out_slow_in"
                     android:propertyName="pathData"
-                    android:startOffset="1600"
+                    android:startOffset="600"
                     android:valueFrom="M 104 103 M 29.5 103 C 29.5 83.249 37.354 64.287 51.321 50.321 C 65.287 36.354 84.249 28.5 104 28.5 C 123.751 28.5 142.713 36.354 156.679 50.321 C 170.646 64.287 178.5 83.249 178.5 103 C 178.5 122.751 170.646 141.713 156.679 155.679 C 142.713 169.646 123.751 177.5 104 177.5 C 84.249 177.5 65.287 169.646 51.321 155.679 C 37.354 141.713 29.5 122.751 29.5 103"
                     android:valueTo="M 103 103 M 79.5 103 C 79.5 96.77 81.978 90.788 86.383 86.383 C 90.788 81.978 96.77 79.5 103 79.5 C 109.23 79.5 115.212 81.978 119.617 86.383 C 124.022 90.788 126.5 96.77 126.5 103 C 126.5 109.23 124.022 115.212 119.617 119.617 C 115.212 124.022 109.23 126.5 103 126.5 C 96.77 126.5 90.788 124.022 86.383 119.617 C 81.978 115.212 79.5 109.23 79.5 103"
                     android:valueType="pathType" />

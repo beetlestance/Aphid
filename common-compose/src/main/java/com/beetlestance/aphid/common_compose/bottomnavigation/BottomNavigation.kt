@@ -77,7 +77,7 @@ fun CurvedCutBottomNavigation(
 
         val menuItemOffsetX = animate(
             target = currentOffsetX,
-            animSpec = bottomNavigationAnimationSpec()
+            animSpec = BottomNavigationAnimationSpec
         )
 
         val fabOffsetX = animate(target = currentFabOffsetX)
@@ -198,8 +198,10 @@ class CurvedCutBottomNavigationState(
 /**
  * [VectorizedAnimationSpec] controlling the transition between unselected and selected
  * [BottomNavigationItem]s.
+ *
+ * This is like SlowOutSlowIn easing
  */
-private fun bottomNavigationAnimationSpec() = TweenSpec<Float>(
+private val BottomNavigationAnimationSpec = TweenSpec<Float>(
     durationMillis = 300,
     easing = CubicBezierEasing(0.2f, 0f, 0.8f, 1f)
 )
