@@ -113,8 +113,9 @@ class MainActivity : AppCompatActivity() {
                                         navController.graph.startDestination,
                                         false
                                     )
-
-                                    navController.navigate(screen.route)
+                                    if (screen.route != Screen.Explore.route) {
+                                        navController.navigate(screen.route)
+                                    }
                                 }
                             }
                         )
