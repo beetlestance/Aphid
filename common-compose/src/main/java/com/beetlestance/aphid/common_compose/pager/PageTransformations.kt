@@ -78,6 +78,24 @@ interface PageTransformation {
             }
         }
 
+        val SCALE_TRANSFORM: PageTransformation = object : PageTransformation {
+            override fun transformPage(
+                offset: Float,
+                size: Size
+            ): PageTransformState {
+                return when {
+                    offset != 0f -> {
+                        val scaleFactor = (MIN_SCALE + (1 - MIN_SCALE) * (1 - abs(offset)))
+                        PageTransformState(
+                            scaleX = scaleFactor,
+                            scaleY = scaleFactor
+                        )
+                    }
+                    else -> PageTransformState()
+                }
+            }
+        }
+
         val ZOOM_OUT: PageTransformation = object : PageTransformation {
             override fun transformPage(
                 offset: Float,

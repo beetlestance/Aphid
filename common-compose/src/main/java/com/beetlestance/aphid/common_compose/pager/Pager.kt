@@ -349,7 +349,7 @@ open class PagerScope(
         val transform = pageTransition.transformPage(state.offset(page), size)
         this.withTransform(transformBlock = {
             this.scale(transform.scaleX, transform.scaleY, Offset(center.x, center.y))
-            //this.translate(transform.translationX, transform.translationY)
+            this.translate(transform.translationX, transform.translationY)
         }) {
             this@drawWithContent.drawContent()
         }

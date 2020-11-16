@@ -331,7 +331,7 @@ fun BreakFastWithHeader(
             modifier = Modifier
                 .fillMaxWidth(0.8f)
                 .aspectRatio(13 / 20f)
-                .transformPage(PageTransformation.DEPTH_TRANSFORM),
+                .transformPage(PageTransformation.SCALE_TRANSFORM),
             imageSrc = recipeImageUrl ?: recipe.imageUrl ?: "",
             isFavourite = recipe.isFavourite ?: false,
             title = recipe.title ?: "",
