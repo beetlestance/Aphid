@@ -8,6 +8,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ConstraintLayout
+import androidx.compose.foundation.layout.Dimension
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -165,6 +166,7 @@ fun ExploreBreakfastCard(
                         .constrainAs(detail) {
                             linkTo(start = startGuideline, end = endGuideLine, bias = 0f)
                             linkTo(top = spacerDetail.bottom, bottom = bottomGuideline, bias = 0f)
+                            width = Dimension.fillToConstraints
                         },
                     title = title,
                     subTitle = subTitle,
@@ -228,7 +230,6 @@ fun BreakfastDescription(
         Spacer(modifier = Modifier.preferredHeight(24.dp))
 
         Text(
-            modifier = Modifier.padding(end = 16.dp),
             text = description,
             maxLines = 3,
             fontWeight = FontWeight.Light,
