@@ -36,7 +36,6 @@ import androidx.compose.ui.layout.WithConstraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.beetlestance.aphid.common_compose.LogCompositions
 import com.beetlestance.aphid.common_compose.extensions.toDp
 import com.beetlestance.aphid.common_compose.extensions.toPx
 import com.beetlestance.aphid.common_compose.utils.CurveCut
@@ -59,21 +58,19 @@ fun CurvedCutBottomNavigation(
         remember { CurvedCutBottomNavigationState(defaultSelectedItem = defaultSelection) }
 
     val curveBottomOffset = CurvedBottomNavigationOffset.toPx()
-    val fabRadius = BottomNavigationHeight.div(2)
 
     WithConstraints(modifier = modifier.clipToBounds()) {
         val menuItemWidth = constraints.maxWidth / menuItems
-        val layoutHeight = BottomNavigationHeight + fabRadius
 
         val layoutSize = Size(
             width = constraints.maxWidth.toFloat(),
-            height = layoutHeight.toPx()
+            height = CurveCutBottomNavigationHeight.toPx()
         )
 
         val menuItemCenterX = menuItemWidth / 2
         val cellCentreOffsetX = menuItemWidth * state.selectedItem + menuItemCenterX
         val currentOffsetX = cellCentreOffsetX.toFloat()
-        val currentFabOffsetX = cellCentreOffsetX.toDp() - fabRadius
+        val currentFabOffsetX = cellCentreOffsetX.toDp() - FabRadius
 
         val menuItemOffsetX = animate(
             target = currentOffsetX,
@@ -84,14 +81,17 @@ fun CurvedCutBottomNavigation(
 
         val fabIsInPosition = fabOffsetX == currentFabOffsetX
 
-        val fabOffsetY = animate(if (fabIsInPosition) 8.dp else layoutHeight)
+        val fabOffsetY = animate(if (fabIsInPosition) 8.dp else CurveCutBottomNavigationHeight)
 
-        val rect = Rect(offset = Offset(x = 0f, y = fabRadius.toPx()), size = layoutSize)
+        val rect = Rect(
+            offset = Offset(x = 0f, y = FabRadius.plus(FabDepthMargin).toPx()),
+            size = layoutSize
+        )
 
         // have to provide click behaviour in case to reset the nav controller destination.
         FloatingActionButton(
             onClick = {},
-            modifier = Modifier.size(fabRadius.times(2))
+            modifier = Modifier.size(FabRadius.times(2))
                 .offset(x = fabOffsetX, y = fabOffsetY),
             backgroundColor = fabBackgroundColor,
             elevation = FloatingActionButtonConstants.defaultElevation(
@@ -102,18 +102,18 @@ fun CurvedCutBottomNavigation(
         )
 
         Surface(
-            modifier = Modifier.preferredHeight(layoutHeight),
+            modifier = Modifier.preferredHeight(CurveCutBottomNavigationHeight),
             color = backgroundColor,
             elevation = elevation,
             shape = CurveCut(
                 rect = rect,
                 offsetX = menuItemOffsetX,
                 curveBottomOffset = curveBottomOffset,
-                radius = fabRadius.toPx()
+                radius = FabRadius.toPx()
             )
         ) {
             Layout(
-                modifier = Modifier.fillMaxWidth().preferredHeight(layoutHeight),
+                modifier = Modifier.fillMaxWidth().preferredHeight(CurveCutBottomNavigationHeight),
                 children = { content(state) }
             ) { measurables, constraints ->
                 layout(constraints.maxWidth, constraints.maxHeight) {
@@ -124,13 +124,13 @@ fun CurvedCutBottomNavigation(
                         val placeable = measurable.measure(
                             constraints.copy(
                                 minWidth = menuItemWidth,
-                                minHeight = constraints.maxHeight - fabRadius.toIntPx()
+                                minHeight = constraints.maxHeight - FabRadius.toIntPx()
                             )
                         )
 
                         val offset = IntOffset(
                             x = index * menuItemWidth,
-                            y = fabRadius.toIntPx().div(2)
+                            y = FabRadius.toIntPx().div(2)
                         )
 
                         placeable.place(offset)
@@ -207,6 +207,12 @@ private val BottomNavigationAnimationSpec = TweenSpec<Float>(
 )
 
 private val BottomNavigationHeight = 56.dp
+
+private val FabRadius = 56.dp.div(2)
+
+private val FabDepthMargin = 8.dp
+
+private val CurveCutBottomNavigationHeight = BottomNavigationHeight + FabRadius + FabDepthMargin
 
 private val CurvedBottomNavigationOffset = 12.dp
 
