@@ -78,6 +78,32 @@ class DominantColorState(
         onColor = result?.onColor ?: defaultOnColor
     }
 
+    fun updateColorsFromBitmap(bitmap: Bitmap) {
+        val dominantColors = calculateDominantColor(bitmap)
+        color = dominantColors?.color ?: defaultColor
+        onColor = dominantColors?.onColor ?: defaultOnColor
+    }
+
+    private fun calculateDominantColor(bitmap: Bitmap): DominantColors? {
+        val hash = bitmap.hashCode()
+        val cached = cache?.get(hash)
+
+        if (cached != null) return cached
+
+        return bitmap.dominantColorOrNull()
+            .sortedByDescending { swatch -> swatch.population }
+            .firstOrNull { swatch -> isColorValid(Color(swatch.rgb)) }
+            ?.let { swatch ->
+                DominantColors(
+                    color = Color(swatch.rgb),
+                    onColor = Color(swatch.bodyTextColor)
+                )
+            }
+            ?.also { result ->
+                cache?.put(hash, result)
+            }
+    }
+
     private suspend fun calculateDominantColor(url: Any): DominantColors? {
         val cached = cache?.get(url)
         if (cached != null) {
@@ -112,7 +138,10 @@ class DominantColorState(
 }
 
 @Immutable
-private data class DominantColors(val color: Color, val onColor: Color)
+private data class DominantColors(
+    val color: Color,
+    val onColor: Color
+)
 
 
 /**
@@ -150,4 +179,12 @@ private suspend fun calculateSwatchesInImage(
             palette.swatches
         }
     } ?: emptyList()
+}
+
+private fun Bitmap.dominantColorOrNull(): List<Palette.Swatch> {
+    return Palette.Builder(this)
+        .resizeBitmapArea(0)
+        .clearFilters()
+        .maximumColorCount(16)
+        .generate().swatches
 }

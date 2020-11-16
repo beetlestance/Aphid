@@ -3,10 +3,11 @@ package com.beetlestance.aphid.common_compose.extensions
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.luminance
+import androidx.core.graphics.toColorInt
 import kotlin.math.max
 import kotlin.math.min
 
-fun Color.constrastAgainst(background: Color): Float {
+fun Color.contrastAgainst(background: Color): Float {
     val fg = if (alpha < 1f) compositeOver(background) else this
 
     val fgLuminance = fg.luminance() + 0.05f
@@ -14,3 +15,5 @@ fun Color.constrastAgainst(background: Color): Float {
 
     return max(fgLuminance, bgLuminance) / min(fgLuminance, bgLuminance)
 }
+
+fun String.toColor() = Color(this.toColorInt())

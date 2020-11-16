@@ -42,6 +42,7 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":spoonacular-kotlin"))
 
+    implementation(Libs.AndroidX.coreKtx)
     // Testing
     testImplementation(Libs.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.junit)

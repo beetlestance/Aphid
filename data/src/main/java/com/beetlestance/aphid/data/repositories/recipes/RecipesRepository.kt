@@ -22,7 +22,8 @@ class RecipesRepository @Inject constructor(
         type: String?,
         numberOfRecipes: Int
     ) {
-        if (numberOfRecipes > 10) return
+        val dbRecipes = recipesStore.numberOfRecipesSaved()
+        if (dbRecipes > 0) return
 
         val recipeResult = recipesDataSource.fetchRecipes(
             maxReadyTime = maxReadyTime,

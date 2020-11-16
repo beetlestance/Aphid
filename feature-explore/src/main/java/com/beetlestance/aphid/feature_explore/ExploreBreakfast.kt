@@ -1,6 +1,9 @@
 package com.beetlestance.aphid.feature_explore
 
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import androidx.compose.animation.animate
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ConstraintLayout
@@ -20,33 +23,39 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Providers
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.drawLayer
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.core.graphics.toColorInt
+import androidx.core.graphics.drawable.toBitmap
 import com.beetlestance.aphid.common_compose.DynamicThemePrimaryColorsFromImage
 import com.beetlestance.aphid.common_compose.R
-import com.beetlestance.aphid.common_compose.extensions.constrastAgainst
+import com.beetlestance.aphid.common_compose.extensions.contrastAgainst
+import com.beetlestance.aphid.common_compose.extensions.getBitmap
+import com.beetlestance.aphid.common_compose.extensions.rememberMutableState
+import com.beetlestance.aphid.common_compose.extensions.toColor
 import com.beetlestance.aphid.common_compose.extensions.verticalGradientBackground
 import com.beetlestance.aphid.common_compose.rememberDominantColorState
 import dev.chrisbanes.accompanist.coil.CoilImage
+import dev.chrisbanes.accompanist.imageloading.toPainter
 
 
 /**
- * This is the minimum amount of calculated constrast for a color to be used on top of the
+ * This is the minimum amount of calculated contrast for a color to be used on top of the
  * surface color. These values are defined within the WCAG AA guidelines, and we use a value of
  * 3:1 which is the minimum for user-interface components.
  */
-private const val MinConstastOfPrimaryVsSurface = 3f
+private const val MinContrastOfPrimaryVsSurface = 3f
 
 @Composable
 fun ExploreBreakfastCard(
@@ -65,14 +74,13 @@ fun ExploreBreakfastCard(
         defaultColor = MaterialTheme.colors.onPrimary
     ) { color ->
         // We want a color which has sufficient contrast against the surface color
-        color.constrastAgainst(surfaceColor) >= MinConstastOfPrimaryVsSurface
+        color.contrastAgainst(surfaceColor) >= MinContrastOfPrimaryVsSurface
     }
     DynamicThemePrimaryColorsFromImage(
         dominantColorState = dominantColorState
     ) {
         Color.LightGray
-        val dominantColors =
-            listOf(dominantColorState.color, Color("#fafafa".toColorInt()))
+        val dominantColors = listOf(dominantColorState.color, "#fafafa".toColor())
         Surface(
             modifier = modifier
                 .padding(32.dp)
@@ -95,8 +103,13 @@ fun ExploreBreakfastCard(
                 val topGuideline = createGuidelineFromTop(16.dp)
                 val bottomGuideline = createGuidelineFromBottom(16.dp)
 
+                val context = ContextAmbient.current
+                val drawable: MutableState<Drawable?> = rememberMutableState { null }
                 LaunchedEffect(subject = imageSrc) {
-                    dominantColorState.updateColorsFromImageUrl(imageSrc)
+                    drawable.value = getBitmap(context, imageSrc)
+                    if (drawable.value != null) {
+                        dominantColorState.updateColorsFromBitmap(drawable.value!!.toBitmap())
+                    }
                 }
 
                 Surface(
@@ -110,10 +123,12 @@ fun ExploreBreakfastCard(
                     shape = RoundedCornerShape(16.dp),
                     elevation = 16.dp
                 ) {
-                    CoilImage(
-                        contentScale = ContentScale.Crop,
-                        data = imageSrc
-                    )
+                    if(drawable.value != null){
+                        Image(
+                            painter = drawable.value!!.toPainter(),
+                            contentScale = ContentScale.Crop
+                        )
+                    }
                 }
 
 
