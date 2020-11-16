@@ -5,9 +5,11 @@ import androidx.compose.animation.animate
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.VectorizedAnimationSpec
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.size
@@ -31,10 +33,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.WithConstraints
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.beetlestance.aphid.common_compose.extensions.toDp
 import com.beetlestance.aphid.common_compose.extensions.toPx
@@ -112,31 +112,14 @@ fun CurvedCutBottomNavigation(
                 radius = FabRadius.toPx()
             )
         ) {
-            Layout(
-                modifier = Modifier.fillMaxWidth().preferredHeight(CurveCutBottomNavigationHeight),
+            Row(
+                modifier = Modifier.fillMaxWidth().height(BottomNavigationHeight).offset(
+                    x = 0.dp, y = FabRadius - FabDepthMargin
+                ),
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically,
                 children = { content(state) }
-            ) { measurables, constraints ->
-                layout(constraints.maxWidth, constraints.maxHeight) {
-                    // Place navigation menu items
-                    measurables.forEachIndexed { index, measurable ->
-                        // set width of menu item
-                        // make the complete bottom navigation clickable
-                        val placeable = measurable.measure(
-                            constraints.copy(
-                                minWidth = menuItemWidth,
-                                minHeight = constraints.maxHeight - FabRadius.toIntPx()
-                            )
-                        )
-
-                        val offset = IntOffset(
-                            x = index * menuItemWidth,
-                            y = FabRadius.toIntPx().div(2)
-                        )
-
-                        placeable.place(offset)
-                    }
-                }
-            }
+            )
         }
 
     }
@@ -163,11 +146,9 @@ fun CurvedCutBottomNavigationItem(
             selected = selected,
             onClick = onClick,
             indication = null
-        ).fillMaxHeight(),
-        alignment = Alignment.Center
-    ) {
-        icon()
-    }
+        ),
+        children = { icon() }
+    )
 }
 
 
