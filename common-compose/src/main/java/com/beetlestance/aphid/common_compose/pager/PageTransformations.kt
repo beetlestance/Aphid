@@ -70,7 +70,7 @@ interface PageTransformation {
                             alpha = 1 - offset,
                             scaleX = scaleFactor,
                             scaleY = scaleFactor,
-                            translationX = size.width.div(4).times(-offset)
+                            translationX = size.width.times(-offset)
                         )
                     }
                     else -> PageTransformState()

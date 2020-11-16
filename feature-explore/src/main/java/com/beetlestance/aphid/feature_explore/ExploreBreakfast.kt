@@ -1,6 +1,5 @@
 package com.beetlestance.aphid.feature_explore
 
-import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import androidx.annotation.FloatRange
 import androidx.compose.animation.animate
@@ -49,10 +48,7 @@ import com.beetlestance.aphid.common_compose.R
 import com.beetlestance.aphid.common_compose.extensions.contrastAgainst
 import com.beetlestance.aphid.common_compose.extensions.getBitmap
 import com.beetlestance.aphid.common_compose.extensions.rememberMutableState
-import com.beetlestance.aphid.common_compose.extensions.toColor
-import com.beetlestance.aphid.common_compose.extensions.verticalGradientBackground
 import com.beetlestance.aphid.common_compose.rememberDominantColorState
-import dev.chrisbanes.accompanist.coil.CoilImage
 import dev.chrisbanes.accompanist.imageloading.toPainter
 
 
@@ -95,10 +91,8 @@ fun ExploreBreakfastCard(
     DynamicThemePrimaryColorsFromImage(
         dominantColorState = dominantColorState
     ) {
-
         Surface(
             modifier = modifier
-                .padding(32.dp)
                 .aspectRatio(13 / 20f)
                 .drawLayer(
                     shadowElevation = 32f,

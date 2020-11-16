@@ -24,10 +24,17 @@ import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.ParentDataModifier
+import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.platform.AnimationClockAmbient
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastForEachIndexed
 import androidx.compose.ui.zIndex
+import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
+import kotlin.math.sign
 
 /**
  * Stole from jetpack compose samples - JetCaster
@@ -202,6 +209,9 @@ fun Pager(
     )
 }
 
+private val PageContentVerticalPadding = 32.dp
+val NO_HINT = 0.dp
+
 @Composable
 fun PageLayout(
     state: PagerState,
@@ -210,9 +220,11 @@ fun PageLayout(
     minPage: Int,
     maxPage: Int,
     isCarousel: Boolean,
+    pageHint: Dp = NO_HINT,
     children: @Composable () -> Unit
 ) {
     var pageSize by remember { mutableStateOf(0) }
+
 
     Layout(
         children = children,
@@ -240,29 +252,56 @@ fun PageLayout(
                 }
             }
     ) { measurables, constraints ->
-        layout(constraints.maxWidth, constraints.maxHeight) {
-            val currentPage = state.currentPage
-            val childConstraints = constraints.copy(minWidth = 0, minHeight = 0)
 
-            measurables
-                .map {
-                    it.measure(childConstraints) to it.page
-                }
-                .forEach { (placeable, page) ->
-                    // TODO: current this centers each page. We should investigate reading
-                    //  gravity modifiers on the child, or maybe as a param to Pager.
-                    val xCenterOffset = (constraints.maxWidth - placeable.width) / 2
-                    val yCenterOffset = (constraints.maxHeight - placeable.height) / 2
+        var layoutHeight = constraints.maxHeight
+        val layoutWidth = constraints.maxWidth
 
-                    if (currentPage == page) {
-                        pageSize = placeable.width
-                    }
+        // current selected page
+        val currentPage = state.currentPage
 
-                    placeable.place(
-                        x = xCenterOffset + (state.offset(page) * placeable.width).roundToInt(),
-                        y = yCenterOffset
-                    )
-                }
+        // child layout placeables
+        val placeables = arrayOfNulls<Placeable>(measurables.size)
+        val pages = Array(measurables.size) { measurables[it].page }
+        measurables.fastForEachIndexed { index, measurable ->
+            val placeable = measurable.measure(
+                constraints = constraints.copy(
+                    minWidth = 0,
+                    minHeight = 0
+                )
+            )
+
+            // As current page is the page without any transformation we need the width for
+            // measuring drag size
+            if (currentPage == pages[index]) {
+                pageSize = placeable.width
+            }
+
+            layoutHeight = placeable.height + PageContentVerticalPadding.times(2).toIntPx()
+            placeables[index] = placeable
+        }
+
+        layout(layoutWidth, layoutHeight) {
+            placeables.forEachIndexed { index, placeable ->
+                placeable!!
+                val page = pages[index]
+
+                val itemScrollXOffset = state.offset(page)
+
+                val horizontalSpacingForChildren = layoutWidth - placeable.width
+                val verticalSpacingForChildren = layoutHeight - placeable.height
+
+                val hint =
+                    sign(itemScrollXOffset).toInt() * (pageHint.toIntPx() * itemScrollXOffset.absoluteValue).toInt()
+                        .coerceAtMost(horizontalSpacingForChildren.div(2))
+
+                val xCenterOffset =
+                    horizontalSpacingForChildren.div(2) + (placeable.width * itemScrollXOffset).roundToInt()
+
+                placeable.place(
+                    x = xCenterOffset - hint,
+                    y = verticalSpacingForChildren.div(2)
+                )
+            }
         }
     }
 }
@@ -310,7 +349,7 @@ open class PagerScope(
         val transform = pageTransition.transformPage(state.offset(page), size)
         this.withTransform(transformBlock = {
             this.scale(transform.scaleX, transform.scaleY, Offset(center.x, center.y))
-            this.translate(transform.translationX, transform.translationY)
+            //this.translate(transform.translationX, transform.translationY)
         }) {
             this@drawWithContent.drawContent()
         }
