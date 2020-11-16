@@ -83,7 +83,12 @@ class MainActivity : AppCompatActivity() {
                     fabBackgroundColor = MaterialTheme.colors.primarySurface,
                     selectedItem = navItems.indexOf(Screen.Explore),
                     maxItems = navItems.size,
-                    fabIcon = {}
+                    fabIcon = {
+                        val resId = navItems.elementAt(selectedId).iconFilled
+                        val color = MaterialTheme.colors.surface
+                        AndroidIcon(drawableId = resId, tint = color)
+
+                    }
                 ) {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
@@ -93,11 +98,6 @@ class MainActivity : AppCompatActivity() {
                                 val resId = screen.iconOutlined
                                 val color = MaterialTheme.colors.background
                                 Icon(asset = vectorResource(id = resId), tint = color)
-                            },
-                            fabIcon = {
-                                val resId = screen.iconFilled
-                                val color = MaterialTheme.colors.surface
-                                AndroidIcon(drawableId = resId, tint = color)
                             },
                             index = index,
                             selected = currentRoute == screen.route,
