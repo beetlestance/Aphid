@@ -32,6 +32,7 @@ object Libs {
         const val androidAnnotation: String = "androidx.annotation:annotation:1.2.0-alpha01"
         const val appcompat: String = "androidx.appcompat:appcompat:1.3.0-alpha02"
         const val coreKtx: String = "androidx.core:core-ktx:1.5.0-alpha05"
+        const val palette: String = "androidx.palette:palette-ktx:1.0.0"
 
         object Fragment {
             private const val version = "1.3.0-beta01"

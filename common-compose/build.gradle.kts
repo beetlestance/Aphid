@@ -38,7 +38,8 @@ dependencies {
     // Local projects
     implementation(project(":base"))
     implementation(project(":base-android"))
-    implementation("androidx.palette:palette-ktx:1.0.0")
+
+    implementation(Libs.AndroidX.palette)
 
     // Testing
     testImplementation(Libs.Test.junit)
