@@ -101,7 +101,7 @@ fun ExploreBreakfastCard(
                 .padding(32.dp)
                 .aspectRatio(13 / 20f)
                 .drawLayer(
-                    shadowElevation = 16f,
+                    shadowElevation = 32f,
                     shape = RoundedCornerShape(32.dp),
                     clip = true
                 )
