@@ -1,12 +1,13 @@
 package com.beetlestance.aphid.feature_explore
 
-import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import androidx.annotation.FloatRange
 import androidx.compose.animation.animate
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ConstraintLayout
+import androidx.compose.foundation.layout.Dimension
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.drawLayer
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.res.colorResource
@@ -37,16 +39,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.blue
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.green
+import androidx.core.graphics.red
 import com.beetlestance.aphid.common_compose.DynamicThemePrimaryColorsFromImage
 import com.beetlestance.aphid.common_compose.R
 import com.beetlestance.aphid.common_compose.extensions.contrastAgainst
 import com.beetlestance.aphid.common_compose.extensions.getBitmap
 import com.beetlestance.aphid.common_compose.extensions.rememberMutableState
-import com.beetlestance.aphid.common_compose.extensions.toColor
-import com.beetlestance.aphid.common_compose.extensions.verticalGradientBackground
 import com.beetlestance.aphid.common_compose.rememberDominantColorState
-import dev.chrisbanes.accompanist.coil.CoilImage
 import dev.chrisbanes.accompanist.imageloading.toPainter
 
 
@@ -76,23 +78,34 @@ fun ExploreBreakfastCard(
         // We want a color which has sufficient contrast against the surface color
         color.contrastAgainst(surfaceColor) >= MinContrastOfPrimaryVsSurface
     }
+
+    val context = ContextAmbient.current
+    val drawable: MutableState<Drawable?> = rememberMutableState { null }
+    LaunchedEffect(subject = imageSrc) {
+        drawable.value = getBitmap(context, imageSrc)
+        if (drawable.value != null) {
+            dominantColorState.updateColorsFromBitmap(drawable.value!!.toBitmap())
+        }
+    }
+
     DynamicThemePrimaryColorsFromImage(
         dominantColorState = dominantColorState
     ) {
-        Color.LightGray
-        val dominantColors = listOf(dominantColorState.color, "#fafafa".toColor())
         Surface(
             modifier = modifier
-                .padding(32.dp)
                 .aspectRatio(13 / 20f)
                 .drawLayer(
-                    shadowElevation = 16f,
+                    shadowElevation = 32f,
                     shape = RoundedCornerShape(32.dp),
                     clip = true
                 )
-                .verticalGradientBackground(dominantColors)
                 .clip(RoundedCornerShape(32.dp)),
-            color = Color.Transparent
+            color = dominantColorState.color
+                .moveTo(
+                    targetColor = Color.White,
+                    percent = 0.8f,
+                    blueOffset = 0.05f
+                )
         ) {
 
             ConstraintLayout {
@@ -103,14 +116,6 @@ fun ExploreBreakfastCard(
                 val topGuideline = createGuidelineFromTop(16.dp)
                 val bottomGuideline = createGuidelineFromBottom(16.dp)
 
-                val context = ContextAmbient.current
-                val drawable: MutableState<Drawable?> = rememberMutableState { null }
-                LaunchedEffect(subject = imageSrc) {
-                    drawable.value = getBitmap(context, imageSrc)
-                    if (drawable.value != null) {
-                        dominantColorState.updateColorsFromBitmap(drawable.value!!.toBitmap())
-                    }
-                }
 
                 Surface(
                     modifier = Modifier
@@ -123,7 +128,7 @@ fun ExploreBreakfastCard(
                     shape = RoundedCornerShape(16.dp),
                     elevation = 16.dp
                 ) {
-                    if(drawable.value != null){
+                    if (drawable.value != null) {
                         Image(
                             painter = drawable.value!!.toPainter(),
                             contentScale = ContentScale.Crop
@@ -155,6 +160,7 @@ fun ExploreBreakfastCard(
                         .constrainAs(detail) {
                             linkTo(start = startGuideline, end = endGuideLine, bias = 0f)
                             linkTo(top = spacerDetail.bottom, bottom = bottomGuideline, bias = 0f)
+                            width = Dimension.fillToConstraints
                         },
                     title = title,
                     subTitle = subTitle,
@@ -218,7 +224,6 @@ fun BreakfastDescription(
         Spacer(modifier = Modifier.preferredHeight(24.dp))
 
         Text(
-            modifier = Modifier.padding(end = 16.dp),
             text = description,
             maxLines = 3,
             fontWeight = FontWeight.Light,
@@ -226,6 +231,24 @@ fun BreakfastDescription(
             style = MaterialTheme.typography.body2
         )
     }
+}
+
+private fun Color.moveTo(
+    targetColor: Color,
+    @FloatRange(from = 0.0, to = 1.0) percent: Float,
+    @FloatRange(from = 0.0, to = 1.0) redOffset: Float = 0f,
+    @FloatRange(from = 0.0, to = 1.0) greenOffset: Float = 0f,
+    @FloatRange(from = 0.0, to = 1.0) blueOffset: Float = 0f
+): Color {
+    val targetColorRgb = targetColor.toArgb()
+    val dominantColorRgb = this.toArgb()
+    val redDominant =
+        (dominantColorRgb.red + (targetColorRgb.red - dominantColorRgb.red) * (percent + redOffset))
+    val greenDominant =
+        (dominantColorRgb.green + (targetColorRgb.green - dominantColorRgb.green) * (percent + greenOffset))
+    val blueDominant =
+        (dominantColorRgb.blue + (targetColorRgb.blue - dominantColorRgb.blue) * (percent + blueOffset))
+    return Color(redDominant.toInt(), greenDominant.toInt(), blueDominant.toInt())
 }
 
 

@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.preferredHeight
+import androidx.compose.foundation.layout.preferredSize
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -30,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -40,11 +42,12 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.beetlestance.aphid.common_compose.AndroidIcon
-import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutMenuItem
-import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutNavBar
+import com.beetlestance.aphid.common_compose.bottomnavigation.CurvedCutBottomNavigation
+import com.beetlestance.aphid.common_compose.bottomnavigation.CurvedCutBottomNavigationItem
 import com.beetlestance.aphid.feature_explore.Explore
 import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
+import dev.chrisbanes.accompanist.coil.CoilImage
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -78,34 +81,41 @@ class MainActivity : AppCompatActivity() {
         val navController = rememberNavController()
         Scaffold(
             bottomBar = {
-                CurveCutNavBar(
+                CurvedCutBottomNavigation(
                     backgroundColor = MaterialTheme.colors.surface,
                     fabBackgroundColor = MaterialTheme.colors.primarySurface,
-                    selectedItem = navItems.indexOf(Screen.Explore),
-                    maxItems = navItems.size,
-                    fabIcon = {
-                        val resId = navItems.elementAt(selectedId).iconFilled
-                        val color = MaterialTheme.colors.surface
-                        AndroidIcon(drawableId = resId, tint = color)
-
-                    }
-                ) {
+                    defaultSelection = navItems.indexOf(Screen.Explore),
+                    menuItems = navItems.size
+                ) { state ->
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
                     navItems.forEachIndexed { index, screen ->
-                        CurveCutMenuItem(
+                        CurvedCutBottomNavigationItem(
                             icon = {
                                 val resId = screen.iconOutlined
                                 val color = MaterialTheme.colors.background
                                 Icon(asset = vectorResource(id = resId), tint = color)
                             },
+                            fabIcon = {
+                                val resId = screen.iconFilled
+                                val color = MaterialTheme.colors.surface
+                                AndroidIcon(drawableId = resId, tint = color)
+                            },
                             index = index,
+                            state = state,
                             selected = currentRoute == screen.route,
                             onClick = {
                                 // This if check gives us a "singleTop" behavior where we do not create a
                                 // second instance of the composable if we are already on that destination
                                 if (currentRoute != screen.route) {
-                                    navController.navigate(screen.route)
+                                    // This is the equivalent to popUpTo the start destination
+                                    navController.popBackStack(
+                                        navController.graph.startDestination,
+                                        false
+                                    )
+                                    if (screen.route != Screen.Explore.route) {
+                                        navController.navigate(screen.route)
+                                    }
                                 }
                             }
                         )

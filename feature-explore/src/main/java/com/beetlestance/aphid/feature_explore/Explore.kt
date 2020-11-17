@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.preferredWidth
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
@@ -315,7 +316,7 @@ fun BreakFastWithHeader(
     Carousel(
         items = items,
         offscreenLimit = 2,
-        modifier = Modifier.preferredHeight(foodCardPageConfig.maxHeight),
+        pageHint = 24.dp,
         drawSelectedPageAtLast = true
     ) { recipe ->
         val recipeImageUrl: String? = run {
@@ -328,8 +329,9 @@ fun BreakFastWithHeader(
 
         ExploreBreakfastCard(
             modifier = Modifier
-                .preferredHeight(foodCardPageConfig.maxHeight)
-                .transformPage(PageTransformation.DEPTH_TRANSFORM),
+                .fillMaxWidth(0.8f)
+                .aspectRatio(13 / 20f)
+                .transformPage(PageTransformation.SCALE_TRANSFORM),
             imageSrc = recipeImageUrl ?: recipe.imageUrl ?: "",
             isFavourite = recipe.isFavourite ?: false,
             title = recipe.title ?: "",

@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.AnimationClockAmbient
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.zIndex
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -79,6 +80,7 @@ fun <T> Carousel(
     offscreenLimit: Int = 2,
     state: CarouselState = rememberCarouselState(maxPage = items.lastIndex),
     modifier: Modifier = Modifier,
+    pageHint: Dp = NO_HINT,
     drawSelectedPageAtLast: Boolean = false, // for overlap-transformations
     pageContent: @Composable (CarouselScope.(T) -> Unit)
 ) {
@@ -91,6 +93,7 @@ fun <T> Carousel(
         state = state,
         offscreenLimit = offscreenLimit,
         modifier = modifier,
+        pageHint = pageHint,
         children = {
             for (page in minPage..maxPage) {
                 val index = when {
