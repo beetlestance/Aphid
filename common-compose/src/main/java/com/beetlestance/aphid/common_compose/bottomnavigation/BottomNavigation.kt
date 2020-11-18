@@ -1,14 +1,12 @@
 package com.beetlestance.aphid.common_compose.bottomnavigation
 
-import androidx.compose.animation.AnimatedValueModel
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.VectorConverter
 import androidx.compose.animation.animate
-import androidx.compose.animation.asDisposableClock
-import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.TweenSpec
-import androidx.compose.animation.core.VectorizedAnimationSpec
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -18,7 +16,6 @@ import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.FloatingActionButtonConstants
 import androidx.compose.material.MaterialTheme
@@ -29,7 +26,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.onCommit
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -44,7 +40,6 @@ import androidx.compose.ui.graphics.PathOperation
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.addOutline
 import androidx.compose.ui.layout.SubcomposeLayout
-import androidx.compose.ui.platform.AnimationClockAmbient
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -53,6 +48,7 @@ import androidx.compose.ui.util.fastMap
 import androidx.compose.ui.zIndex
 import kotlin.math.sqrt
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun CurveCutNavBar(
     modifier: Modifier = Modifier,
@@ -120,7 +116,14 @@ fun CurveCutNavBar(
                     scope = scope,
                     backgroundColor = fabBackgroundColor,
                     contentColor = fabContentColor,
-                    fabIcon = if (fabPlacement.isDocked) fabIcon else NoIcon,
+                    fabIcon = {
+                        AnimatedVisibility(
+                            visible = fabPlacement.isDocked,
+                            enter = fadeIn(),
+                            exit = fadeOut(),
+                            content = { if (fabPlacement.isDocked) fabIcon() else NoIcon() }
+                        )
+                    },
                     onClick = fabOnClick
                 )
             }.fastMap { it.measure(looseConstraints) }
@@ -388,8 +391,6 @@ class CurveCutNavBarScope(
     val selectedId: Int = state.selectedItem
 )
 
-private fun abs(dp: Dp) = if (dp >= 0.dp) dp else -dp
-
 private class FabPlacement(
     val isDocked: Boolean,
     val offsetX: Dp,
@@ -402,35 +403,18 @@ private fun animateBounce(
     peak: Dp,
     depth: Dp
 ): FabPlacement {
-    val clock = AnimationClockAmbient.current.asDisposableClock()
 
-    val anim = remember(clock, Dp.VectorConverter) {
-        AnimatedValueModel(distance, Dp.VectorConverter, clock)
-    }
+    val distanceCovered = animate(target = distance, CurveCutBezierEasing)
 
-    onCommit(distance) {
-        anim.animateTo(distance, CurveCutBezierEasing)
-    }
-
-    val distanceCovered = anim.value
     val offsetY: Dp = if (distanceCovered == distance) peak else depth
+    val heightOffset = animate(target = offsetY, CurveCutBezierEasing)
+
     return FabPlacement(
-        isDocked = anim.isRunning,
+        isDocked = offsetY == peak,
         offsetX = distanceCovered,
-        offsetY = animate(offsetY, CurveCutBezierEasing)
+        offsetY = heightOffset
     )
 }
-
-/**
- * [VectorizedAnimationSpec] controlling the transition between unselected and selected
- * [BottomNavigationItem]s.
- *
- * This is like SlowOutSlowIn easing
- */
-private val BottomNavigationAnimationSpec = TweenSpec<Float>(
-    durationMillis = 300,
-    easing = CubicBezierEasing(0.2f, 0f, 0.8f, 1f)
-)
 
 private val CurveCutBezierEasing = TweenSpec<Dp>(
     durationMillis = 300,
