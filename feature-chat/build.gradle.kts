@@ -6,6 +6,7 @@ plugins {
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 kapt {
@@ -40,12 +41,26 @@ dependencies {
     implementation(project(":base-android"))
     implementation(project(":common-compose"))
     implementation(project(":data"))
+    implementation(project(":domain"))
     implementation(project(":spoonacular-kotlin"))
 
-    implementation(Libs.AndroidX.coreKtx)
     // Testing
     testImplementation(Libs.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.espressoCore)
+
+    // Core
+    implementation(Libs.AndroidX.coreKtx)
+
+    // Lifecycle
+    implementation(Libs.AndroidX.Lifecycle.viewmodelKtx)
+
+    implementation(Libs.AndroidX.Lifecycle.livedataKtx)
+
+    // Hilt
+    implementation(Libs.Hilt.library)
+    implementation(Libs.AndroidX.Hilt.viewmodel)
+    kapt(Libs.AndroidX.Hilt.compiler)
+    kapt(Libs.Hilt.compiler)
 
 }

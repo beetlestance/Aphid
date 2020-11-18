@@ -61,7 +61,7 @@ object NetworkModule {
                     addInterceptor(httpLoggingInterceptor)
                 }
                 if (loggingEventListener != null) {
-                    eventListenerFactory(loggingEventListener)
+                    //eventListenerFactory(loggingEventListener)
                 }
             }
             // Around 4¢ worth of storage in 2020

@@ -20,9 +20,9 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.preferredHeight
-import androidx.compose.foundation.layout.preferredSize
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -31,7 +31,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -45,15 +44,16 @@ import com.beetlestance.aphid.common_compose.AndroidIcon
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurvedCutBottomNavigation
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurvedCutBottomNavigationItem
 import com.beetlestance.aphid.feature_chat.Chat
+import com.beetlestance.aphid.feature_chat.ChatViewModel
 import com.beetlestance.aphid.feature_explore.Explore
 import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
-import dev.chrisbanes.accompanist.coil.CoilImage
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainActivityViewModel by viewModels()
+    private val chatViewModel: ChatViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity() {
         ) { navigationPadding ->
             NavHost(navController, startDestination = Screen.Explore.route) {
                 composable(Screen.Chat.route) {
-                    Chat(navigationPadding)
+                    ChatScreen(navigationPadding)
                 }
 
                 composable(Screen.Explore.route) {
@@ -151,6 +151,15 @@ class MainActivity : AppCompatActivity() {
     @Composable
     private fun Profile() {
 
+    }
+
+    @Composable
+    private fun ChatScreen(paddingValues: PaddingValues) {
+        val state by chatViewModel.liveData.observeAsState()
+
+        Chat(paddingValues = paddingValues, state = state) {
+            chatViewModel.submitAction(it)
+        }
     }
 
     private val navItems = listOf(

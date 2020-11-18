@@ -38,6 +38,9 @@ object DatabaseDaoModule {
 
     @Provides
     fun provideAphidRecipes(db: AphidDatabase) = db.recipesDao()
+
+    @Provides
+    fun provideAphidChats(db: AphidDatabase) = db.chatDao()
 }
 
 @InstallIn(ApplicationComponent::class)

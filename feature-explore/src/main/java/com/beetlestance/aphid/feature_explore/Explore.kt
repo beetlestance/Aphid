@@ -98,7 +98,6 @@ fun Explore(
                 alignment = Alignment.Top
             )
         ) {
-            Timber.d("$state")
             /*val searchState = rememberSearchState()
             val searchQuery = savedInstanceState(saver = TextFieldValue.Saver) {
                 TextFieldValue(searchState.query)
