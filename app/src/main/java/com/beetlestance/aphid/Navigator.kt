@@ -10,7 +10,7 @@ sealed class Screen(
     object Chat :
         Screen(
             route = "chat",
-            iconFilled = R.drawable.avd_star,
+            iconFilled = R.drawable.chat_filled,
             iconOutlined = R.drawable.chat_outline
         )
 

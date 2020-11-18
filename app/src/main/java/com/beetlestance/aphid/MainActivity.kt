@@ -44,6 +44,7 @@ import androidx.navigation.compose.rememberNavController
 import com.beetlestance.aphid.common_compose.AndroidIcon
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurvedCutBottomNavigation
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurvedCutBottomNavigationItem
+import com.beetlestance.aphid.feature_chat.Chat
 import com.beetlestance.aphid.feature_explore.Explore
 import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -122,9 +123,12 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-        ) {
+        ) { navigationPadding ->
             NavHost(navController, startDestination = Screen.Explore.route) {
-                composable(Screen.Chat.route) { Profile() }
+                composable(Screen.Chat.route) {
+                    Chat(navigationPadding)
+                }
+
                 composable(Screen.Explore.route) {
                     val viewState by viewModel.liveData.observeAsState()
                     if (viewState != null) {
@@ -133,8 +137,11 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }
+
                 composable(Screen.MealPlanner.route) { Profile() }
+
                 composable(Screen.Grocery.route) { Profile() }
+
                 composable(Screen.Profile.route) { Profile() }
             }
             Spacer(modifier = Modifier.preferredHeight(56.dp))
