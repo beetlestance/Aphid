@@ -1,6 +1,8 @@
 package com.beetlestance.aphid.feature_chat
 
+import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,8 +23,10 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -30,16 +34,21 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.ExperimentalFocus
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focusObserver
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.node.Ref
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.SoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -69,7 +78,8 @@ fun Chat(
             ChatInput(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
-                    .padding(bottom = 16.dp)
+                    .padding(bottom = 16.dp),
+                onQuerySubmit = {}
             )
         }
     }
@@ -148,8 +158,13 @@ fun EmptyChatHint(
 @Composable
 private fun ChatInput(
     state: InputState = rememberInputState(),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onQuerySubmit: (String) -> Unit
 ) {
+    // reference for the keyboard
+    // to be used for hiding key board
+    val keyboardController: Ref<SoftwareKeyboardController> = remember { Ref() }
+
     Surface(
         shape = RoundedCornerShape(
             topLeftPercent = 50,
@@ -163,14 +178,16 @@ private fun ChatInput(
             .preferredHeight(56.dp)
     ) {
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxWidth(),
+            alignment = Alignment.Center
+
         ) {
             if (state.query.text.isEmpty()) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .padding(horizontal = 32.dp)
-                        .fillMaxSize()
+                        .fillMaxWidth()
                         .wrapContentSize()
                 ) {
                     Text(
@@ -186,7 +203,7 @@ private fun ChatInput(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .padding(horizontal = 32.dp)
-                    .fillMaxSize()
+                    .fillMaxWidth()
                     .wrapContentHeight()
             ) {
                 BasicTextField(
@@ -194,14 +211,30 @@ private fun ChatInput(
                     onValueChange = {
                         state.query = it
                     },
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Next
+                    ),
+                    onImeActionPerformed = {
+                        // Change: Find out why state clear is not working here
+                        // Theory: Composable is recomposing which is resulting in state side effects
+                        keyboardController.value?.hideSoftwareKeyboard()
+                    },
+                    onTextInputStarted = {
+                        keyboardController.value = it
+                    },
                     modifier = Modifier
                         .weight(1f)
-                        .focusObserver {
-                            state.focused = it == FocusState.Active
-                        }
                 )
 
-                Icon(asset = vectorResource(id = R.drawable.ic_chat_input_send))
+                Icon(
+                    asset = vectorResource(id = R.drawable.ic_chat_input_send),
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .clickable(onClick = {
+                            state.clear()
+                        })
+                        .padding(8.dp)
+                )
             }
         }
     }
@@ -209,24 +242,25 @@ private fun ChatInput(
 
 @Composable
 private fun rememberInputState(
-    query: TextFieldValue = TextFieldValue(""),
-    focused: Boolean = false
+    query: TextFieldValue = TextFieldValue("")
 ): InputState {
     return remember {
         InputState(
-            query = query,
-            focused = focused
+            query = query
         )
     }
 }
 
 @Stable
 class InputState(
-    query: TextFieldValue,
-    focused: Boolean
+    query: TextFieldValue
 ) {
     var query by mutableStateOf(query)
-    var focused by mutableStateOf(focused)
+
+    @Stable
+    fun clear() {
+        query = TextFieldValue("")
+    }
 }
 
 @Preview
