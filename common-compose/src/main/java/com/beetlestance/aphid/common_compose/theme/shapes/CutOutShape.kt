@@ -1,6 +1,7 @@
 package com.beetlestance.aphid.common_compose.theme.shapes
 
 import androidx.annotation.Px
+import androidx.compose.material.BottomAppBar
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
@@ -10,14 +11,19 @@ import androidx.compose.ui.graphics.PathOperation
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.addOutline
 import androidx.compose.ui.unit.Density
+import com.beetlestance.aphid.common_compose.utils.square
 import kotlin.math.sqrt
 
+/**
+ * Took BottomAppBarCutoutShape from [BottomAppBar]
+ * */
 class CutOutShape(
     private val cutOutShape: Shape,
     private val cutOutShapeSize: Size,
     @Px private val cutOutShapeMargin: Float,
     @Px private val cutoutStartOffset: Float,
-    @Px private val cutOutEdgeRadius: Float
+    @Px private val cutOutEdgeRadius: Float = 0f,
+    private val smoothEdge: Boolean = true
 ) : Shape {
 
     override fun createOutline(size: Size, density: Density): Outline {
@@ -56,7 +62,9 @@ class CutOutShape(
         addOutline(cutOutShape.createOutline(cutoutSize, density))
         translate(Offset(cutoutStartX, cutoutStartY))
 
-        addRoundedEdges(cutoutStartX, cutoutEndX, cutoutRadius, cutOutEdgeRadius, 0f)
+        if (smoothEdge) {
+            addRoundedEdges(cutoutStartX, cutoutEndX, cutoutRadius, cutOutEdgeRadius, 0f)
+        }
     }
 
     private fun Path.addRoundedEdges(
@@ -162,9 +170,6 @@ class CutOutShape(
         val adjustedYSolution = if (xSolution < controlPointX) -ySolution else ySolution
         return xSolution to adjustedYSolution
     }
-
-    @Suppress("NOTHING_TO_INLINE")
-    private inline fun square(x: Float) = x * x
 
     private fun calculateCutoutCircleYIntercept(
         cutoutRadius: Float,
