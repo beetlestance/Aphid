@@ -441,7 +441,7 @@ fun CuisineCard() {
     ) {
         Image(
             modifier = Modifier.fillMaxWidth().clipToBounds().aspectRatio(1f),
-            asset = imageResource(id = R.drawable.temp_chinese),
+            asset = imageResource(id = R.drawable.temp_brownie),
             contentScale = ContentScale.Crop
         )
     }
@@ -536,7 +536,7 @@ fun QuickRecipesWithHeader(
         FoodCardPage(
             modifier = Modifier.transformPage(PageTransformation.ZOOM_OUT),
             pageConfig = pageConfig,
-            placeholder = R.drawable.temp_noodles,
+            placeholder = R.drawable.temp_brownie,
             isSelected = page == currentPage,
             imageUrl = recipeImageUrl ?: "",
             onCheckedChange = { isFavourite -> markRecipeAsFavourite(recipe, isFavourite) },
@@ -590,7 +590,7 @@ fun RecentlyViewedRecipesWithHeader(
         FoodCardPage(
             modifier = Modifier.transformPage(PageTransformation.STAIRCASE_TRANSFORM),
             pageConfig = pageConfig,
-            placeholder = R.drawable.temp_noodles,
+            placeholder = R.drawable.temp_brownie,
             isSelected = page == currentPage,
             imageUrl = recipeImageUrl ?: "",
             onCheckedChange = { isFavourite -> markRecipeAsFavourite(recipe, isFavourite) },

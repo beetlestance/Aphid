@@ -84,6 +84,7 @@ dependencies {
     implementation(project(":data-android"))
     implementation(project(":domain"))
     implementation(project(":feature-explore"))
+    implementation(project(":feature-profile"))
     implementation(project(":spoonacular"))
     implementation(project(":spoonacular-kotlin"))
 

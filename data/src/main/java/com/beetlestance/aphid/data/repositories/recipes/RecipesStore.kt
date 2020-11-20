@@ -12,7 +12,11 @@ class RecipesStore @Inject constructor(
     fun observeRecipes(): Flow<List<Recipe>> = recipesDao.recipesObservable()
 
     fun observeRecentlyViewedRecipes(limit: Int): Flow<List<Recipe>> =
-        recipesDao.favouriteRecipesObservable(limit)
+        recipesDao.recentlyViewedRecipesObservable(limit)
+
+    fun observeFavouriteRecipes(): Flow<List<Recipe>> = recipesDao.favouriteRecipesObservable()
+
+    fun observeSavedRecipes(): Flow<List<Recipe>> = recipesDao.savedRecipesObservable()
 
     fun observeRecipesWithReadyTime(time: Long): Flow<List<Recipe>> =
         recipesDao.quickRecipesObservable(time)

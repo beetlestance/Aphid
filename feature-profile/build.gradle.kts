@@ -40,10 +40,20 @@ dependencies {
     implementation(project(":base-android"))
     implementation(project(":common-compose"))
     implementation(project(":data"))
+    implementation(project(":domain"))
     implementation(project(":spoonacular-kotlin"))
 
     // AndroidX
     implementation(Libs.AndroidX.coreKtx)
+
+    // Lifecycle
+    implementation(Libs.AndroidX.Lifecycle.viewmodelKtx)
+
+    // Hilt
+    implementation(Libs.Hilt.library)
+    implementation(Libs.AndroidX.Hilt.viewmodel)
+    kapt(Libs.AndroidX.Hilt.compiler)
+    kapt(Libs.Hilt.compiler)
 
     // Testing
     testImplementation(Libs.Test.junit)

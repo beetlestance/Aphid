@@ -20,7 +20,15 @@ abstract class RecipeDao : EntityDao<Recipe>() {
 
     @Transaction
     @Query(value = "$ALL_RECIPE_QUERY WHERE is_favourite = 1 LIMIT :limit ")
-    abstract fun favouriteRecipesObservable(limit: Int): Flow<List<Recipe>>
+    abstract fun recentlyViewedRecipesObservable(limit: Int): Flow<List<Recipe>>
+
+    @Transaction
+    @Query(value = "$ALL_RECIPE_QUERY WHERE is_favourite = 1")
+    abstract fun favouriteRecipesObservable(): Flow<List<Recipe>>
+
+    @Transaction
+    @Query(value = "$ALL_RECIPE_QUERY WHERE is_favourite = 1")
+    abstract fun savedRecipesObservable(): Flow<List<Recipe>>
 
     @Query(value = ALL_RECIPE_QUERY)
     abstract suspend fun allRecipes(): List<Recipe>

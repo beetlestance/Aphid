@@ -43,6 +43,8 @@ import com.beetlestance.aphid.common_compose.AndroidIcon
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutMenuItem
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutNavBar
 import com.beetlestance.aphid.feature_explore.Explore
+import com.beetlestance.aphid.feature_profile.Profile
+import com.beetlestance.aphid.feature_profile.ProfileViewModel
 import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -122,7 +124,7 @@ class MainActivity : AppCompatActivity() {
             }
         ) {
             NavHost(navController, startDestination = Screen.Explore.route) {
-                composable(Screen.Chat.route) { Profile() }
+                composable(Screen.Chat.route) { Dummy() }
                 composable(Screen.Explore.route) {
                     val viewState by viewModel.liveData.observeAsState()
                     if (viewState != null) {
@@ -131,16 +133,18 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }
-                composable(Screen.MealPlanner.route) { Profile() }
-                composable(Screen.Grocery.route) { Profile() }
-                composable(Screen.Profile.route) { Profile() }
+                composable(Screen.MealPlanner.route) { Dummy() }
+                composable(Screen.Grocery.route) { Dummy() }
+                composable(Screen.Profile.route) {
+                    Profile(viewModel = viewModels<ProfileViewModel>().value)
+                }
             }
             Spacer(modifier = Modifier.preferredHeight(56.dp))
         }
     }
 
     @Composable
-    private fun Profile() {
+    private fun Dummy() {
 
     }
 
