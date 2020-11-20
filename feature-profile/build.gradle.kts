@@ -44,6 +44,7 @@ dependencies {
 
     // AndroidX
     implementation(Libs.AndroidX.coreKtx)
+
     // Testing
     testImplementation(Libs.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.junit)
