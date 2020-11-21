@@ -19,7 +19,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.preferredWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,7 +40,6 @@ import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,9 +54,11 @@ import coil.ImageLoader
 import coil.decode.SvgDecoder
 import com.beetlestance.aphid.common_compose.RecipeDetailedPosterCard
 import com.beetlestance.aphid.common_compose.pager.Pager
+import com.beetlestance.aphid.common_compose.pager.PagerState
 import com.beetlestance.aphid.common_compose.pager.rememberPagerState
 import com.beetlestance.aphid.data.entities.Recipe
 import dev.chrisbanes.accompanist.coil.CoilImage
+import kotlin.math.abs
 
 @Composable
 fun Profile(
@@ -88,7 +91,7 @@ private fun Profile(
             ProfileSection(modifier = Modifier.padding(PROFILE_LAYOUT_MARGIN))
         }
 
-        ProfileRecipesTab(
+        ProfileRecipesTabLayout(
             favouriteRecipes = state.favouriteRecipes,
             savedRecipes = state.savedRecipes,
             markRecipeAsFavourite = { recipe, isFavourite ->
@@ -194,36 +197,87 @@ private enum class RecipesTabs(@StringRes val resId: Int) {
 }
 
 @Composable
-private fun ProfileRecipesTab(
+private fun ProfileRecipesTabLayout(
     modifier: Modifier = Modifier,
     favouriteRecipes: List<Recipe>,
     savedRecipes: List<Recipe>,
     markRecipeAsFavourite: (Recipe, Boolean) -> Unit
 ) {
     val tabsResId = remember { RecipesTabs.values().map { it.resId } }
-    val selectedIndex = remember { mutableStateOf(RecipesTabs.SAVED.ordinal) }
-    val pagerState = rememberPagerState(maxPage = tabsResId.lastIndex)
+    val pagerState = rememberPagerState(
+        currentPage = RecipesTabs.SAVED.ordinal,
+        maxPage = tabsResId.lastIndex
+    )
 
+    RecipeTab(modifier = modifier, pagerState = pagerState, tabsResId = tabsResId)
+
+    RecipePager(
+        state = pagerState,
+        savedRecipes = savedRecipes,
+        favouriteRecipes = favouriteRecipes,
+        markRecipeAsFavourite = markRecipeAsFavourite,
+    )
+}
+
+@Composable
+private fun RecipeTab(
+    modifier: Modifier,
+    pagerState: PagerState,
+    tabsResId: List<Int>
+) {
     TabRow(
         modifier = modifier,
-        selectedTabIndex = selectedIndex.value,
+        selectedTabIndex = pagerState.currentPage,
+        indicator = { tabPositions ->
+            with(pagerState) {
+                val tabPosition = tabPositions[currentPage]
+                // CurrentPageOffset is always in -1f to 1f,As tab width is pageSize / itemSize,
+                // i.e for 2 items width offset for given page offset absolute value will always be
+                // in 0 to 0.5 f therefore to calculate tabOffset for given page offset subtract
+                // currentPageOffset from current page
+                val tabOffsetPercentage = currentPage - currentPageOffset
+                // tabOffsetPercentage is dragPosition divided by pageSize, for offset multiply
+                // given percentage with tabSize
+                val tabOffset = tabPosition.width.times(abs(tabOffsetPercentage))
+                val scrollStateIdle = currentPageOffset == 0f
+
+                return@with androidx.compose.material.TabConstants.DefaultIndicator(
+                    Modifier.fillMaxWidth()
+                        .wrapContentSize(Alignment.BottomStart)
+                        .offset(x = if (scrollStateIdle) tabPosition.left else tabOffset)
+                        .preferredWidth(tabPosition.width)
+                )
+            }
+        },
         backgroundColor = MaterialTheme.colors.surface
     ) {
         tabsResId.forEachIndexed { index, resId ->
             Tab(
-                selected = index == selectedIndex.value,
+                selected = index == pagerState.currentPage,
                 onClick = {
-                    selectedIndex.value = index
-                    pagerState.currentPage = index
+                    when {
+                        index > pagerState.currentPage -> pagerState.nextPage()
+                        index < pagerState.currentPage -> pagerState.previousPage()
+                    }
                 },
                 text = { Text(text = stringResource(resId)) }
             )
         }
     }
+}
 
+@Composable
+private fun RecipePager(
+    modifier: Modifier = Modifier,
+    savedRecipes: List<Recipe>,
+    favouriteRecipes: List<Recipe>,
+    markRecipeAsFavourite: (Recipe, Boolean) -> Unit,
+    state: PagerState
+) {
     Pager(
-        lastPage = tabsResId.lastIndex,
-        state = pagerState,
+        modifier = modifier,
+        lastPage = state.maxPage,
+        state = state,
         offscreenLimit = 1
     ) {
         when (page) {
@@ -236,8 +290,6 @@ private fun ProfileRecipesTab(
                 markRecipeAsFavourite = markRecipeAsFavourite
             )
         }
-
-        selectedIndex.value = currentPage
     }
 }
 
