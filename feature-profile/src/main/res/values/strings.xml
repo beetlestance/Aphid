@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--  Profile  -->
+    <string name="profile_action_edit_profile">Edit Profile</string>
+    <string name="profile_tab_saved_recipe">Saved Recipes</string>
+    <string name="profile_tab_favourite_recipe">Liked Recipes</string>
+
+</resources>

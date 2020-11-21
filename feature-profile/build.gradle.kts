@@ -60,4 +60,6 @@ dependencies {
     androidTestImplementation(Libs.AndroidX.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.espressoCore)
 
+    // Coil
+    implementation(Libs.Coil.svgCoil)
 }
