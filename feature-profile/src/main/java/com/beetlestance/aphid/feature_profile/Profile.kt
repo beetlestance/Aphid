@@ -64,15 +64,22 @@ import kotlin.math.abs
 fun Profile(
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues = PaddingValues()
 ) {
     val state by viewModel.liveData.observeAsState(initial = viewModel.currentState())
     val actions: (ProfileActions) -> Unit = { action -> viewModel.submitAction(action) }
 
+    val contentPadding = PaddingValues(
+        top = if (paddingValues.top > 0.dp) paddingValues.top else RECIPE_ITEM_SPACING,
+        start = if (paddingValues.start > 0.dp) paddingValues.start else RECIPE_ITEM_SPACING,
+        end = if (paddingValues.end > 0.dp) paddingValues.end else RECIPE_ITEM_SPACING,
+        bottom = if (paddingValues.bottom > 0.dp) paddingValues.bottom else RECIPE_ITEM_SPACING
+    )
+
     Profile(
         modifier = modifier.fillMaxSize(),
         state = state,
-        paddingValues = paddingValues,
+        paddingValues = contentPadding,
         actions = actions
     )
 }
@@ -85,13 +92,14 @@ private fun Profile(
     actions: (ProfileActions) -> Unit
 ) {
     Column(
-        modifier = modifier.background(MaterialTheme.colors.surface.copy(alpha = 0.95f))
+        modifier = modifier.background(MaterialTheme.colors.surface.copy(alpha = 0.95f)),
     ) {
         Surface(modifier = Modifier.fillMaxWidth(), elevation = 4.dp) {
             ProfileSection(modifier = Modifier.padding(PROFILE_LAYOUT_MARGIN))
         }
 
         ProfileRecipesTabLayout(
+            paddingValues = paddingValues,
             favouriteRecipes = state.favouriteRecipes,
             savedRecipes = state.savedRecipes,
             markRecipeAsFavourite = { recipe, isFavourite ->
@@ -99,7 +107,7 @@ private fun Profile(
             }
         )
 
-        Spacer(modifier = Modifier.height(paddingValues.bottom))
+        Spacer(modifier = modifier.padding(paddingValues))
     }
 }
 
@@ -199,6 +207,7 @@ private enum class RecipesTabs(@StringRes val resId: Int) {
 @Composable
 private fun ProfileRecipesTabLayout(
     modifier: Modifier = Modifier,
+    paddingValues: PaddingValues,
     favouriteRecipes: List<Recipe>,
     savedRecipes: List<Recipe>,
     markRecipeAsFavourite: (Recipe, Boolean) -> Unit
@@ -213,6 +222,7 @@ private fun ProfileRecipesTabLayout(
 
     RecipePager(
         state = pagerState,
+        paddingValues = paddingValues,
         savedRecipes = savedRecipes,
         favouriteRecipes = favouriteRecipes,
         markRecipeAsFavourite = markRecipeAsFavourite,
@@ -271,6 +281,7 @@ private fun RecipePager(
     modifier: Modifier = Modifier,
     savedRecipes: List<Recipe>,
     favouriteRecipes: List<Recipe>,
+    paddingValues: PaddingValues,
     markRecipeAsFavourite: (Recipe, Boolean) -> Unit,
     state: PagerState
 ) {
@@ -283,10 +294,12 @@ private fun RecipePager(
         when (page) {
             RecipesTabs.SAVED.ordinal -> SavedRecipes(
                 savedRecipes = savedRecipes,
+                paddingValues = paddingValues,
                 markRecipeAsFavourite = markRecipeAsFavourite
             )
             RecipesTabs.FAVOURITE.ordinal -> FavouriteRecipes(
                 favouriteRecipes = favouriteRecipes,
+                paddingValues = paddingValues,
                 markRecipeAsFavourite = markRecipeAsFavourite
             )
         }
@@ -300,12 +313,13 @@ private val RECIPE_ITEM_SPACING = 16.dp
 private fun SavedRecipes(
     modifier: Modifier = Modifier,
     savedRecipes: List<Recipe>,
+    paddingValues: PaddingValues,
     markRecipeAsFavourite: (Recipe, Boolean) -> Unit
 ) {
     LazyColumnFor(
         modifier = modifier,
         items = savedRecipes,
-        contentPadding = PaddingValues(RECIPE_ITEM_SPACING),
+        contentPadding = paddingValues,
         itemContent = { recipe ->
             SavedRecipeCard(
                 markRecipeAsFavourite = markRecipeAsFavourite,
@@ -350,6 +364,7 @@ private const val GRID_ITEM_COUNT = 2
 private fun FavouriteRecipes(
     modifier: Modifier = Modifier,
     favouriteRecipes: List<Recipe>,
+    paddingValues: PaddingValues,
     markRecipeAsFavourite: (Recipe, Boolean) -> Unit
 ) {
     val gridRecipePairs: List<List<Recipe>> = favouriteRecipes.chunked(GRID_ITEM_COUNT)
@@ -357,7 +372,7 @@ private fun FavouriteRecipes(
     LazyColumnFor(
         modifier = modifier,
         items = gridRecipePairs,
-        contentPadding = PaddingValues(RECIPE_ITEM_SPACING),
+        contentPadding = paddingValues,
         itemContent = { gridItem ->
             FavouriteRecipeGridItem(
                 markRecipeAsFavourite = markRecipeAsFavourite,
