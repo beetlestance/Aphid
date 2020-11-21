@@ -1,6 +1,9 @@
 package com.beetlestance.aphid.feature_profile
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.animatedFloat
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.TweenSpec
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,7 +25,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumnFor
+import androidx.compose.foundation.lazy.LazyColumnForIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -40,10 +43,13 @@ import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.onActive
+import androidx.compose.runtime.onDispose
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.draw.drawOpacity
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.res.stringResource
@@ -308,6 +314,9 @@ private fun RecipePager(
 
 private const val EMPTY_URL = ""
 private val RECIPE_ITEM_SPACING = 16.dp
+private val RECIPE_CARD_TRANSITION = TweenSpec<Float>(
+    durationMillis = 400, delay = 100, easing = LinearOutSlowInEasing
+)
 
 @Composable
 private fun SavedRecipes(
@@ -316,12 +325,30 @@ private fun SavedRecipes(
     paddingValues: PaddingValues,
     markRecipeAsFavourite: (Recipe, Boolean) -> Unit
 ) {
-    LazyColumnFor(
+    val animatedSet = remember { mutableSetOf<Int>() }
+
+    LazyColumnForIndexed(
         modifier = modifier,
         items = savedRecipes,
         contentPadding = paddingValues,
-        itemContent = { recipe ->
+        itemContent = { index, recipe ->
+            val offsetValue = animatedFloat(initVal = if (index in animatedSet) 0F else 150F)
+            val alphaValue = animatedFloat(initVal = if (index in animatedSet) 1F else 0F)
+
+            onActive {
+                offsetValue.animateTo(0F, anim = RECIPE_CARD_TRANSITION)
+                alphaValue.animateTo(1F, anim = RECIPE_CARD_TRANSITION)
+                animatedSet.add(index)
+            }
+
+            onDispose {
+                offsetValue.snapTo(0F)
+                offsetValue.stop()
+            }
+
             SavedRecipeCard(
+                modifier = Modifier.offset(y = offsetValue.value.toInt().dp)
+                    .drawOpacity(alphaValue.value),
                 markRecipeAsFavourite = markRecipeAsFavourite,
                 recipe = recipe
             )
@@ -369,12 +396,29 @@ private fun FavouriteRecipes(
 ) {
     val gridRecipePairs: List<List<Recipe>> = favouriteRecipes.chunked(GRID_ITEM_COUNT)
 
-    LazyColumnFor(
+    val animatedSet = remember { mutableSetOf<Int>() }
+
+    LazyColumnForIndexed(
         modifier = modifier,
         items = gridRecipePairs,
         contentPadding = paddingValues,
-        itemContent = { gridItem ->
+        itemContent = { index, gridItem ->
+            val offsetValue = animatedFloat(initVal = if (index in animatedSet) 0F else 150F)
+            val alphaValue = animatedFloat(initVal = if (index in animatedSet) 1F else 0F)
+            onActive {
+                offsetValue.animateTo(0F, anim = RECIPE_CARD_TRANSITION)
+                alphaValue.animateTo(1F, anim = RECIPE_CARD_TRANSITION)
+                animatedSet.add(index)
+            }
+
+            onDispose {
+                offsetValue.snapTo(0F)
+                offsetValue.stop()
+            }
+
             FavouriteRecipeGridItem(
+                modifier = Modifier.offset(y = offsetValue.value.toInt().dp)
+                    .drawOpacity(alphaValue.value),
                 markRecipeAsFavourite = markRecipeAsFavourite,
                 item = gridItem
             )
