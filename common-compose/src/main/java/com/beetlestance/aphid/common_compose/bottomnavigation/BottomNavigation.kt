@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.size
@@ -66,7 +67,7 @@ fun CurveCutNavBar(
     val scope = CurveCutNavBarScope(state)
 
     SubcomposeLayout<CurveCutSlots>(
-        modifier = modifier
+        modifier = modifier.height(CurveCutBottomNavigationHeight)
     ) { constraints ->
 
         val menuItemWidth = constraints.maxWidth.div(maxItems)

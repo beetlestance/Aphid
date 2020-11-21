@@ -20,8 +20,6 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -32,7 +30,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.KEY_ROUTE
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -122,7 +119,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-        ) {
+        ) { navBarPadding ->
             NavHost(navController, startDestination = Screen.Explore.route) {
                 composable(Screen.Chat.route) { Dummy() }
                 composable(Screen.Explore.route) {
@@ -136,10 +133,13 @@ class MainActivity : AppCompatActivity() {
                 composable(Screen.MealPlanner.route) { Dummy() }
                 composable(Screen.Grocery.route) { Dummy() }
                 composable(Screen.Profile.route) {
-                    Profile(viewModel = viewModels<ProfileViewModel>().value)
+                    Profile(
+                        modifier = Modifier,
+                        paddingValues = navBarPadding,
+                        viewModel = viewModels<ProfileViewModel>().value
+                    )
                 }
             }
-            Spacer(modifier = Modifier.preferredHeight(56.dp))
         }
     }
 

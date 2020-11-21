@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.FlowCrossAxisAlignment
 import androidx.compose.foundation.layout.FlowMainAxisAlignment
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.SizeMode
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -19,7 +20,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumnForIndexed
+import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -51,7 +52,6 @@ import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.decode.SvgDecoder
 import com.beetlestance.aphid.common_compose.RecipeDetailedPosterCard
-import com.beetlestance.aphid.common_compose.VerticalGrid
 import com.beetlestance.aphid.common_compose.pager.Pager
 import com.beetlestance.aphid.common_compose.pager.rememberPagerState
 import com.beetlestance.aphid.data.entities.Recipe
@@ -60,7 +60,8 @@ import dev.chrisbanes.accompanist.coil.CoilImage
 @Composable
 fun Profile(
     modifier: Modifier = Modifier,
-    viewModel: ProfileViewModel
+    viewModel: ProfileViewModel,
+    paddingValues: PaddingValues
 ) {
     val state by viewModel.liveData.observeAsState(initial = viewModel.currentState())
     val actions: (ProfileActions) -> Unit = { action -> viewModel.submitAction(action) }
@@ -68,6 +69,7 @@ fun Profile(
     Profile(
         modifier = modifier.fillMaxSize(),
         state = state,
+        paddingValues = paddingValues,
         actions = actions
     )
 }
@@ -76,6 +78,7 @@ fun Profile(
 private fun Profile(
     modifier: Modifier = Modifier,
     state: ProfileViewState,
+    paddingValues: PaddingValues,
     actions: (ProfileActions) -> Unit
 ) {
     Column(
@@ -92,6 +95,8 @@ private fun Profile(
                 actions(MarkFavourite(recipe, isFavourite))
             }
         )
+
+        Spacer(modifier = Modifier.height(paddingValues.bottom))
     }
 }
 
@@ -197,6 +202,7 @@ private fun ProfileRecipesTab(
 ) {
     val tabsResId = remember { RecipesTabs.values().map { it.resId } }
     val selectedIndex = remember { mutableStateOf(RecipesTabs.SAVED.ordinal) }
+    val pagerState = rememberPagerState(maxPage = tabsResId.lastIndex)
 
     TabRow(
         modifier = modifier,
@@ -206,105 +212,163 @@ private fun ProfileRecipesTab(
         tabsResId.forEachIndexed { index, resId ->
             Tab(
                 selected = index == selectedIndex.value,
-                onClick = { selectedIndex.value = index },
+                onClick = {
+                    selectedIndex.value = index
+                    pagerState.currentPage = index
+                },
                 text = { Text(text = stringResource(resId)) }
             )
         }
     }
-
-    val pagerState = rememberPagerState(
-        currentPage = selectedIndex.value,
-        maxPage = tabsResId.lastIndex
-    )
 
     Pager(
         lastPage = tabsResId.lastIndex,
         state = pagerState,
         offscreenLimit = 1
     ) {
-        when (currentPage) {
-            RecipesTabs.SAVED.ordinal -> SavedRecipes(savedRecipes, markRecipeAsFavourite)
+        when (page) {
+            RecipesTabs.SAVED.ordinal -> SavedRecipes(
+                savedRecipes = savedRecipes,
+                markRecipeAsFavourite = markRecipeAsFavourite
+            )
             RecipesTabs.FAVOURITE.ordinal -> FavouriteRecipes(
-                favouriteRecipes,
-                markRecipeAsFavourite
+                favouriteRecipes = favouriteRecipes,
+                markRecipeAsFavourite = markRecipeAsFavourite
             )
         }
+
+        selectedIndex.value = currentPage
     }
 }
 
 private const val EMPTY_URL = ""
 private val RECIPE_ITEM_SPACING = 16.dp
 
-// TODO for BottomNavigation, check if can be remove by spacer
-private val RECIPE_ITEM_SPACING_BOTTOM = 64.dp
-
 @Composable
 private fun SavedRecipes(
+    modifier: Modifier = Modifier,
     savedRecipes: List<Recipe>,
     markRecipeAsFavourite: (Recipe, Boolean) -> Unit
 ) {
-    LazyColumnForIndexed(
+    LazyColumnFor(
+        modifier = modifier,
         items = savedRecipes,
-        contentPadding = PaddingValues(
-            start = RECIPE_ITEM_SPACING,
-            end = RECIPE_ITEM_SPACING,
-            bottom = RECIPE_ITEM_SPACING_BOTTOM,
-            top = RECIPE_ITEM_SPACING
-        )
-    ) { _, recipe ->
-        RecipeDetailedPosterCard(
-            modifier = Modifier,
-            isFavourite = recipe.isFavourite ?: false,
-            onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
-            posterImage = {
-                CoilImage(
-                    data = recipe.imageUrl ?: EMPTY_URL,
-                    fadeIn = true,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.aspectRatio(1.46f)
-                )
-            },
-            posterDetails = {
-                RecipeDetails(
-                    name = recipe.title ?: "",
-                    contentTags = "1 Serving • 20 Min • 205 Cal",
-                    rating = "4.4"
-                )
-                // Item Spacing
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-        )
-    }
+        contentPadding = PaddingValues(RECIPE_ITEM_SPACING),
+        itemContent = { recipe ->
+            SavedRecipeCard(
+                markRecipeAsFavourite = markRecipeAsFavourite,
+                recipe = recipe
+            )
+        })
 }
 
 @Composable
+private fun SavedRecipeCard(
+    modifier: Modifier = Modifier,
+    markRecipeAsFavourite: (Recipe, Boolean) -> Unit,
+    recipe: Recipe
+) {
+    RecipeDetailedPosterCard(
+        modifier = modifier,
+        isFavourite = recipe.isFavourite ?: false,
+        onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
+        posterImage = {
+            CoilImage(
+                data = recipe.imageUrl ?: EMPTY_URL,
+                fadeIn = true,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.aspectRatio(1.46f)
+            )
+        },
+        posterDetails = {
+            RecipeDetails(
+                name = recipe.title ?: "",
+                contentTags = "1 Serving • 20 Min • 205 Cal",
+                rating = "4.4"
+            )
+            // Item Spacing
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+    )
+}
+
+private const val GRID_ITEM_COUNT = 2
+
+@Composable
 private fun FavouriteRecipes(
+    modifier: Modifier = Modifier,
     favouriteRecipes: List<Recipe>,
     markRecipeAsFavourite: (Recipe, Boolean) -> Unit
 ) {
-    VerticalGrid(columns = 2) {
-        favouriteRecipes.forEach { recipe ->
-            RecipeDetailedPosterCard(
-                isFavourite = recipe.isFavourite ?: false,
-                onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
-                posterImage = {
-                    CoilImage(
-                        data = recipe.imageUrl ?: EMPTY_URL,
-                        fadeIn = true,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                },
-                posterDetails = {
-                    RecipeDetails(
-                        name = recipe.title ?: "",
-                        contentTags = "2 Serving • 20 Min • 205 Cal",
-                        rating = "4.6"
-                    )
-                }
+    val gridRecipePairs: List<List<Recipe>> = favouriteRecipes.chunked(GRID_ITEM_COUNT)
+
+    LazyColumnFor(
+        modifier = modifier,
+        items = gridRecipePairs,
+        contentPadding = PaddingValues(RECIPE_ITEM_SPACING),
+        itemContent = { gridItem ->
+            FavouriteRecipeGridItem(
+                markRecipeAsFavourite = markRecipeAsFavourite,
+                item = gridItem
             )
+        })
+}
+
+@Composable
+private fun FavouriteRecipeGridItem(
+    modifier: Modifier = Modifier,
+    markRecipeAsFavourite: (Recipe, Boolean) -> Unit,
+    item: List<Recipe>
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(
+            space = 16.dp,
+            alignment = Alignment.Start
+        ),
+        children = {
+            item.forEach { recipe ->
+                FavouriteRecipeCard(
+                    modifier = modifier.weight(1f),
+                    markRecipeAsFavourite = markRecipeAsFavourite,
+                    recipe = recipe
+                )
+            }
+            // Balance out grid spacing if list has 1 item by drawing remaining empty items
+            repeat(GRID_ITEM_COUNT - item.size) {
+                Spacer(modifier = modifier.weight(1f))
+            }
+        })
+}
+
+@Composable
+private fun FavouriteRecipeCard(
+    modifier: Modifier = Modifier,
+    markRecipeAsFavourite: (Recipe, Boolean) -> Unit,
+    recipe: Recipe
+) {
+    RecipeDetailedPosterCard(
+        modifier = modifier,
+        isFavourite = recipe.isFavourite ?: false,
+        onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
+        posterImage = {
+            CoilImage(
+                data = recipe.imageUrl ?: EMPTY_URL,
+                fadeIn = true,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.aspectRatio(0.7f)
+            )
+        },
+        posterDetails = {
+            RecipeDetails(
+                name = recipe.title ?: "",
+                contentTags = "2 Serving • 20 Min • 205 Cal",
+                rating = "4.6"
+            )
+            // Item Spacing
+            Spacer(modifier = Modifier.height(16.dp))
         }
-    }
+    )
 }
 
 @OptIn(ExperimentalLayout::class)
