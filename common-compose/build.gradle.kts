@@ -46,6 +46,7 @@ dependencies {
     androidTestImplementation(Libs.AndroidX.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.espressoCore)
 
+    // AndroidX
     implementation(Libs.AndroidX.appcompat)
     implementation(Libs.AndroidX.coreKtx)
 

@@ -10,6 +10,7 @@ include(
     ":domain",
     ":feature-explore",
     ":feature-chat",
+    ":feature-profile",
     ":mdc-theme-lint",
     ":spoonacular",
     ":spoonacular-kotlin"

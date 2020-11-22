@@ -85,6 +85,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":feature-explore"))
     implementation(project(":feature-chat"))
+    implementation(project(":feature-profile"))
     implementation(project(":spoonacular"))
     implementation(project(":spoonacular-kotlin"))
 

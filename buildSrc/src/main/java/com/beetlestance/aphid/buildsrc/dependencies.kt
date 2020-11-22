@@ -142,6 +142,7 @@ object Libs {
     object Coil {
         private const val version = "1.0.0"
         const val coil: String = "io.coil-kt:coil:$version"
+        const val svgCoil: String = "io.coil-kt:coil-svg:$version"
     }
 
     object Accompanist {

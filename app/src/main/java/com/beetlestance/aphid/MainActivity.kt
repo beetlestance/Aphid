@@ -33,7 +33,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.KEY_ROUTE
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -45,7 +44,11 @@ import com.beetlestance.aphid.common_compose.bottomnavigation.CurvedCutBottomNav
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurvedCutBottomNavigationItem
 import com.beetlestance.aphid.feature_chat.Chat
 import com.beetlestance.aphid.feature_chat.ChatViewModel
+import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutMenuItem
+import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutNavBar
 import com.beetlestance.aphid.feature_explore.Explore
+import com.beetlestance.aphid.feature_profile.Profile
+import com.beetlestance.aphid.feature_profile.ProfileViewModel
 import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -82,33 +85,34 @@ class MainActivity : AppCompatActivity() {
         val navController = rememberNavController()
         Scaffold(
             bottomBar = {
-                CurvedCutBottomNavigation(
+                CurveCutNavBar(
                     backgroundColor = MaterialTheme.colors.surface,
                     fabBackgroundColor = MaterialTheme.colors.primarySurface,
-                    defaultSelection = navItems.indexOf(Screen.Explore),
-                    menuItems = navItems.size
-                ) { state ->
+                    selectedItem = navItems.indexOf(Screen.Explore),
+                    maxItems = navItems.size,
+                    fabIcon = {
+                        val resId = navItems.elementAt(selectedId).iconFilled
+                        val color = MaterialTheme.colors.surface
+                        AndroidIcon(drawableId = resId, tint = color)
+
+                    }
+                ) {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
                     navItems.forEachIndexed { index, screen ->
-                        CurvedCutBottomNavigationItem(
+                        CurveCutMenuItem(
                             icon = {
                                 val resId = screen.iconOutlined
                                 val color = MaterialTheme.colors.background
                                 Icon(asset = vectorResource(id = resId), tint = color)
                             },
-                            fabIcon = {
-                                val resId = screen.iconFilled
-                                val color = MaterialTheme.colors.surface
-                                AndroidIcon(drawableId = resId, tint = color)
-                            },
                             index = index,
-                            state = state,
                             selected = currentRoute == screen.route,
                             onClick = {
                                 // This if check gives us a "singleTop" behavior where we do not create a
                                 // second instance of the composable if we are already on that destination
                                 if (currentRoute != screen.route) {
+                                    navController.navigate(screen.route)
                                     // This is the equivalent to popUpTo the start destination
                                     navController.popBackStack(
                                         navController.graph.startDestination,
@@ -123,10 +127,10 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-        ) { navigationPadding ->
+        ) { navBarPadding ->
             NavHost(navController, startDestination = Screen.Explore.route) {
                 composable(Screen.Chat.route) {
-                    ChatScreen(navigationPadding)
+                    ChatScreen(navBarPadding)
                 }
 
                 composable(Screen.Explore.route) {
@@ -137,19 +141,21 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }
-
-                composable(Screen.MealPlanner.route) { Profile() }
-
-                composable(Screen.Grocery.route) { Profile() }
-
-                composable(Screen.Profile.route) { Profile() }
+                composable(Screen.MealPlanner.route) { Dummy() }
+                composable(Screen.Grocery.route) { Dummy() }
+                composable(Screen.Profile.route) {
+                    Profile(
+                        modifier = Modifier,
+                        paddingValues = navBarPadding,
+                        viewModel = viewModels<ProfileViewModel>().value
+                    )
+                }
             }
-            Spacer(modifier = Modifier.preferredHeight(56.dp))
         }
     }
 
     @Composable
-    private fun Profile() {
+    private fun Dummy() {
 
     }
 
