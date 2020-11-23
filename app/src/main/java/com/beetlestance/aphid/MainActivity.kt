@@ -38,10 +38,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.beetlestance.aphid.common_compose.AndroidIcon
-import com.beetlestance.aphid.feature_chat.Chat
-import com.beetlestance.aphid.feature_chat.ChatViewModel
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutMenuItem
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutNavBar
+import com.beetlestance.aphid.feature_chat.Chat
+import com.beetlestance.aphid.feature_chat.ChatViewModel
 import com.beetlestance.aphid.feature_explore.Explore
 import com.beetlestance.aphid.feature_profile.Profile
 import com.beetlestance.aphid.feature_profile.ProfileViewModel
@@ -108,7 +108,6 @@ class MainActivity : AppCompatActivity() {
                                 // This if check gives us a "singleTop" behavior where we do not create a
                                 // second instance of the composable if we are already on that destination
                                 if (currentRoute != screen.route) {
-                                    navController.navigate(screen.route)
                                     // This is the equivalent to popUpTo the start destination
                                     navController.popBackStack(
                                         navController.graph.startDestination,
