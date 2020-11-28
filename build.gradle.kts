@@ -53,7 +53,8 @@ subprojects {
     }
 
     tasks.withType<JavaCompile> {
-        // Remove once kotlin supports jvm 15
+        // Set to 14 once intellij upgrade asm 7.0 to 9.0,
+        // now org.objectweb.asm.ClassReader has major opt code 12
         sourceCompatibility = JavaVersion.VERSION_11.toString()
         targetCompatibility = JavaVersion.VERSION_11.toString()
         //enable compilation in a separate daemon process
@@ -86,7 +87,7 @@ subprojects {
             )
 
             // Set JVM target to 11, on 1.8 library sources are not getting attached automatically
-            // Set to 14 once android upgrade asm to 7.1,
+            // Set to 15 once intellij upgrade asm 7.0 to 9.0,
             // now org.objectweb.asm.ClassReader has major opt code 12
             jvmTarget = "11"
         }
