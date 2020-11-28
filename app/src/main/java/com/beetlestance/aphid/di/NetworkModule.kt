@@ -6,8 +6,8 @@ import com.beetlestance.aphid.spoonacular.SpoonacularNetworkModule
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import okhttp3.Cache
 import okhttp3.ConnectionPool
 import okhttp3.Dispatcher
@@ -18,7 +18,7 @@ import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module(
     includes = [
         SpoonacularNetworkModule::class
@@ -61,7 +61,7 @@ object NetworkModule {
                     addInterceptor(httpLoggingInterceptor)
                 }
                 if (loggingEventListener != null) {
-                    //eventListenerFactory(loggingEventListener)
+                    eventListenerFactory(loggingEventListener)
                 }
             }
             // Around 4¢ worth of storage in 2020

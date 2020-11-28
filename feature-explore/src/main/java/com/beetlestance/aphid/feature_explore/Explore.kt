@@ -74,7 +74,6 @@ import com.beetlestance.aphid.common_compose.pager.Pager
 import com.beetlestance.aphid.data.entities.Recipe
 import com.beetlestance.spoonacular_kotlin.SpoonacularImageHelper
 import com.beetlestance.spoonacular_kotlin.constants.SpoonacularImageSize
-import timber.log.Timber
 
 /**
  * If possible manage all the states in the top level composable for the screen
@@ -292,14 +291,6 @@ fun BreakFastWithHeader(
         text = stringResource(id = R.string.explore_breaksfast_header),
         style = MaterialTheme.typography.h6,
         modifier = Modifier.padding(horizontal = 16.dp)
-    )
-
-    val foodCardPageConfig = PageConfig(
-        horizontalOffset = 16.dp,
-        fraction = 0.7f,
-        horizontalOffsetFraction = 0.1f,
-        aspectRatio = 13f / 20f,
-        maxWidth = widthPercentage(fraction = 0.95f, excludeRootPadding = 16.dp)
     )
 
     val items = if (breakfastRecipes.any { it.isFavourite == true }) {

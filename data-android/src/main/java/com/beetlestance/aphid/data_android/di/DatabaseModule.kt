@@ -10,11 +10,11 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module
 object RoomDatabaseModule {
     @Singleton
@@ -32,7 +32,7 @@ object RoomDatabaseModule {
     }
 }
 
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module
 object DatabaseDaoModule {
 
@@ -43,7 +43,7 @@ object DatabaseDaoModule {
     fun provideAphidChats(db: AphidDatabase) = db.chatDao()
 }
 
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module
 abstract class DatabaseModuleBinds {
 

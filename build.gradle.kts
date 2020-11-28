@@ -11,7 +11,6 @@ buildscript {
     dependencies {
         classpath(com.beetlestance.aphid.buildsrc.Libs.androidGradlePlugin)
         classpath(com.beetlestance.aphid.buildsrc.Libs.Kotlin.gradlePlugin)
-        classpath(com.beetlestance.aphid.buildsrc.Libs.Kotlin.extensions)
         classpath(com.beetlestance.aphid.buildsrc.Libs.Hilt.gradlePlugin)
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -20,7 +19,7 @@ buildscript {
 }
 
 plugins {
-    id("com.diffplug.spotless") version "5.8.1"
+    id("com.diffplug.spotless") version "5.8.2"
     id("com.github.ben-manes.versions") version "0.36.0"
 }
 
