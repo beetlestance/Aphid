@@ -148,6 +148,7 @@ object Libs {
     object Accompanist {
         private const val version = "0.3.3.1"
         const val coil: String = "dev.chrisbanes.accompanist:accompanist-coil:$version"
+        const val insets: String = "dev.chrisbanes.accompanist:accompanist-insets:$version"
     }
 
     object Dagger {

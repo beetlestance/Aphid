@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -44,6 +45,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.node.Ref
+import androidx.compose.ui.platform.ConfigurationAmbient
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.SoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
@@ -51,10 +53,19 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.coerceAtLeast
 import androidx.compose.ui.unit.dp
 import com.beetlestance.aphid.base.CHAT_MESSAGE_ANSWER
+import com.beetlestance.aphid.common_compose.extensions.keyboardPadding
+import com.beetlestance.aphid.common_compose.extensions.toDp
 import com.beetlestance.aphid.data.entities.Chat
 import dev.chrisbanes.accompanist.coil.CoilImage
+import dev.chrisbanes.accompanist.insets.AmbientWindowInsets
+import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
+import dev.chrisbanes.accompanist.insets.statusBarsPadding
+import dev.chrisbanes.accompanist.insets.systemBarsPadding
+import dev.chrisbanes.accompanist.insets.toPaddingValues
+import timber.log.Timber
 
 @Composable
 fun Chat(
@@ -93,48 +104,57 @@ fun Chat(
         modifier = modifier,
         color = MaterialTheme.colors.surface.copy(alpha = 0.95f)
     ) {
-        // Box will draw each element on top of each other
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .systemBarsPadding()
         ) {
-            Column(
+
+            // Box will draw each element on top of each other
+            Box(
                 modifier = Modifier
-                    .padding(paddingValues)
                     .fillMaxSize()
+                    .weight(1f)
             ) {
-                if (state.messages.isNullOrEmpty()) {
-                    EmptyChat(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                            .align(Alignment.CenterHorizontally)
-                            .weight(1f)
-                    )
-                } else {
-                    ChatListing(
-                        messages = state.messages,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.CenterHorizontally)
-                            .weight(1f)
-                    )
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    if (state.messages.isNullOrEmpty()) {
+                        EmptyChat(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp)
+                                .align(Alignment.CenterHorizontally)
+                                .weight(1f)
+                        )
+                    } else {
+                        ChatListing(
+                            messages = state.messages,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .align(Alignment.CenterHorizontally)
+                                .weight(1f)
+                        )
+                    }
+
+                    //Spacer(modifier = Modifier.preferredHeight(16.dp))
                 }
 
-                Spacer(modifier = Modifier.preferredHeight(16.dp))
+                // This will float over the messages
+                ChatInput(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(horizontal = 16.dp),
+                    onQuerySubmit = {
+                        if (it.isNotBlank()) action(ChatActions.SendMessage(it))
+                    }
+                )
             }
 
-            // This will float over the messages
-            ChatInput(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(horizontal = 16.dp),
-                onQuerySubmit = {
-                    if (it.isNotBlank()) action(ChatActions.SendMessage(it))
-                }
-            )
+            Spacer(modifier = Modifier.padding(paddingValues))
         }
+
     }
 }
 
@@ -247,7 +267,7 @@ fun EmptyChat(
         Box(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .fillMaxWidth(0.7f)
+                .fillMaxWidth()
                 .weight(1f)
         ) {
             Image(
