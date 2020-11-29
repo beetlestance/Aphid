@@ -125,7 +125,10 @@ class MainActivity : AppCompatActivity() {
         ) { navBarPadding ->
             NavHost(navController, startDestination = Screen.Explore.route) {
                 composable(Screen.Chat.route) {
-                    ChatScreen(navBarPadding)
+                    Chat(
+                        viewModel = chatViewModel,
+                        paddingValues = navBarPadding
+                    )
                 }
 
                 composable(Screen.Explore.route) {
@@ -152,15 +155,6 @@ class MainActivity : AppCompatActivity() {
     @Composable
     private fun Dummy() {
 
-    }
-
-    @Composable
-    private fun ChatScreen(paddingValues: PaddingValues) {
-        val state by chatViewModel.liveData.observeAsState()
-
-        Chat(paddingValues = paddingValues, state = state) {
-            chatViewModel.submitAction(it)
-        }
     }
 
     private val navItems = listOf(

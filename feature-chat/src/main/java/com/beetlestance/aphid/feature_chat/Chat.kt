@@ -31,6 +31,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -40,6 +41,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.ExperimentalFocus
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.node.Ref
 import androidx.compose.ui.res.vectorResource
@@ -56,45 +58,80 @@ import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
 fun Chat(
+    viewModel: ChatViewModel,
+    modifier: Modifier = Modifier,
+    paddingValues: PaddingValues = PaddingValues()
+) {
+    val state by viewModel.liveData.observeAsState(initial = viewModel.currentState())
+    val action: (ChatActions) -> Unit = { action -> viewModel.submitAction(action) }
+
+    Chat(
+        paddingValues = paddingValues,
+        state = state,
+        action = action,
+        modifier = modifier
+    )
+}
+
+
+/**
+ * Entry point for chat screen.
+ *
+ * @param paddingValues contains padding for bottom navigation
+ * @param state contains the state for the UI to draw
+ * @param action is an block to perform [ChatActions]
+ * @param modifier [Modifier] to apply to this layout node
+ */
+@Composable
+fun Chat(
     paddingValues: PaddingValues,
-    state: ChatViewState?,
-    action: (ChatActions) -> Unit
+    state: ChatViewState,
+    action: (ChatActions) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Surface(
-        color = Color(0xFFeeeeee)
+        modifier = modifier,
+        color = MaterialTheme.colors.surface.copy(alpha = 0.95f)
     ) {
-        Column(
+        // Box will draw each element on top of each other
+        Box(
             modifier = Modifier
-                .padding(paddingValues)
                 .fillMaxSize()
+                .padding(paddingValues)
         ) {
-            if (state?.messages.isNullOrEmpty()) {
-                EmptyChat(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .align(Alignment.CenterHorizontally)
-                        .weight(1f)
-                )
-            } else {
-                ChatListing(
-                    (state ?: return@Column).messages,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.CenterHorizontally)
-                        .weight(1f)
-                )
+            Column(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize()
+            ) {
+                if (state.messages.isNullOrEmpty()) {
+                    EmptyChat(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                            .align(Alignment.CenterHorizontally)
+                            .weight(1f)
+                    )
+                } else {
+                    ChatListing(
+                        messages = state.messages,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .align(Alignment.CenterHorizontally)
+                            .weight(1f)
+                    )
+                }
+
+                Spacer(modifier = Modifier.preferredHeight(16.dp))
             }
 
-            Spacer(modifier = Modifier.preferredHeight(16.dp))
-
+            // This will float over the messages
             ChatInput(
                 modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 16.dp),
+                    .align(Alignment.BottomCenter)
+                    .padding(horizontal = 16.dp),
                 onQuerySubmit = {
-                    if (it.isNotBlank())
-                        action(ChatActions.SendMessage(it))
+                    if (it.isNotBlank()) action(ChatActions.SendMessage(it))
                 }
             )
         }
@@ -102,9 +139,12 @@ fun Chat(
 }
 
 @Composable
-fun ChatListing(items: List<Chat>, modifier: Modifier = Modifier) {
+fun ChatListing(
+    messages: List<Chat>,
+    modifier: Modifier = Modifier
+) {
     LazyColumnFor(
-        items = items,
+        items = messages,
         modifier = modifier
     ) { message ->
         if (message.type == CHAT_MESSAGE_ANSWER) {
