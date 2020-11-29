@@ -4,7 +4,6 @@ import com.beetlestance.aphid.buildsrc.Libs
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("android.extensions")
     kotlin("kapt")
 }
 
@@ -28,7 +27,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerVersion = Libs.Kotlin.version
+        kotlinCompilerVersion = Libs.AndroidX.Compose.ktVersion
         kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
     }
 }
@@ -46,7 +45,7 @@ dependencies {
     androidTestImplementation(Libs.AndroidX.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.espressoCore)
 
-    // AndroidX
+    // Remove when animated vector drawable support
     implementation(Libs.AndroidX.appcompat)
     implementation(Libs.AndroidX.coreKtx)
 
@@ -63,5 +62,10 @@ dependencies {
     // Accompanist
     api(Libs.Accompanist.coil)
     implementation(Libs.Accompanist.insets)
+
+
+    // Remove once hilt support saved state registry owner for compose
+    implementation(Libs.AndroidX.Navigation.navigation)
+    implementation(Libs.AndroidX.Hilt.viewmodel)
 
 }

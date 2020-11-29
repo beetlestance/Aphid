@@ -49,7 +49,7 @@ object Libs {
         }
 
         object Lifecycle {
-            private const val version = "2.2.0"
+            private const val version = "2.3.0-beta01"
             const val extensions: String = "androidx.lifecycle:lifecycle-extensions:$version"
             const val viewmodelKtx: String = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
             const val livedataKtx: String = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
@@ -82,6 +82,7 @@ object Libs {
 
         object Compose {
             const val version: String = "1.0.0-alpha07"
+            const val ktVersion: String = "1.4.10"
 
             const val compiler: String = "androidx.compose.compiler:compiler:$version"
 
@@ -116,7 +117,7 @@ object Libs {
             "com.google.android.gms:play-services-oss-licenses:17.0.0"
 
         object Mdc {
-            const val material: String = "com.google.android.material:material:1.3.0-alpha03"
+            const val material: String = "com.google.android.material:material:1.3.0-alpha04"
             const val composeThemeAdapter: String =
                 "com.google.android.material:compose-theme-adapter:1.0.0-alpha07"
         }
@@ -140,7 +141,7 @@ object Libs {
     }
 
     object Coil {
-        private const val version = "1.0.0"
+        private const val version = "1.1.0"
         const val coil: String = "io.coil-kt:coil:$version"
         const val svgCoil: String = "io.coil-kt:coil-svg:$version"
     }
@@ -152,13 +153,13 @@ object Libs {
     }
 
     object Dagger {
-        private const val version = "2.29.1"
+        private const val version = "2.30.1"
         const val dagger: String = "com.google.dagger:dagger:$version"
         const val compiler: String = "com.google.dagger:dagger-compiler:$version"
     }
 
     object Hilt {
-        private const val version = "2.29.1-alpha"
+        private const val version = "2.30.1-alpha"
         const val library: String = "com.google.dagger:hilt-android:$version"
         const val compiler: String = "com.google.dagger:hilt-android-compiler:$version"
         const val testing: String = "com.google.dagger:hilt-android-testing:$version"
@@ -169,7 +170,6 @@ object Libs {
         const val version: String = "1.4.10"
         const val stdlib: String = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val reflect: String = "org.jetbrains.kotlin:kotlin-reflect:$version"
-        const val extensions: String = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
         const val gradlePlugin: String = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
     }
 

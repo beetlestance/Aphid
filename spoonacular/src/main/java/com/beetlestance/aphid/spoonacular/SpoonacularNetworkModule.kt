@@ -16,15 +16,14 @@ object SpoonacularNetworkModule {
     fun provideSpoonacular(
         client: OkHttpClient,
         @Named("spoonacular_api_key") apiKey: String
-    ): Spoonacular =
-        object : Spoonacular(apiKey) {
-            override fun okHttpClient(): OkHttpClient {
-                return client.newBuilder().apply {
-                    setOkHttpClientDefaults()
-                    connectTimeout(20, TimeUnit.SECONDS)
-                    readTimeout(20, TimeUnit.SECONDS)
-                    writeTimeout(20, TimeUnit.SECONDS)
-                }.build()
-            }
+    ): Spoonacular = object : Spoonacular(apiKey) {
+        override fun okHttpClient(): OkHttpClient {
+            return client.newBuilder().apply {
+                setOkHttpClientDefaults()
+                connectTimeout(20, TimeUnit.SECONDS)
+                readTimeout(20, TimeUnit.SECONDS)
+                writeTimeout(20, TimeUnit.SECONDS)
+            }.build()
         }
+    }
 }

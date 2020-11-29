@@ -4,9 +4,7 @@ import com.beetlestance.aphid.buildsrc.Libs
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("android.extensions")
     kotlin("kapt")
-    id("dagger.hilt.android.plugin")
 }
 
 kapt {
@@ -29,7 +27,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerVersion = Libs.Kotlin.version
+        kotlinCompilerVersion = Libs.AndroidX.Compose.ktVersion
         kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
     }
 }
