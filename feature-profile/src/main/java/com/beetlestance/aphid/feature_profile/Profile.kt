@@ -62,6 +62,7 @@ import com.beetlestance.aphid.common_compose.RecipeDetailedPosterCard
 import com.beetlestance.aphid.common_compose.pager.Pager
 import com.beetlestance.aphid.common_compose.pager.PagerState
 import com.beetlestance.aphid.common_compose.pager.rememberPagerState
+import com.beetlestance.aphid.common_compose.utils.navViewModel
 import com.beetlestance.aphid.data.entities.Recipe
 import dev.chrisbanes.accompanist.coil.CoilImage
 import kotlin.math.abs
@@ -69,9 +70,9 @@ import kotlin.math.abs
 @Composable
 fun Profile(
     modifier: Modifier = Modifier,
-    viewModel: ProfileViewModel,
     paddingValues: PaddingValues = PaddingValues()
 ) {
+    val viewModel: ProfileViewModel by navViewModel()
     val state by viewModel.liveData.observeAsState(initial = viewModel.currentState())
     val actions: (ProfileActions) -> Unit = { action -> viewModel.submitAction(action) }
 

@@ -45,7 +45,7 @@ dependencies {
     androidTestImplementation(Libs.AndroidX.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.espressoCore)
 
-    // AndroidX
+    // Remove when animated vector drawable support
     implementation(Libs.AndroidX.appcompat)
     implementation(Libs.AndroidX.coreKtx)
 
@@ -61,5 +61,10 @@ dependencies {
 
     // Coil
     api(Libs.Accompanist.coil)
+
+
+    // Remove once hilt support saved state registry owner for compose
+    implementation(Libs.AndroidX.Navigation.navigation)
+    implementation(Libs.AndroidX.Hilt.viewmodel)
 
 }
