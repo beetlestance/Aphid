@@ -2,9 +2,9 @@ package com.beetlestance.aphid.feature_explore
 
 import com.beetlestance.aphid.data.entities.Recipe
 
-sealed class ExploreActions
+internal sealed class ExploreActions
 
-data class MarkFavourite(
+internal data class MarkFavourite(
     val recipe: Recipe,
     val isFavourite: Boolean
 ) : ExploreActions()

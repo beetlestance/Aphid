@@ -1,4 +1,4 @@
-package com.beetlestance.aphid
+package com.beetlestance.aphid.feature_explore
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
@@ -10,16 +10,13 @@ import com.beetlestance.aphid.domain.observers.ObserveRecentlyViewed
 import com.beetlestance.aphid.domain.observers.ObserveRecipes
 import com.beetlestance.aphid.domain.observers.ObserveRecipesWithReadyTime
 import com.beetlestance.aphid.domain.watchStatus
-import com.beetlestance.aphid.feature_explore.ExploreActions
-import com.beetlestance.aphid.feature_explore.ExploreViewState
-import com.beetlestance.aphid.feature_explore.MarkFavourite
 import com.beetlestance.spoonacular_kotlin.constants.MealType
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 
-class MainActivityViewModel @ViewModelInject constructor(
+internal class ExploreViewModel @ViewModelInject constructor(
     fetchRecipes: FetchRecipes,
     observeRecipes: ObserveRecipes,
     observeQuickRecipes: ObserveRecipesWithReadyTime,

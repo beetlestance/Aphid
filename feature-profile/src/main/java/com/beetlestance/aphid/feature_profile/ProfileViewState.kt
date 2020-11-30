@@ -5,7 +5,7 @@ import com.beetlestance.aphid.data.entities.Recipe
 
 
 @Immutable
-data class ProfileViewState(
+internal data class ProfileViewState(
     val savedRecipes: List<Recipe> = emptyList(),
     val favouriteRecipes: List<Recipe> = emptyList()
 )

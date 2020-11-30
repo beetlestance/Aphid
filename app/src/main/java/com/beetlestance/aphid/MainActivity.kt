@@ -17,13 +17,10 @@ package com.beetlestance.aphid
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -35,12 +32,10 @@ import androidx.compose.material.Surface
 import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.viewModel
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.KEY_ROUTE
 import androidx.navigation.compose.NavHost
@@ -68,7 +63,6 @@ import dev.chrisbanes.accompanist.insets.navigationBarsPadding
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: MainActivityViewModel by viewModels()
     private val chatViewModel: ChatViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -155,14 +149,7 @@ class MainActivity : ComponentActivity() {
                     )
                 }
 
-                composableContent(Screen.Explore.route) {
-                    val viewState by viewModel.liveData.observeAsState()
-                    if (viewState != null) {
-                        Explore(viewState ?: return@composableContent) {
-                            viewModel.submitAction(it)
-                        }
-                    }
-                }
+                composableContent(Screen.Explore.route) { Explore(paddingValues = navBarPadding) }
                 composableContent(Screen.MealPlanner.route) { Dummy() }
                 composableContent(Screen.Grocery.route) { Dummy() }
                 composableContent(Screen.Profile.route) { Profile(paddingValues = navBarPadding) }

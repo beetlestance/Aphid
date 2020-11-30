@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 
-class ProfileViewModel @ViewModelInject constructor(
+internal class ProfileViewModel @ViewModelInject constructor(
     observeSavedRecipes: ObserveSavedRecipes,
     observeFavouriteRecipes: ObserveFavouriteRecipes,
     private val markRecipeAsFavourite: MarkRecipeAsFavourite

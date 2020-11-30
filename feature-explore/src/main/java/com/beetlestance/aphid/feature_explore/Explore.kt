@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.ExperimentalLayout
 import androidx.compose.foundation.layout.FlowCrossAxisAlignment
 import androidx.compose.foundation.layout.FlowMainAxisAlignment
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.SizeMode
 import androidx.compose.foundation.layout.Spacer
@@ -40,6 +41,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -62,23 +65,52 @@ import com.beetlestance.aphid.common_compose.pager.Carousel
 import com.beetlestance.aphid.common_compose.pager.PageConfig
 import com.beetlestance.aphid.common_compose.pager.PageTransformation
 import com.beetlestance.aphid.common_compose.pager.Pager
+import com.beetlestance.aphid.common_compose.utils.navViewModel
 import com.beetlestance.aphid.data.entities.Recipe
 import com.beetlestance.spoonacular_kotlin.SpoonacularImageHelper
 import com.beetlestance.spoonacular_kotlin.constants.SpoonacularImageSize
 
-/**
- * If possible manage all the states in the top level composable for the screen
- */
-@OptIn(ExperimentalFocus::class)
 @Composable
 fun Explore(
-    state: ExploreViewState,
-    action: (ExploreActions) -> Unit
+    modifier: Modifier = Modifier,
+    paddingValues: PaddingValues = PaddingValues()
 ) {
-    Surface(color = MaterialTheme.colors.surface) {
+    val viewModel: ExploreViewModel by navViewModel()
+    val state by viewModel.liveData.observeAsState(initial = viewModel.currentState())
+    val actions: (ExploreActions) -> Unit = { action -> viewModel.submitAction(action) }
+
+    val contentPadding = PaddingValues(
+        top = if (paddingValues.top > 0.dp) paddingValues.top else EXPLORE_ITEM_SPACING,
+        start = if (paddingValues.start > 0.dp) paddingValues.start else EXPLORE_ITEM_SPACING,
+        end = if (paddingValues.end > 0.dp) paddingValues.end else EXPLORE_ITEM_SPACING,
+        bottom = if (paddingValues.bottom > 0.dp) paddingValues.bottom else EXPLORE_ITEM_SPACING
+    )
+
+    Explore(
+        modifier = modifier.fillMaxSize(),
+        state = state,
+        paddingValues = contentPadding,
+        actions = actions
+    )
+}
+
+private val EXPLORE_ITEM_SPACING = 16.dp
+
+@OptIn(ExperimentalFocus::class)
+@Composable
+private fun Explore(
+    modifier: Modifier = Modifier,
+    paddingValues: PaddingValues = PaddingValues(),
+    state: ExploreViewState,
+    actions: (ExploreActions) -> Unit
+) {
+    Surface(
+        modifier = modifier,
+        color = MaterialTheme.colors.surface
+    ) {
         ScrollableColumn(
             modifier = Modifier.fillMaxSize().animateContentSize(),
-            //contentPadding = PaddingValues(16.dp),
+            contentPadding = paddingValues,
             verticalArrangement = Arrangement.spacedBy(
                 space = 24.dp,
                 alignment = Alignment.Top
@@ -92,7 +124,7 @@ fun Explore(
                 BreakFastWithHeader(
                     breakfastRecipes = state.breakfastRecipes,
                     markRecipeAsFavourite = { recipe, isFavourite ->
-                        action(MarkFavourite(recipe, isFavourite))
+                        actions(MarkFavourite(recipe, isFavourite))
                     }
                 )
             }
@@ -107,7 +139,7 @@ fun Explore(
                 QuickRecipesWithHeader(
                     quickRecipes = state.readyInTimeRecipes,
                     markRecipeAsFavourite = { recipe, isFavourite ->
-                        action(MarkFavourite(recipe, isFavourite))
+                        actions(MarkFavourite(recipe, isFavourite))
                     }
                 )
             }
@@ -116,13 +148,10 @@ fun Explore(
                 RecentlyViewedRecipesWithHeader(
                     recentlyViewedRecipes = state.recentlyViewedRecipes,
                     markRecipeAsFavourite = { recipe, isFavourite ->
-                        action(MarkFavourite(recipe, isFavourite))
+                        actions(MarkFavourite(recipe, isFavourite))
                     }
                 )
             }
-
-            // for bottomNavigation
-            Spacer(modifier = Modifier.preferredHeight(64.dp))
         }
     }
 }
