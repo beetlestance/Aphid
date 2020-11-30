@@ -84,7 +84,7 @@ inline fun <reified VM : ViewModel> navViewModel(): ViewModelLazy<VM> {
 
 @Suppress("UNCHECKED_CAST")
 @Composable
-private fun ComponentActivity.ProvideNavigationViewModelFactoryMap(
+internal fun ComponentActivity.ProvideNavigationViewModelFactoryMap(
     factory: HiltViewModelFactory,
     content: @Composable () -> Unit
 ) {
