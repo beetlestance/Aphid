@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.preferredWidth
@@ -59,16 +60,15 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.beetlestance.aphid.common_compose.FoodCardPage
-import com.beetlestance.aphid.common_compose.extensions.widthPercentage
+import com.beetlestance.aphid.common_compose.RecipeDetailedPosterCard
 import com.beetlestance.aphid.common_compose.pager.Carousel
-import com.beetlestance.aphid.common_compose.pager.PageConfig
 import com.beetlestance.aphid.common_compose.pager.PageTransformation
 import com.beetlestance.aphid.common_compose.pager.Pager
 import com.beetlestance.aphid.common_compose.utils.navViewModel
 import com.beetlestance.aphid.data.entities.Recipe
 import com.beetlestance.spoonacular_kotlin.SpoonacularImageHelper
 import com.beetlestance.spoonacular_kotlin.constants.SpoonacularImageSize
+import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
 fun Explore(
@@ -419,42 +419,32 @@ fun QuickRecipesWithHeader(
         modifier = Modifier.padding(horizontal = 16.dp)
     )
 
-    val pageConfig = PageConfig(
-        horizontalOffset = 16.dp,
-        fraction = 0.9f,
-        horizontalOffsetFraction = 0.1f,
-        aspectRatio = 3 / 2f,
-        maxWidth = widthPercentage(fraction = 0.9f, excludeRootPadding = 16.dp)
-    )
-
-    Pager(
-        lastPage = quickRecipes.lastIndex
-    ) {
+    Pager(lastPage = quickRecipes.lastIndex) {
         val recipe = quickRecipes.getOrNull(page) ?: return@Pager
-        val recipeImageUrl: String? = run {
-            return@run SpoonacularImageHelper.generateRecipeImageUrl(
-                id = recipe.recipeId?.toLong() ?: return@run null,
-                imageSize = SpoonacularImageSize.Recipe.ULTRA_HIGH_QUALITY,
-                imageType = recipe.imageType
-            )
-        }
+        RecipeDetailedPosterCard(
+            modifier = Modifier,
+            isFavourite = recipe.isFavourite ?: false,
+            onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
+            posterImage = {
+                CoilImage(
+                    data = recipe.imageUrl ?: EMPTY_URL,
+                    fadeIn = true,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.aspectRatio(0.7f)
+                )
+            },
+            posterDetails = {
 
-        FoodCardPage(
-            modifier = Modifier.transformPage(PageTransformation.ZOOM_OUT),
-            pageConfig = pageConfig,
-            placeholder = R.drawable.temp_brownie,
-            isSelected = page == currentPage,
-            imageUrl = recipeImageUrl ?: "",
-            onCheckedChange = { isFavourite -> markRecipeAsFavourite(recipe, isFavourite) },
-            isFavourite = recipe.isFavourite == true,
-            childPreferredHeight = FOOD_CARD_DETAILS_HEIGHT
-        ) {
-            FoodCardContentsDetails(
-                name = recipe.title ?: "",
-                contentTags = "1 Serving • 20 Min • 205 Cal",
-                rating = "4.4"
-            )
-        }
+                FoodCardContentsDetails(
+                    name = recipe.title ?: "",
+                    contentTags = "1 Serving • 20 Min • 205 Cal",
+                    rating = "4.4"
+                )
+
+                // Item Spacing
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+        )
     }
 }
 
@@ -472,51 +462,40 @@ fun RecentlyViewedRecipesWithHeader(
         modifier = Modifier.padding(horizontal = 16.dp)
     )
 
-    val pageConfig = PageConfig(
-        horizontalOffset = 16.dp,
-        fraction = 0.9f,
-        horizontalOffsetFraction = 0.1f,
-        aspectRatio = 3 / 2f,
-        maxWidth = widthPercentage(fraction = 0.9f, excludeRootPadding = 16.dp)
-    )
+    Pager(lastPage = recentlyViewedRecipes.lastIndex) {
+        val recipe = recentlyViewedRecipes.getOrNull(page) ?: return@Pager
+        RecipeDetailedPosterCard(
+            modifier = Modifier.transformPage(PageTransformation.ZOOM_OUT),
+            isFavourite = recipe.isFavourite ?: false,
+            onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
+            posterImage = {
+                CoilImage(
+                    data = recipe.imageUrl ?: EMPTY_URL,
+                    fadeIn = true,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.aspectRatio(0.7f)
+                )
+            },
+            posterDetails = {
 
-    Pager(
-        lastPage = recentlyViewedRecipes.lastIndex,
-        modifier = Modifier.preferredHeight(pageConfig.maxHeight)
-    ) {
-        val recipe = recentlyViewedRecipes[page]
-        val recipeImageUrl: String? = run {
-            return@run SpoonacularImageHelper.generateRecipeImageUrl(
-                id = recipe.recipeId?.toLong() ?: return@run null,
-                imageSize = SpoonacularImageSize.Recipe.ULTRA_HIGH_QUALITY,
-                imageType = recipe.imageType
-            )
-        }
-
-        FoodCardPage(
-            modifier = Modifier.transformPage(PageTransformation.STAIRCASE_TRANSFORM),
-            pageConfig = pageConfig,
-            placeholder = R.drawable.temp_brownie,
-            isSelected = page == currentPage,
-            imageUrl = recipeImageUrl ?: "",
-            onCheckedChange = { isFavourite -> markRecipeAsFavourite(recipe, isFavourite) },
-            isFavourite = recipe.isFavourite == true,
-            childPreferredHeight = FOOD_CARD_DETAILS_HEIGHT
-        ) {
-            AnimatedVisibility(
-                visible = page == currentPage,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut(),
-            ) {
-                Column {
-                    FoodCardContentsDetails(
-                        name = recipe.title ?: "",
-                        contentTags = "1 Serving • 20 Min • 205 Cal",
-                        rating = "4.4"
-                    )
+                AnimatedVisibility(
+                    visible = page == currentPage,
+                    enter = fadeIn() + expandVertically(),
+                    exit = fadeOut(),
+                ) {
+                    Column {
+                        FoodCardContentsDetails(
+                            name = recipe.title ?: "",
+                            contentTags = "1 Serving • 20 Min • 205 Cal",
+                            rating = "4.4"
+                        )
+                    }
                 }
+
+                // Item Spacing
+                Spacer(modifier = Modifier.height(16.dp))
             }
-        }
+        )
     }
 }
 
@@ -560,4 +539,4 @@ fun FoodCardContentsDetails(
     )
 }
 
-private val FOOD_CARD_DETAILS_HEIGHT = 80.dp
+private const val EMPTY_URL = ""
