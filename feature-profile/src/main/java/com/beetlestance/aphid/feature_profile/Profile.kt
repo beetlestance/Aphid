@@ -59,13 +59,13 @@ import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.decode.SvgDecoder
 import com.beetlestance.aphid.common_compose.RecipeDetailedPosterCard
+import com.beetlestance.aphid.common_compose.insets.statusBarsPadding
 import com.beetlestance.aphid.common_compose.pager.Pager
 import com.beetlestance.aphid.common_compose.pager.PagerState
 import com.beetlestance.aphid.common_compose.pager.rememberPagerState
 import com.beetlestance.aphid.common_compose.utils.navViewModel
 import com.beetlestance.aphid.data.entities.Recipe
 import dev.chrisbanes.accompanist.coil.CoilImage
-import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import kotlin.math.abs
 
 @Composable

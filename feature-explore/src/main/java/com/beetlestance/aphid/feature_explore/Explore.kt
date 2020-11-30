@@ -61,6 +61,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.beetlestance.aphid.common_compose.FoodCardPage
 import com.beetlestance.aphid.common_compose.extensions.widthPercentage
+import com.beetlestance.aphid.common_compose.insets.statusBarsPadding
 import com.beetlestance.aphid.common_compose.pager.Carousel
 import com.beetlestance.aphid.common_compose.pager.PageConfig
 import com.beetlestance.aphid.common_compose.pager.PageTransformation
@@ -69,7 +70,6 @@ import com.beetlestance.aphid.common_compose.utils.navViewModel
 import com.beetlestance.aphid.data.entities.Recipe
 import com.beetlestance.spoonacular_kotlin.SpoonacularImageHelper
 import com.beetlestance.spoonacular_kotlin.constants.SpoonacularImageSize
-import dev.chrisbanes.accompanist.insets.statusBarsPadding
 
 @Composable
 fun Explore(

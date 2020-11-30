@@ -65,8 +65,6 @@ dependencies {
 
     // Accompanist
     api(Libs.Accompanist.coil)
-    implementation(Libs.Accompanist.insets)
-
 
     // Remove once hilt support saved state registry owner for compose
     implementation(Libs.AndroidX.Navigation.navigation)

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,7 +23,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -42,10 +40,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.ExperimentalFocus
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.compositeOver
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.node.Ref
-import androidx.compose.ui.platform.ConfigurationAmbient
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.SoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
@@ -53,19 +48,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.coerceAtLeast
 import androidx.compose.ui.unit.dp
 import com.beetlestance.aphid.base.CHAT_MESSAGE_ANSWER
-import com.beetlestance.aphid.common_compose.extensions.keyboardPadding
-import com.beetlestance.aphid.common_compose.extensions.toDp
+import com.beetlestance.aphid.common_compose.insets.AmbientWindowInsets
+import com.beetlestance.aphid.common_compose.insets.navigationBarsWithImePadding
+import com.beetlestance.aphid.common_compose.insets.statusBarsPadding
 import com.beetlestance.aphid.data.entities.Chat
 import dev.chrisbanes.accompanist.coil.CoilImage
-import dev.chrisbanes.accompanist.insets.AmbientWindowInsets
-import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
-import dev.chrisbanes.accompanist.insets.statusBarsPadding
-import dev.chrisbanes.accompanist.insets.systemBarsPadding
-import dev.chrisbanes.accompanist.insets.toPaddingValues
-import timber.log.Timber
 
 @Composable
 fun Chat(
@@ -94,7 +83,7 @@ fun Chat(
  * @param modifier [Modifier] to apply to this layout node
  */
 @Composable
-fun Chat(
+private fun Chat(
     paddingValues: PaddingValues,
     state: ChatViewState,
     action: (ChatActions) -> Unit,
@@ -107,7 +96,9 @@ fun Chat(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .systemBarsPadding()
+                .statusBarsPadding()
+                .navigationBarsWithImePadding()
+                .padding(paddingValues)
         ) {
 
             // Box will draw each element on top of each other
@@ -125,6 +116,7 @@ fun Chat(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 16.dp)
+                                .padding(bottom = 64.dp)
                                 .align(Alignment.CenterHorizontally)
                                 .weight(1f)
                         )
@@ -137,8 +129,6 @@ fun Chat(
                                 .weight(1f)
                         )
                     }
-
-                    //Spacer(modifier = Modifier.preferredHeight(16.dp))
                 }
 
                 // This will float over the messages
@@ -151,8 +141,6 @@ fun Chat(
                     }
                 )
             }
-
-            Spacer(modifier = Modifier.padding(paddingValues))
         }
 
     }

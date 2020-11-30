@@ -47,6 +47,7 @@ import com.beetlestance.aphid.common_compose.AndroidIcon
 import com.beetlestance.aphid.common_compose.AphidContent
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutMenuItem
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutNavBar
+import com.beetlestance.aphid.common_compose.insets.navigationBarsPadding
 import com.beetlestance.aphid.common_compose.utils.composableContent
 import com.beetlestance.aphid.common_compose.utils.setUpWithViewModel
 import com.beetlestance.aphid.feature_chat.Chat
@@ -54,7 +55,6 @@ import com.beetlestance.aphid.feature_chat.ChatViewModel
 import com.beetlestance.aphid.feature_explore.Explore
 import com.beetlestance.aphid.feature_profile.Profile
 import dagger.hilt.android.AndroidEntryPoint
-import dev.chrisbanes.accompanist.insets.navigationBarsPadding
 
 /**
  * [ComponentActivity] is a low level activity class, removing all the nested hierarchies
@@ -95,9 +95,9 @@ class MainActivity : ComponentActivity() {
     fun AphidHome() {
         val navController = rememberNavController()
         Scaffold(
-            modifier = Modifier.navigationBarsPadding(),
             bottomBar = {
                 CurveCutNavBar(
+                    modifier = Modifier.navigationBarsPadding(),
                     backgroundColor = MaterialTheme.colors.surface,
                     fabBackgroundColor = MaterialTheme.colors.primarySurface,
                     selectedItem = navItems.indexOf(Screen.Explore),
