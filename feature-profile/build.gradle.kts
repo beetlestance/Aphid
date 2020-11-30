@@ -61,4 +61,7 @@ dependencies {
 
     // Coil
     implementation(Libs.Coil.svgCoil)
+
+    // Accompanist
+    implementation(Libs.Accompanist.insets)
 }

@@ -65,6 +65,7 @@ import com.beetlestance.aphid.common_compose.pager.rememberPagerState
 import com.beetlestance.aphid.common_compose.utils.navViewModel
 import com.beetlestance.aphid.data.entities.Recipe
 import dev.chrisbanes.accompanist.coil.CoilImage
+import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import kotlin.math.abs
 
 @Composable
@@ -84,7 +85,8 @@ fun Profile(
     )
 
     Profile(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize(),
         state = state,
         paddingValues = contentPadding,
         actions = actions
@@ -99,10 +101,15 @@ private fun Profile(
     actions: (ProfileActions) -> Unit
 ) {
     Column(
-        modifier = modifier.background(MaterialTheme.colors.surface.copy(alpha = 0.95f)),
+        modifier = modifier
+            .background(MaterialTheme.colors.surface.copy(alpha = 0.95f))
     ) {
         Surface(modifier = Modifier.fillMaxWidth(), elevation = 4.dp) {
-            ProfileSection(modifier = Modifier.padding(PROFILE_LAYOUT_MARGIN))
+            ProfileSection(
+                modifier = Modifier
+                    .padding(PROFILE_LAYOUT_MARGIN)
+                    .statusBarsPadding()
+            )
         }
 
         ProfileRecipesTabLayout(
