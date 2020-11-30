@@ -14,22 +14,23 @@ import androidx.hilt.lifecycle.ViewModelAssistedFactory
 import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelLazy
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NamedNavArgument
 import androidx.navigation.compose.composable
+import androidx.savedstate.SavedStateRegistryOwner
 
 /**
- * In essence using the activity or fragment as the {@link SavedStateRegistryOwner} when the
- * ViewModelStoreOwners is not the same will cause your ViewModel to be different between the your
- * two navigation destinations but because the SavedStateRegistryOwner has a higher scope it
+ * In essence using the activity or fragment as the [SavedStateRegistryOwner] when the
+ * [ViewModelStoreOwner] is not the same will cause your ViewModel to be different between the your
+ * two navigation destinations but because the [SavedStateRegistryOwner] has a higher scope it
  * complains when trying to provide the same SavedStateHandle that was already consumed.
- * We need to make HiltViewModelFactory use the SavedStateRegistryOwner provided by the Navigation
- * library and specifically the NavBackStackEntry.
+ * We need to make [HiltViewModelFactory] use the [SavedStateRegistryOwner] provided by the Navigation
+ * library and specifically the [NavBackStackEntry].
  *
- * Took from issue
- * https://github.com/google/dagger/issues/2166
+ * @see <a href="https://github.com/google/dagger/issues/2166#issuecomment-723775543">Took from issue</a>
  * */
 
 val AmbientApplication: ProvidableAmbient<Application> = staticAmbientOf()

@@ -46,6 +46,11 @@ import androidx.compose.ui.zIndex
 import com.beetlestance.aphid.common_compose.extensions.toPx
 import com.beetlestance.aphid.common_compose.theme.shapes.CutOutShape
 
+/**
+ *  Curve Cut Bottom navigation.
+ *  @see <a href="https://in.pinterest.com/pin/648729521319201054/">Inspired By</a>
+ *  @see <a href="https://medium.com/swlh/curved-cut-out-bottom-navigation-with-animation-in-android-c630c867958c">Cut out shape reference</a>
+ */
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun CurveCutNavBar(

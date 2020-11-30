@@ -26,7 +26,6 @@ import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.ParentDataModifier
 import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.platform.AnimationClockAmbient
-import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -37,7 +36,10 @@ import kotlin.math.roundToInt
 import kotlin.math.sign
 
 /**
- * Stole from jetpack compose samples - JetCaster
+ * Stole from jetpack compose samples
+ * @see  <a href="https://github.com/android/compose-samples/blob/main/Jetcaster/app/src/main/java/com/example/jetcaster/util/Pager.kt">
+ *     JetCaster Pager
+ *     </a>
  */
 open class PagerState(
     val clock: AnimationClockObservable,
