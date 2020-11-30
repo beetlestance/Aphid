@@ -59,8 +59,9 @@ dependencies {
     api(Libs.AndroidX.Compose.tooling)
     api(Libs.AndroidX.Compose.livedata)
 
-    // Coil
+    // Accompanist
     api(Libs.Accompanist.coil)
+    implementation(Libs.Accompanist.insets)
 
 
     // Remove once hilt support saved state registry owner for compose

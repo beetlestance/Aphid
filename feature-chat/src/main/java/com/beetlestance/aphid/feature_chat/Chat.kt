@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -31,6 +32,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -40,8 +42,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.ExperimentalFocus
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.node.Ref
+import androidx.compose.ui.platform.ConfigurationAmbient
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.SoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
@@ -49,62 +53,118 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.coerceAtLeast
 import androidx.compose.ui.unit.dp
 import com.beetlestance.aphid.base.CHAT_MESSAGE_ANSWER
+import com.beetlestance.aphid.common_compose.extensions.keyboardPadding
+import com.beetlestance.aphid.common_compose.extensions.toDp
 import com.beetlestance.aphid.data.entities.Chat
 import dev.chrisbanes.accompanist.coil.CoilImage
+import dev.chrisbanes.accompanist.insets.AmbientWindowInsets
+import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
+import dev.chrisbanes.accompanist.insets.statusBarsPadding
+import dev.chrisbanes.accompanist.insets.systemBarsPadding
+import dev.chrisbanes.accompanist.insets.toPaddingValues
+import timber.log.Timber
 
 @Composable
 fun Chat(
+    viewModel: ChatViewModel,
+    modifier: Modifier = Modifier,
+    paddingValues: PaddingValues = PaddingValues()
+) {
+    val state by viewModel.liveData.observeAsState(initial = viewModel.currentState())
+    val action: (ChatActions) -> Unit = { action -> viewModel.submitAction(action) }
+
+    Chat(
+        paddingValues = paddingValues,
+        state = state,
+        action = action,
+        modifier = modifier
+    )
+}
+
+
+/**
+ * Entry point for chat screen.
+ *
+ * @param paddingValues contains padding for bottom navigation
+ * @param state contains the state for the UI to draw
+ * @param action is an block to perform [ChatActions]
+ * @param modifier [Modifier] to apply to this layout node
+ */
+@Composable
+fun Chat(
     paddingValues: PaddingValues,
-    state: ChatViewState?,
-    action: (ChatActions) -> Unit
+    state: ChatViewState,
+    action: (ChatActions) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Surface(
-        color = Color(0xFFeeeeee)
+        modifier = modifier,
+        color = MaterialTheme.colors.surface.copy(alpha = 0.95f)
     ) {
         Column(
             modifier = Modifier
-                .padding(paddingValues)
                 .fillMaxSize()
+                .systemBarsPadding()
         ) {
-            if (state?.messages.isNullOrEmpty()) {
-                EmptyChat(
+
+            // Box will draw each element on top of each other
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
+            ) {
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .align(Alignment.CenterHorizontally)
-                        .weight(1f)
-                )
-            } else {
-                ChatListing(
-                    (state ?: return@Column).messages,
+                        .fillMaxSize()
+                ) {
+                    if (state.messages.isNullOrEmpty()) {
+                        EmptyChat(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp)
+                                .align(Alignment.CenterHorizontally)
+                                .weight(1f)
+                        )
+                    } else {
+                        ChatListing(
+                            messages = state.messages,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .align(Alignment.CenterHorizontally)
+                                .weight(1f)
+                        )
+                    }
+
+                    //Spacer(modifier = Modifier.preferredHeight(16.dp))
+                }
+
+                // This will float over the messages
+                ChatInput(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.CenterHorizontally)
-                        .weight(1f)
+                        .align(Alignment.BottomCenter)
+                        .padding(horizontal = 16.dp),
+                    onQuerySubmit = {
+                        if (it.isNotBlank()) action(ChatActions.SendMessage(it))
+                    }
                 )
             }
 
-            Spacer(modifier = Modifier.preferredHeight(16.dp))
-
-            ChatInput(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 16.dp),
-                onQuerySubmit = {
-                    if (it.isNotBlank())
-                        action(ChatActions.SendMessage(it))
-                }
-            )
+            Spacer(modifier = Modifier.padding(paddingValues))
         }
+
     }
 }
 
 @Composable
-fun ChatListing(items: List<Chat>, modifier: Modifier = Modifier) {
+fun ChatListing(
+    messages: List<Chat>,
+    modifier: Modifier = Modifier
+) {
     LazyColumnFor(
-        items = items,
+        items = messages,
         modifier = modifier
     ) { message ->
         if (message.type == CHAT_MESSAGE_ANSWER) {
@@ -207,7 +267,7 @@ fun EmptyChat(
         Box(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .fillMaxWidth(0.7f)
+                .fillMaxWidth()
                 .weight(1f)
         ) {
             Image(

@@ -17,18 +17,31 @@ package com.beetlestance.aphid
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.WindowManager
+import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
 import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.viewModel
+import androidx.core.view.WindowCompat
 import androidx.navigation.compose.KEY_ROUTE
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -45,15 +58,24 @@ import com.beetlestance.aphid.feature_explore.Explore
 import com.beetlestance.aphid.feature_profile.Profile
 import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
+import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
+import dev.chrisbanes.accompanist.insets.navigationBarsPadding
 
+/**
+ * [ComponentActivity] is a low level activity class, removing all the nested hierarchies
+ * or functionalities
+ */
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
     private val viewModel: MainActivityViewModel by viewModels()
     private val chatViewModel: ChatViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Draw behind the system bars
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         // disabled dark theme temporarily
         when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
@@ -70,7 +92,9 @@ class MainActivity : AppCompatActivity() {
 
         setContentUI(content = {
             MdcTheme {
-                AphidHome()
+                ProvideWindowInsets {
+                    AphidHome()
+                }
             }
         })
     }
@@ -79,6 +103,7 @@ class MainActivity : AppCompatActivity() {
     fun AphidHome() {
         val navController = rememberNavController()
         Scaffold(
+            modifier = Modifier.navigationBarsPadding(),
             bottomBar = {
                 CurveCutNavBar(
                     backgroundColor = MaterialTheme.colors.surface,
@@ -124,7 +149,10 @@ class MainActivity : AppCompatActivity() {
         ) { navBarPadding ->
             NavHost(navController, startDestination = Screen.Explore.route) {
                 composableContent(Screen.Chat.route) {
-                    ChatScreen(navBarPadding)
+                    Chat(
+                        viewModel = chatViewModel,
+                        paddingValues = navBarPadding
+                    )
                 }
 
                 composableContent(Screen.Explore.route) {
@@ -144,15 +172,20 @@ class MainActivity : AppCompatActivity() {
 
     @Composable
     private fun Dummy() {
-
-    }
-
-    @Composable
-    private fun ChatScreen(paddingValues: PaddingValues) {
-        val state by chatViewModel.liveData.observeAsState()
-
-        Chat(paddingValues = paddingValues, state = state) {
-            chatViewModel.submitAction(it)
+        Surface(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                OutlinedTextField(
+                    value = "",
+                    onValueChange = {},
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .fillMaxWidth()
+                        .padding(bottom = 124.dp)
+                        .padding(horizontal = 16.dp)
+                )
+            }
         }
     }
 

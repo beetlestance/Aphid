@@ -61,4 +61,6 @@ dependencies {
     kapt(Libs.AndroidX.Hilt.compiler)
     kapt(Libs.Hilt.compiler)
 
+    // Accompanist
+    implementation(Libs.Accompanist.insets)
 }

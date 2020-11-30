@@ -120,4 +120,6 @@ dependencies {
     implementation(Libs.OkHttp.loggingInterceptor)
     implementation(Libs.OkHttp.urlConnection)
 
+    // Accompanist
+    implementation(Libs.Accompanist.insets)
 }
