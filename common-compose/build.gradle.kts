@@ -49,6 +49,10 @@ dependencies {
     implementation(Libs.AndroidX.appcompat)
     implementation(Libs.AndroidX.coreKtx)
 
+    // Material Design
+    implementation(Libs.Google.Mdc.material)
+    implementation(Libs.Google.Mdc.composeThemeAdapter)
+
     // Compose
     api(Libs.AndroidX.Compose.runtime)
     api(Libs.AndroidX.Compose.foundation)

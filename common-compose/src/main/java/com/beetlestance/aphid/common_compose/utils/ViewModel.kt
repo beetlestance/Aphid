@@ -40,11 +40,10 @@ val AmbientViewModelFactoriesMap: ProvidableAmbient<Map<String, ViewModelAssiste
 
 val AmbientNavBackStackEntry: ProvidableAmbient<NavBackStackEntry> = staticAmbientOf()
 
-fun ComponentActivity.setContentUI(
-    parent: CompositionReference = Recomposer.current(),
+fun ComponentActivity.setUpWithViewModel(
     content: @Composable () -> Unit
 ) {
-    setContent(parent) {
+    setContent {
         ProvideNavigationViewModelFactoryMap(
             factory = defaultViewModelProviderFactory as HiltViewModelFactory,
             content = content

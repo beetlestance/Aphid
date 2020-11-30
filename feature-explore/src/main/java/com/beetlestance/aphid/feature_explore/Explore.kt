@@ -69,6 +69,7 @@ import com.beetlestance.aphid.data.entities.Recipe
 import com.beetlestance.spoonacular_kotlin.SpoonacularImageHelper
 import com.beetlestance.spoonacular_kotlin.constants.SpoonacularImageSize
 import dev.chrisbanes.accompanist.coil.CoilImage
+import dev.chrisbanes.accompanist.insets.statusBarsPadding
 
 @Composable
 fun Explore(
@@ -87,7 +88,9 @@ fun Explore(
     )
 
     Explore(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .statusBarsPadding(),
         state = state,
         paddingValues = contentPadding,
         actions = actions

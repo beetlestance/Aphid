@@ -35,6 +35,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
@@ -44,17 +45,16 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.beetlestance.aphid.common_compose.AndroidIcon
+import com.beetlestance.aphid.common_compose.AphidContent
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutMenuItem
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutNavBar
 import com.beetlestance.aphid.common_compose.utils.composableContent
-import com.beetlestance.aphid.common_compose.utils.setContentUI
+import com.beetlestance.aphid.common_compose.utils.setUpWithViewModel
 import com.beetlestance.aphid.feature_chat.Chat
 import com.beetlestance.aphid.feature_chat.ChatViewModel
 import com.beetlestance.aphid.feature_explore.Explore
 import com.beetlestance.aphid.feature_profile.Profile
-import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
-import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
 import dev.chrisbanes.accompanist.insets.navigationBarsPadding
 
 /**
@@ -87,13 +87,11 @@ class MainActivity : AppCompatActivity() {
 
         resources.configuration.uiMode = Configuration.UI_MODE_NIGHT_NO
 
-        setContentUI(content = {
-            MdcTheme {
-                ProvideWindowInsets {
-                    AphidHome()
-                }
+        setUpWithViewModel {
+            AphidContent {
+                AphidHome()
             }
-        })
+        }
     }
 
     @Composable
