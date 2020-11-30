@@ -61,7 +61,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.beetlestance.aphid.common_compose.RecipeDetailedPosterCard
-import com.beetlestance.aphid.common_compose.extensions.widthPercentage
 import com.beetlestance.aphid.common_compose.insets.statusBarsPadding
 import com.beetlestance.aphid.common_compose.pager.Carousel
 import com.beetlestance.aphid.common_compose.pager.PageTransformation
@@ -428,7 +427,7 @@ fun QuickRecipesWithHeader(
     Pager(lastPage = quickRecipes.lastIndex) {
         val recipe = quickRecipes.getOrNull(page) ?: return@Pager
         RecipeDetailedPosterCard(
-            modifier = Modifier,
+            modifier = Modifier.transformPage(PageTransformation.SCALE_TRANSFORM),
             isFavourite = recipe.isFavourite ?: false,
             onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
             posterImage = {
@@ -436,7 +435,7 @@ fun QuickRecipesWithHeader(
                     data = recipe.imageUrl ?: EMPTY_URL,
                     fadeIn = true,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.aspectRatio(0.7f)
+                    modifier = Modifier.aspectRatio(1.5f)
                 )
             },
             posterDetails = {
@@ -471,7 +470,7 @@ fun RecentlyViewedRecipesWithHeader(
     Pager(lastPage = recentlyViewedRecipes.lastIndex) {
         val recipe = recentlyViewedRecipes.getOrNull(page) ?: return@Pager
         RecipeDetailedPosterCard(
-            modifier = Modifier.transformPage(PageTransformation.ZOOM_OUT),
+            modifier = Modifier.transformPage(PageTransformation.SCALE_TRANSFORM),
             isFavourite = recipe.isFavourite ?: false,
             onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
             posterImage = {
@@ -479,7 +478,7 @@ fun RecentlyViewedRecipesWithHeader(
                     data = recipe.imageUrl ?: EMPTY_URL,
                     fadeIn = true,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.aspectRatio(0.7f)
+                    modifier = Modifier.aspectRatio(1.5f)
                 )
             },
             posterDetails = {
