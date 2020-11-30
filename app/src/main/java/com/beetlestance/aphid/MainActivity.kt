@@ -45,7 +45,6 @@ import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.beetlestance.aphid.common_compose.AndroidIcon
 import com.beetlestance.aphid.common_compose.AphidContent
-import com.beetlestance.aphid.common_compose.AphidContentSetUp
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutMenuItem
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutNavBar
 import com.beetlestance.aphid.common_compose.utils.composableContent
