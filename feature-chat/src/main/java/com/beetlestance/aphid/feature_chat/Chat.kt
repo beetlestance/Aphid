@@ -51,6 +51,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.beetlestance.aphid.base.CHAT_MESSAGE_ANSWER
 import com.beetlestance.aphid.common_compose.insets.AmbientWindowInsets
+import com.beetlestance.aphid.common_compose.insets.imePadding
 import com.beetlestance.aphid.common_compose.insets.navigationBarsWithImePadding
 import com.beetlestance.aphid.common_compose.insets.statusBarsPadding
 import com.beetlestance.aphid.data.entities.Chat
@@ -65,8 +66,12 @@ fun Chat(
     val state by viewModel.liveData.observeAsState(initial = viewModel.currentState())
     val action: (ChatActions) -> Unit = { action -> viewModel.submitAction(action) }
 
+    val isImeVisible = AmbientWindowInsets.current.ime.isVisible
+
+    val transformedPadding = if (isImeVisible) PaddingValues(bottom = 16.dp) else paddingValues
+
     Chat(
-        paddingValues = paddingValues,
+        paddingValues = transformedPadding,
         state = state,
         action = action,
         modifier = modifier
@@ -96,9 +101,9 @@ private fun Chat(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .statusBarsPadding()
-                .navigationBarsWithImePadding()
                 .padding(paddingValues)
+                .statusBarsPadding()
+                .imePadding()
         ) {
 
             // Box will draw each element on top of each other

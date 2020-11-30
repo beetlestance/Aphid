@@ -90,8 +90,7 @@ fun Explore(
 
     Explore(
         modifier = modifier
-            .fillMaxSize()
-            .statusBarsPadding(),
+            .fillMaxSize(),
         state = state,
         paddingValues = contentPadding,
         actions = actions
@@ -113,7 +112,10 @@ private fun Explore(
         color = MaterialTheme.colors.surface
     ) {
         ScrollableColumn(
-            modifier = Modifier.fillMaxSize().animateContentSize(),
+            modifier = Modifier
+                .statusBarsPadding()
+                .fillMaxSize()
+                .animateContentSize(),
             contentPadding = paddingValues,
             verticalArrangement = Arrangement.spacedBy(
                 space = 24.dp,
