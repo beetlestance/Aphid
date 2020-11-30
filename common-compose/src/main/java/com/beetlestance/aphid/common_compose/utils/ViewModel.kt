@@ -40,7 +40,6 @@ val AmbientViewModelFactoriesMap: ProvidableAmbient<Map<String, ViewModelAssiste
 
 val AmbientNavBackStackEntry: ProvidableAmbient<NavBackStackEntry> = staticAmbientOf()
 
-@Composable
 fun ComponentActivity.setUpWithViewModel(
     content: @Composable () -> Unit
 ) {
