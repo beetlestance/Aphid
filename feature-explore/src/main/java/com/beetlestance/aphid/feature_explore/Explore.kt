@@ -11,7 +11,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.ScrollableRow
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ConstraintLayout
@@ -30,30 +30,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.preferredWidth
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.draw.drawShadow
 import androidx.compose.ui.focus.ExperimentalFocus
-import androidx.compose.ui.focus.FocusState
-import androidx.compose.ui.focusObserver
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ConfigurationAmbient
@@ -61,7 +53,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -93,27 +84,9 @@ fun Explore(
                 alignment = Alignment.Top
             )
         ) {
-            /*val searchState = rememberSearchState()
-            val searchQuery = savedInstanceState(saver = TextFieldValue.Saver) {
-                TextFieldValue(searchState.query)
-            }
-
-            Search(
-                value = searchQuery.value,
-                hint = searchState.hint,
-                onValueChange = {
-                    searchQuery.value = it
-                    searchState.query = it.text
-                },
-                onFocusChange = { searchState.focused = it.isFocused }
-            )*/
             Spacer(modifier = Modifier.preferredHeight(0.dp))
 
-            ExposeSearchBar(
-                modifier = Modifier.padding(horizontal = 8.dp)
-            )
-
-            //Filters()
+            SearchBar(modifier = Modifier.padding(horizontal = 8.dp))
 
             if (state.breakfastRecipes.isNotEmpty()) {
                 BreakFastWithHeader(
@@ -154,132 +127,63 @@ fun Explore(
     }
 }
 
-/**
- * This component should be stateless
- */
-@OptIn(ExperimentalFocus::class)
+private val ExposeSearchBarShape = CircleShape
+
 @Composable
-fun Search(
-    value: TextFieldValue,
-    hint: String,
-    onValueChange: (TextFieldValue) -> Unit,
-    onFocusChange: (FocusState) -> Unit
+fun SearchBar(
+    modifier: Modifier = Modifier,
+    text: String = "",
+    searchClick: () -> Unit = {},
+    filterClick: () -> Unit = {}
 ) {
-    val placeHolder = "Palak Paneer"
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        modifier = Modifier.fillMaxWidth().focusObserver { onFocusChange(it) },
-        leadingIcon = { Icon(Icons.Outlined.Search) },
-        label = { SearchHint(hint = hint) },
-        placeholder = { SearchPlaceHolder(placeHolder = placeHolder) }
-    )
-}
-
-@Composable
-fun SearchHint(hint: String) {
-    Text(text = hint)
-}
-
-@Composable
-fun SearchPlaceHolder(placeHolder: String) {
-    Text(text = placeHolder)
-}
-
-@Composable
-private fun rememberSearchState(
-    query: String = "",
-    focused: Boolean = false
-): SearchState {
-    return remember {
-        SearchState(
-            query = query,
-            focused = focused
-        )
-    }
-}
-
-@Stable
-class SearchState(
-    query: String,
-    focused: Boolean
-) {
-    var query: String by mutableStateOf(query)
-    var focused: Boolean by mutableStateOf(focused)
-
-    val hint: String
-        get() = if (focused) "Search For Food" else "Palak Paneer"
-}
-
-@Composable
-fun Filters(filters: List<Filter> = provideFilters()) {
-    ScrollableRow(
-        horizontalArrangement = Arrangement.spacedBy(
-            space = 8.dp,
-            alignment = Alignment.End
-        )
-    ) {
-        filters.forEach { filter ->
-            FilterChip(filter = filter)
-        }
-    }
-}
-
-@Composable
-fun FilterChip(filter: Filter) {
-    val backGround = if (filter.selected) R.color.deep_orange_a200 else R.color.white
-
     Row(
-        horizontalArrangement = Arrangement.spacedBy(
-            space = 8.dp,
-            alignment = Alignment.Start
-        ),
-        modifier = Modifier
-            .animateContentSize()
-            .border(
-                width = if (filter.selected) 0.dp else 2.dp,
-                color = colorResource(id = R.color.grey_700),
-                shape = CircleShape
-            )
-            .clip(CircleShape)
-            .background(
-                color = colorResource(id = backGround)
-            )
-            .toggleable(
-                value = filter.selected,
-                onValueChange = { filter.selected = it }
-            )
-            .padding(
-                horizontal = 16.dp,
-                vertical = 8.dp
-            )
+        modifier = modifier
     ) {
-        Text(text = "Juices")
-
-        if (filter.selected) {
+        Row(
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 8.dp)
+                .drawShadow(
+                    elevation = 8.dp,
+                    shape = ExposeSearchBarShape,
+                    clip = false
+                )
+                .clip(ExposeSearchBarShape)
+                .clickable(onClick = searchClick)
+                .background(Color.White)
+                .padding(8.dp)
+                .align(Alignment.CenterVertically)
+        ) {
             Icon(
-                asset = vectorResource(id = R.drawable.ic_close_filled),
-                modifier = Modifier.align(Alignment.CenterVertically)
+                asset = Icons.Outlined.Search,
+                tint = Color.Gray,
+                modifier = Modifier
+                    .padding(start = 8.dp, end = 8.dp)
+                    .align(Alignment.CenterVertically)
+            )
+
+            Text(
+                text = if (text.isEmpty()) "Search for food" else text,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 8.dp),
+                color = Color.Gray
             )
         }
+
+        Icon(
+            asset = vectorResource(id = R.drawable.ic_filter),
+            tint = Color.Gray,
+            modifier = Modifier
+                .clip(CircleShape)
+                .clickable(
+                    onClick = filterClick
+                )
+                .padding(8.dp)
+                .align(Alignment.CenterVertically)
+        )
     }
 }
-
-@Composable
-fun provideFilters(): List<Filter> {
-    val filters: MutableList<Filter> = mutableListOf()
-    repeat(10) {
-        filters.add(Filter(selected = false))
-    }
-    return remember { filters }
-}
-
-class Filter(
-    selected: Boolean
-) {
-    var selected: Boolean by mutableStateOf(selected)
-}
-
 
 @Composable
 fun BreakFastWithHeader(
@@ -328,23 +232,6 @@ fun BreakFastWithHeader(
             description =
             "A unique experience of taste  and delicious ingredients prepared for you. Liven up your life with nutrition."
         )
-
-        /*FoodCardPage(
-            modifier = Modifier.transformPage(PageTransformation.DEPTH_TRANSFORM),
-            pageConfig = foodCardPageConfig,
-            isSelected = isSelectedPage,
-            imageUrl = recipeImageUrl ?: recipe.imageUrl,
-            placeholder = R.drawable.temp_brownie,
-            isFavourite = recipe.isFavourite == true,
-            onCheckedChange = { isFavourite -> markRecipeAsFavourite(recipe, isFavourite) },
-            childPreferredHeight = FOOD_CARD_DETAILS_HEIGHT
-        ) {
-            FoodCardContentsDetails(
-                name = recipe.title ?: "",
-                contentTags = "2 Serving • 40 Min • 331 Cal ",
-                rating = "4.3",
-            )
-        }*/
     }
 }
 
