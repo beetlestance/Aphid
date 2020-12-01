@@ -117,7 +117,7 @@ private fun Profile(
                     sprite = AvataaarsSprite(),
                     seed = "example",
                     config = AvataaarsConfig(
-                        top = listOf(AvataaarTop.SHORT_HAIR),
+                        top = listOf(AvataaarTop.EYE_PATCH, AvataaarTop.HAT),
                         accessoriesChance = 93
                     )
                 ).toString()
