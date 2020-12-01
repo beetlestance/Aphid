@@ -3,6 +3,12 @@ import com.beetlestance.aphid.buildsrc.Libs
 plugins {
     id("kotlin")
     id("com.android.lint")
+    kotlin("kapt")
+}
+
+kapt {
+    correctErrorTypes = true
+    useBuildCache = true
 }
 
 lintOptions {

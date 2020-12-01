@@ -2,6 +2,12 @@ import com.beetlestance.aphid.buildsrc.Libs
 
 plugins {
     id("kotlin")
+    kotlin("kapt")
+}
+
+kapt {
+    correctErrorTypes = true
+    useBuildCache = true
 }
 
 dependencies {

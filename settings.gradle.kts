@@ -6,6 +6,7 @@ include(
     ":base-android",
     ":common-compose",
     ":data",
+    ":dicebar-kotlin",
     ":data-android",
     ":domain",
     ":feature-explore",
