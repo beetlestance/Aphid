@@ -6,7 +6,7 @@ import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarSprite
 
 class BotttsSprite : DiceBarSprite() {
 
-    override val type: String = DiceBarAvatar.AVATAAARS
+    override val type: String = DiceBarAvatar.BOTTTS
 
     override val options: List<String> = BotttsOptions.possibleSeedValues
 }
