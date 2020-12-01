@@ -14,9 +14,9 @@ abstract class DiceBarSprite {
 
 abstract class DiceBarSpriteOptions {
 
-    protected abstract val spriteSeedValues: List<String>
+    protected abstract val spriteConfigOptions: List<String>
 
-    val possibleSeedValues: List<String> by lazy { globalSeedValues + spriteSeedValues }
+    val possibleConfigOptions: List<String> by lazy { globalConfigOptions + spriteConfigOptions }
 
     companion object {
 
@@ -30,7 +30,7 @@ abstract class DiceBarSpriteOptions {
 
         private const val BACKGROUND: String = "background"
 
-        private val globalSeedValues: List<String> = listOf(
+        private val globalConfigOptions: List<String> = listOf(
             RADIUS, WIDTH, HEIGHT, MARGIN, BACKGROUND
         )
     }

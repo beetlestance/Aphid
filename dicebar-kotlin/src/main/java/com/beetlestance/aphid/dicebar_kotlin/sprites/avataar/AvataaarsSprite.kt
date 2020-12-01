@@ -7,5 +7,5 @@ class AvataaarsSprite : DiceBarSprite() {
 
     override val type: String = DiceBarAvatar.AVATAAARS
 
-    override val options: List<String> = AvataaarOptions.possibleSeedValues
+    override val options: List<String> = AvataaarOptions.possibleConfigOptions
 }

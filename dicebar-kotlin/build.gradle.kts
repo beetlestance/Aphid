@@ -20,4 +20,13 @@ dependencies {
 
     // Kotlin
     implementation(Libs.Kotlin.stdlib)
+
+    //Moshi
+    implementation(Libs.Moshi.moshi)
+    implementation(Libs.Moshi.moshiKotlin)
+    implementation(Libs.Moshi.moshiAdapters)
+
+    // Ok-Http
+    implementation(Libs.OkHttp.okhttp)
+    implementation(Libs.OkHttp.urlConnection)
 }

@@ -7,5 +7,5 @@ class HumanSprite : DiceBarSprite() {
 
     override val type: String = DiceBarAvatar.HUMAN
 
-    override val options: List<String> = HumanOptions.possibleSeedValues
+    override val options: List<String> = HumanOptions.possibleConfigOptions
 }

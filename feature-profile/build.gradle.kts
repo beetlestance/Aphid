@@ -40,7 +40,7 @@ dependencies {
     implementation(project(":common-compose"))
     implementation(project(":data"))
     implementation(project(":domain"))
-    implementation(project(":spoonacular-kotlin"))
+    implementation(project(":dicebar-kotlin"))
 
     // AndroidX
     implementation(Libs.AndroidX.coreKtx)

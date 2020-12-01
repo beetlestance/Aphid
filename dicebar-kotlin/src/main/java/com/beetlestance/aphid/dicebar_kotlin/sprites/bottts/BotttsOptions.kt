@@ -2,10 +2,10 @@ package com.beetlestance.aphid.dicebar_kotlin.sprites.bottts
 
 import androidx.annotation.IntDef
 import androidx.annotation.StringDef
-import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarSeedOptions
+import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarConfigOptions
 import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarSpriteOptions
 
-object BotttsColor : DiceBarSeedOptions() {
+object BotttsColor : DiceBarConfigOptions() {
 
     const val AMBER: String = "amber"
 
@@ -58,7 +58,7 @@ object BotttsColor : DiceBarSeedOptions() {
     )
 }
 
-object BotttsPrimaryColorLevel : DiceBarSeedOptions() {
+object BotttsPrimaryColorLevel : DiceBarConfigOptions() {
 
     const val FIFTY: Int = 50
 
@@ -94,7 +94,7 @@ object BotttsPrimaryColorLevel : DiceBarSeedOptions() {
     )
 }
 
-object BotttsSecondaryColorLevel : DiceBarSeedOptions() {
+object BotttsSecondaryColorLevel : DiceBarConfigOptions() {
 
     const val FIFTY: Int = 50
 
@@ -148,7 +148,7 @@ object BotttsOptions : DiceBarSpriteOptions() {
 
     private const val TOP_CHANCE: String = "topChance"
 
-    override val spriteSeedValues: List<String> = listOf(
+    override val spriteConfigOptions: List<String> = listOf(
         COLORS, COLORFUL, MOUTH_CHANCE, PRIMARY_COLOR_LEVEL, SECONDARY_COLOR_LEVEL, SIDES_CHANCE,
         TEXTURE_CHANCE, TOP_CHANCE
     )

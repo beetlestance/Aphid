@@ -1,10 +1,10 @@
 package com.beetlestance.aphid.dicebar_kotlin.sprites.avataar
 
 import androidx.annotation.StringDef
-import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarSeedOptions
+import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarConfigOptions
 import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarSpriteOptions
 
-object AvataaarStyle : DiceBarSeedOptions() {
+object AvataaarStyle : DiceBarConfigOptions() {
 
     const val CIRCLE: String = "circle"
 
@@ -18,7 +18,7 @@ object AvataaarStyle : DiceBarSeedOptions() {
 }
 
 
-object AvataaarMode : DiceBarSeedOptions() {
+object AvataaarMode : DiceBarConfigOptions() {
 
     const val INCLUDE: String = "include"
 
@@ -31,7 +31,7 @@ object AvataaarMode : DiceBarSeedOptions() {
     override val possibleValues: List<String> = listOf(INCLUDE, EXCLUDE)
 }
 
-object AvataaarTop : DiceBarSeedOptions() {
+object AvataaarTop : DiceBarConfigOptions() {
 
     const val EYE_PATCH: String = "eyepatch"
 
@@ -54,7 +54,7 @@ object AvataaarTop : DiceBarSeedOptions() {
     )
 }
 
-object AvataaarHat : DiceBarSeedOptions() {
+object AvataaarHat : DiceBarConfigOptions() {
 
     const val BLACK: String = "black"
 
@@ -81,7 +81,7 @@ object AvataaarHat : DiceBarSeedOptions() {
     )
 }
 
-object AvataaarHairColor : DiceBarSeedOptions() {
+object AvataaarHairColor : DiceBarConfigOptions() {
 
     const val AUBURN: String = "auburn"
 
@@ -110,7 +110,7 @@ object AvataaarHairColor : DiceBarSeedOptions() {
     )
 }
 
-object AvataaarAccessories : DiceBarSeedOptions() {
+object AvataaarAccessories : DiceBarConfigOptions() {
 
     const val KURT: String = "kurt"
 
@@ -133,7 +133,7 @@ object AvataaarAccessories : DiceBarSeedOptions() {
     )
 }
 
-object AvataaarAccessoriesColor : DiceBarSeedOptions() {
+object AvataaarAccessoriesColor : DiceBarConfigOptions() {
 
     const val BLACK: String = "black"
 
@@ -160,7 +160,7 @@ object AvataaarAccessoriesColor : DiceBarSeedOptions() {
     )
 }
 
-object AvataaarFacialHair : DiceBarSeedOptions() {
+object AvataaarFacialHair : DiceBarConfigOptions() {
 
     const val FANCY: String = "fancy"
 
@@ -180,7 +180,7 @@ object AvataaarFacialHair : DiceBarSeedOptions() {
 
 }
 
-object AvataaarFacialHairColor : DiceBarSeedOptions() {
+object AvataaarFacialHairColor : DiceBarConfigOptions() {
 
     const val AUBURN: String = "auburn"
 
@@ -209,7 +209,7 @@ object AvataaarFacialHairColor : DiceBarSeedOptions() {
     )
 }
 
-object AvataaarClothes : DiceBarSeedOptions() {
+object AvataaarClothes : DiceBarConfigOptions() {
 
     const val BLAZER: String = "blazer"
 
@@ -229,7 +229,7 @@ object AvataaarClothes : DiceBarSeedOptions() {
 
 }
 
-object AvataaarClothesColor : DiceBarSeedOptions() {
+object AvataaarClothesColor : DiceBarConfigOptions() {
 
     const val BLACK: String = "black"
 
@@ -257,7 +257,7 @@ object AvataaarClothesColor : DiceBarSeedOptions() {
 
 }
 
-object AvataaarEyes : DiceBarSeedOptions() {
+object AvataaarEyes : DiceBarConfigOptions() {
 
     const val CLOSE: String = "close"
 
@@ -294,7 +294,7 @@ object AvataaarEyes : DiceBarSeedOptions() {
     )
 }
 
-object AvataaarEyeBrow : DiceBarSeedOptions() {
+object AvataaarEyeBrow : DiceBarConfigOptions() {
 
     const val ANGRY: String = "angry"
 
@@ -321,7 +321,7 @@ object AvataaarEyeBrow : DiceBarSeedOptions() {
     )
 }
 
-object AvataaarMouth : DiceBarSeedOptions() {
+object AvataaarMouth : DiceBarConfigOptions() {
 
     const val CONCERNED: String = "concerned"
 
@@ -360,7 +360,7 @@ object AvataaarMouth : DiceBarSeedOptions() {
     )
 }
 
-object AvataaarSkin : DiceBarSeedOptions() {
+object AvataaarSkin : DiceBarConfigOptions() {
 
     const val BLACK: String = "black"
 
@@ -424,7 +424,7 @@ object AvataaarOptions : DiceBarSpriteOptions() {
 
     private const val TOP_CHANCE: String = "topChance"
 
-    override val spriteSeedValues: List<String> = listOf(
+    override val spriteConfigOptions: List<String> = listOf(
         ACCESSORIES, ACCESSORIES_CHANCE, ACCESSORIES_COLOR, CLOTHES, CLOTHES_COLOR, EYES,
         EYEBROW, FACIAL_HAIR, FACIAL_HAIR_CHANCE, FACIAL_HAIR_COLOR, HAT_COLOR, HAIR_COLOR,
         MODE, MOUTH, SKIN, STYLE, TOP, TOP_CHANCE

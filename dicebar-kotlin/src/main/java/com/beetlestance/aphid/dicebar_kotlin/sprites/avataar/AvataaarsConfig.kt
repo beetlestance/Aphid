@@ -1,13 +1,13 @@
 package com.beetlestance.aphid.dicebar_kotlin.sprites.avataar
 
-import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarSeed
+import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarConfig
 
 /**
- * The value of [DiceBarSeed] can be anything you like - but don't use any sensitive or personal data here!
+ * The value of [DiceBarConfig] can be anything you like - but don't use any sensitive or personal data here!
  *
- * @see <a href="https://avatars.dicebear.com/styles/avataaars">Avataaars Seed Options</a>
+ * @see <a href="https://avatars.dicebear.com/styles/avataaars">Avataaars Config Options</a>
  * */
-data class AvataaarsSeed(
+data class AvataaarsConfig(
 
     @AvataaarStyle.PossibleValues
     val style: String = AvataaarStyle.TRANSPARENT,
@@ -63,4 +63,4 @@ data class AvataaarsSeed(
     @AvataaarSkin.PossibleValues
     val skin: List<String>? = null
 
-) : DiceBarSeed()
+) : DiceBarConfig()

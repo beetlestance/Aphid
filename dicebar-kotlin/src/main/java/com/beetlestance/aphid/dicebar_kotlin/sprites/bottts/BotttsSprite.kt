@@ -8,5 +8,5 @@ class BotttsSprite : DiceBarSprite() {
 
     override val type: String = DiceBarAvatar.BOTTTS
 
-    override val options: List<String> = BotttsOptions.possibleSeedValues
+    override val options: List<String> = BotttsOptions.possibleConfigOptions
 }

@@ -7,5 +7,5 @@ class MaleSprite : DiceBarSprite() {
 
     override val type: String = DiceBarAvatar.MALE
 
-    override val options: List<String> = MaleOptions.possibleSeedValues
+    override val options: List<String> = MaleOptions.possibleConfigOptions
 }

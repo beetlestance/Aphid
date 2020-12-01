@@ -2,9 +2,9 @@ package com.beetlestance.aphid.dicebar_kotlin.sprites
 
 /**
  *  The following options are available for each avatar style.
- *  @see<a href="https://avatars.dicebear.com/docs/options">Seed Options.</a>
+ *  @see<a href="https://avatars.dicebear.com/docs/options">Config Options.</a>
  * */
-abstract class DiceBarSeed {
+abstract class DiceBarConfig {
 
     // Avatar border radius
     val radius: Int = 0
@@ -28,7 +28,7 @@ abstract class DiceBarSeed {
 }
 
 
-abstract class DiceBarSeedOptions {
+abstract class DiceBarConfigOptions {
 
     abstract val possibleValues: List<String>
 }
