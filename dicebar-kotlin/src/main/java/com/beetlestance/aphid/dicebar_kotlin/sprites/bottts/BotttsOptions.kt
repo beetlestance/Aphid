@@ -132,21 +132,21 @@ object BotttsSecondaryColorLevel : DiceBarConfigOptions() {
 
 object BotttsOptions : DiceBarSpriteOptions() {
 
-    private const val COLORS: String = "colors"
+    const val COLORS: String = "colors"
 
-    private const val COLORFUL: String = "colorful"
+    const val COLORFUL: String = "colorful"
 
-    private const val MOUTH_CHANCE: String = "mouthChance"
+    const val MOUTH_CHANCE: String = "mouthChance"
 
-    private const val PRIMARY_COLOR_LEVEL: String = "primaryColorLevel"
+    const val PRIMARY_COLOR_LEVEL: String = "primaryColorLevel"
 
-    private const val SECONDARY_COLOR_LEVEL: String = "secondaryColorLevel"
+    const val SECONDARY_COLOR_LEVEL: String = "secondaryColorLevel"
 
-    private const val SIDES_CHANCE: String = "sidesChance"
+    const val SIDES_CHANCE: String = "sidesChance"
 
-    private const val TEXTURE_CHANCE: String = "textureChance"
+    const val TEXTURE_CHANCE: String = "textureChance"
 
-    private const val TOP_CHANCE: String = "topChance"
+    const val TOP_CHANCE: String = "topChance"
 
     override val spriteConfigOptions: List<String> = listOf(
         COLORS, COLORFUL, MOUTH_CHANCE, PRIMARY_COLOR_LEVEL, SECONDARY_COLOR_LEVEL, SIDES_CHANCE,

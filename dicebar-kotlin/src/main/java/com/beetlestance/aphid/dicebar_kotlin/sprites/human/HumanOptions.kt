@@ -21,7 +21,7 @@ object HumanMood : DiceBarConfigOptions() {
 
 object HumanOptions : DiceBarSpriteOptions() {
 
-    private const val MOOD: String = "mood"
+    const val MOOD: String = "mood"
 
     override val spriteConfigOptions: List<String> = listOf(MOOD)
 }

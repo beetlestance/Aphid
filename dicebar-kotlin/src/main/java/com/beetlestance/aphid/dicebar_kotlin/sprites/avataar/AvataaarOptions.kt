@@ -388,41 +388,41 @@ object AvataaarSkin : DiceBarConfigOptions() {
 
 object AvataaarOptions : DiceBarSpriteOptions() {
 
-    private const val ACCESSORIES: String = "accessories"
+    const val ACCESSORIES: String = "accessories"
 
-    private const val ACCESSORIES_CHANCE: String = "accessoriesChance"
+    const val ACCESSORIES_CHANCE: String = "accessoriesChance"
 
-    private const val ACCESSORIES_COLOR: String = "accessoriesColor"
+    const val ACCESSORIES_COLOR: String = "accessoriesColor"
 
-    private const val CLOTHES: String = "clothes"
+    const val CLOTHES: String = "clothes"
 
-    private const val CLOTHES_COLOR: String = "clothesColor"
+    const val CLOTHES_COLOR: String = "clothesColor"
 
-    private const val EYES: String = "eyes"
+    const val EYES: String = "eyes"
 
-    private const val EYEBROW: String = "eyebrow"
+    const val EYEBROW: String = "eyebrow"
 
-    private const val FACIAL_HAIR: String = "facialHair"
+    const val FACIAL_HAIR: String = "facialHair"
 
-    private const val FACIAL_HAIR_CHANCE: String = "facialHairChance"
+    const val FACIAL_HAIR_CHANCE: String = "facialHairChance"
 
-    private const val FACIAL_HAIR_COLOR: String = "facialHairColor"
+    const val FACIAL_HAIR_COLOR: String = "facialHairColor"
 
-    private const val HAT_COLOR: String = "hatColor"
+    const val HAT_COLOR: String = "hatColor"
 
-    private const val HAIR_COLOR: String = "hairColor"
+    const val HAIR_COLOR: String = "hairColor"
 
-    private const val MODE: String = "mode"
+    const val MODE: String = "mode"
 
-    private const val MOUTH: String = "mouth"
+    const val MOUTH: String = "mouth"
 
-    private const val SKIN: String = "skin"
+    const val SKIN: String = "skin"
 
-    private const val STYLE: String = "style"
+    const val STYLE: String = "style"
 
-    private const val TOP: String = "top"
+    const val TOP: String = "top"
 
-    private const val TOP_CHANCE: String = "topChance"
+    const val TOP_CHANCE: String = "topChance"
 
     override val spriteConfigOptions: List<String> = listOf(
         ACCESSORIES, ACCESSORIES_CHANCE, ACCESSORIES_COLOR, CLOTHES, CLOTHES_COLOR, EYES,

@@ -20,17 +20,19 @@ abstract class DiceBarSpriteOptions {
 
     companion object {
 
-        private const val RADIUS: String = "radius"
+        const val RADIUS: String = "radius"
 
-        private const val WIDTH: String = "width"
+        const val BASE64: String = "base64"
 
-        private const val HEIGHT: String = "height"
+        const val WIDTH: String = "width"
 
-        private const val MARGIN: String = "margin"
+        const val HEIGHT: String = "height"
 
-        private const val BACKGROUND: String = "background"
+        const val MARGIN: String = "margin"
 
-        private val globalConfigOptions: List<String> = listOf(
+        const val BACKGROUND: String = "background"
+
+        val globalConfigOptions: List<String> = listOf(
             RADIUS, WIDTH, HEIGHT, MARGIN, BACKGROUND
         )
     }

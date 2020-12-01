@@ -1,6 +1,7 @@
 package com.beetlestance.aphid.dicebar_kotlin.sprites.human
 
 import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarConfig
+import com.squareup.moshi.Json
 
 
 /**
@@ -12,6 +13,7 @@ import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarConfig
 data class HumanConfig(
 
     @HumanMood.PossibleValues
+    @Json(name = HumanOptions.MOOD)
     val mood: List<String>? = null,
 
     ) : DiceBarConfig()
