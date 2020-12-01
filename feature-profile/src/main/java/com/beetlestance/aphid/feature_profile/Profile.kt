@@ -65,6 +65,10 @@ import com.beetlestance.aphid.common_compose.pager.PagerState
 import com.beetlestance.aphid.common_compose.pager.rememberPagerState
 import com.beetlestance.aphid.common_compose.utils.navViewModel
 import com.beetlestance.aphid.data.entities.Recipe
+import com.beetlestance.aphid.dicebar_kotlin.DiceBarAvatarHelper
+import com.beetlestance.aphid.dicebar_kotlin.sprites.avataar.AvataaarTop
+import com.beetlestance.aphid.dicebar_kotlin.sprites.avataar.AvataaarsConfig
+import com.beetlestance.aphid.dicebar_kotlin.sprites.avataar.AvataaarsSprite
 import dev.chrisbanes.accompanist.coil.CoilImage
 import kotlin.math.abs
 
@@ -108,7 +112,15 @@ private fun Profile(
             ProfileSection(
                 modifier = Modifier
                     .padding(PROFILE_LAYOUT_MARGIN)
-                    .statusBarsPadding()
+                    .statusBarsPadding(),
+                avatarUrl = DiceBarAvatarHelper.createAvatarUrl(
+                    sprite = AvataaarsSprite(),
+                    seed = "example",
+                    config = AvataaarsConfig(
+                        top = listOf(AvataaarTop.SHORT_HAIR),
+                        accessoriesChance = 93
+                    )
+                ).toString()
             )
         }
 
@@ -128,7 +140,7 @@ private fun Profile(
 @Composable
 private fun ProfileSection(
     modifier: Modifier = Modifier,
-    avatarUrl: String = "https://avatars.dicebear.com/api/avataaars/example.svg?options%5Btop%5D%5B%5D=shortHair&options%5BaccessoriesChance%5D=93"
+    avatarUrl: String
 ) {
     Box(modifier = modifier, alignment = Alignment.CenterStart) {
 
