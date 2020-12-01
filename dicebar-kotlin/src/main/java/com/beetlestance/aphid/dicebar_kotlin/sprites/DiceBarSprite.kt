@@ -1,4 +1,6 @@
-package com.beetlestance.aphid.dicebar_kotlin
+package com.beetlestance.aphid.dicebar_kotlin.sprites
+
+import com.beetlestance.aphid.dicebar_kotlin.DiceBarAvatar
 
 
 abstract class DiceBarSprite {

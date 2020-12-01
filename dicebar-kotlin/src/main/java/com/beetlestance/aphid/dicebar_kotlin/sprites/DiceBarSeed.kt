@@ -1,4 +1,4 @@
-package com.beetlestance.aphid.dicebar_kotlin
+package com.beetlestance.aphid.dicebar_kotlin.sprites
 
 /**
  *  The following options are available for each avatar style.

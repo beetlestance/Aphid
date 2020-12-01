@@ -1,7 +1,7 @@
-package com.beetlestance.aphid.dicebar_kotlin.avataar
+package com.beetlestance.aphid.dicebar_kotlin.sprites.avataar
 
 import com.beetlestance.aphid.dicebar_kotlin.DiceBarAvatar
-import com.beetlestance.aphid.dicebar_kotlin.DiceBarSprite
+import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarSprite
 
 class AvataaarsSprite : DiceBarSprite() {
 

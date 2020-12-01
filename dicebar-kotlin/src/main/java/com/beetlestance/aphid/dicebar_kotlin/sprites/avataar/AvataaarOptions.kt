@@ -1,8 +1,8 @@
-package com.beetlestance.aphid.dicebar_kotlin.avataar
+package com.beetlestance.aphid.dicebar_kotlin.sprites.avataar
 
 import androidx.annotation.StringDef
-import com.beetlestance.aphid.dicebar_kotlin.DiceBarSeedOptions
-import com.beetlestance.aphid.dicebar_kotlin.DiceBarSpriteOptions
+import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarSeedOptions
+import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarSpriteOptions
 
 object AvataaarStyle : DiceBarSeedOptions() {
 
