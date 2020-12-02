@@ -24,7 +24,7 @@ data class AvataaarsConfig(
 
     // Probability in percent
     @Json(name = AvataaarOptions.TOP_CHANCE)
-    val topChance: Int = 100,
+    val topChance: Float = 100f,
 
     @AvataaarHat.PossibleValues
     @Json(name = AvataaarOptions.HAT_COLOR)
@@ -40,7 +40,7 @@ data class AvataaarsConfig(
 
     // Probability in percent
     @Json(name = AvataaarOptions.ACCESSORIES_CHANCE)
-    val accessoriesChance: Int = 10,
+    val accessoriesChance: Float = 10f,
 
     @AvataaarAccessoriesColor.PossibleValues
     @Json(name = AvataaarOptions.ACCESSORIES_COLOR)
@@ -52,7 +52,7 @@ data class AvataaarsConfig(
 
     // Probability in percent
     @Json(name = AvataaarOptions.FACIAL_HAIR_CHANCE)
-    val facialHairChance: Int = 10,
+    val facialHairChance: Float = 10f,
 
     @AvataaarFacialHairColor.PossibleValues
     @Json(name = AvataaarOptions.FACIAL_HAIR_COLOR)

@@ -29,18 +29,18 @@ data class BotttsConfig(
 
     //Probability in percent avatar will have a mouth
     @Json(name = BotttsOptions.MOUTH_CHANCE)
-    val mouthChance: Int = 100,
+    val mouthChance: Float = 100f,
 
     // Probability in percent avatar will have side elements
     @Json(name = BotttsOptions.SIDES_CHANCE)
-    val sidesChance: Int = 100,
+    val sidesChance: Float = 100f,
 
     // Probability in percent avatar will have texture
     @Json(name = BotttsOptions.TEXTURE_CHANCE)
-    val textureChance: Int = 50,
+    val textureChance: Float = 50f,
 
     // Probability in percent avatar will have a top element
     @Json(name = BotttsOptions.TOP_CHANCE)
-    val topChance: Int = 100
+    val topChance: Float = 100f
 
 ) : DiceBarConfig()

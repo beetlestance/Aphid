@@ -13,23 +13,23 @@ data class JdenticonConfig(
 
     // Colored shapes - Lightness
     @Json(name = JdenticonOptions.COLOR_LIGHTNESS)
-    val colorLightness: List<Int>? = null,
+    val colorLightness: List<Float>? = null,
 
     // Colored shapes - Saturation
     @Json(name = JdenticonOptions.COLOR_SATURATION)
-    val colorSaturation: List<Int>? = null,
+    val colorSaturation: List<Float>? = null,
 
     // Grayscale shapes - Lightness
     @Json(name = JdenticonOptions.GRAYSCALE_LIGHTNESS)
-    val grayscaleLightness: List<Int>? = null,
+    val grayscaleLightness: List<Float>? = null,
 
     // Grayscale shapes - Saturation
     @Json(name = JdenticonOptions.GRAYSCALE_SATURATION)
-    val grayscaleSaturation: List<Int>? = null,
+    val grayscaleSaturation: List<Float>? = null,
 
     // Icon hue
     @Json(name = JdenticonOptions.HUES)
-    val hues: List<Int>? = null
+    val hues: List<Float>? = null
 
 
 ) : DiceBarConfig()
