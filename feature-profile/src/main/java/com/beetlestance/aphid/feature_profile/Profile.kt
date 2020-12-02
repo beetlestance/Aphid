@@ -115,7 +115,7 @@ private fun Profile(
                     .statusBarsPadding(),
                 avatarUrl = DiceBarAvatarHelper.createAvatarUrl(
                     sprite = AvataaarsSprite(),
-                    seed = "example",
+                    seed = "Male",
                     config = AvataaarsConfig(
                         top = listOf(AvataaarTop.EYE_PATCH, AvataaarTop.HAT),
                         accessoriesChance = 93f
