@@ -16,6 +16,8 @@ import com.beetlestance.aphid.dicebar_kotlin.sprites.identicon.IdenticonConfig
 import com.beetlestance.aphid.dicebar_kotlin.sprites.identicon.IdenticonSprite
 import com.beetlestance.aphid.dicebar_kotlin.sprites.initials.InitialsConfig
 import com.beetlestance.aphid.dicebar_kotlin.sprites.initials.InitialsSprite
+import com.beetlestance.aphid.dicebar_kotlin.sprites.jdenticon.JdenticonConfig
+import com.beetlestance.aphid.dicebar_kotlin.sprites.jdenticon.JdenticonSprite
 import com.beetlestance.aphid.dicebar_kotlin.sprites.male.MaleConfig
 import com.beetlestance.aphid.dicebar_kotlin.sprites.male.MaleSprite
 import com.squareup.moshi.Moshi
@@ -67,11 +69,11 @@ object DiceBarAvatarHelper {
      * Create Svg Url with styling options.
      *
      * @param sprite replace with [AvataaarsSprite], [BotttsSprite], [FemaleSprite], [GridySprite],
-     * [HumanSprite], [IdenticonSprite], [InitialsSprite], [MaleSprite]
+     * [HumanSprite], [IdenticonSprite], [InitialsSprite], [JdenticonSprite], [MaleSprite]
      * @param seed can be anything you like - but don't use any sensitive or personal data here!
      * @param config The used avatar style may offer additional options. Replace with
      * [AvataaarsConfig], [BotttsConfig], [FemaleConfig], [GridyConfig] ,[HumanConfig],
-     * [IdenticonConfig], [InitialsConfig], [MaleConfig]
+     * [IdenticonConfig], [InitialsConfig], [JdenticonConfig], [MaleConfig]
      * @return [HttpUrl] for svg with styles and options
      *
      * @see <a href="https://avatars.dicebear.com/docs/http-api">DiceBar HTTP-API</a>
