@@ -2,7 +2,13 @@ package com.beetlestance.aphid.dicebar_kotlin
 
 import androidx.annotation.StringDef
 
-object DiceBarAvatar {
+/**
+ * Do you want to create male, female or abstract avatars? You have the choice between several
+ * lovely designed avatar styles.
+ *
+ * @see <a href="https://avatars.dicebear.com/styles">DiceBar Styles</a>
+ * */
+object DiceBarAvatars {
 
     const val AVATAAARS: String = "avataaars"
 

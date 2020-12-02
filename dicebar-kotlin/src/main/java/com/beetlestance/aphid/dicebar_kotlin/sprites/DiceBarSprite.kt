@@ -1,11 +1,11 @@
 package com.beetlestance.aphid.dicebar_kotlin.sprites
 
-import com.beetlestance.aphid.dicebar_kotlin.DiceBarAvatar
+import com.beetlestance.aphid.dicebar_kotlin.DiceBarAvatars
 
 
 abstract class DiceBarSprite {
 
-    @DiceBarAvatar.PossibleValues
+    @DiceBarAvatars.PossibleValues
     abstract val type: String
 
     abstract val options: List<String>
