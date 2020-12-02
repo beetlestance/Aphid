@@ -13,6 +13,6 @@ data class MaleConfig(
 
     @MaleMood.PossibleValues
     @Json(name = MaleOptions.MOOD)
-    val mood: List<String>? = null,
+    val mood: List<String>? = null
 
-    ) : DiceBarConfig()
+) : DiceBarConfig()

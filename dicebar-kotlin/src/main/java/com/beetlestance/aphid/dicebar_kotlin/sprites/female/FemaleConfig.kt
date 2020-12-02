@@ -13,6 +13,6 @@ data class FemaleConfig(
 
     @FemaleMood.PossibleValues
     @Json(name = FemaleOptions.MOOD)
-    val mood: List<String>? = null,
+    val mood: List<String>? = null
 
-    ) : DiceBarConfig()
+) : DiceBarConfig()

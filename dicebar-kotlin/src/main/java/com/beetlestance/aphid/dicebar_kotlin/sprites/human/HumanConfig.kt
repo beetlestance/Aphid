@@ -14,6 +14,6 @@ data class HumanConfig(
 
     @HumanMood.PossibleValues
     @Json(name = HumanOptions.MOOD)
-    val mood: List<String>? = null,
+    val mood: List<String>? = null
 
-    ) : DiceBarConfig()
+) : DiceBarConfig()
