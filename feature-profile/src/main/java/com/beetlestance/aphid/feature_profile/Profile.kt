@@ -118,7 +118,7 @@ private fun Profile(
                     seed = "example",
                     config = AvataaarsConfig(
                         top = listOf(AvataaarTop.EYE_PATCH, AvataaarTop.HAT),
-                        accessoriesChance = 93
+                        accessoriesChance = 93f
                     )
                 ).toString()
             )
