@@ -8,6 +8,8 @@ import com.beetlestance.aphid.dicebar_kotlin.sprites.bottts.BotttsConfig
 import com.beetlestance.aphid.dicebar_kotlin.sprites.bottts.BotttsSprite
 import com.beetlestance.aphid.dicebar_kotlin.sprites.female.FemaleConfig
 import com.beetlestance.aphid.dicebar_kotlin.sprites.female.FemaleSprite
+import com.beetlestance.aphid.dicebar_kotlin.sprites.gridy.GridyConfig
+import com.beetlestance.aphid.dicebar_kotlin.sprites.gridy.GridySprite
 import com.beetlestance.aphid.dicebar_kotlin.sprites.human.HumanConfig
 import com.beetlestance.aphid.dicebar_kotlin.sprites.human.HumanSprite
 import com.beetlestance.aphid.dicebar_kotlin.sprites.male.MaleConfig
@@ -60,11 +62,11 @@ object DiceBarAvatarHelper {
     /**
      * Create Svg Url with styling options.
      *
-     * @param sprite replace with [AvataaarsSprite], [BotttsSprite], [FemaleSprite], [HumanSprite],
-     * [MaleSprite]
+     * @param sprite replace with [AvataaarsSprite], [BotttsSprite], [FemaleSprite], [GridySprite],
+     * [HumanSprite], [MaleSprite]
      * @param seed can be anything you like - but don't use any sensitive or personal data here!
      * @param config The used avatar style may offer additional options. Replace with
-     * [AvataaarsConfig], [BotttsConfig], [FemaleConfig], [HumanConfig], [MaleConfig]
+     * [AvataaarsConfig], [BotttsConfig], [FemaleConfig], [GridyConfig] ,[HumanConfig], [MaleConfig]
      * @return [HttpUrl] for svg with styles and options
      *
      * @see <a href="https://avatars.dicebear.com/docs/http-api">DiceBar HTTP-API</a>
