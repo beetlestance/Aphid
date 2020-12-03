@@ -16,7 +16,7 @@ object Aphid {
 
 object Libs {
 
-    const val androidGradlePlugin: String = "com.android.tools.build:gradle:4.2.0-alpha16"
+    const val androidGradlePlugin: String = "com.android.tools.build:gradle:7.0.0-alpha01"
 
     const val leakCanary: String = "com.squareup.leakcanary:leakcanary-android:2.2"
 
@@ -35,7 +35,7 @@ object Libs {
         const val palette: String = "androidx.palette:palette-ktx:1.0.0"
 
         object Fragment {
-            private const val version = "1.3.0-beta01"
+            private const val version = "1.3.0-beta02"
             const val fragmentKtx: String = "androidx.fragment:fragment-ktx:$version"
         }
 
@@ -76,13 +76,13 @@ object Libs {
         }
 
         object Navigation {
-            private const val version = "1.0.0-alpha02"
+            private const val version = "1.0.0-alpha03"
             const val navigation: String = "androidx.navigation:navigation-compose:$version"
         }
 
         object Compose {
-            const val version: String = "1.0.0-alpha07"
-            const val ktVersion: String = "1.4.10"
+            const val version: String = "1.0.0-alpha08"
+            const val ktVersion: String = "1.4.20"
 
             const val compiler: String = "androidx.compose.compiler:compiler:$version"
 
@@ -97,8 +97,8 @@ object Libs {
 
             const val animation: String = "androidx.compose.animation:animation:$version"
 
-            const val tooling: String = "androidx.ui:ui-tooling:$version"
-            const val test: String = "androidx.ui:ui-test:$version"
+            const val tooling: String = "androidx.compose.ui:ui-tooling:$version"
+            const val test: String = "androidx.compose.ui:ui-test:$version"
         }
 
         object Hilt {
@@ -119,7 +119,7 @@ object Libs {
         object Mdc {
             const val material: String = "com.google.android.material:material:1.3.0-alpha04"
             const val composeThemeAdapter: String =
-                "com.google.android.material:compose-theme-adapter:1.0.0-alpha07"
+                "com.google.android.material:compose-theme-adapter:1.0.0-alpha08"
         }
 
         object PlayServices {
@@ -147,7 +147,7 @@ object Libs {
     }
 
     object Accompanist {
-        private const val version = "0.3.3.1"
+        private const val version = "0.4.0"
         const val coil: String = "dev.chrisbanes.accompanist:accompanist-coil:$version"
         const val insets: String = "dev.chrisbanes.accompanist:accompanist-insets:$version"
     }
@@ -167,7 +167,7 @@ object Libs {
     }
 
     object Kotlin {
-        const val version: String = "1.4.10"
+        const val version: String = "1.4.20"
         const val stdlib: String = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val reflect: String = "org.jetbrains.kotlin:kotlin-reflect:$version"
         const val gradlePlugin: String = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
@@ -195,14 +195,14 @@ object Libs {
     }
 
     object Coroutines {
-        private const val version = "1.4.1"
+        private const val version = "1.4.2"
         const val core: String = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
         const val android: String = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
         const val test: String = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
     }
 
     object Lint {
-        private const val version = "27.2.0-alpha16"
+        private const val version = "27.3.0-alpha01"
         const val api: String = "com.android.tools.lint:lint-api:$version"
         const val checks: String = "com.android.tools.lint:lint-checks:$version"
     }

@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
@@ -30,7 +30,7 @@ fun AndroidIcon(
 
 /**
  * Creates a composable that will attempt to load drawable into Android ImageView.
- * Supports [AndroidVectorDrawable]
+ * Supports [AnimatedVectorDrawableCompat]
  *
  * Remove once coil can load animated vector drawable for Android 10
  */
@@ -41,11 +41,11 @@ fun AndroidImage(
     modifier: Modifier = Modifier
 ) {
     val animatedVectorDrawable = AnimatedVectorDrawableCompat.create(
-        ContextAmbient.current,
+        AmbientContext.current,
         drawableId
     ) ?: return
 
-    val androidImageView = AppCompatImageView(ContextAmbient.current)
+    val androidImageView = AppCompatImageView(AmbientContext.current)
 
     AndroidView(viewBlock = { androidImageView }, modifier = modifier) {
         with(it) {

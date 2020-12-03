@@ -34,7 +34,7 @@ class DirectColorUseDetector : ResourceXmlDetector() {
         return folderType == ResourceFolderType.LAYOUT
     }
 
-    override fun getApplicableAttributes(): Collection<String>? {
+    override fun getApplicableAttributes(): Collection<String> {
         return listOf(BACKGROUND, FOREGROUND, SRC, TEXT_COLOR, TINT)
     }
 

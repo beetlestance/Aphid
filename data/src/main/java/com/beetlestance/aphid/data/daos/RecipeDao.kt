@@ -34,6 +34,6 @@ abstract class RecipeDao : EntityDao<Recipe>() {
     abstract suspend fun allRecipes(): List<Recipe>
 
     companion object {
-        const val ALL_RECIPE_QUERY = "SELECT * FROM ${AphidTables.RECIPE_TABLE}"
+        private const val ALL_RECIPE_QUERY = "SELECT * FROM ${AphidTables.RECIPE_TABLE}"
     }
 }

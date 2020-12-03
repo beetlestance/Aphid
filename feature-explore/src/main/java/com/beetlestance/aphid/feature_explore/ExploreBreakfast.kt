@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Dimension
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,16 +27,15 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Providers
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.drawLayer
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.blue
 import androidx.core.graphics.drawable.toBitmap
@@ -67,9 +65,7 @@ fun ExploreBreakfastCard(
     title: String,
     subTitle: String,
     description: String,
-    elevation: Dp = 8.dp,
-    onMarkFavourite: (Boolean) -> Unit = {},
-    onOpen: () -> Unit = {}
+    onMarkFavourite: (Boolean) -> Unit = {}
 ) {
     val surfaceColor = MaterialTheme.colors.surface
     val dominantColorState = rememberDominantColorState(
@@ -79,12 +75,14 @@ fun ExploreBreakfastCard(
         color.contrastAgainst(surfaceColor) >= MinContrastOfPrimaryVsSurface
     }
 
-    val context = ContextAmbient.current
+    val context = AmbientContext.current
     val drawable: MutableState<Drawable?> = rememberMutableState { null }
     LaunchedEffect(subject = imageSrc) {
         drawable.value = getBitmap(context, imageSrc)
         if (drawable.value != null) {
-            dominantColorState.updateColorsFromBitmap(drawable.value!!.toBitmap())
+            dominantColorState.updateColorsFromBitmap(
+                (drawable.value ?: return@LaunchedEffect).toBitmap()
+            )
         }
     }
 
@@ -94,7 +92,7 @@ fun ExploreBreakfastCard(
         Surface(
             modifier = modifier
                 .aspectRatio(13 / 20f)
-                .drawLayer(
+                .graphicsLayer(
                     shadowElevation = 32f,
                     shape = RoundedCornerShape(32.dp),
                     clip = true
@@ -128,9 +126,9 @@ fun ExploreBreakfastCard(
                     shape = RoundedCornerShape(16.dp),
                     elevation = 16.dp
                 ) {
-                    if (drawable.value != null) {
+                    drawable.value?.let {
                         Image(
-                            painter = drawable.value!!.toPainter(),
+                            painter = it.toPainter(),
                             contentScale = ContentScale.Crop
                         )
                     }
@@ -184,9 +182,9 @@ fun FavIcon(
                     shape = CircleShape,
                     color = colorResource(id = R.color.grey_400_alpha_30)
                 ),
-            icon = {
+            content = {
                 Icon(
-                    asset = vectorResource(id = R.drawable.ic_like),
+                    imageVector = vectorResource(id = R.drawable.ic_like),
                     tint = animate(target = colorResource(if (isFavourite) R.color.deep_orange_a200 else R.color.white))
                 )
             },

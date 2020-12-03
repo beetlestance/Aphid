@@ -16,4 +16,4 @@ fun Color.contrastAgainst(background: Color): Float {
     return max(fgLuminance, bgLuminance) / min(fgLuminance, bgLuminance)
 }
 
-fun String.toColor() = Color(this.toColorInt())
+fun String.toColor(): Color = Color(this.toColorInt())

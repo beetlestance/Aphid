@@ -18,10 +18,7 @@ package com.beetlestance.aphid.domain
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import timber.log.Timber
@@ -44,7 +41,7 @@ abstract class UseCase<in P> {
     }
 
     // Will only be used when we know the result will be returned without errors
-    suspend fun executeSync(params: P) = doWork(params)
+    suspend fun executeSync(params: P): Unit = doWork(params)
 
     protected abstract suspend fun doWork(params: P)
 }
@@ -118,6 +115,6 @@ abstract class SuspendableWorkUseCase<P : Any, T> : ObserveUseCase<P, T>() {
 }
 
 
-operator fun UseCase<Unit>.invoke() = invoke(Unit)
-operator fun <T> ResultUseCase<Unit, T>.invoke() = invoke(Unit)
-operator fun <T> ObserveUseCase<Unit, T>.invoke() = invoke(Unit)
+operator fun UseCase<Unit>.invoke(): Flow<Status> = invoke(Unit)
+operator fun <T> ResultUseCase<Unit, T>.invoke(): Flow<T> = invoke(Unit)
+operator fun <T> ObserveUseCase<Unit, T>.invoke(): Unit = invoke(Unit)

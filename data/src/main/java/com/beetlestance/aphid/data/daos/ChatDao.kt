@@ -15,6 +15,6 @@ abstract class ChatDao : EntityDao<Chat>() {
     abstract fun conversationObservable(): Flow<List<Chat>>
 
     companion object {
-        const val ALL_CONVERSATION = "SELECT * FROM ${AphidTables.CHAT_TABLE}"
+        private const val ALL_CONVERSATION = "SELECT * FROM ${AphidTables.CHAT_TABLE}"
     }
 }

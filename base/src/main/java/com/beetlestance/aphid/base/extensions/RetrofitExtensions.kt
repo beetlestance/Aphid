@@ -31,7 +31,7 @@ fun <T> Response<T>.bodyOrThrowException(): T {
     return body()!!
 }
 
-fun <T> Response<T>.toException() = HttpException(this)
+fun <T> Response<T>.toException(): HttpException = HttpException(this)
 
 suspend inline fun <T> Call<T>.executeWithRetry(
     defaultDelay: Long = 100,
@@ -62,7 +62,7 @@ suspend inline fun <T> Call<T>.fetchBodyWithRetry(
     shouldRetry: (Exception) -> Boolean
 ): T = executeWithRetry(defaultDelay, maxAttempts, shouldRetry).bodyOrThrowException()
 
-fun defaultShouldRetry(exception: Exception) = when (exception) {
+fun defaultShouldRetry(exception: Exception): Boolean = when (exception) {
     is HttpException -> exception.code() == 429
     is IOException -> true
     else -> false

@@ -48,10 +48,10 @@ import androidx.compose.runtime.onDispose
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.draw.drawOpacity
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -142,7 +142,7 @@ private fun ProfileSection(
     modifier: Modifier = Modifier,
     avatarUrl: String
 ) {
-    Box(modifier = modifier, alignment = Alignment.CenterStart) {
+    Box(modifier = modifier, contentAlignment = Alignment.CenterStart) {
 
         ProfileAvatar(modifier = Modifier, avatarUrl = avatarUrl)
 
@@ -155,7 +155,7 @@ private fun ProfileSection(
             modifier = Modifier.align(Alignment.TopEnd),
             onClick = {}
         ) {
-            Icon(asset = Icons.Filled.Settings)
+            Icon(imageVector = Icons.Filled.Settings)
         }
     }
 }
@@ -166,9 +166,9 @@ private val PROFILE_SHAPE_ELEVATION = 2.dp
 
 @Composable
 private fun svgImageLoader(): ImageLoader {
-    return ImageLoader.Builder(ContextAmbient.current)
+    return ImageLoader.Builder(AmbientContext.current)
         .componentRegistry {
-            add(SvgDecoder(ContextAmbient.current))
+            add(SvgDecoder(AmbientContext.current))
         }
         .build()
 }
@@ -368,7 +368,7 @@ private fun SavedRecipes(
 
             SavedRecipeCard(
                 modifier = Modifier.offset(y = offsetValue.value.toInt().dp)
-                    .drawOpacity(alphaValue.value),
+                    .alpha(alphaValue.value),
                 markRecipeAsFavourite = markRecipeAsFavourite,
                 recipe = recipe
             )
@@ -438,7 +438,7 @@ private fun FavouriteRecipes(
 
             FavouriteRecipeGridItem(
                 modifier = Modifier.offset(y = offsetValue.value.toInt().dp)
-                    .drawOpacity(alphaValue.value),
+                    .alpha(alphaValue.value),
                 markRecipeAsFavourite = markRecipeAsFavourite,
                 item = gridItem
             )
@@ -457,7 +457,7 @@ private fun FavouriteRecipeGridItem(
             space = 16.dp,
             alignment = Alignment.Start
         ),
-        children = {
+        content = {
             item.forEach { recipe ->
                 FavouriteRecipeCard(
                     modifier = modifier.weight(1f),

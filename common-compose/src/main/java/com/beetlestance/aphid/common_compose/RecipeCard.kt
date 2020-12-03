@@ -47,7 +47,7 @@ fun RecipeDetailedPosterCard(
         RecipePosterCard(
             modifier = Modifier.padding(bottom = 8.dp),
             elevation = elevation,
-            posterImage = posterImage,
+            content = posterImage,
             cardShape = cardShape,
             isFavourite = isFavourite,
             onCheckChanged = onCheckedChange,
@@ -64,7 +64,7 @@ fun RecipePosterCard(
     isFavourite: Boolean,
     cardShape: Shape = RoundedCornerShape(16.dp),
     onCheckChanged: (Boolean) -> Unit = {},
-    posterImage: @Composable BoxScope.() -> Unit
+    content: @Composable BoxScope.() -> Unit
 ) {
     Card(
         modifier = modifier,
@@ -73,7 +73,7 @@ fun RecipePosterCard(
     ) {
         Box(modifier = Modifier.clipToBounds()) {
 
-            posterImage()
+            content()
 
             Providers(AmbientContentAlpha provides ContentAlpha.high) {
                 MarkFavouriteButton(
@@ -98,9 +98,9 @@ fun MarkFavouriteButton(
                 shape = CircleShape,
                 color = colorResource(id = R.color.grey_400_alpha_30)
             ),
-        icon = {
+        content = {
             Icon(
-                asset = vectorResource(id = R.drawable.ic_like),
+                imageVector = vectorResource(id = R.drawable.ic_like),
                 tint = animate(target = colorResource(if (isFavourite) R.color.deep_orange_a200 else R.color.white))
             )
         },

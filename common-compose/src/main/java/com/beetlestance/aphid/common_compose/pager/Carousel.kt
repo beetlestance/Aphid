@@ -9,10 +9,9 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.AnimationClockAmbient
+import androidx.compose.ui.platform.AmbientAnimationClock
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.zIndex
-import kotlin.math.min
 import kotlin.math.roundToInt
 
 
@@ -55,7 +54,7 @@ class CarouselState(
 
 @Composable
 fun rememberCarouselState(
-    clock: AnimationClockObservable = AnimationClockAmbient.current,
+    clock: AnimationClockObservable = AmbientAnimationClock.current,
     currentPage: Int = 0,
     minPage: Int = 0,
     maxPage: Int = 0
@@ -76,13 +75,13 @@ fun rememberCarouselState(
 
 @Composable
 fun <T> Carousel(
+    modifier: Modifier = Modifier,
     items: List<T>,
     offscreenLimit: Int = 2,
     state: CarouselState = rememberCarouselState(maxPage = items.lastIndex),
-    modifier: Modifier = Modifier,
     pageHint: Dp = NO_HINT,
     drawSelectedPageAtLast: Boolean = false, // for overlap-transformations
-    pageContent: @Composable (CarouselScope.(T) -> Unit)
+    content: @Composable (CarouselScope.(T) -> Unit)
 ) {
     if (items.size < 3) throw IllegalArgumentException("Carousel needs at least 3 items")
 
@@ -94,7 +93,7 @@ fun <T> Carousel(
         offscreenLimit = offscreenLimit,
         modifier = modifier,
         pageHint = pageHint,
-        children = {
+        content = {
             for (page in minPage..maxPage) {
                 val index = when {
                     page < state.minPage -> items.size + page
@@ -106,12 +105,12 @@ fun <T> Carousel(
                 val scope = CarouselScope(state, index)
                 key(pageData) {
                     Box(
-                        alignment = Alignment.Center,
+                        contentAlignment = Alignment.Center,
                         modifier = if (drawSelectedPageAtLast) pageData
                             // Always draw selected page after its next hint
                             .zIndex(if (page == state.currentPage) 1f else 0f) else pageData
                     ) {
-                        scope.pageContent(items[index])
+                        scope.content(items[index])
                     }
                 }
             }

@@ -15,7 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.platform.AmbientContext
 import androidx.core.graphics.drawable.toBitmap
 import androidx.palette.graphics.Palette
 import coil.Coil
@@ -45,7 +45,7 @@ fun DynamicThemePrimaryColorsFromImage(
 
 @Composable
 fun rememberDominantColorState(
-    context: Context = ContextAmbient.current,
+    context: Context = AmbientContext.current,
     defaultColor: Color = MaterialTheme.colors.primary,
     defaultOnColor: Color = MaterialTheme.colors.onPrimary,
     cacheSize: Int = 12,
@@ -62,9 +62,9 @@ class DominantColorState(
     cacheSize: Int = 12,
     private val isColorValid: (Color) -> Boolean = { true }
 ) {
-    var color by mutableStateOf(defaultColor)
+    var color: Color by mutableStateOf(defaultColor)
         private set
-    var onColor by mutableStateOf(defaultOnColor)
+    var onColor: Color by mutableStateOf(defaultOnColor)
         private set
 
     private val cache = when {
@@ -181,7 +181,7 @@ private suspend fun calculateSwatchesInImage(
     } ?: emptyList()
 }
 
-private fun Bitmap.dominantColorOrNull(): List<Palette.Swatch> {
+internal fun Bitmap.dominantColorOrNull(): List<Palette.Swatch> {
     return Palette.Builder(this)
         .resizeBitmapArea(0)
         .clearFilters()

@@ -17,7 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.structuralEqualityPolicy
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.drawWithContent
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.graphics.drawscope.withTransform
@@ -25,11 +25,10 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.ParentDataModifier
 import androidx.compose.ui.layout.Placeable
-import androidx.compose.ui.platform.AnimationClockAmbient
+import androidx.compose.ui.platform.AmbientAnimationClock
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastForEachIndexed
 import androidx.compose.ui.zIndex
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
@@ -145,7 +144,7 @@ open class PagerState(
 
 @Immutable
 internal data class PageData(val page: Int) : ParentDataModifier {
-    override fun Density.modifyParentData(parentData: Any?): Any? = this@PageData
+    override fun Density.modifyParentData(parentData: Any?): Any = this@PageData
 }
 
 private val Measurable.page: Int
@@ -153,7 +152,7 @@ private val Measurable.page: Int
 
 @Composable
 fun rememberPagerState(
-    clock: AnimationClockObservable = AnimationClockAmbient.current,
+    clock: AnimationClockObservable = AmbientAnimationClock.current,
     currentPage: Int = 0,
     minPage: Int = 0,
     maxPage: Int = 0
@@ -175,12 +174,12 @@ fun rememberPagerState(
 
 @Composable
 fun Pager(
+    modifier: Modifier = Modifier,
     lastPage: Int,
     offscreenLimit: Int = 2,
     state: PagerState = rememberPagerState(maxPage = lastPage),
-    modifier: Modifier = Modifier,
     drawSelectedPageAtLast: Boolean = false, // for overlap-transformations
-    pageContent: @Composable PagerScope.() -> Unit
+    content: @Composable PagerScope.() -> Unit
 ) {
     val minPage = (state.currentPage - offscreenLimit).coerceAtLeast(state.minPage)
     val maxPage = (state.currentPage + offscreenLimit).coerceAtMost(state.maxPage)
@@ -189,18 +188,18 @@ fun Pager(
         state = state,
         offscreenLimit = offscreenLimit,
         modifier = modifier,
-        children = {
+        content = {
             for (page in minPage..maxPage) {
                 val pageData = PageData(page)
                 val scope = PagerScope(state, page)
                 key(pageData) {
                     Box(
-                        alignment = Alignment.Center,
+                        contentAlignment = Alignment.Center,
                         modifier = if (drawSelectedPageAtLast) pageData
                             // Always draw selected page after its next hint
                             .zIndex(if (page == state.currentPage) 1f else 0f) else pageData
                     ) {
-                        scope.pageContent()
+                        scope.content()
                     }
                 }
             }
@@ -212,24 +211,24 @@ fun Pager(
 }
 
 private val PageContentVerticalPadding = 32.dp
-val NO_HINT = 0.dp
+val NO_HINT: Dp = 0.dp
 
 @Composable
 fun PageLayout(
+    modifier: Modifier = Modifier,
     state: PagerState,
     offscreenLimit: Int = 2,
-    modifier: Modifier = Modifier,
     minPage: Int,
     maxPage: Int,
     isCarousel: Boolean,
     pageHint: Dp = NO_HINT,
-    children: @Composable () -> Unit
+    content: @Composable () -> Unit
 ) {
     var pageSize by remember { mutableStateOf(0) }
 
 
     Layout(
-        children = children,
+        content = content,
         modifier = modifier
             .animateContentSize()
             .draggable(
@@ -264,7 +263,7 @@ fun PageLayout(
         // child layout placeables
         val placeables = arrayOfNulls<Placeable>(measurables.size)
         val pages = Array(measurables.size) { measurables[it].page }
-        measurables.fastForEachIndexed { index, measurable ->
+        measurables.forEachIndexed { index, measurable ->
             val placeable = measurable.measure(
                 constraints = constraints.copy(
                     minWidth = 0,
@@ -284,7 +283,7 @@ fun PageLayout(
 
         layout(layoutWidth, layoutHeight) {
             placeables.forEachIndexed { index, placeable ->
-                placeable!!
+                placeable ?: return@layout
                 val page = pages[index]
 
                 val itemScrollXOffset = state.offset(page)

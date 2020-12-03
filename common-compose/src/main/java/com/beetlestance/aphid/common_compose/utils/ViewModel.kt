@@ -3,10 +3,8 @@ package com.beetlestance.aphid.common_compose.utils
 import android.app.Application
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionReference
 import androidx.compose.runtime.ProvidableAmbient
 import androidx.compose.runtime.Providers
-import androidx.compose.runtime.Recomposer
 import androidx.compose.runtime.staticAmbientOf
 import androidx.compose.ui.platform.setContent
 import androidx.hilt.lifecycle.HiltViewModelFactory
@@ -58,7 +56,7 @@ fun NavGraphBuilder.composableContent(
     content: @Composable () -> Unit
 ) {
     composable(route, arguments, deepLinks) {
-        Providers(AmbientNavBackStackEntry provides it, children = content)
+        Providers(AmbientNavBackStackEntry provides it, content = content)
     }
 }
 
@@ -96,7 +94,7 @@ internal fun ComponentActivity.ProvideNavigationViewModelFactoryMap(
     Providers(
         AmbientApplication provides application,
         AmbientViewModelFactoriesMap provides factories,
-        children = content
+        content = content
     )
 }
 

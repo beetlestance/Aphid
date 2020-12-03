@@ -35,7 +35,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
@@ -116,10 +115,10 @@ class MainActivity : AppCompatActivity() {
                     val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
                     navItems.forEachIndexed { index, screen ->
                         CurveCutMenuItem(
-                            icon = {
+                            content = {
                                 val resId = screen.iconOutlined
                                 val color = MaterialTheme.colors.background
-                                Icon(asset = vectorResource(id = resId), tint = color)
+                                Icon(imageVector = vectorResource(id = resId), tint = color)
                             },
                             index = index,
                             selected = currentRoute == screen.route,
