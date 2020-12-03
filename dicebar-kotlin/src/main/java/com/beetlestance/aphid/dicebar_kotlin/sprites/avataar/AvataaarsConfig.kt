@@ -26,7 +26,7 @@ data class AvataaarsConfig(
     val top: List<String>? = null,
 
     // Probability in percent
-    @FloatRange(from = 0.toDouble(), to = 100.toDouble())
+    @FloatRange(from = 0.0, to = 100.0)
     @Json(name = AvataaarOptions.TOP_CHANCE)
     val topChance: Float = 100f,
 
@@ -43,7 +43,7 @@ data class AvataaarsConfig(
     val accessories: List<String>? = null,
 
     // Probability in percent
-    @FloatRange(from = 0.toDouble(), to = 100.toDouble())
+    @FloatRange(from = 0.0, to = 100.0)
     @Json(name = AvataaarOptions.ACCESSORIES_CHANCE)
     val accessoriesChance: Float = 10f,
 
@@ -56,7 +56,7 @@ data class AvataaarsConfig(
     val facialHair: List<String>? = null,
 
     // Probability in percent
-    @FloatRange(from = 0.toDouble(), to = 100.toDouble())
+    @FloatRange(from = 0.0, to = 100.0)
     @Json(name = AvataaarOptions.FACIAL_HAIR_CHANCE)
     val facialHairChance: Float = 10f,
 

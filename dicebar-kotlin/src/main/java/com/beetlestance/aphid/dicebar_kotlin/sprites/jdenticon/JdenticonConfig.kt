@@ -16,31 +16,31 @@ data class JdenticonConfig(
 
     // Colored shapes - Lightness
     // Array of two numbers between 0 and 1
-    @FloatRange(from = 0.toDouble(), to = 1.toDouble())
+    @FloatRange(from = 0.0, to = 1.0)
     @Json(name = JdenticonOptions.COLOR_LIGHTNESS)
     val colorLightness: List<Float>? = null,
 
     // Colored shapes - Saturation
     // Number between 0 and 1
-    @FloatRange(from = 0.toDouble(), to = 1.toDouble())
+    @FloatRange(from = 0.0, to = 1.0)
     @Json(name = JdenticonOptions.COLOR_SATURATION)
     val colorSaturation: Float? = null,
 
     // Grayscale shapes - Lightness
     // Array of two numbers between 0 and 1
-    @FloatRange(from = 0.toDouble(), to = 1.toDouble())
+    @FloatRange(from = 0.0, to = 1.0)
     @Json(name = JdenticonOptions.GRAYSCALE_LIGHTNESS)
     val grayscaleLightness: List<Float>? = null,
 
     // Grayscale shapes - Saturation
     // Number between 0 and 1
-    @FloatRange(from = 0.toDouble(), to = 1.toDouble())
+    @FloatRange(from = 0.0, to = 1.0)
     @Json(name = JdenticonOptions.GRAYSCALE_SATURATION)
     val grayscaleSaturation: Float? = null,
 
     // Icon hue
     // Array of numbers between 0 and 360
-    @FloatRange(from = 0.toDouble(), to = 360.toDouble())
+    @FloatRange(from = 0.0, to = 360.0)
     @Json(name = JdenticonOptions.HUES)
     val hues: List<Float>? = null,
 

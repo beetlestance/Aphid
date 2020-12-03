@@ -31,22 +31,22 @@ data class BotttsConfig(
     val colorful: Boolean = false,
 
     //Probability in percent avatar will have a mouth
-    @FloatRange(from = 0.toDouble(), to = 100.toDouble())
+    @FloatRange(from = 0.0, to = 100.0)
     @Json(name = BotttsOptions.MOUTH_CHANCE)
     val mouthChance: Float = 100f,
 
     // Probability in percent avatar will have side elements
-    @FloatRange(from = 0.toDouble(), to = 100.toDouble())
+    @FloatRange(from = 0.0, to = 100.0)
     @Json(name = BotttsOptions.SIDES_CHANCE)
     val sidesChance: Float = 100f,
 
     // Probability in percent avatar will have texture
-    @FloatRange(from = 0.toDouble(), to = 100.toDouble())
+    @FloatRange(from = 0.0, to = 100.0)
     @Json(name = BotttsOptions.TEXTURE_CHANCE)
     val textureChance: Float = 50f,
 
     // Probability in percent avatar will have a top element
-    @FloatRange(from = 0.toDouble(), to = 100.toDouble())
+    @FloatRange(from = 0.0, to = 100.0)
     @Json(name = BotttsOptions.TOP_CHANCE)
     val topChance: Float = 100f,
 
