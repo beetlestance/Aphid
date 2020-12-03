@@ -5,7 +5,7 @@ import com.beetlestance.aphid.dicebar_kotlin.DiceBarAvatars
 
 abstract class DiceBarSprite {
 
-    @DiceBarAvatars.PossibleValues
+    @DiceBarAvatars
     abstract val type: String
 
     abstract val options: List<String>
@@ -21,8 +21,6 @@ abstract class DiceBarSpriteOptions {
     companion object {
 
         const val RADIUS: String = "radius"
-
-        const val BASE64: String = "base64"
 
         const val WIDTH: String = "width"
 

@@ -22,9 +22,3 @@ interface DiceBarConfig {
     // values are allowed. Use url encoded hash: %23.
     val background: String?
 }
-
-
-abstract class DiceBarConfigOptions {
-
-    abstract val possibleValues: List<String>
-}

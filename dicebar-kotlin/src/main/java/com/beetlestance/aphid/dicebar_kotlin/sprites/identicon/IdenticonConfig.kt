@@ -1,5 +1,6 @@
 package com.beetlestance.aphid.dicebar_kotlin.sprites.identicon
 
+import androidx.annotation.IntRange
 import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarConfig
 import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarSpriteOptions
 import com.squareup.moshi.Json
@@ -12,11 +13,11 @@ import com.squareup.moshi.Json
 
 data class IdenticonConfig(
 
-    @IdenticonColor.PossibleValues
+    @IdenticonColor
     @Json(name = IdenticonOptions.COLORS)
     val colors: List<String>? = null,
 
-    @IdenticonColorLevel.PossibleValues
+    @IdenticonColorLevel
     @Json(name = IdenticonOptions.COLOR_LEVEL)
     val colorLevel: Int = IdenticonColorLevel.SIX_HUNDRED,
 
@@ -32,6 +33,7 @@ data class IdenticonConfig(
     override val height: Int? = null,
 
     // Avatar margin in percent. HTTP-API limitation Max value 25
+    @IntRange(from = 0, to = 25)
     @Json(name = DiceBarSpriteOptions.MARGIN)
     override val margin: Int = 0,
 

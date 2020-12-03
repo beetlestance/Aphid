@@ -1,5 +1,6 @@
 package com.beetlestance.aphid.dicebar_kotlin.sprites.human
 
+import androidx.annotation.IntRange
 import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarConfig
 import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarSpriteOptions
 import com.squareup.moshi.Json
@@ -13,7 +14,7 @@ import com.squareup.moshi.Json
 
 data class HumanConfig(
 
-    @HumanMood.PossibleValues
+    @HumanMood
     @Json(name = HumanOptions.MOOD)
     val mood: List<String>? = null,
 
@@ -29,6 +30,7 @@ data class HumanConfig(
     override val height: Int? = null,
 
     // Avatar margin in percent. HTTP-API limitation Max value 25
+    @IntRange(from = 0, to = 25)
     @Json(name = DiceBarSpriteOptions.MARGIN)
     override val margin: Int = 0,
 

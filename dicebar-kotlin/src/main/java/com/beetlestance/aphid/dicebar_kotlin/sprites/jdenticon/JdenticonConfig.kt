@@ -1,5 +1,7 @@
 package com.beetlestance.aphid.dicebar_kotlin.sprites.jdenticon
 
+import androidx.annotation.FloatRange
+import androidx.annotation.IntRange
 import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarConfig
 import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarSpriteOptions
 import com.squareup.moshi.Json
@@ -13,22 +15,32 @@ import com.squareup.moshi.Json
 data class JdenticonConfig(
 
     // Colored shapes - Lightness
+    // Array of two numbers between 0 and 1
+    @FloatRange(from = 0.toDouble(), to = 1.toDouble())
     @Json(name = JdenticonOptions.COLOR_LIGHTNESS)
     val colorLightness: List<Float>? = null,
 
     // Colored shapes - Saturation
+    // Number between 0 and 1
+    @FloatRange(from = 0.toDouble(), to = 1.toDouble())
     @Json(name = JdenticonOptions.COLOR_SATURATION)
-    val colorSaturation: List<Float>? = null,
+    val colorSaturation: Float? = null,
 
     // Grayscale shapes - Lightness
+    // Array of two numbers between 0 and 1
+    @FloatRange(from = 0.toDouble(), to = 1.toDouble())
     @Json(name = JdenticonOptions.GRAYSCALE_LIGHTNESS)
     val grayscaleLightness: List<Float>? = null,
 
     // Grayscale shapes - Saturation
+    // Number between 0 and 1
+    @FloatRange(from = 0.toDouble(), to = 1.toDouble())
     @Json(name = JdenticonOptions.GRAYSCALE_SATURATION)
-    val grayscaleSaturation: List<Float>? = null,
+    val grayscaleSaturation: Float? = null,
 
     // Icon hue
+    // Array of numbers between 0 and 360
+    @FloatRange(from = 0.toDouble(), to = 360.toDouble())
     @Json(name = JdenticonOptions.HUES)
     val hues: List<Float>? = null,
 
@@ -44,6 +56,7 @@ data class JdenticonConfig(
     override val height: Int? = null,
 
     // Avatar margin in percent. HTTP-API limitation Max value 25
+    @IntRange(from = 0, to = 25)
     @Json(name = DiceBarSpriteOptions.MARGIN)
     override val margin: Int = 0,
 

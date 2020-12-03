@@ -1,5 +1,7 @@
 package com.beetlestance.aphid.dicebar_kotlin.sprites.bottts
 
+import androidx.annotation.FloatRange
+import androidx.annotation.IntRange
 import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarConfig
 import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarSpriteOptions
 import com.squareup.moshi.Json
@@ -12,15 +14,15 @@ import com.squareup.moshi.Json
 
 data class BotttsConfig(
 
-    @BotttsColor.PossibleValues
+    @BotttsColor
     @Json(name = BotttsOptions.COLORS)
     val colors: List<String>? = null,
 
-    @BotttsPrimaryColorLevel.PossibleValues
+    @BotttsPrimaryColorLevel
     @Json(name = BotttsOptions.PRIMARY_COLOR_LEVEL)
     val primaryColorLevel: Int = BotttsPrimaryColorLevel.SIX_HUNDRED,
 
-    @BotttsSecondaryColorLevel.PossibleValues
+    @BotttsSecondaryColorLevel
     @Json(name = BotttsOptions.SECONDARY_COLOR_LEVEL)
     val secondaryColorLevel: Int = BotttsSecondaryColorLevel.FOUR_HUNDRED,
 
@@ -29,18 +31,22 @@ data class BotttsConfig(
     val colorful: Boolean = false,
 
     //Probability in percent avatar will have a mouth
+    @FloatRange(from = 0.toDouble(), to = 100.toDouble())
     @Json(name = BotttsOptions.MOUTH_CHANCE)
     val mouthChance: Float = 100f,
 
     // Probability in percent avatar will have side elements
+    @FloatRange(from = 0.toDouble(), to = 100.toDouble())
     @Json(name = BotttsOptions.SIDES_CHANCE)
     val sidesChance: Float = 100f,
 
     // Probability in percent avatar will have texture
+    @FloatRange(from = 0.toDouble(), to = 100.toDouble())
     @Json(name = BotttsOptions.TEXTURE_CHANCE)
     val textureChance: Float = 50f,
 
     // Probability in percent avatar will have a top element
+    @FloatRange(from = 0.toDouble(), to = 100.toDouble())
     @Json(name = BotttsOptions.TOP_CHANCE)
     val topChance: Float = 100f,
 
@@ -56,6 +62,7 @@ data class BotttsConfig(
     override val height: Int? = null,
 
     // Avatar margin in percent. HTTP-API limitation Max value 25
+    @IntRange(from = 0, to = 25)
     @Json(name = DiceBarSpriteOptions.MARGIN)
     override val margin: Int = 0,
 

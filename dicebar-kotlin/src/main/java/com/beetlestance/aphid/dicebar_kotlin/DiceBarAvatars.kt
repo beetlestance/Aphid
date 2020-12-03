@@ -8,31 +8,41 @@ import androidx.annotation.StringDef
  *
  * @see <a href="https://avatars.dicebear.com/styles">DiceBar Styles</a>
  * */
-object DiceBarAvatars {
+@StringDef(
+    DiceBarAvatars.AVATAAARS,
+    DiceBarAvatars.BOTTTS,
+    DiceBarAvatars.FEMALE,
+    DiceBarAvatars.GRIDY,
+    DiceBarAvatars.HUMAN,
+    DiceBarAvatars.IDENTICON,
+    DiceBarAvatars.INITIALS,
+    DiceBarAvatars.JDENTICON,
+    DiceBarAvatars.MALE
+)
+@Retention(AnnotationRetention.SOURCE)
+annotation class DiceBarAvatars {
+    companion object {
 
-    const val AVATAAARS: String = "avataaars"
+        const val AVATAAARS: String = "avataaars"
 
-    const val BOTTTS: String = "bottts"
+        const val BOTTTS: String = "bottts"
 
-    const val FEMALE: String = "female"
+        const val FEMALE: String = "female"
 
-    const val GRIDY: String = "gridy"
+        const val GRIDY: String = "gridy"
 
-    const val HUMAN: String = "human"
+        const val HUMAN: String = "human"
 
-    const val IDENTICON: String = "identicon"
+        const val IDENTICON: String = "identicon"
 
-    const val INITIALS: String = "initials"
+        const val INITIALS: String = "initials"
 
-    const val JDENTICON: String = "jdenticon"
+        const val JDENTICON: String = "jdenticon"
 
-    const val MALE: String = "male"
+        const val MALE: String = "male"
 
-    @StringDef(AVATAAARS, BOTTTS, FEMALE, GRIDY, HUMAN, IDENTICON, INITIALS, JDENTICON, MALE)
-    @Retention(AnnotationRetention.SOURCE)
-    annotation class PossibleValues
-
-    val possibleValues: List<String> = listOf(
-        AVATAAARS, BOTTTS, FEMALE, GRIDY, HUMAN, IDENTICON, INITIALS, JDENTICON, MALE
-    )
+        val possibleValues: List<String> = listOf(
+            AVATAAARS, BOTTTS, FEMALE, GRIDY, HUMAN, IDENTICON, INITIALS, JDENTICON, MALE
+        )
+    }
 }

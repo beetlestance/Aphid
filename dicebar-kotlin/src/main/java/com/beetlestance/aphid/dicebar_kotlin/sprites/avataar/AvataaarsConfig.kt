@@ -1,5 +1,7 @@
 package com.beetlestance.aphid.dicebar_kotlin.sprites.avataar
 
+import androidx.annotation.FloatRange
+import androidx.annotation.IntRange
 import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarConfig
 import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarSpriteOptions
 import com.squareup.moshi.Json
@@ -11,75 +13,78 @@ import com.squareup.moshi.Json
  * */
 data class AvataaarsConfig(
 
-    @AvataaarStyle.PossibleValues
+    @AvataaarStyle
     @Json(name = AvataaarOptions.STYLE)
     val style: String = AvataaarStyle.TRANSPARENT,
 
-    @AvataaarMode.PossibleValues
+    @AvataaarMode
     @Json(name = AvataaarOptions.MODE)
     val mode: String = AvataaarMode.INCLUDE,
 
-    @AvataaarTop.PossibleValues
+    @AvataaarTop
     @Json(name = AvataaarOptions.TOP)
     val top: List<String>? = null,
 
     // Probability in percent
+    @FloatRange(from = 0.toDouble(), to = 100.toDouble())
     @Json(name = AvataaarOptions.TOP_CHANCE)
     val topChance: Float = 100f,
 
-    @AvataaarHat.PossibleValues
+    @AvataaarHat
     @Json(name = AvataaarOptions.HAT_COLOR)
     val hatColor: List<String>? = null,
 
-    @AvataaarHairColor.PossibleValues
+    @AvataaarHairColor
     @Json(name = AvataaarOptions.HAIR_COLOR)
     val hairColor: List<String>? = null,
 
-    @AvataaarAccessories.PossibleValues
+    @AvataaarAccessories
     @Json(name = AvataaarOptions.ACCESSORIES)
     val accessories: List<String>? = null,
 
     // Probability in percent
+    @FloatRange(from = 0.toDouble(), to = 100.toDouble())
     @Json(name = AvataaarOptions.ACCESSORIES_CHANCE)
     val accessoriesChance: Float = 10f,
 
-    @AvataaarAccessoriesColor.PossibleValues
+    @AvataaarAccessoriesColor
     @Json(name = AvataaarOptions.ACCESSORIES_COLOR)
     val accessoriesColor: List<String>? = null,
 
-    @AvataaarFacialHair.PossibleValues
+    @AvataaarFacialHair
     @Json(name = AvataaarOptions.FACIAL_HAIR)
     val facialHair: List<String>? = null,
 
     // Probability in percent
+    @FloatRange(from = 0.toDouble(), to = 100.toDouble())
     @Json(name = AvataaarOptions.FACIAL_HAIR_CHANCE)
     val facialHairChance: Float = 10f,
 
-    @AvataaarFacialHairColor.PossibleValues
+    @AvataaarFacialHairColor
     @Json(name = AvataaarOptions.FACIAL_HAIR_COLOR)
     val facialHairColor: List<String>? = null,
 
-    @AvataaarClothes.PossibleValues
+    @AvataaarClothes
     @Json(name = AvataaarOptions.CLOTHES)
     val clothes: List<String>? = null,
 
-    @AvataaarClothesColor.PossibleValues
+    @AvataaarClothesColor
     @Json(name = AvataaarOptions.CLOTHES_COLOR)
     val clothesColor: List<String>? = null,
 
-    @AvataaarEyes.PossibleValues
+    @AvataaarEyes
     @Json(name = AvataaarOptions.EYES)
     val eyes: List<String>? = null,
 
-    @AvataaarEyeBrow.PossibleValues
+    @AvataaarEyeBrow
     @Json(name = AvataaarOptions.EYEBROW)
     val eyebrow: List<String>? = null,
 
-    @AvataaarMouth.PossibleValues
+    @AvataaarMouth
     @Json(name = AvataaarOptions.MOUTH)
     val mouth: List<String>? = null,
 
-    @AvataaarSkin.PossibleValues
+    @AvataaarSkin
     @Json(name = AvataaarOptions.SKIN)
     val skin: List<String>? = null,
 
@@ -95,6 +100,7 @@ data class AvataaarsConfig(
     override val height: Int? = null,
 
     // Avatar margin in percent. HTTP-API limitation Max value 25
+    @IntRange(from = 0, to = 25)
     @Json(name = DiceBarSpriteOptions.MARGIN)
     override val margin: Int = 0,
 

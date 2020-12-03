@@ -2,132 +2,150 @@ package com.beetlestance.aphid.dicebar_kotlin.sprites.bottts
 
 import androidx.annotation.IntDef
 import androidx.annotation.StringDef
-import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarConfigOptions
 import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarSpriteOptions
 
-object BotttsColor : DiceBarConfigOptions() {
+@StringDef(
+    BotttsColor.AMBER, BotttsColor.BLUE, BotttsColor.BLUE_GREY, BotttsColor.BROWN,
+    BotttsColor.CYAN, BotttsColor.DEEP_ORANGE, BotttsColor.DEEP_PURPLE, BotttsColor.GREEN,
+    BotttsColor.GREY, BotttsColor.INDIGO, BotttsColor.LIGHT_BLUE, BotttsColor.LIGHT_GREEN,
+    BotttsColor.LIME, BotttsColor.ORANGE, BotttsColor.PINK, BotttsColor.PURPLE,
+    BotttsColor.RED, BotttsColor.TEAL, BotttsColor.YELLOW
+)
+@Retention(AnnotationRetention.SOURCE)
+annotation class BotttsColor {
 
-    const val AMBER: String = "amber"
+    companion object {
 
-    const val BLUE: String = "blue"
+        const val AMBER: String = "amber"
 
-    const val BLUE_GREY: String = "blueGrey"
+        const val BLUE: String = "blue"
 
-    const val BROWN: String = "brown"
+        const val BLUE_GREY: String = "blueGrey"
 
-    const val CYAN: String = "cyan"
+        const val BROWN: String = "brown"
 
-    const val DEEP_ORANGE: String = "deepOrange"
+        const val CYAN: String = "cyan"
 
-    const val DEEP_PURPLE: String = "deepPurple"
+        const val DEEP_ORANGE: String = "deepOrange"
 
-    const val GREEN: String = "green"
+        const val DEEP_PURPLE: String = "deepPurple"
 
-    const val GREY: String = "grey"
+        const val GREEN: String = "green"
 
-    const val INDIGO: String = "indigo"
+        const val GREY: String = "grey"
 
-    const val LIGHT_BLUE: String = "lightBlue"
+        const val INDIGO: String = "indigo"
 
-    const val LIGHT_GREEN: String = "lightGreen"
+        const val LIGHT_BLUE: String = "lightBlue"
 
-    const val LIME: String = "lime"
+        const val LIGHT_GREEN: String = "lightGreen"
 
-    const val ORANGE: String = "orange"
+        const val LIME: String = "lime"
 
-    const val PINK: String = "pink"
+        const val ORANGE: String = "orange"
 
-    const val PURPLE: String = "purple"
+        const val PINK: String = "pink"
 
-    const val RED: String = "red"
+        const val PURPLE: String = "purple"
 
-    const val TEAL: String = "teal"
+        const val RED: String = "red"
 
-    const val YELLOW: String = "yellow"
+        const val TEAL: String = "teal"
 
-    @StringDef(
-        AMBER, BLUE, BLUE_GREY, BROWN, CYAN, DEEP_ORANGE, DEEP_PURPLE, GREEN, GREY, INDIGO,
-        LIGHT_BLUE, LIGHT_GREEN, LIME, ORANGE, PINK, PURPLE, RED, TEAL, YELLOW
-    )
-    @Retention(AnnotationRetention.SOURCE)
-    annotation class PossibleValues
+        const val YELLOW: String = "yellow"
 
-    override val possibleValues: List<String> = listOf(
-        AMBER, BLUE, BLUE_GREY, BROWN, CYAN, DEEP_ORANGE, DEEP_PURPLE, GREEN, GREY, INDIGO,
-        LIGHT_BLUE, LIGHT_GREEN, LIME, ORANGE, PINK, PURPLE, RED, TEAL, YELLOW
-    )
+        val possibleValues: List<String> = listOf(
+            AMBER, BLUE, BLUE_GREY, BROWN, CYAN, DEEP_ORANGE, DEEP_PURPLE, GREEN, GREY, INDIGO,
+            LIGHT_BLUE, LIGHT_GREEN, LIME, ORANGE, PINK, PURPLE, RED, TEAL, YELLOW
+        )
+    }
 }
 
-object BotttsPrimaryColorLevel : DiceBarConfigOptions() {
+@IntDef(
+    BotttsPrimaryColorLevel.FIFTY,
+    BotttsPrimaryColorLevel.HUNDRED,
+    BotttsPrimaryColorLevel.TWO_HUNDRED,
+    BotttsPrimaryColorLevel.THREE_HUNDRED,
+    BotttsPrimaryColorLevel.FOUR_HUNDRED,
+    BotttsPrimaryColorLevel.FIVE_HUNDRED,
+    BotttsPrimaryColorLevel.SIX_HUNDRED,
+    BotttsPrimaryColorLevel.SEVEN_HUNDRED,
+    BotttsPrimaryColorLevel.EIGHT_HUNDRED,
+    BotttsPrimaryColorLevel.NINE_HUNDRED
+)
+@Retention(AnnotationRetention.SOURCE)
+annotation class BotttsPrimaryColorLevel {
+    companion object {
+        const val FIFTY: Int = 50
 
-    const val FIFTY: Int = 50
+        const val HUNDRED: Int = 100
 
-    const val HUNDRED: Int = 100
+        const val TWO_HUNDRED: Int = 200
 
-    const val TWO_HUNDRED: Int = 200
+        const val THREE_HUNDRED: Int = 300
 
-    const val THREE_HUNDRED: Int = 300
+        const val FOUR_HUNDRED: Int = 400
 
-    const val FOUR_HUNDRED: Int = 400
+        const val FIVE_HUNDRED: Int = 500
 
-    const val FIVE_HUNDRED: Int = 500
+        const val SIX_HUNDRED: Int = 600
 
-    const val SIX_HUNDRED: Int = 600
+        const val SEVEN_HUNDRED: Int = 700
 
-    const val SEVEN_HUNDRED: Int = 700
+        const val EIGHT_HUNDRED: Int = 800
 
-    const val EIGHT_HUNDRED: Int = 800
+        const val NINE_HUNDRED: Int = 900
 
-    const val NINE_HUNDRED: Int = 900
-
-    @IntDef(
-        FIFTY, HUNDRED, TWO_HUNDRED, THREE_HUNDRED, FOUR_HUNDRED, FIVE_HUNDRED, SIX_HUNDRED,
-        SEVEN_HUNDRED, EIGHT_HUNDRED, NINE_HUNDRED
-    )
-    @Retention(AnnotationRetention.SOURCE)
-    annotation class PossibleValues
-
-    override val possibleValues: List<String> = listOf(
-        FIFTY.toString(), HUNDRED.toString(), TWO_HUNDRED.toString(), THREE_HUNDRED.toString(),
-        FOUR_HUNDRED.toString(), FIVE_HUNDRED.toString(), SIX_HUNDRED.toString(),
-        SEVEN_HUNDRED.toString(), EIGHT_HUNDRED.toString(), NINE_HUNDRED.toString()
-    )
+        val possibleValues: List<String> = listOf(
+            FIFTY.toString(), HUNDRED.toString(), TWO_HUNDRED.toString(), THREE_HUNDRED.toString(),
+            FOUR_HUNDRED.toString(), FIVE_HUNDRED.toString(), SIX_HUNDRED.toString(),
+            SEVEN_HUNDRED.toString(), EIGHT_HUNDRED.toString(), NINE_HUNDRED.toString()
+        )
+    }
 }
 
-object BotttsSecondaryColorLevel : DiceBarConfigOptions() {
+@IntDef(
+    BotttsSecondaryColorLevel.FIFTY,
+    BotttsSecondaryColorLevel.HUNDRED,
+    BotttsSecondaryColorLevel.TWO_HUNDRED,
+    BotttsSecondaryColorLevel.THREE_HUNDRED,
+    BotttsSecondaryColorLevel.FOUR_HUNDRED,
+    BotttsSecondaryColorLevel.FIVE_HUNDRED,
+    BotttsSecondaryColorLevel.SIX_HUNDRED,
+    BotttsSecondaryColorLevel.SEVEN_HUNDRED,
+    BotttsSecondaryColorLevel.EIGHT_HUNDRED,
+    BotttsSecondaryColorLevel.NINE_HUNDRED
+)
+@Retention(AnnotationRetention.SOURCE)
+annotation class BotttsSecondaryColorLevel {
 
-    const val FIFTY: Int = 50
+    companion object {
+        const val FIFTY: Int = 50
 
-    const val HUNDRED: Int = 100
+        const val HUNDRED: Int = 100
 
-    const val TWO_HUNDRED: Int = 200
+        const val TWO_HUNDRED: Int = 200
 
-    const val THREE_HUNDRED: Int = 300
+        const val THREE_HUNDRED: Int = 300
 
-    const val FOUR_HUNDRED: Int = 400
+        const val FOUR_HUNDRED: Int = 400
 
-    const val FIVE_HUNDRED: Int = 500
+        const val FIVE_HUNDRED: Int = 500
 
-    const val SIX_HUNDRED: Int = 600
+        const val SIX_HUNDRED: Int = 600
 
-    const val SEVEN_HUNDRED: Int = 700
+        const val SEVEN_HUNDRED: Int = 700
 
-    const val EIGHT_HUNDRED: Int = 800
+        const val EIGHT_HUNDRED: Int = 800
 
-    const val NINE_HUNDRED: Int = 900
+        const val NINE_HUNDRED: Int = 900
 
-    @IntDef(
-        FIFTY, HUNDRED, TWO_HUNDRED, THREE_HUNDRED, FOUR_HUNDRED, FIVE_HUNDRED, SIX_HUNDRED,
-        SEVEN_HUNDRED, EIGHT_HUNDRED, NINE_HUNDRED
-    )
-    @Retention(AnnotationRetention.SOURCE)
-    annotation class PossibleValues
-
-    override val possibleValues: List<String> = listOf(
-        FIFTY.toString(), HUNDRED.toString(), TWO_HUNDRED.toString(), THREE_HUNDRED.toString(),
-        FOUR_HUNDRED.toString(), FIVE_HUNDRED.toString(), SIX_HUNDRED.toString(),
-        SEVEN_HUNDRED.toString(), EIGHT_HUNDRED.toString(), NINE_HUNDRED.toString()
-    )
+        val possibleValues: List<String> = listOf(
+            FIFTY.toString(), HUNDRED.toString(), TWO_HUNDRED.toString(), THREE_HUNDRED.toString(),
+            FOUR_HUNDRED.toString(), FIVE_HUNDRED.toString(), SIX_HUNDRED.toString(),
+            SEVEN_HUNDRED.toString(), EIGHT_HUNDRED.toString(), NINE_HUNDRED.toString()
+        )
+    }
 }
 
 object BotttsOptions : DiceBarSpriteOptions() {

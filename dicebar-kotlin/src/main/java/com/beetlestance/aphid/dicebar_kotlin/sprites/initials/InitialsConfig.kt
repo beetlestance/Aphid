@@ -1,5 +1,6 @@
 package com.beetlestance.aphid.dicebar_kotlin.sprites.initials
 
+import androidx.annotation.IntRange
 import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarConfig
 import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarSpriteOptions
 import com.squareup.moshi.Json
@@ -12,19 +13,21 @@ import com.squareup.moshi.Json
 
 data class InitialsConfig(
 
-    @InitialsBackgroundColor.PossibleValues
+    @InitialsBackgroundColor
     @Json(name = InitialsOptions.BACKGROUND_COLORS)
     val backgroundColors: List<String>? = null,
 
-    @InitialsBackgroundColorLevel.PossibleValues
+    @InitialsBackgroundColorLevel
     @Json(name = InitialsOptions.BACKGROUND_COLOR_LEVEL)
     val colorLevel: Int = InitialsBackgroundColorLevel.SIX_HUNDRED,
 
     // Number between 1 and 100
+    @IntRange(from = 0, to = 100)
     @Json(name = InitialsOptions.FONT_SIZE)
     val fontSize: Int = 50,
 
     // Number between 0 and 2
+    @IntRange(from = 0, to = 2)
     @Json(name = InitialsOptions.CHARS)
     val chars: Int = 2,
 
@@ -43,6 +46,7 @@ data class InitialsConfig(
     override val height: Int? = null,
 
     // Avatar margin in percent. HTTP-API limitation Max value 25
+    @IntRange(from = 0, to = 25)
     @Json(name = DiceBarSpriteOptions.MARGIN)
     override val margin: Int = 0,
 
