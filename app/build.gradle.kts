@@ -13,10 +13,6 @@ kapt {
     useBuildCache = true
 }
 
-@Suppress("UnstableApiUsage")
-// CI Always set to true for github actions so check only if flag is present
-val ci: Boolean by extra(providers.environmentVariable("CI").forUseAtConfigurationTime().isPresent)
-
 android {
     compileSdkVersion(Aphid.compileSdkVersion)
 
@@ -44,11 +40,6 @@ android {
                 "proguard-rules.pro"
             )
         }
-    }
-
-    dexOptions {
-        // Don"t pre-dex on CI
-        preDexLibraries != ci
     }
 
     lintOptions {
