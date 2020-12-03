@@ -205,6 +205,8 @@ object Libs {
         private const val version = "27.3.0-alpha02"
         const val api: String = "com.android.tools.lint:lint-api:$version"
         const val checks: String = "com.android.tools.lint:lint-checks:$version"
+        const val layoutlib: String = "com.android.tools.layoutlib:layoutlib-api:$version"
+        const val sdkCommon: String = "com.android.tools:sdk-common:$version"
     }
 
     object Roomigrant {

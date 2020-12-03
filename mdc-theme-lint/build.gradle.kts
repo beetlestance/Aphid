@@ -26,4 +26,6 @@ dependencies {
 
     compileOnly(Libs.Lint.api)
     compileOnly(Libs.Lint.checks)
+    compileOnly(Libs.Lint.layoutlib)
+    compileOnly(Libs.Lint.sdkCommon)
 }
