@@ -40,8 +40,6 @@ import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastForEach
-import androidx.compose.ui.util.fastMap
 import androidx.compose.ui.zIndex
 import com.beetlestance.aphid.common_compose.extensions.toPx
 import com.beetlestance.aphid.common_compose.theme.shapes.CutOutShape
@@ -71,7 +69,7 @@ fun CurveCutNavBar(
 
     val scope = CurveCutNavBarScope(state)
 
-    SubcomposeLayout<CurveCutSlots>(
+    SubcomposeLayout(
         modifier = modifier.height(CurveCutBottomNavigationHeight)
     ) { constraints ->
 
@@ -94,16 +92,16 @@ fun CurveCutNavBar(
             val bottomNavBarPlaceables = subcompose(CurveCutSlots.BOTTOM_NAV_BAR) {
                 CurveCutBottomNavBar(
                     scope = scope,
-                    shape = CurveCutShape(
+                    shape = curveCutShape(
                         offsetX = menuItemStartOffsetX.toDp(),
                         cutOutWidth = menuItemWidth.toFloat()
                     ),
                     backgroundColor = backgroundColor,
                     contentColor = contentColor,
                     elevation = elevation,
-                    menuItems = menuItems
+                    content = menuItems
                 )
-            }.fastMap {
+            }.map {
                 it.measure(looseConstraints)
             }
 
@@ -121,7 +119,7 @@ fun CurveCutNavBar(
                     scope = scope,
                     backgroundColor = fabBackgroundColor,
                     contentColor = fabContentColor,
-                    fabIcon = {
+                    content = {
                         AnimatedVisibility(
                             visible = fabPlacement.isDocked,
                             enter = fadeIn(),
@@ -131,14 +129,14 @@ fun CurveCutNavBar(
                     },
                     onClick = fabOnClick
                 )
-            }.fastMap { it.measure(looseConstraints) }
+            }.map { it.measure(looseConstraints) }
 
             // The bottom bar is always at the bottom of the layout
-            bottomNavBarPlaceables.fastForEach {
+            bottomNavBarPlaceables.forEach {
                 it.place(0, navOffsetY)
             }
 
-            fabPlaceables.fastForEach {
+            fabPlaceables.forEach {
                 it.place(0, fabFabOffsetY)
             }
         }
@@ -148,11 +146,11 @@ fun CurveCutNavBar(
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun CurveCutNavBarScope.CurveCutMenuItem(
+    modifier: Modifier = Modifier,
     index: Int,
-    icon: @Composable () -> Unit,
     selected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    content: @Composable () -> Unit
 ) {
     val itemModifier = if (selected) {
         state.selectedItem = index
@@ -166,8 +164,8 @@ fun CurveCutNavBarScope.CurveCutMenuItem(
     }
     Box(
         modifier = itemModifier.size(48.dp),
-        alignment = Alignment.Center,
-        children = { icon() }
+        contentAlignment = Alignment.Center,
+        content = { content() }
     )
 }
 
@@ -178,7 +176,7 @@ private fun CurveCutFab(
     backgroundColor: Color = MaterialTheme.colors.primarySurface,
     contentColor: Color = contentColorFor(backgroundColor),
     onClick: () -> Unit = {},
-    fabIcon: @Composable CurveCutNavBarScope.() -> Unit
+    content: @Composable CurveCutNavBarScope.() -> Unit
 ) {
     FloatingActionButton(
         onClick = onClick,
@@ -189,7 +187,7 @@ private fun CurveCutFab(
             defaultElevation = FabElevation,
             pressedElevation = FabPressedElevation
         ),
-        icon = { scope.fabIcon() }
+        content = { scope.content() }
     )
 }
 
@@ -201,7 +199,7 @@ private fun CurveCutBottomNavBar(
     contentColor: Color = contentColorFor(backgroundColor),
     shape: Shape,
     elevation: Dp = BottomNavigationElevation,
-    menuItems: @Composable CurveCutNavBarScope.() -> Unit
+    content: @Composable CurveCutNavBarScope.() -> Unit
 ) {
     Surface(
         modifier = modifier.preferredHeight(BottomNavigationHeight).zIndex(1f),
@@ -214,7 +212,7 @@ private fun CurveCutBottomNavBar(
             modifier = Modifier.fillMaxSize(),
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically,
-            children = { scope.menuItems() }
+            content = { scope.content() }
         )
     }
 }
@@ -222,7 +220,7 @@ private fun CurveCutBottomNavBar(
 private enum class CurveCutSlots { FAB, BOTTOM_NAV_BAR }
 
 @Composable
-private fun CurveCutShape(offsetX: Dp, cutOutWidth: Float): CutOutShape {
+private fun curveCutShape(offsetX: Dp, cutOutWidth: Float): CutOutShape {
     return CutOutShape(
         cutOutShape = BottomNavBarCutOutShape(),
         cutOutShapeMargin = FabMargin.toPx(),

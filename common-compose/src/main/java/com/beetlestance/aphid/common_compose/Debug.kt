@@ -4,10 +4,11 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.onCommit
 import androidx.compose.runtime.remember
+import timber.log.Timber
 
 class Ref(var value: Int)
 
-const val EnableDebugCompositionLogs = true
+const val EnableDebugCompositionLogs: Boolean = true
 
 /**
  * An effect which longs the number compositions at the invoked point of the slot table.
@@ -24,6 +25,6 @@ inline fun LogCompositions(tag: String) {
     if (EnableDebugCompositionLogs && BuildConfig.DEBUG) {
         val ref = remember { Ref(0) }
         onCommit { ref.value++ }
-        Log.d(tag, "Compositions: ${ref.value}")
+        Timber.d(tag, "Compositions: ${ref.value}")
     }
 }

@@ -29,4 +29,4 @@ inline fun Status.onSuccess(
 
 suspend fun Flow<Status>.watchStatus(
     action: Status.() -> Unit
-) = collect { action(it) }
+): Unit = collect { action(it) }

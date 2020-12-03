@@ -48,11 +48,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.draw.drawShadow
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.ExperimentalFocus
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.ConfigurationAmbient
+import androidx.compose.ui.platform.AmbientConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
@@ -177,7 +177,7 @@ fun SearchBar(
             modifier = Modifier
                 .weight(1f)
                 .padding(horizontal = 8.dp)
-                .drawShadow(
+                .shadow(
                     elevation = 8.dp,
                     shape = ExposeSearchBarShape,
                     clip = false
@@ -189,7 +189,7 @@ fun SearchBar(
                 .align(Alignment.CenterVertically)
         ) {
             Icon(
-                asset = Icons.Outlined.Search,
+                imageVector = Icons.Outlined.Search,
                 tint = Color.Gray,
                 modifier = Modifier
                     .padding(start = 8.dp, end = 8.dp)
@@ -206,7 +206,7 @@ fun SearchBar(
         }
 
         Icon(
-            asset = vectorResource(id = R.drawable.ic_filter),
+            imageVector = vectorResource(id = R.drawable.ic_filter),
             tint = Color.Gray,
             modifier = Modifier
                 .clip(CircleShape)
@@ -260,12 +260,11 @@ fun BreakFastWithHeader(
             isFavourite = recipe.isFavourite ?: false,
             title = recipe.title ?: "",
             subTitle = "2 Serving • 40 Min • 331 Cal",
-            onMarkFavourite = {
-                markRecipeAsFavourite(recipe, it)
-            },
             description =
             "A unique experience of taste  and delicious ingredients prepared for you. Liven up your life with nutrition."
-        )
+        ) {
+            markRecipeAsFavourite(recipe, it)
+        }
     }
 }
 
@@ -303,7 +302,7 @@ fun MoodContent() {
                 linkTo(start = parent.start, end = parent.end, bias = 1f)
                 width = Dimension.percent(0.2f)
             }.aspectRatio(1f),
-            asset = vectorResource(id = R.drawable.ic_cookie)
+            imageVector = vectorResource(id = R.drawable.ic_cookie)
         )
     }
 
@@ -327,7 +326,7 @@ fun Cuisine() {
 
 @Composable
 fun CuisineContent() {
-    val itemWidth = (ConfigurationAmbient.current.screenWidthDp * 0.3f).dp
+    val itemWidth = (AmbientConfiguration.current.screenWidthDp * 0.3f).dp
     Column(
         modifier = Modifier
             .preferredWidth(itemWidth)
@@ -352,7 +351,7 @@ fun CuisineCard() {
     ) {
         Image(
             modifier = Modifier.fillMaxWidth().clipToBounds().aspectRatio(1f),
-            asset = imageResource(id = R.drawable.temp_brownie),
+            bitmap = imageResource(id = R.drawable.temp_brownie),
             contentScale = ContentScale.Crop
         )
     }
@@ -406,7 +405,7 @@ fun PlanYourMealAheadWithHeader() {
                     .align(Alignment.Bottom)
                     .weight(0.6f)
                     .padding(top = 16.dp),
-                asset = vectorResource(id = R.drawable.ic_plan_your_meal),
+                imageVector = vectorResource(id = R.drawable.ic_plan_your_meal),
                 contentScale = ContentScale.Crop
             )
         }

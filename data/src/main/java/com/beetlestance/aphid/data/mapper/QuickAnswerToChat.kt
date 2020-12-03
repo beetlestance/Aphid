@@ -8,7 +8,7 @@ import javax.inject.Singleton
 
 @Singleton
 class QuickAnswerToChat @Inject constructor() : Mapper<QuickAnswer, Chat> {
-    override suspend fun map(from: QuickAnswer) = Chat(
+    override suspend fun map(from: QuickAnswer): Chat = Chat(
         id = 0,
         image = from.image,
         type = CHAT_MESSAGE_ANSWER,

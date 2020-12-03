@@ -1,22 +1,21 @@
 package com.beetlestance.aphid.dicebar_kotlin.sprites.female
 
 import androidx.annotation.StringDef
-import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarConfigOptions
 import com.beetlestance.aphid.dicebar_kotlin.sprites.DiceBarSpriteOptions
 
-object FemaleMood : DiceBarConfigOptions() {
+@StringDef(FemaleMood.HAPPY, FemaleMood.SAD, FemaleMood.SURPRISED)
+@Retention(AnnotationRetention.SOURCE)
+annotation class FemaleMood {
+    companion object {
 
-    const val HAPPY: String = "happy"
+        const val HAPPY: String = "happy"
 
-    const val SAD: String = "sad"
+        const val SAD: String = "sad"
 
-    const val SURPRISED: String = "surprised"
+        const val SURPRISED: String = "surprised"
 
-    @StringDef(HAPPY, SAD, SURPRISED)
-    @Retention(AnnotationRetention.SOURCE)
-    annotation class PossibleValues
-
-    override val possibleValues: List<String> = listOf(HAPPY, SAD, SURPRISED)
+        val possibleValues: List<String> = listOf(HAPPY, SAD, SURPRISED)
+    }
 }
 
 object FemaleOptions : DiceBarSpriteOptions() {

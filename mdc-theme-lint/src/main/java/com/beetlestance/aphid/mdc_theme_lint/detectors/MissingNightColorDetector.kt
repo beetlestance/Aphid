@@ -35,7 +35,7 @@ class MissingNightColorDetector : ResourceXmlDetector() {
         return folderType == ResourceFolderType.VALUES
     }
 
-    override fun getApplicableElements(): Collection<String>? {
+    override fun getApplicableElements(): Collection<String> {
         return listOf(COLOR)
     }
 

@@ -34,7 +34,7 @@ class DirectColorDrawableUseDetector : ResourceXmlDetector() {
         return folderType == ResourceFolderType.DRAWABLE || folderType == ResourceFolderType.COLOR
     }
 
-    override fun getApplicableAttributes(): Collection<String>? {
+    override fun getApplicableAttributes(): Collection<String> {
         return listOf(TINT, FILL_COLOR, STROKE_COLOR, COLOR)
     }
 

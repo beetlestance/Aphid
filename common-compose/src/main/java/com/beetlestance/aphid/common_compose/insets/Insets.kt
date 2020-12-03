@@ -27,6 +27,7 @@ import android.view.WindowInsetsAnimation
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.ProvidableAmbient
 import androidx.compose.runtime.Providers
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -34,7 +35,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticAmbientOf
-import androidx.compose.ui.platform.ViewAmbient
+import androidx.compose.ui.platform.AmbientView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsCompat.Type
@@ -48,27 +49,27 @@ class WindowInsets {
     /**
      * Inset values which match [WindowInsetsCompat.Type.systemBars]
      */
-    val systemBars = Insets()
+    val systemBars: Insets = Insets()
 
     /**
      * Inset values which match [WindowInsetsCompat.Type.systemGestures]
      */
-    val systemGestures = Insets()
+    val systemGestures: Insets = Insets()
 
     /**
      * Inset values which match [WindowInsetsCompat.Type.navigationBars]
      */
-    val navigationBars = Insets()
+    val navigationBars: Insets = Insets()
 
     /**
      * Inset values which match [WindowInsetsCompat.Type.statusBars]
      */
-    val statusBars = Insets()
+    val statusBars: Insets = Insets()
 
     /**
      * Inset values which match [WindowInsetsCompat.Type.ime]
      */
-    val ime = Insets()
+    val ime: Insets = Insets()
 }
 
 @Stable
@@ -76,31 +77,31 @@ class Insets {
     /**
      * The left dimension of these insets in pixels.
      */
-    var left by mutableStateOf(0)
+    var left: Int by mutableStateOf(0)
         internal set
 
     /**
      * The top dimension of these insets in pixels.
      */
-    var top by mutableStateOf(0)
+    var top: Int by mutableStateOf(0)
         internal set
 
     /**
      * The right dimension of these insets in pixels.
      */
-    var right by mutableStateOf(0)
+    var right: Int by mutableStateOf(0)
         internal set
 
     /**
      * The bottom dimension of these insets in pixels.
      */
-    var bottom by mutableStateOf(0)
+    var bottom: Int by mutableStateOf(0)
         internal set
 
     /**
      * Whether the insets are currently visible.
      */
-    var isVisible by mutableStateOf(true)
+    var isVisible: Boolean by mutableStateOf(true)
         internal set
 
     internal var ongoingAnimations by mutableStateOf(0)
@@ -135,7 +136,7 @@ class Insets {
     )
 }
 
-val AmbientWindowInsets = staticAmbientOf<WindowInsets> {
+val AmbientWindowInsets: ProvidableAmbient<WindowInsets> = staticAmbientOf {
     error("AmbientWindowInsets value not available. Are you using ProvideWindowInsets?")
 }
 
@@ -154,7 +155,7 @@ fun ProvideWindowInsets(
     windowInsetsAnimationsEnabled: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val view = ViewAmbient.current
+    val view = AmbientView.current
 
     val windowInsets = remember { WindowInsets() }
 
@@ -273,7 +274,7 @@ private fun Insets.updateFrom(wic: WindowInsetsCompat, type: Int) {
  * Updates our mutable state backed [Insets] from an Android system insets.
  */
 @RequiresApi(30)
-private fun Insets.updateFrom(windowInsets: WindowInsetsPlatform, type: Int) {
+internal fun Insets.updateFrom(windowInsets: WindowInsetsPlatform, type: Int) {
     val insets = windowInsets.getInsets(type)
     left = insets.left
     top = insets.top

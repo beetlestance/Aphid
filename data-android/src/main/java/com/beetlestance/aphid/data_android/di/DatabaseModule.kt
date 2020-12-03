@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.Debug
 import androidx.room.Room
 import com.beetlestance.aphid.data.AphidDatabase
+import com.beetlestance.aphid.data.daos.ChatDao
+import com.beetlestance.aphid.data.daos.RecipeDao
 import com.beetlestance.aphid.data_android.AphidRoomDatabase
 import com.beetlestance.aphid.data_android.AphidRoomDatabase_Migrations
 import dagger.Binds
@@ -37,10 +39,10 @@ object RoomDatabaseModule {
 object DatabaseDaoModule {
 
     @Provides
-    fun provideAphidRecipes(db: AphidDatabase) = db.recipesDao()
+    fun provideAphidRecipes(db: AphidDatabase): RecipeDao = db.recipesDao()
 
     @Provides
-    fun provideAphidChats(db: AphidDatabase) = db.chatDao()
+    fun provideAphidChats(db: AphidDatabase): ChatDao = db.chatDao()
 }
 
 @InstallIn(SingletonComponent::class)

@@ -52,7 +52,6 @@ import androidx.compose.ui.unit.dp
 import com.beetlestance.aphid.base.CHAT_MESSAGE_ANSWER
 import com.beetlestance.aphid.common_compose.insets.AmbientWindowInsets
 import com.beetlestance.aphid.common_compose.insets.imePadding
-import com.beetlestance.aphid.common_compose.insets.navigationBarsWithImePadding
 import com.beetlestance.aphid.common_compose.insets.statusBarsPadding
 import com.beetlestance.aphid.common_compose.utils.navViewModel
 import com.beetlestance.aphid.data.entities.Chat
@@ -179,11 +178,10 @@ fun AskedQuestionsItem(question: Chat) {
     ) {
         Box {
             Row(
-                modifier = Modifier
-                    .align(Alignment.Center)
+                modifier = Modifier.align(Alignment.Center)
             ) {
                 Text(
-                    text = question.message!!,
+                    text = question.message ?: return@Row,
                     modifier = Modifier
                         .weight(1f)
                         .padding(16.dp)
@@ -265,7 +263,7 @@ fun EmptyChat(
                 .weight(1f)
         ) {
             Image(
-                asset = vectorResource(id = R.drawable.ic_chat_empty),
+                imageVector = vectorResource(id = R.drawable.ic_chat_empty),
                 modifier = Modifier
                     .padding(top = 32.dp)
                     .align(Alignment.TopCenter)
@@ -295,7 +293,7 @@ fun EmptyChatHint(
             Image(
                 modifier = Modifier.padding(16.dp)
                     .size(48.dp),
-                asset = vectorResource(id = R.drawable.ic_chat_bot),
+                imageVector = vectorResource(id = R.drawable.ic_chat_bot),
                 alignment = Alignment.Center
             )
 
@@ -319,8 +317,8 @@ fun EmptyChatHint(
 @OptIn(ExperimentalFocus::class)
 @Composable
 private fun ChatInput(
-    state: InputState = rememberInputState(),
     modifier: Modifier = Modifier,
+    state: InputState = rememberInputState(),
     onQuerySubmit: (String) -> Unit
 ) {
     // reference for the keyboard
@@ -341,7 +339,7 @@ private fun ChatInput(
     ) {
         Box(
             modifier = Modifier.fillMaxWidth(),
-            alignment = Alignment.Center
+            contentAlignment = Alignment.Center
 
         ) {
             if (state.query.text.isEmpty()) {
@@ -389,7 +387,7 @@ private fun ChatInput(
                 )
 
                 Icon(
-                    asset = vectorResource(id = R.drawable.ic_chat_input_send),
+                    imageVector = vectorResource(id = R.drawable.ic_chat_input_send),
                     modifier = Modifier
                         .clip(CircleShape)
                         .clickable(onClick = {
@@ -418,7 +416,7 @@ private fun rememberInputState(
 class InputState(
     query: TextFieldValue
 ) {
-    var query by mutableStateOf(query)
+    var query: TextFieldValue by mutableStateOf(query)
 
     @Stable
     fun clear() {
@@ -427,14 +425,14 @@ class InputState(
 }
 
 
-val circleShapeWithTopRightCorner = RoundedCornerShape(
+val circleShapeWithTopRightCorner: RoundedCornerShape = RoundedCornerShape(
     topLeft = 0.dp,
     topRight = 32.dp,
     bottomLeft = 32.dp,
     bottomRight = 32.dp
 )
 
-val circleShapeWithBottomRightCorner = RoundedCornerShape(
+val circleShapeWithBottomRightCorner: RoundedCornerShape = RoundedCornerShape(
     topLeft = 32.dp,
     topRight = 32.dp,
     bottomLeft = 32.dp,

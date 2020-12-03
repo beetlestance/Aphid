@@ -8,7 +8,7 @@ import javax.inject.Singleton
 @Singleton
 class RecipeInformationToRecipe @Inject constructor() : Mapper<RecipeInformation, Recipe> {
 
-    override suspend fun map(from: RecipeInformation) = Recipe(
+    override suspend fun map(from: RecipeInformation): Recipe = Recipe(
         id = 0,
         recipeId = from.id,
         title = from.title,
