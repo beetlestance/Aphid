@@ -25,6 +25,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.beetlestance.aphid.base_android.R
 
 @Composable
 fun RecipeDetailedPosterCard(

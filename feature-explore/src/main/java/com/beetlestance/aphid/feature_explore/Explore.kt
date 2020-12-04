@@ -290,7 +290,7 @@ fun MoodContent() {
                     width = Dimension.fillToConstraints
                 }
                 .background(
-                    color = colorResource(id = R.color.amber_500),
+                    color = colorResource(id = com.beetlestance.aphid.base_android.R.color.amber_500),
                     shape = RoundedCornerShape(16.dp)
                 ).padding(16.dp),
             text = "What Are You In Mood For Today ?",
@@ -347,7 +347,7 @@ fun CuisineContent() {
 fun CuisineCard() {
     Card(
         shape = CircleShape,
-        border = BorderStroke(2.dp, colorResource(id = R.color.purple_600))
+        border = BorderStroke(2.dp, colorResource(id = com.beetlestance.aphid.base_android.R.color.purple_600))
     ) {
         Image(
             modifier = Modifier.fillMaxWidth().clipToBounds().aspectRatio(1f),
@@ -382,7 +382,7 @@ fun PlanYourMealAheadWithHeader() {
             .padding(horizontal = 16.dp),
         shape = RoundedCornerShape(16.dp),
         elevation = 4.dp,
-        backgroundColor = colorResource(id = R.color.gun_powder)
+        backgroundColor = colorResource(id = com.beetlestance.aphid.base_android.R.color.gun_powder)
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween
@@ -519,13 +519,13 @@ fun FoodCardContentsDetails(
         Text(
             text = contentTags,
             style = MaterialTheme.typography.body2,
-            color = colorResource(id = com.beetlestance.aphid.common_compose.R.color.grey_700)
+            color = colorResource(id = com.beetlestance.aphid.base_android.R.color.grey_700)
         )
 
         Text(
             modifier = Modifier
                 .background(
-                    color = colorResource(id = com.beetlestance.aphid.common_compose.R.color.deep_orange_a200),
+                    color = colorResource(id = com.beetlestance.aphid.base_android.R.color.deep_orange_a200),
                     shape = RoundedCornerShape(10.dp)
                 )
                 .padding(horizontal = 12.dp, vertical = 2.dp),

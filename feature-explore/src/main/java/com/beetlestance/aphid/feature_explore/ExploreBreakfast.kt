@@ -41,8 +41,8 @@ import androidx.core.graphics.blue
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.green
 import androidx.core.graphics.red
+import com.beetlestance.aphid.base_android.R
 import com.beetlestance.aphid.common_compose.DynamicThemePrimaryColorsFromImage
-import com.beetlestance.aphid.common_compose.R
 import com.beetlestance.aphid.common_compose.extensions.contrastAgainst
 import com.beetlestance.aphid.common_compose.extensions.getBitmap
 import com.beetlestance.aphid.common_compose.extensions.rememberMutableState
