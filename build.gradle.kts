@@ -1,5 +1,3 @@
-import java.net.URI
-
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
 
@@ -8,6 +6,7 @@ buildscript {
         jcenter()
         mavenCentral()
     }
+
     dependencies {
         classpath(com.beetlestance.aphid.buildsrc.Libs.androidGradlePlugin)
         classpath(com.beetlestance.aphid.buildsrc.Libs.Kotlin.gradlePlugin)
@@ -21,17 +20,6 @@ buildscript {
 plugins {
     id("com.diffplug.spotless") version "5.8.2"
     id("com.github.ben-manes.versions") version "0.36.0"
-}
-
-allprojects {
-    repositories {
-        google()
-        jcenter()
-        mavenCentral()
-
-        // Used for Roomigrant
-        maven { url = URI("https://jitpack.io") }
-    }
 }
 
 subprojects {

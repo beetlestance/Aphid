@@ -16,3 +16,20 @@ include(
     ":spoonacular",
     ":spoonacular-kotlin"
 )
+
+@Suppress("UnstableApiUsage")
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+}
+
+@Suppress("UnstableApiUsage")
+dependencyResolutionManagement {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+
+        // Used for Roomigrant
+        maven { url = java.net.URI("https://jitpack.io") }
+    }
+}
