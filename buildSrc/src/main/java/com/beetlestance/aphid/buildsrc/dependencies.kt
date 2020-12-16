@@ -16,7 +16,7 @@ object Aphid {
 
 object Libs {
 
-    const val androidGradlePlugin: String = "com.android.tools.build:gradle:7.0.0-alpha02"
+    const val androidGradlePlugin: String = "com.android.tools.build:gradle:7.0.0-alpha03"
 
     const val leakCanary: String = "com.squareup.leakcanary:leakcanary-android:2.2"
 
@@ -167,7 +167,7 @@ object Libs {
     }
 
     object Kotlin {
-        const val version: String = "1.4.20"
+        const val version: String = "1.4.21"
         const val stdlib: String = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val reflect: String = "org.jetbrains.kotlin:kotlin-reflect:$version"
         const val gradlePlugin: String = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
@@ -202,7 +202,7 @@ object Libs {
     }
 
     object Lint {
-        private const val version = "27.3.0-alpha02"
+        private const val version = "27.3.0-alpha03"
         const val api: String = "com.android.tools.lint:lint-api:$version"
         const val checks: String = "com.android.tools.lint:lint-checks:$version"
         const val layoutlib: String = "com.android.tools.layoutlib:layoutlib-api:$version"
