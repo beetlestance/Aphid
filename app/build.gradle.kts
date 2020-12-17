@@ -76,9 +76,6 @@ dependencies {
     implementation(project(":spoonacular"))
     implementation(project(":spoonacular-kotlin"))
 
-    // Lint checks
-    lintChecks(project(":mdc-theme-lint"))
-
     // Testing
     testImplementation(Libs.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.junit)
