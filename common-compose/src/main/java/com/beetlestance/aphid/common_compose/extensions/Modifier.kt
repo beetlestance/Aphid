@@ -10,14 +10,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Brush.Companion.verticalGradient
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.LinearGradient
-import androidx.compose.ui.graphics.VerticalGradient
 
 
 fun Modifier.gradientBackground(
     colors: List<Color>,
-    brushProvider: (List<Color>, Size) -> LinearGradient
+    brushProvider: (List<Color>, Size) -> Brush
 ): Modifier = composed {
     var size by remember { mutableStateOf(Size.Zero) }
     val gradient = remember(colors, size) { brushProvider(colors, size) }
@@ -32,7 +32,7 @@ fun Modifier.gradientBackground(
 fun Modifier.verticalGradientBackground(
     colors: List<Color>
 ) = gradientBackground(colors) { gradientColors, size ->
-    VerticalGradient(
+    verticalGradient(
         colors = gradientColors,
         startY = 0f,
         endY = size.width

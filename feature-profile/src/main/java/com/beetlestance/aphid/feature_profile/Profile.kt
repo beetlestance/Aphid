@@ -4,48 +4,20 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.animatedFloat
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.TweenSpec
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayout
-import androidx.compose.foundation.layout.FlowCrossAxisAlignment
-import androidx.compose.foundation.layout.FlowMainAxisAlignment
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.SizeMode
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.preferredWidth
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumnForIndexed
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Surface
-import androidx.compose.material.Tab
-import androidx.compose.material.TabRow
-import androidx.compose.material.Text
-import androidx.compose.material.contentColorFor
+import androidx.compose.material.*
+import androidx.compose.material.TabDefaults.Indicator
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.primarySurface
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.onActive
-import androidx.compose.runtime.onDispose
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -277,7 +249,7 @@ private fun RecipeTab(
                 val tabOffset = tabPosition.width.times(abs(tabOffsetPercentage))
                 val scrollStateIdle = currentPageOffset == 0f
 
-                return@with androidx.compose.material.TabConstants.DefaultIndicator(
+                return@with Indicator(
                     Modifier.fillMaxWidth()
                         .wrapContentSize(Alignment.BottomStart)
                         .offset(x = if (scrollStateIdle) tabPosition.left else tabOffset)
@@ -347,31 +319,32 @@ private fun SavedRecipes(
 ) {
     val animatedSet = remember { mutableSetOf<Int>() }
 
-    LazyColumnForIndexed(
+    LazyColumn(
         modifier = modifier,
-        items = savedRecipes,
         contentPadding = paddingValues,
-        itemContent = { index, recipe ->
-            val offsetValue = animatedFloat(initVal = if (index in animatedSet) 0F else 150F)
-            val alphaValue = animatedFloat(initVal = if (index in animatedSet) 1F else 0F)
+        content = {
+            itemsIndexed(savedRecipes) { index, recipe ->
+                val offsetValue = animatedFloat(initVal = if (index in animatedSet) 0F else 150F)
+                val alphaValue = animatedFloat(initVal = if (index in animatedSet) 1F else 0F)
 
-            onActive {
-                offsetValue.animateTo(0F, anim = RECIPE_CARD_TRANSITION)
-                alphaValue.animateTo(1F, anim = RECIPE_CARD_TRANSITION)
-                animatedSet.add(index)
+                onActive {
+                    offsetValue.animateTo(0F, anim = RECIPE_CARD_TRANSITION)
+                    alphaValue.animateTo(1F, anim = RECIPE_CARD_TRANSITION)
+                    animatedSet.add(index)
+                }
+
+                onDispose {
+                    offsetValue.snapTo(0F)
+                    offsetValue.stop()
+                }
+
+                SavedRecipeCard(
+                    modifier = Modifier.offset(y = offsetValue.value.toInt().dp)
+                        .alpha(alphaValue.value),
+                    markRecipeAsFavourite = markRecipeAsFavourite,
+                    recipe = recipe
+                )
             }
-
-            onDispose {
-                offsetValue.snapTo(0F)
-                offsetValue.stop()
-            }
-
-            SavedRecipeCard(
-                modifier = Modifier.offset(y = offsetValue.value.toInt().dp)
-                    .alpha(alphaValue.value),
-                markRecipeAsFavourite = markRecipeAsFavourite,
-                recipe = recipe
-            )
         })
 }
 
@@ -406,7 +379,9 @@ private fun SavedRecipeCard(
 }
 
 private const val GRID_ITEM_COUNT = 2
+private val GRID_ITEM_SPACING = 8.dp
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun FavouriteRecipes(
     modifier: Modifier = Modifier,
@@ -414,60 +389,35 @@ private fun FavouriteRecipes(
     paddingValues: PaddingValues,
     markRecipeAsFavourite: (Recipe, Boolean) -> Unit
 ) {
-    val gridRecipePairs: List<List<Recipe>> = favouriteRecipes.chunked(GRID_ITEM_COUNT)
-
     val animatedSet = remember { mutableSetOf<Int>() }
 
-    LazyColumnForIndexed(
+    LazyVerticalGrid(
         modifier = modifier,
-        items = gridRecipePairs,
+        cells = GridCells.Fixed(GRID_ITEM_COUNT),
         contentPadding = paddingValues,
-        itemContent = { index, gridItem ->
-            val offsetValue = animatedFloat(initVal = if (index in animatedSet) 0F else 150F)
-            val alphaValue = animatedFloat(initVal = if (index in animatedSet) 1F else 0F)
-            onActive {
-                offsetValue.animateTo(0F, anim = RECIPE_CARD_TRANSITION)
-                alphaValue.animateTo(1F, anim = RECIPE_CARD_TRANSITION)
-                animatedSet.add(index)
-            }
-
-            onDispose {
-                offsetValue.snapTo(0F)
-                offsetValue.stop()
-            }
-
-            FavouriteRecipeGridItem(
-                modifier = Modifier.offset(y = offsetValue.value.toInt().dp)
-                    .alpha(alphaValue.value),
-                markRecipeAsFavourite = markRecipeAsFavourite,
-                item = gridItem
-            )
-        })
-}
-
-@Composable
-private fun FavouriteRecipeGridItem(
-    modifier: Modifier = Modifier,
-    markRecipeAsFavourite: (Recipe, Boolean) -> Unit,
-    item: List<Recipe>
-) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(
-            space = 16.dp,
-            alignment = Alignment.Start
-        ),
         content = {
-            item.forEach { recipe ->
+            itemsIndexed(favouriteRecipes) { index, recipe ->
+                val offsetValue = animatedFloat(initVal = if (index in animatedSet) 0F else 150F)
+                val alphaValue = animatedFloat(initVal = if (index in animatedSet) 1F else 0F)
+                onActive {
+                    offsetValue.animateTo(0F, anim = RECIPE_CARD_TRANSITION)
+                    alphaValue.animateTo(1F, anim = RECIPE_CARD_TRANSITION)
+                    animatedSet.add(index)
+                }
+
+                onDispose {
+                    offsetValue.snapTo(0F)
+                    offsetValue.stop()
+                }
+
+                val cellPadding = if (index % 2 == 0) PaddingValues(end = GRID_ITEM_SPACING)
+                else PaddingValues(start = GRID_ITEM_SPACING)
+
                 FavouriteRecipeCard(
-                    modifier = modifier.weight(1f),
+                    modifier = modifier.padding(cellPadding),
                     markRecipeAsFavourite = markRecipeAsFavourite,
                     recipe = recipe
                 )
-            }
-            // Balance out grid spacing if list has 1 item by drawing remaining empty items
-            repeat(GRID_ITEM_COUNT - item.size) {
-                Spacer(modifier = modifier.weight(1f))
             }
         })
 }

@@ -58,7 +58,7 @@ object Libs {
         }
 
         object Room {
-            private const val version = "2.2.5"
+            private const val version = "2.2.6"
             const val common: String = "androidx.room:room-common:$version"
             const val runtime: String = "androidx.room:room-runtime:$version"
             const val compiler: String = "androidx.room:room-compiler:$version"
@@ -76,13 +76,13 @@ object Libs {
         }
 
         object Navigation {
-            private const val version = "1.0.0-alpha03"
+            private const val version = "1.0.0-alpha04"
             const val navigation: String = "androidx.navigation:navigation-compose:$version"
         }
 
         object Compose {
-            const val version: String = "1.0.0-alpha08"
-            const val ktVersion: String = "1.4.20"
+            const val version: String = "1.0.0-alpha09"
+            const val ktVersion: String = "1.4.21"
 
             const val compiler: String = "androidx.compose.compiler:compiler:$version"
 

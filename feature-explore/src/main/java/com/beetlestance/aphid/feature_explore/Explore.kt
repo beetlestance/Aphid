@@ -49,7 +49,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.focus.ExperimentalFocus
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.AmbientConfiguration
@@ -98,7 +97,6 @@ fun Explore(
 
 private val EXPLORE_ITEM_SPACING = 16.dp
 
-@OptIn(ExperimentalFocus::class)
 @Composable
 private fun Explore(
     modifier: Modifier = Modifier,

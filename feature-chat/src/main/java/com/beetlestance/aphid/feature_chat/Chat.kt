@@ -18,7 +18,7 @@ import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumnFor
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -37,7 +37,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.ExperimentalFocus
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.node.Ref
@@ -155,16 +154,17 @@ fun ChatListing(
     messages: List<Chat>,
     modifier: Modifier = Modifier
 ) {
-    LazyColumnFor(
-        items = messages,
-        modifier = modifier
-    ) { message ->
-        if (message.type == CHAT_MESSAGE_ANSWER) {
-            ReplyItem(answer = message)
-        } else {
-            AskedQuestionsItem(question = message)
-        }
-    }
+    LazyColumn(
+        modifier = modifier,
+        content = {
+            items(messages) { message ->
+                if (message.type == CHAT_MESSAGE_ANSWER) {
+                    ReplyItem(answer = message)
+                } else {
+                    AskedQuestionsItem(question = message)
+                }
+            }
+        })
 }
 
 @Composable
@@ -313,7 +313,6 @@ fun EmptyChatHint(
     }
 }
 
-@OptIn(ExperimentalFocus::class)
 @Composable
 private fun ChatInput(
     modifier: Modifier = Modifier,

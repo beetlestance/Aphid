@@ -17,7 +17,7 @@ import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.FloatingActionButtonConstants
+import androidx.compose.material.FloatingActionButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.contentColorFor
@@ -183,7 +183,7 @@ private fun CurveCutFab(
         modifier = modifier.size(FabRadius.times(2)),
         backgroundColor = backgroundColor,
         contentColor = contentColor,
-        elevation = FloatingActionButtonConstants.defaultElevation(
+        elevation = FloatingActionButtonDefaults.elevation(
             defaultElevation = FabElevation,
             pressedElevation = FabPressedElevation
         ),
