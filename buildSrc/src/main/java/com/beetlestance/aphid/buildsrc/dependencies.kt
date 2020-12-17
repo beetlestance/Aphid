@@ -49,7 +49,7 @@ object Libs {
         }
 
         object Lifecycle {
-            private const val version = "2.3.0-beta01"
+            private const val version = "2.3.0-rc01"
             const val extensions: String = "androidx.lifecycle:lifecycle-extensions:$version"
             const val viewmodelKtx: String = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
             const val livedataKtx: String = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
@@ -117,9 +117,9 @@ object Libs {
             "com.google.android.gms:play-services-oss-licenses:17.0.0"
 
         object Mdc {
-            const val material: String = "com.google.android.material:material:1.3.0-alpha04"
+            const val material: String = "com.google.android.material:material:1.3.0-beta01"
             const val composeThemeAdapter: String =
-                "com.google.android.material:compose-theme-adapter:1.0.0-alpha08"
+                "com.google.android.material:compose-theme-adapter:1.0.0-alpha09"
         }
 
         object PlayServices {
@@ -147,7 +147,7 @@ object Libs {
     }
 
     object Accompanist {
-        private const val version = "0.4.0"
+        private const val version = "0.4.1"
         const val coil: String = "dev.chrisbanes.accompanist:accompanist-coil:$version"
         const val insets: String = "dev.chrisbanes.accompanist:accompanist-insets:$version"
     }
