@@ -55,7 +55,7 @@ object DiceBarAvatarHelper {
     /**
      * Api Version for DiceBar Api
      * */
-    private const val DICE_BAR_API_VERSION: String = "4.1"
+    private const val DICE_BAR_API_VERSION: String = "4.5"
 
     /**
      * Api Version for DiceBar Api
