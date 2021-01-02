@@ -45,9 +45,9 @@ android {
         create("release") {
             if (useReleaseKeystore) {
                 storeFile = rootProject.file("release/aphid-release.jks")
-                storePassword = project.findProperty("releaseKeyAlias") as String
-                keyAlias = project.findProperty("releaseStorePassword") as String
-                keyPassword = project.findProperty("releaseKeyPassword") as String
+                storePassword = project.findProperty("RELEASE_KEY_ALIAS") as String
+                keyAlias = project.findProperty("RELEASE_STORE_PASSWORD") as String
+                keyPassword = project.findProperty("RELEASE_KEY_PASSWORD") as String
             }
         }
     }
