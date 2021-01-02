@@ -82,3 +82,5 @@ subprojects {
         }
     }
 }
+
+apply(from = "gradle/projectDependencyGraph.gradle")

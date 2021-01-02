@@ -27,5 +27,5 @@ jobs:
         run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
 
       - name: Build and check
-        run: ./gradlew spotlessCheck assembleDebug assembleRelease bundleRelease app:lintDebug testDebug --scan --stacktrace
+        run: ./gradlew spotlessCheck assemble bundle app:lintDebug testDebug --scan --stacktrace
 

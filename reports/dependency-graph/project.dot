@@ -1,0 +1,79 @@
+digraph {
+  graph [label="Aphid\n ",labelloc=t,fontsize=30,ranksep=1.4];
+  node [style=filled, fillcolor="#bbbbbb"];
+  rankdir=TB;
+
+  # Projects
+
+  ":app" [fillcolor="#baffc9"];
+  ":base" [fillcolor="#ffb3ba"];
+  ":base-android" [fillcolor="#baffc9"];
+  ":common-compose" [fillcolor="#baffc9"];
+  ":data" [fillcolor="#ffb3ba"];
+  ":data-android" [fillcolor="#baffc9"];
+  ":dicebar-kotlin" [fillcolor="#ffb3ba"];
+  ":domain" [fillcolor="#baffc9"];
+  ":feature-chat" [fillcolor="#baffc9"];
+  ":feature-explore" [fillcolor="#baffc9"];
+  ":feature-profile" [fillcolor="#baffc9"];
+  ":spoonacular" [fillcolor="#ffb3ba"];
+  ":spoonacular-kotlin" [fillcolor="#ffb3ba"];
+
+  {rank = same;}
+
+  # Dependencies
+
+  ":app" -> ":app"
+  ":app" -> ":base" [style=dotted]
+  ":app" -> ":base-android" [style=dotted]
+  ":app" -> ":common-compose" [style=dotted]
+  ":app" -> ":data" [style=dotted]
+  ":app" -> ":data-android" [style=dotted]
+  ":app" -> ":domain" [style=dotted]
+  ":app" -> ":feature-explore" [style=dotted]
+  ":app" -> ":feature-chat" [style=dotted]
+  ":app" -> ":feature-profile" [style=dotted]
+  ":app" -> ":spoonacular" [style=dotted]
+  ":app" -> ":spoonacular-kotlin" [style=dotted]
+  ":base-android" -> ":base-android"
+  ":base-android" -> ":base" [style=dotted]
+  ":base-android" -> ":data" [style=dotted]
+  ":common-compose" -> ":common-compose"
+  ":common-compose" -> ":base" [style=dotted]
+  ":common-compose" -> ":base-android" [style=dotted]
+  ":data" -> ":base" [style=dotted]
+  ":data" -> ":spoonacular-kotlin" [style=dotted]
+  ":data-android" -> ":data-android"
+  ":data-android" -> ":base" [style=dotted]
+  ":data-android" -> ":data" [style=dotted]
+  ":data-android" -> ":base-android" [style=dotted]
+  ":domain" -> ":domain"
+  ":domain" -> ":base" [style=dotted]
+  ":domain" -> ":data" [style=dotted]
+  ":domain" -> ":base-android" [style=dotted]
+  ":domain" -> ":data-android" [style=dotted]
+  ":domain" -> ":spoonacular-kotlin" [style=dotted]
+  ":feature-chat" -> ":feature-chat"
+  ":feature-chat" -> ":base" [style=dotted]
+  ":feature-chat" -> ":base-android" [style=dotted]
+  ":feature-chat" -> ":common-compose" [style=dotted]
+  ":feature-chat" -> ":data" [style=dotted]
+  ":feature-chat" -> ":domain" [style=dotted]
+  ":feature-chat" -> ":spoonacular-kotlin" [style=dotted]
+  ":feature-explore" -> ":feature-explore"
+  ":feature-explore" -> ":base" [style=dotted]
+  ":feature-explore" -> ":base-android" [style=dotted]
+  ":feature-explore" -> ":common-compose" [style=dotted]
+  ":feature-explore" -> ":data" [style=dotted]
+  ":feature-explore" -> ":domain" [style=dotted]
+  ":feature-explore" -> ":spoonacular-kotlin" [style=dotted]
+  ":feature-profile" -> ":feature-profile"
+  ":feature-profile" -> ":base" [style=dotted]
+  ":feature-profile" -> ":base-android" [style=dotted]
+  ":feature-profile" -> ":common-compose" [style=dotted]
+  ":feature-profile" -> ":data" [style=dotted]
+  ":feature-profile" -> ":domain" [style=dotted]
+  ":feature-profile" -> ":dicebar-kotlin" [style=dotted]
+  ":spoonacular" -> ":base" [style=dotted]
+  ":spoonacular" -> ":spoonacular-kotlin" [style=dotted]
+}
