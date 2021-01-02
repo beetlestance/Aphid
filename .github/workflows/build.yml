@@ -16,7 +16,6 @@ jobs:
       SPOONACULAR_API_KEY: ${{ secrets.SPOONACULAR_API_KEY }}
       RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
       RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
-      RELEASE_KEY_STORE: ${{ secrets.RELEASE_KEY_STORE }}
       RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
 
     steps:
