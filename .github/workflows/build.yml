@@ -32,9 +32,9 @@ jobs:
           java-version: 11
 
       - name: Decrypt secrets
-          run: ./release/decrypt-secrets.sh
-          env:
-            ENCRYPT_KEY: ${{ secrets.ENCRYPT_KEY }}
+        run: ./release/decrypt-secrets.sh
+        env:
+          ENCRYPT_KEY: ${{ secrets.ENCRYPT_KEY }}
 
       - name: Copy CI gradle.properties
         run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
