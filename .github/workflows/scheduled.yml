@@ -2,7 +2,7 @@ name: Project Dependency Updates
 
 on:
   schedule:
-    - cron:  '0 0 * * 7'
+    - cron:  '0 0 * * SAT'
 
 jobs:
   build:
