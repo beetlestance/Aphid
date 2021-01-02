@@ -13,6 +13,8 @@ kapt {
     useBuildCache = true
 }
 
+val useReleaseKeystore = rootProject.file("release/app-release.jks").exists()
+
 android {
     compileSdkVersion(Aphid.compileSdkVersion)
 
@@ -32,9 +34,35 @@ android {
         testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
     }
 
+    signingConfigs {
+        getByName("debug") {
+            storeFile = rootProject.file("release/aphid-debug.jks")
+            storePassword = "stance@debug"
+            keyAlias = "Aphid-Debug"
+            keyPassword = "stance@debug"
+        }
+
+        create("release") {
+            if (useReleaseKeystore) {
+                storeFile = rootProject.file("release/aphid-release.jks")
+                storePassword = project.findProperty("releaseKeyAlias") as String
+                keyAlias = project.findProperty("releaseStorePassword") as String
+                keyPassword = project.findProperty("releaseKeyPassword") as String
+            }
+        }
+    }
+
     buildTypes {
+        getByName("debug") {
+            signingConfig = signingConfigs.getByName("debug")
+            versionNameSuffix = "-dev"
+            applicationIdSuffix = ".debug"
+        }
+
         getByName("release") {
-            isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName(if (useReleaseKeystore) "release" else "debug")
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
