@@ -11,6 +11,14 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      TERM: dumb
+      SPOONACULAR_API_KEY: ${{ secrets.SPOONACULAR_API_KEY }}
+      RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+      RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
+      RELEASE_KEY_STORE: ${{ secrets.RELEASE_KEY_STORE }}
+      RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
+
     steps:
       - name: Generate build number
         shell: bash
@@ -23,9 +31,18 @@ jobs:
         with:
           java-version: 11
 
+      - name: Decrypt secrets
+          run: ./release/decrypt-secrets.sh
+          env:
+            ENCRYPT_KEY: ${{ secrets.ENCRYPT_KEY }}
+
       - name: Copy CI gradle.properties
         run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
 
       - name: Build and check
         run: ./gradlew spotlessCheck assemble bundle lintDebug testDebug --scan --stacktrace
+
+      - name: Clean secrets
+          if: always()
+          run: ./release/clean-secrets.sh
 
