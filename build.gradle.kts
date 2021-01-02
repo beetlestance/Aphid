@@ -57,7 +57,8 @@ subprojects {
         kotlinOptions {
             // Treat all Kotlin warnings as errors
             gradle.taskGraph.whenReady {
-                allWarningsAsErrors = hasTask(":app:assembleDebug").not()
+//                allWarningsAsErrors = hasTask(":app:assembleDebug").not()
+                allWarningsAsErrors = false
             }
 
             // Enable experimental coroutines APIs, including Flow
