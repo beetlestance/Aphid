@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 BeetleStance
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.beetlestance.aphid.common_compose.pager
 
 import androidx.compose.animation.AnimatedFloatModel
@@ -36,7 +51,7 @@ import kotlin.math.sign
 
 /**
  * Stole from jetpack compose samples
- * @see  <a href="https://github.com/android/compose-samples/blob/main/Jetcaster/app/src/main/java/com/example/jetcaster/util/Pager.kt">
+ * @see <a href="https://github.com/android/compose-samples/blob/main/Jetcaster/app/src/main/java/com/example/jetcaster/util/Pager.kt">
  *     JetCaster Pager
  *     </a>
  */
@@ -106,7 +121,6 @@ open class PagerState(
         _currentPageOffset.snapTo(value.coerceIn(min, max))
     }
 
-
     fun nextPage(velocity: Float = 5f) {
         fling(-velocity)
     }
@@ -139,7 +153,7 @@ open class PagerState(
     }
 
     override fun toString(): String = "PagerState{minPage=$minPage, maxPage=$maxPage, " +
-            "currentPage=$currentPage, currentPageOffset=$currentPageOffset}"
+        "currentPage=$currentPage, currentPageOffset=$currentPageOffset}"
 }
 
 @Immutable
@@ -170,7 +184,6 @@ fun rememberPagerState(
 
     return state
 }
-
 
 @Composable
 fun Pager(
@@ -225,7 +238,6 @@ fun PageLayout(
     content: @Composable () -> Unit
 ) {
     var pageSize by remember { mutableStateOf(0) }
-
 
     Layout(
         content = content,
@@ -335,7 +347,6 @@ open class PagerScope(
     val isSelectedPage: Boolean
         get() = currentPage == page
 
-
     fun nextPage(velocity: Float): Unit = state.nextPage(velocity)
 
     fun previousPage(velocity: Float): Unit = state.previousPage(velocity)
@@ -348,12 +359,13 @@ open class PagerScope(
         pageTransition: PageTransformation = PageTransformation.NONE
     ): Modifier = drawWithContent {
         val transform = pageTransition.transformPage(state.offset(page), size)
-        this.withTransform(transformBlock = {
-            this.scale(transform.scaleX, transform.scaleY, Offset(center.x, center.y))
-            this.translate(transform.translationX, transform.translationY)
-        }) {
+        this.withTransform(
+            transformBlock = {
+                this.scale(transform.scaleX, transform.scaleY, Offset(center.x, center.y))
+                this.translate(transform.translationX, transform.translationY)
+            }
+        ) {
             this@drawWithContent.drawContent()
         }
     }
 }
-

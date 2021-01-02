@@ -108,7 +108,6 @@ class MainActivity : AppCompatActivity() {
                         val resId = navItems.elementAt(selectedId).iconFilled
                         val color = MaterialTheme.colors.surface
                         AndroidIcon(drawableId = resId, tint = color)
-
                     }
                 ) {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()

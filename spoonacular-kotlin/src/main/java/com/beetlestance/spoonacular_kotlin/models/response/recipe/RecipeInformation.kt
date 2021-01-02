@@ -235,7 +235,6 @@ data class RecipeInformation(
             val unitLong: String? = null
         )
 
-
         data class Us(
 
             @Json(name = "amount")

@@ -57,5 +57,4 @@ class RecipesDataSource @Inject constructor(
                 recipeInformationToRecipe.forLists().invoke(recipes)
             }
     }
-
 }

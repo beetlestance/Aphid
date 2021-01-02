@@ -114,7 +114,6 @@ interface RecipesService {
     @GET(Recipes.ById.GET_RECIPE_NUTRITION)
     fun getRecipeNutritionWidgetByID(@Path("id") id: Long): Call<RecipeNutrients>
 
-
     /**
      * Get a recipe's taste.
      * The tastes supported are sweet, salty, sour, bitter, savory, and fatty.
@@ -209,7 +208,6 @@ interface RecipesService {
         @Path("id") id: Long,
         @Query("defaultCss") defaultCss: Boolean? = null
     ): Call<String>
-
 
     /**
      * Visualize Recipe Taste by ID
@@ -874,7 +872,6 @@ interface RecipesService {
     fun visualizeRecipeNutrition(
         @Body requestVisualizeRecipeNutrition: RequestVisualizeRecipeNutrition
     ): Call<String>
-
 
     /**
      * Visualize Recipe Taste

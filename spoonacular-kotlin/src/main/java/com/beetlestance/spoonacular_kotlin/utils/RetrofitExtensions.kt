@@ -21,8 +21,8 @@ import com.beetlestance.spoonacular_kotlin.models.Redirection
 import com.beetlestance.spoonacular_kotlin.models.ServerError
 import com.beetlestance.spoonacular_kotlin.models.SpoonacularApiResponse
 import com.beetlestance.spoonacular_kotlin.models.Success
-import okhttp3.Response as OkHttpResponse
 import retrofit2.Response
+import okhttp3.Response as OkHttpResponse
 
 inline fun <reified T> Response<T>.toSpoonacularApiResponse(): SpoonacularApiResponse<T> {
     val okHttpResponse: OkHttpResponse = raw()

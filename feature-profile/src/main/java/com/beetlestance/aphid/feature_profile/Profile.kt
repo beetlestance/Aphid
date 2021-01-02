@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 BeetleStance
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.beetlestance.aphid.feature_profile
 
 import androidx.annotation.StringRes
@@ -44,6 +59,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.onActive
 import androidx.compose.runtime.onDispose
@@ -60,7 +76,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.decode.SvgDecoder
-import androidx.compose.runtime.getValue
 import com.beetlestance.aphid.common_compose.RecipeDetailedPosterCard
 import com.beetlestance.aphid.common_compose.insets.statusBarsPadding
 import com.beetlestance.aphid.common_compose.pager.Pager
@@ -163,7 +178,6 @@ private fun ProfileSection(
     }
 }
 
-
 private val PROFILE_SHAPE_SIZE = 72.dp
 private val PROFILE_SHAPE_ELEVATION = 2.dp
 
@@ -205,7 +219,8 @@ private fun ProfileDetails(
     onClick: () -> Unit = {}
 ) {
     Column(
-        modifier = modifier, verticalArrangement = Arrangement.spacedBy(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(
             space = 8.dp,
             alignment = Alignment.Top
         )
@@ -376,7 +391,8 @@ private fun SavedRecipes(
                     recipe = recipe
                 )
             }
-        })
+        }
+    )
 }
 
 @Composable
@@ -450,7 +466,8 @@ private fun FavouriteRecipes(
                     recipe = recipe
                 )
             }
-        })
+        }
+    )
 }
 
 @Composable
