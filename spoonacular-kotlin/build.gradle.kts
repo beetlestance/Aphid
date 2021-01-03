@@ -12,6 +12,10 @@ kapt {
     useBuildCache = true
 }
 
+tasks.test {
+    if (spoonacularKey != null) environment("TEST_API_KEY", spoonacularKey)
+}
+
 dependencies {
     // Testing
     testImplementation(Libs.Test.junit)
