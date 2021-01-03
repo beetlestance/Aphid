@@ -41,12 +41,19 @@ object Libs {
 
         object Test {
             private const val version = "1.3.0"
-            const val core: String = "androidx.test:core:$version"
+            const val core = "androidx.test:core:$version"
+            const val rules = "androidx.test:rules:$version"
             const val runner: String = "androidx.test:runner:$version"
-            const val rules: String = "androidx.test:rules:$version"
-            const val junit: String = "androidx.test.ext:junit:1.1.2"
-            const val espressoCore: String = "androidx.test.espresso:espresso-core:3.3.0"
+
+            object Ext {
+                private const val version = "1.1.2"
+                const val junit = "androidx.test.ext:junit-ktx:$version"
+            }
+
+            const val espressoCore = "androidx.test.espresso:espresso-core:3.3.0"
         }
+
+        const val archCoreTesting = "androidx.arch.core:core-testing:2.1.0"
 
         object Lifecycle {
             private const val version = "2.3.0-rc01"
@@ -115,6 +122,8 @@ object Libs {
             "com.google.android.gms:oss-licenses-plugin:0.10.2"
         const val openSourceLicensesLibrary: String =
             "com.google.android.gms:play-services-oss-licenses:17.0.0"
+
+        const val truth = "com.google.truth:truth:1.1"
 
         object Mdc {
             const val material: String = "com.google.android.material:material:1.3.0-beta01"
