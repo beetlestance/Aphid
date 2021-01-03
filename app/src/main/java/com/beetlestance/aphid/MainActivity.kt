@@ -65,8 +65,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val chatViewModel: ChatViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -141,13 +139,7 @@ class MainActivity : AppCompatActivity() {
             }
         ) { navBarPadding ->
             NavHost(navController, startDestination = Screen.Explore.route) {
-                composableContent(Screen.Chat.route) {
-                    Chat(
-                        viewModel = chatViewModel,
-                        paddingValues = navBarPadding
-                    )
-                }
-
+                composableContent(Screen.Chat.route) { Chat(paddingValues = navBarPadding) }
                 composableContent(Screen.Explore.route) { Explore(paddingValues = navBarPadding) }
                 composableContent(Screen.MealPlanner.route) { Dummy() }
                 composableContent(Screen.Grocery.route) { Dummy() }

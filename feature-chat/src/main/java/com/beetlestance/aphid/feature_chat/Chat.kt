@@ -67,15 +67,16 @@ import com.beetlestance.aphid.base.CHAT_MESSAGE_ANSWER
 import com.beetlestance.aphid.common_compose.insets.AmbientWindowInsets
 import com.beetlestance.aphid.common_compose.insets.imePadding
 import com.beetlestance.aphid.common_compose.insets.statusBarsPadding
+import com.beetlestance.aphid.common_compose.utils.navViewModel
 import com.beetlestance.aphid.data.entities.Chat
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
 fun Chat(
-    viewModel: ChatViewModel,
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues = PaddingValues()
 ) {
+    val viewModel: ChatViewModel by navViewModel()
     val state by viewModel.liveData.observeAsState(initial = viewModel.currentState())
     val action: (ChatActions) -> Unit = { action -> viewModel.submitAction(action) }
 
