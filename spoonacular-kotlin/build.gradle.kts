@@ -5,6 +5,8 @@ plugins {
     kotlin("kapt")
 }
 
+val spoonacularKey = project.findProperty("SPOONACULAR_API_KEY")
+
 kapt {
     correctErrorTypes = true
     useBuildCache = true
@@ -13,6 +15,7 @@ kapt {
 dependencies {
     // Testing
     testImplementation(Libs.Test.junit)
+    testImplementation(Libs.Google.truth)
 
     //Annotations
     implementation(Libs.AndroidX.androidAnnotation)

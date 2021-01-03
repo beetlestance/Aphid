@@ -15,8 +15,9 @@
  */
 package com.beetlestance.spoonacular_kotlin
 
-import org.junit.Assert.assertEquals
 import org.junit.Test
+import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth.assertWithMessage
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -24,8 +25,14 @@ import org.junit.Test
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class ExampleUnitTest {
+
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun test_addition_isCorrect() {
+        val firstNumberToAdd = 2
+        val secondNumberToAdd = 2
+
+        assertThat(firstNumberToAdd + secondNumberToAdd)
+            .isEqualTo(4)
     }
+
 }
