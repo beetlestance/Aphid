@@ -2,11 +2,11 @@ name: Project Dependency Updates
 
 on:
   schedule:
-    - cron:  '0 0 * * 7'
+    - cron:  '0 0 * * SAT'
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: Ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2
