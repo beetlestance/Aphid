@@ -18,7 +18,8 @@ buildscript {
 }
 
 plugins {
-    id("com.diffplug.spotless") version "5.8.2"
+    id("com.diffplug.spotless") version "5.9.0"
+    // gradlew dependencyUpdates
     id("com.github.ben-manes.versions") version "0.36.0"
 }
 
@@ -75,7 +76,7 @@ subprojects {
                 "-Xjvm-default=all"
             )
 
-            // Set JVM target to 11, on 1.8 library sources are not getting attached automatically
+            // Set JVM target to 11
             // Set to 15 once intellij upgrade asm 7.0 to 9.0,
             // now org.objectweb.asm.ClassReader has major opt code 12
             jvmTarget = "11"

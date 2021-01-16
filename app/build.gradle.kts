@@ -74,8 +74,7 @@ android {
         // Disable lintVital. Not needed since lint is run on CI
         isCheckReleaseBuilds = false
         // Allow lint to check dependencies
-        // TODO: re-enable this once https://issuetracker.google.com/issues/159733104 is fixed
-        isCheckDependencies = false
+        isCheckDependencies = true
         // Ignore any tests
         isIgnoreTestSources = true
     }

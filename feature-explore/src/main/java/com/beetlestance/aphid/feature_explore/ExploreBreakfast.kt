@@ -17,7 +17,7 @@ package com.beetlestance.aphid.feature_explore
 
 import android.graphics.drawable.Drawable
 import androidx.annotation.FloatRange
-import androidx.compose.animation.animate
+import androidx.compose.animation.animateAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -197,7 +197,9 @@ fun FavIcon(
             content = {
                 Icon(
                     imageVector = vectorResource(id = R.drawable.ic_like),
-                    tint = animate(target = colorResource(if (isFavourite) R.color.deep_orange_a200 else R.color.white))
+                    tint = animateAsState(
+                        targetValue = colorResource(if (isFavourite) R.color.deep_orange_a200 else R.color.white)
+                    ).value
                 )
             },
             checked = isFavourite,

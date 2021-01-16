@@ -15,18 +15,20 @@
  */
 package com.beetlestance.aphid.feature_profile
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.beetlestance.aphid.base_android.AphidViewModel
 import com.beetlestance.aphid.domain.executors.MarkRecipeAsFavourite
 import com.beetlestance.aphid.domain.observers.ObserveFavouriteRecipes
 import com.beetlestance.aphid.domain.observers.ObserveSavedRecipes
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-internal class ProfileViewModel @ViewModelInject constructor(
+@HiltViewModel
+internal class ProfileViewModel @Inject constructor(
     observeSavedRecipes: ObserveSavedRecipes,
     observeFavouriteRecipes: ObserveFavouriteRecipes,
     private val markRecipeAsFavourite: MarkRecipeAsFavourite

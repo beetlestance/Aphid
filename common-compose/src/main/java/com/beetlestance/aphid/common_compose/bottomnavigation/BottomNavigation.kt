@@ -17,9 +17,9 @@ package com.beetlestance.aphid.common_compose.bottomnavigation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.animate
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.core.animateAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
@@ -217,7 +217,9 @@ private fun CurveCutBottomNavBar(
     content: @Composable CurveCutNavBarScope.() -> Unit
 ) {
     Surface(
-        modifier = modifier.preferredHeight(BottomNavigationHeight).zIndex(1f),
+        modifier = modifier
+            .preferredHeight(BottomNavigationHeight)
+            .zIndex(1f),
         color = backgroundColor,
         contentColor = contentColor,
         elevation = elevation,
@@ -239,10 +241,10 @@ private fun curveCutShape(offsetX: Dp, cutOutWidth: Float): CutOutShape {
     return CutOutShape(
         cutOutShape = BottomNavBarCutOutShape(),
         cutOutShapeMargin = FabMargin.toPx(),
-        cutoutStartOffset = animate(
-            target = offsetX,
-            animSpec = CurveCutBezierEasing
-        ).toPx() - CutOutHorizontalMargin.div(2).toPx(),
+        cutoutStartOffset = animateAsState(
+            targetValue = offsetX,
+            animationSpec = CurveCutBezierEasing
+        ).value.toPx() - CutOutHorizontalMargin.div(2).toPx(),
         cutOutShapeSize = Size(
             width = cutOutWidth + CutOutHorizontalMargin.toPx(),
             height = FabRadius.times(2).toPx() + CutOutDepthMargin.toPx()
@@ -282,10 +284,16 @@ private fun animateBounce(
     depth: Dp
 ): FabPlacement {
 
-    val pathCovered = animate(target = startOffset, CurveCutBezierEasing)
+    val pathCovered = animateAsState(
+        targetValue = startOffset,
+        animationSpec = CurveCutBezierEasing
+    ).value
 
     val offsetY: Dp = if (pathCovered == startOffset) peak else depth
-    val heightOffset = animate(target = offsetY, CurveCutBezierEasing)
+    val heightOffset = animateAsState(
+        targetValue = offsetY,
+        animationSpec = CurveCutBezierEasing
+    ).value
 
     return FabPlacement(
         isDocked = offsetY == peak,

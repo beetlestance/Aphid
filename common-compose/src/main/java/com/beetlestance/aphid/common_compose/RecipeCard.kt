@@ -15,7 +15,8 @@
  */
 package com.beetlestance.aphid.common_compose
 
-import androidx.compose.animation.animate
+import androidx.compose.animation.animateAsState as animateAsStateColor
+import androidx.compose.animation.core.animateAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -84,7 +85,7 @@ fun RecipePosterCard(
 ) {
     Card(
         modifier = modifier,
-        elevation = animate(elevation),
+        elevation = animateAsState(targetValue = elevation).value,
         shape = cardShape
     ) {
         Box(modifier = Modifier.clipToBounds()) {
@@ -109,7 +110,8 @@ fun MarkFavouriteButton(
     onCheckChanged: (Boolean) -> Unit
 ) {
     IconToggleButton(
-        modifier = modifier.padding(16.dp)
+        modifier = modifier
+            .padding(16.dp)
             .background(
                 shape = CircleShape,
                 color = colorResource(id = R.color.grey_400_alpha_30)
@@ -117,7 +119,9 @@ fun MarkFavouriteButton(
         content = {
             Icon(
                 imageVector = vectorResource(id = R.drawable.ic_like),
-                tint = animate(target = colorResource(if (isFavourite) R.color.deep_orange_a200 else R.color.white))
+                tint = animateAsStateColor(
+                    targetValue = colorResource(if (isFavourite) R.color.deep_orange_a200 else R.color.white)
+                ).value
             )
         },
         checked = isFavourite,

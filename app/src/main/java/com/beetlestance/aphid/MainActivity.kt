@@ -18,7 +18,6 @@ package com.beetlestance.aphid
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Box
@@ -51,7 +50,6 @@ import com.beetlestance.aphid.common_compose.insets.navigationBarsPadding
 import com.beetlestance.aphid.common_compose.utils.composableContent
 import com.beetlestance.aphid.common_compose.utils.setUpWithViewModel
 import com.beetlestance.aphid.feature_chat.Chat
-import com.beetlestance.aphid.feature_chat.ChatViewModel
 import com.beetlestance.aphid.feature_explore.Explore
 import com.beetlestance.aphid.feature_profile.Profile
 import dagger.hilt.android.AndroidEntryPoint

@@ -18,7 +18,7 @@ package com.beetlestance.aphid.common_compose
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.collection.LruCache
-import androidx.compose.animation.animate
+import androidx.compose.animation.animateAsState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.material.MaterialTheme
@@ -46,14 +46,14 @@ fun DynamicThemePrimaryColorsFromImage(
     content: @Composable () -> Unit
 ) {
     val colors = MaterialTheme.colors.copy(
-        primary = animate(
-            dominantColorState.color,
-            spring(stiffness = Spring.StiffnessLow)
-        ),
-        onPrimary = animate(
-            dominantColorState.onColor.copy(0.7f),
-            spring(stiffness = Spring.StiffnessLow)
-        )
+        primary = animateAsState(
+            targetValue = dominantColorState.color,
+            animationSpec = spring(stiffness = Spring.StiffnessLow)
+        ).value,
+        onPrimary = animateAsState(
+            targetValue = dominantColorState.onColor.copy(0.7f),
+            animationSpec = spring(stiffness = Spring.StiffnessLow)
+        ).value
     )
     MaterialTheme(colors = colors, content = content)
 }
