@@ -153,13 +153,13 @@ object Libs {
     }
 
     object Dagger {
-        private const val version = "2.31"
+        private const val version = "2.30.1"
         const val dagger: String = "com.google.dagger:dagger:$version"
         const val compiler: String = "com.google.dagger:dagger-compiler:$version"
     }
 
     object Hilt {
-        private const val version = "2.31-alpha"
+        private const val version = "2.30.1-alpha"
         const val library: String = "com.google.dagger:hilt-android:$version"
         const val compiler: String = "com.google.dagger:hilt-android-compiler:$version"
         const val testing: String = "com.google.dagger:hilt-android-testing:$version"

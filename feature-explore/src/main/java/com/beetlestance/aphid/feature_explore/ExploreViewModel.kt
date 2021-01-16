@@ -15,6 +15,7 @@
  */
 package com.beetlestance.aphid.feature_explore
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.beetlestance.aphid.base_android.AphidViewModel
 import com.beetlestance.aphid.domain.executors.FetchRecipes
@@ -25,15 +26,12 @@ import com.beetlestance.aphid.domain.observers.ObserveRecipes
 import com.beetlestance.aphid.domain.observers.ObserveRecipesWithReadyTime
 import com.beetlestance.aphid.domain.watchStatus
 import com.beetlestance.spoonacular_kotlin.constants.MealType
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-internal class ExploreViewModel @Inject constructor(
+internal class ExploreViewModel @ViewModelInject constructor(
     fetchRecipes: FetchRecipes,
     observeRecipes: ObserveRecipes,
     observeQuickRecipes: ObserveRecipesWithReadyTime,
