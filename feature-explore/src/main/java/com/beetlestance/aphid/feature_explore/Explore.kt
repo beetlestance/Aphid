@@ -47,6 +47,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.preferredWidth
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -123,7 +125,7 @@ private fun Explore(
         modifier = modifier,
         color = MaterialTheme.colors.surface
     ) {
-        ScrollableColumn(
+        LazyColumn(
             modifier = Modifier
                 .statusBarsPadding()
                 .fillMaxSize()
@@ -134,41 +136,44 @@ private fun Explore(
                 alignment = Alignment.Top
             )
         ) {
-            Spacer(modifier = Modifier.preferredHeight(0.dp))
+            item {
 
-            SearchBar(modifier = Modifier.padding(horizontal = 8.dp))
+                Spacer(modifier = Modifier.preferredHeight(0.dp))
 
-            if (state.breakfastRecipes.isNotEmpty()) {
-                BreakFastWithHeader(
-                    breakfastRecipes = state.breakfastRecipes,
-                    markRecipeAsFavourite = { recipe, isFavourite ->
-                        actions(MarkFavourite(recipe, isFavourite))
-                    }
-                )
-            }
+                SearchBar(modifier = Modifier.padding(horizontal = 8.dp))
 
-            MoodContent()
+                if (state.breakfastRecipes.isNotEmpty()) {
+                    BreakFastWithHeader(
+                        breakfastRecipes = state.breakfastRecipes,
+                        markRecipeAsFavourite = { recipe, isFavourite ->
+                            actions(MarkFavourite(recipe, isFavourite))
+                        }
+                    )
+                }
 
-            Cuisine()
+                MoodContent()
 
-            PlanYourMealAheadWithHeader()
+                Cuisine()
 
-            if (state.readyInTimeRecipes.isNotEmpty()) {
-                QuickRecipesWithHeader(
-                    quickRecipes = state.readyInTimeRecipes,
-                    markRecipeAsFavourite = { recipe, isFavourite ->
-                        actions(MarkFavourite(recipe, isFavourite))
-                    }
-                )
-            }
+                PlanYourMealAheadWithHeader()
 
-            if (state.recentlyViewedRecipes.isNotEmpty()) {
-                RecentlyViewedRecipesWithHeader(
-                    recentlyViewedRecipes = state.recentlyViewedRecipes,
-                    markRecipeAsFavourite = { recipe, isFavourite ->
-                        actions(MarkFavourite(recipe, isFavourite))
-                    }
-                )
+                if (state.readyInTimeRecipes.isNotEmpty()) {
+                    QuickRecipesWithHeader(
+                        quickRecipes = state.readyInTimeRecipes,
+                        markRecipeAsFavourite = { recipe, isFavourite ->
+                            actions(MarkFavourite(recipe, isFavourite))
+                        }
+                    )
+                }
+
+                if (state.recentlyViewedRecipes.isNotEmpty()) {
+                    RecentlyViewedRecipesWithHeader(
+                        recentlyViewedRecipes = state.recentlyViewedRecipes,
+                        markRecipeAsFavourite = { recipe, isFavourite ->
+                            actions(MarkFavourite(recipe, isFavourite))
+                        }
+                    )
+                }
             }
         }
     }
@@ -202,11 +207,12 @@ fun SearchBar(
                 .align(Alignment.CenterVertically)
         ) {
             Icon(
-                imageVector = Icons.Outlined.Search,
-                tint = Color.Gray,
                 modifier = Modifier
                     .padding(start = 8.dp, end = 8.dp)
-                    .align(Alignment.CenterVertically)
+                    .align(Alignment.CenterVertically),
+                imageVector = Icons.Outlined.Search,
+                tint = Color.Gray,
+                contentDescription = "Search Recipes"
             )
 
             Text(
@@ -219,15 +225,16 @@ fun SearchBar(
         }
 
         Icon(
-            imageVector = vectorResource(id = R.drawable.ic_filter),
-            tint = Color.Gray,
             modifier = Modifier
                 .clip(CircleShape)
                 .clickable(
                     onClick = filterClick
                 )
                 .padding(8.dp)
-                .align(Alignment.CenterVertically)
+                .align(Alignment.CenterVertically),
+            imageVector = vectorResource(id = R.drawable.ic_filter),
+            tint = Color.Gray,
+            contentDescription = "Search Recipes"
         )
     }
 }
@@ -274,7 +281,7 @@ fun BreakFastWithHeader(
             title = recipe.title ?: "",
             subTitle = "2 Serving • 40 Min • 331 Cal",
             description =
-                "A unique experience of taste  and delicious ingredients prepared for you. Liven up your life with nutrition."
+            "A unique experience of taste  and delicious ingredients prepared for you. Liven up your life with nutrition."
         ) {
             markRecipeAsFavourite(recipe, it)
         }
@@ -305,17 +312,21 @@ fun MoodContent() {
                 .background(
                     color = colorResource(id = com.beetlestance.aphid.base_android.R.color.amber_500),
                     shape = RoundedCornerShape(16.dp)
-                ).padding(16.dp),
+                )
+                .padding(16.dp),
             text = "What Are You In Mood For Today ?",
             style = MaterialTheme.typography.h5
         )
 
         Image(
-            modifier = Modifier.constrainAs(image) {
-                linkTo(start = parent.start, end = parent.end, bias = 1f)
-                width = Dimension.percent(0.2f)
-            }.aspectRatio(1f),
-            imageVector = vectorResource(id = R.drawable.ic_cookie)
+            modifier = Modifier
+                .constrainAs(image) {
+                    linkTo(start = parent.start, end = parent.end, bias = 1f)
+                    width = Dimension.percent(0.2f)
+                }
+                .aspectRatio(1f),
+            imageVector = vectorResource(id = R.drawable.ic_cookie),
+            contentDescription = "Cookies"
         )
     }
 }
@@ -329,8 +340,8 @@ fun Cuisine() {
         modifier = Modifier.padding(horizontal = 16.dp)
     )
 
-    ScrollableRow {
-        repeat(8) {
+    LazyRow {
+        items(8) {
             CuisineContent()
         }
     }
@@ -359,12 +370,19 @@ fun CuisineContent() {
 fun CuisineCard() {
     Card(
         shape = CircleShape,
-        border = BorderStroke(2.dp, colorResource(id = com.beetlestance.aphid.base_android.R.color.purple_600))
+        border = BorderStroke(
+            2.dp,
+            colorResource(id = com.beetlestance.aphid.base_android.R.color.purple_600)
+        )
     ) {
         Image(
-            modifier = Modifier.fillMaxWidth().clipToBounds().aspectRatio(1f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clipToBounds()
+                .aspectRatio(1f),
             bitmap = imageResource(id = R.drawable.temp_brownie),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            contentDescription = "Available Cuisines"
         )
     }
 }
@@ -412,13 +430,15 @@ fun PlanYourMealAheadWithHeader() {
             )
 
             Image(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .clipToBounds()
                     .align(Alignment.Bottom)
                     .weight(0.6f)
                     .padding(top = 16.dp),
                 imageVector = vectorResource(id = R.drawable.ic_plan_your_meal),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
+                contentDescription = "Meal Planner"
             )
         }
     }
@@ -443,10 +463,11 @@ fun QuickRecipesWithHeader(
             onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
             posterImage = {
                 CoilImage(
+                    modifier = Modifier.aspectRatio(1.5f),
                     data = recipe.imageUrl ?: EMPTY_URL,
                     fadeIn = true,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.aspectRatio(1.5f)
+                    contentDescription = "Quick Recipe"
                 )
             },
             posterDetails = {
@@ -485,10 +506,11 @@ fun RecentlyViewedRecipesWithHeader(
             onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
             posterImage = {
                 CoilImage(
+                    modifier = Modifier.aspectRatio(1.5f),
                     data = recipe.imageUrl ?: EMPTY_URL,
                     fadeIn = true,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.aspectRatio(1.5f)
+                    contentDescription = "Recently Viewed Recipe"
                 )
             },
             posterDetails = {

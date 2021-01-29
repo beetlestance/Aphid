@@ -34,6 +34,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -206,6 +207,7 @@ fun AskedQuestionsItem(question: Chat) {
                 // TODO: Load user image here
                 CoilImage(
                     data = "",
+                    contentDescription = "User Avatar",
                     modifier = Modifier
                         .preferredHeight(64.dp)
                         .aspectRatio(1 / 1f)
@@ -238,6 +240,7 @@ fun ReplyItem(answer: Chat) {
 
                 CoilImage(
                     data = R.drawable.ic_chat_bot,
+                    contentDescription = "Chat Bot",
                     modifier = Modifier
                         .preferredHeight(64.dp)
                         .padding(16.dp)
@@ -254,6 +257,7 @@ fun ReplyItem(answer: Chat) {
                 if (answer.image.isNullOrBlank().not()) {
                     CoilImage(
                         data = answer.image ?: "",
+                        contentDescription = "Image Result For Given Query",
                         modifier = Modifier
                             .fillMaxHeight()
                             .align(Alignment.CenterVertically)
@@ -278,6 +282,7 @@ fun EmptyChat(
         ) {
             Image(
                 imageVector = vectorResource(id = R.drawable.ic_chat_empty),
+                contentDescription = "No Chat History",
                 modifier = Modifier
                     .padding(top = 32.dp)
                     .align(Alignment.TopCenter)
@@ -305,8 +310,10 @@ fun EmptyChatHint(
     ) {
         Row {
             Image(
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier
+                    .padding(16.dp)
                     .size(48.dp),
+                contentDescription = "Chat Bot",
                 imageVector = vectorResource(id = R.drawable.ic_chat_bot),
                 alignment = Alignment.Center
             )
@@ -409,7 +416,8 @@ private fun ChatInput(
                                 state.clear()
                             }
                         )
-                        .padding(8.dp)
+                        .padding(8.dp),
+                    contentDescription = "Submit Query"
                 )
             }
         }

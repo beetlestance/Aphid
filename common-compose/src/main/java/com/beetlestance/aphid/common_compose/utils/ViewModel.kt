@@ -22,8 +22,8 @@ import androidx.compose.runtime.ProvidableAmbient
 import androidx.compose.runtime.Providers
 import androidx.compose.runtime.staticAmbientOf
 import androidx.compose.ui.platform.setContent
-import androidx.hilt.lifecycle.HiltViewModelFactory
 import androidx.hilt.lifecycle.ViewModelAssistedFactory
+import androidx.hilt.navigation.HiltViewModelFactory
 import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelLazy
@@ -34,6 +34,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NamedNavArgument
 import androidx.navigation.compose.composable
 import androidx.savedstate.SavedStateRegistryOwner
+import dagger.hilt.android.internal.lifecycle.HiltViewModelFactory
 
 /**
  * In essence using the activity or fragment as the [SavedStateRegistryOwner] when the

@@ -43,6 +43,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -59,10 +60,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.onActive
-import androidx.compose.runtime.onDispose
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -173,7 +174,7 @@ private fun ProfileSection(
             modifier = Modifier.align(Alignment.TopEnd),
             onClick = {}
         ) {
-            Icon(imageVector = Icons.Filled.Settings)
+            Icon(imageVector = Icons.Filled.Settings, contentDescription = "Settings")
         }
     }
 }
@@ -201,11 +202,14 @@ private fun ProfileAvatar(
         elevation = PROFILE_SHAPE_ELEVATION
     ) {
         CoilImage(
-            modifier = Modifier.fillMaxSize().clipToBounds(),
+            modifier = Modifier
+                .fillMaxSize()
+                .clipToBounds(),
             data = avatarUrl,
             fadeIn = true,
             imageLoader = svgImageLoader(),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            contentDescription = "User Avatar"
         )
     }
 }
@@ -296,7 +300,8 @@ private fun RecipeTab(
                 val scrollStateIdle = currentPageOffset == 0f
 
                 return@with Indicator(
-                    Modifier.fillMaxWidth()
+                    Modifier
+                        .fillMaxWidth()
                         .wrapContentSize(Alignment.BottomStart)
                         .offset(x = if (scrollStateIdle) tabPosition.left else tabOffset)
                         .preferredWidth(tabPosition.width)
@@ -373,19 +378,22 @@ private fun SavedRecipes(
                 val offsetValue = animatedFloat(initVal = if (index in animatedSet) 0F else 150F)
                 val alphaValue = animatedFloat(initVal = if (index in animatedSet) 1F else 0F)
 
-                onActive {
+                LaunchedEffect(recipe) {
                     offsetValue.animateTo(0F, anim = RECIPE_CARD_TRANSITION)
                     alphaValue.animateTo(1F, anim = RECIPE_CARD_TRANSITION)
                     animatedSet.add(index)
                 }
 
-                onDispose {
-                    offsetValue.snapTo(0F)
-                    offsetValue.stop()
+                DisposableEffect(recipe) {
+                    onDispose {
+                        offsetValue.snapTo(0F)
+                        offsetValue.stop()
+                    }
                 }
 
                 SavedRecipeCard(
-                    modifier = Modifier.offset(y = offsetValue.value.toInt().dp)
+                    modifier = Modifier
+                        .offset(y = offsetValue.value.toInt().dp)
                         .alpha(alphaValue.value),
                     markRecipeAsFavourite = markRecipeAsFavourite,
                     recipe = recipe
@@ -407,10 +415,11 @@ private fun SavedRecipeCard(
         onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
         posterImage = {
             CoilImage(
+                modifier = Modifier.aspectRatio(1.46f),
                 data = recipe.imageUrl ?: EMPTY_URL,
                 fadeIn = true,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.aspectRatio(1.46f)
+                contentDescription = "Saved Recipes"
             )
         },
         posterDetails = {
@@ -446,15 +455,18 @@ private fun FavouriteRecipes(
             itemsIndexed(favouriteRecipes) { index, recipe ->
                 val offsetValue = animatedFloat(initVal = if (index in animatedSet) 0F else 150F)
                 val alphaValue = animatedFloat(initVal = if (index in animatedSet) 1F else 0F)
-                onActive {
+
+                LaunchedEffect(recipe) {
                     offsetValue.animateTo(0F, anim = RECIPE_CARD_TRANSITION)
                     alphaValue.animateTo(1F, anim = RECIPE_CARD_TRANSITION)
                     animatedSet.add(index)
                 }
 
-                onDispose {
-                    offsetValue.snapTo(0F)
-                    offsetValue.stop()
+                DisposableEffect(recipe) {
+                    onDispose {
+                        offsetValue.snapTo(0F)
+                        offsetValue.stop()
+                    }
                 }
 
                 val cellPadding = if (index % 2 == 0) PaddingValues(end = GRID_ITEM_SPACING)
@@ -482,10 +494,11 @@ private fun FavouriteRecipeCard(
         onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
         posterImage = {
             CoilImage(
+                modifier = Modifier.aspectRatio(0.7f),
                 data = recipe.imageUrl ?: EMPTY_URL,
                 fadeIn = true,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.aspectRatio(0.7f)
+                contentDescription = "Favourite Recipes"
             )
         },
         posterDetails = {

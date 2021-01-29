@@ -19,7 +19,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.TweenSpec
-import androidx.compose.animation.core.animateAsState
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
@@ -173,8 +173,7 @@ fun CurveCutNavBarScope.CurveCutMenuItem(
     } else {
         modifier.selectable(
             selected = selected,
-            onClick = onClick,
-            indication = null
+            onClick = onClick
         )
     }
     Box(
@@ -241,7 +240,7 @@ private fun curveCutShape(offsetX: Dp, cutOutWidth: Float): CutOutShape {
     return CutOutShape(
         cutOutShape = BottomNavBarCutOutShape(),
         cutOutShapeMargin = FabMargin.toPx(),
-        cutoutStartOffset = animateAsState(
+        cutoutStartOffset = animateDpAsState(
             targetValue = offsetX,
             animationSpec = CurveCutBezierEasing
         ).value.toPx() - CutOutHorizontalMargin.div(2).toPx(),
@@ -284,13 +283,13 @@ private fun animateBounce(
     depth: Dp
 ): FabPlacement {
 
-    val pathCovered = animateAsState(
+    val pathCovered = animateDpAsState(
         targetValue = startOffset,
         animationSpec = CurveCutBezierEasing
     ).value
 
     val offsetY: Dp = if (pathCovered == startOffset) peak else depth
-    val heightOffset = animateAsState(
+    val heightOffset = animateDpAsState(
         targetValue = offsetY,
         animationSpec = CurveCutBezierEasing
     ).value

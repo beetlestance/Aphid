@@ -27,7 +27,6 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerVersion = Libs.AndroidX.Compose.ktVersion
         kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
     }
 }
@@ -51,6 +50,7 @@ dependencies {
     // Hilt
     implementation(Libs.Hilt.library)
     implementation(Libs.AndroidX.Hilt.viewmodel)
+    implementation(Libs.AndroidX.Hilt.navigation)
     kapt(Libs.AndroidX.Hilt.compiler)
     kapt(Libs.Hilt.compiler)
 

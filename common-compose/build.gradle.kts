@@ -27,7 +27,6 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerVersion = Libs.AndroidX.Compose.ktVersion
         kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
     }
 }
@@ -69,5 +68,6 @@ dependencies {
     // Remove once hilt support saved state registry owner for compose
     implementation(Libs.AndroidX.Navigation.navigation)
     implementation(Libs.AndroidX.Hilt.viewmodel)
+    implementation(Libs.AndroidX.Hilt.navigation)
 
 }

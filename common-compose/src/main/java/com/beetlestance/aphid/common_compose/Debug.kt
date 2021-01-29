@@ -17,6 +17,7 @@ package com.beetlestance.aphid.common_compose
 
 import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.onCommit
 import androidx.compose.runtime.remember
 import timber.log.Timber
@@ -39,7 +40,7 @@ const val EnableDebugCompositionLogs: Boolean = true
 inline fun LogCompositions(tag: String) {
     if (EnableDebugCompositionLogs && BuildConfig.DEBUG) {
         val ref = remember { Ref(0) }
-        onCommit { ref.value++ }
+        SideEffect(effect = { ref.value++ })
         Timber.d(tag, "Compositions: ${ref.value}")
     }
 }

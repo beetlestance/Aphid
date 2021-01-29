@@ -17,7 +17,7 @@ package com.beetlestance.aphid.feature_explore
 
 import android.graphics.drawable.Drawable
 import androidx.annotation.FloatRange
-import androidx.compose.animation.animateAsState
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -91,7 +91,7 @@ fun ExploreBreakfastCard(
 
     val context = AmbientContext.current
     val drawable: MutableState<Drawable?> = rememberMutableState { null }
-    LaunchedEffect(subject = imageSrc) {
+    LaunchedEffect(key1 = imageSrc) {
         drawable.value = getBitmap(context, imageSrc)
         if (drawable.value != null) {
             dominantColorState.updateColorsFromBitmap(
@@ -142,7 +142,8 @@ fun ExploreBreakfastCard(
                     drawable.value?.let {
                         Image(
                             painter = it.toPainter(),
-                            contentScale = ContentScale.Crop
+                            contentScale = ContentScale.Crop,
+                            contentDescription = "BreakFastCard"
                         )
                     }
                 }
@@ -197,9 +198,10 @@ fun FavIcon(
             content = {
                 Icon(
                     imageVector = vectorResource(id = R.drawable.ic_like),
-                    tint = animateAsState(
+                    tint = animateColorAsState(
                         targetValue = colorResource(if (isFavourite) R.color.deep_orange_a200 else R.color.white)
-                    ).value
+                    ).value,
+                    contentDescription = "Mark As Favourite Recipe"
                 )
             },
             checked = isFavourite,
