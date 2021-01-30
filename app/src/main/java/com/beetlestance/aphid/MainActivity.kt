@@ -18,6 +18,7 @@ package com.beetlestance.aphid
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,6 +34,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
@@ -47,7 +49,6 @@ import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutMenuItem
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutNavBar
 import com.beetlestance.aphid.common_compose.insets.navigationBarsPadding
 import com.beetlestance.aphid.common_compose.utils.composableContent
-import com.beetlestance.aphid.common_compose.utils.setUpWithViewModel
 import com.beetlestance.aphid.feature_chat.Chat
 import com.beetlestance.aphid.feature_explore.Explore
 import com.beetlestance.aphid.feature_profile.Profile
@@ -60,7 +61,7 @@ import dagger.hilt.android.AndroidEntryPoint
  * or functionalities
  */
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,7 +82,7 @@ class MainActivity : ComponentActivity() {
 
         resources.configuration.uiMode = Configuration.UI_MODE_NIGHT_NO
 
-        setUpWithViewModel {
+        setContent {
             AphidContent {
                 AphidHome()
             }

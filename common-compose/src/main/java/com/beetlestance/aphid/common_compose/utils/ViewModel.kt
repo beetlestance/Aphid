@@ -15,16 +15,12 @@
  */
 package com.beetlestance.aphid.common_compose.utils
 
-import android.app.Application
-import androidx.activity.ComponentActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableAmbient
 import androidx.compose.runtime.Providers
 import androidx.compose.runtime.staticAmbientOf
-import androidx.compose.ui.platform.setContent
-import androidx.hilt.lifecycle.ViewModelAssistedFactory
+import androidx.compose.ui.platform.AmbientContext
 import androidx.hilt.navigation.HiltViewModelFactory
-import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelLazy
 import androidx.lifecycle.ViewModelStoreOwner
@@ -34,7 +30,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NamedNavArgument
 import androidx.navigation.compose.composable
 import androidx.savedstate.SavedStateRegistryOwner
-import dagger.hilt.android.internal.lifecycle.HiltViewModelFactory
 
 /**
  * In essence using the activity or fragment as the [SavedStateRegistryOwner] when the
@@ -47,23 +42,7 @@ import dagger.hilt.android.internal.lifecycle.HiltViewModelFactory
  * @see <a href="https://github.com/google/dagger/issues/2166#issuecomment-723775543">Took from issue</a>
  * */
 
-val AmbientApplication: ProvidableAmbient<Application> = staticAmbientOf()
-
-val AmbientViewModelFactoriesMap: ProvidableAmbient<Map<String, ViewModelAssistedFactory<out ViewModel>>> =
-    staticAmbientOf()
-
 val AmbientNavBackStackEntry: ProvidableAmbient<NavBackStackEntry> = staticAmbientOf()
-
-fun ComponentActivity.setUpWithViewModel(
-    content: @Composable () -> Unit
-) {
-    setContent {
-        ProvideNavigationViewModelFactoryMap(
-            factory = defaultViewModelProviderFactory as HiltViewModelFactory,
-            content = content
-        )
-    }
-}
 
 fun NavGraphBuilder.composableContent(
     route: String,
@@ -79,38 +58,10 @@ fun NavGraphBuilder.composableContent(
 @Composable
 inline fun <reified VM : ViewModel> navViewModel(): ViewModelLazy<VM> {
     val backStackEntry = AmbientNavBackStackEntry.current
-
-    val factory = if (backStackEntry.defaultViewModelProviderFactory is HiltViewModelFactory) {
-        backStackEntry.defaultViewModelProviderFactory
-    } else {
-        val application = AmbientApplication.current
-        val viewModelFactories = AmbientViewModelFactoriesMap.current
-        val delegate = SavedStateViewModelFactory(application, backStackEntry, null)
-        HiltViewModelFactory::class.java.declaredConstructors.first()
-            .newInstance(backStackEntry, null, delegate, viewModelFactories) as HiltViewModelFactory
-    }
-
+    val factory = HiltViewModelFactory(AmbientContext.current, backStackEntry)
     return ViewModelLazy(
         viewModelClass = VM::class,
         storeProducer = { backStackEntry.viewModelStore },
         factoryProducer = { factory }
-    )
-}
-
-@Suppress("UNCHECKED_CAST")
-@Composable
-internal fun ComponentActivity.ProvideNavigationViewModelFactoryMap(
-    factory: HiltViewModelFactory,
-    content: @Composable () -> Unit
-) {
-    // Hack for navigation viewModel
-    val factories = HiltViewModelFactory::class.java.getDeclaredField("mViewModelFactories")
-        .also { it.isAccessible = true }
-        .get(factory) as Map<String, ViewModelAssistedFactory<out ViewModel>>
-
-    Providers(
-        AmbientApplication provides application,
-        AmbientViewModelFactoriesMap provides factories,
-        content = content
     )
 }
