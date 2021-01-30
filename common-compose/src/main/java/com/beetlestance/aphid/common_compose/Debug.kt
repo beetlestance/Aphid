@@ -18,7 +18,6 @@ package com.beetlestance.aphid.common_compose
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.onCommit
 import androidx.compose.runtime.remember
 import timber.log.Timber
 

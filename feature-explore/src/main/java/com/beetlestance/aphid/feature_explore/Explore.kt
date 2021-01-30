@@ -23,8 +23,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollableColumn
-import androidx.compose.foundation.ScrollableRow
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -281,7 +279,7 @@ fun BreakFastWithHeader(
             title = recipe.title ?: "",
             subTitle = "2 Serving • 40 Min • 331 Cal",
             description =
-            "A unique experience of taste  and delicious ingredients prepared for you. Liven up your life with nutrition."
+                "A unique experience of taste  and delicious ingredients prepared for you. Liven up your life with nutrition."
         ) {
             markRecipeAsFavourite(recipe, it)
         }
