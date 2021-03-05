@@ -1,7 +1,5 @@
 package com.beetlestance.aphid.buildsrc
 
-import com.beetlestance.aphid.buildsrc.Libs.Hilt
-
 object Versions {
     const val ktlint: String = "0.37.2"
 }
@@ -18,22 +16,22 @@ object Aphid {
 
 object Libs {
 
-    const val androidGradlePlugin: String = "com.android.tools.build:gradle:7.0.0-alpha05"
+    const val androidGradlePlugin: String = "com.android.tools.build:gradle:7.0.0-alpha08"
 
     const val leakCanary: String = "com.squareup.leakcanary:leakcanary-android:2.2"
 
     const val timber: String = "com.jakewharton.timber:timber:4.7.1"
 
     object Test {
-        const val junit: String = "junit:junit:4.13.1"
+        const val junit: String = "junit:junit:4.13.2"
         const val robolectric: String = "org.robolectric:robolectric:4.3.1"
         const val mockK: String = "io.mockk:mockk:1.9.3"
     }
 
     object AndroidX {
-        const val androidAnnotation: String = "androidx.annotation:annotation:1.2.0-beta01"
+        const val androidAnnotation: String = "androidx.annotation:annotation:1.2.0-rc01"
         const val appcompat: String = "androidx.appcompat:appcompat:1.3.0-beta01"
-        const val coreKtx: String = "androidx.core:core-ktx:1.5.0-beta01"
+        const val coreKtx: String = "androidx.core:core-ktx:1.5.0-beta02"
         const val palette: String = "androidx.palette:palette-ktx:1.0.0"
 
         object Fragment {
@@ -51,8 +49,7 @@ object Libs {
         }
 
         object Lifecycle {
-            private const val version = "2.3.0-rc01"
-            const val extensions: String = "androidx.lifecycle:lifecycle-extensions:$version"
+            private const val version = "2.3.0"
             const val viewmodelKtx: String = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
             const val livedataKtx: String = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
             const val compiler: String = "androidx.lifecycle:lifecycle-compiler:$version"
@@ -60,7 +57,7 @@ object Libs {
         }
 
         object Room {
-            private const val version = "2.3.0-alpha04"
+            private const val version = "2.3.0-beta02"
             const val common: String = "androidx.room:room-common:$version"
             const val runtime: String = "androidx.room:room-runtime:$version"
             const val compiler: String = "androidx.room:room-compiler:$version"
@@ -78,12 +75,12 @@ object Libs {
         }
 
         object Navigation {
-            private const val version = "1.0.0-alpha06"
+            private const val version = "1.0.0-alpha08"
             const val navigation: String = "androidx.navigation:navigation-compose:$version"
         }
 
         object Compose {
-            const val version: String = "1.0.0-alpha11"
+            const val version: String = "1.0.0-beta01"
 
             const val compiler: String = "androidx.compose.compiler:compiler:$version"
 
@@ -119,9 +116,9 @@ object Libs {
             "com.google.android.gms:play-services-oss-licenses:17.0.0"
 
         object Mdc {
-            const val material: String = "com.google.android.material:material:1.3.0-rc01"
+            const val material: String = "com.google.android.material:material:1.4.0-alpha01"
             const val composeThemeAdapter: String =
-                "com.google.android.material:compose-theme-adapter:1.0.0-alpha11"
+                "com.google.android.material:compose-theme-adapter:1.0.0-beta01"
         }
 
         object PlayServices {
@@ -149,19 +146,19 @@ object Libs {
     }
 
     object Accompanist {
-        private const val version = "0.5.0"
+        private const val version = "0.6.1"
         const val coil: String = "dev.chrisbanes.accompanist:accompanist-coil:$version"
         const val insets: String = "dev.chrisbanes.accompanist:accompanist-insets:$version"
     }
 
     object Dagger {
-        private const val version = "2.31.2"
+        private const val version = "2.33"
         const val dagger: String = "com.google.dagger:dagger:$version"
         const val compiler: String = "com.google.dagger:dagger-compiler:$version"
     }
 
     object Hilt {
-        private const val version = "2.31.2-alpha"
+        private const val version = "2.33-beta"
         const val library: String = "com.google.dagger:hilt-android:$version"
         const val compiler: String = "com.google.dagger:hilt-android-compiler:$version"
         const val testing: String = "com.google.dagger:hilt-android-testing:$version"
@@ -169,7 +166,7 @@ object Libs {
     }
 
     object Kotlin {
-        const val version: String = "1.4.21-2"
+        const val version: String = "1.4.30"
         const val stdlib: String = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val reflect: String = "org.jetbrains.kotlin:kotlin-reflect:$version"
         const val gradlePlugin: String = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
@@ -197,7 +194,7 @@ object Libs {
     }
 
     object Coroutines {
-        private const val version = "1.4.2"
+        private const val version = "1.4.3"
         const val core: String = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
         const val android: String = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
         const val test: String = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"

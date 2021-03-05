@@ -3,7 +3,6 @@ buildscript {
 
     repositories {
         google()
-        jcenter()
         mavenCentral()
     }
 
@@ -18,9 +17,9 @@ buildscript {
 }
 
 plugins {
-    id("com.diffplug.spotless") version "5.9.0"
+    id("com.diffplug.spotless") version "5.10.2"
     // gradlew dependencyUpdates
-    id("com.github.ben-manes.versions") version "0.36.0"
+    id("com.github.ben-manes.versions") version "0.38.0"
 }
 
 subprojects {
@@ -72,7 +71,6 @@ subprojects {
 
             freeCompilerArgs = freeCompilerArgs + listOf(
                 "-Xopt-in=kotlin.Experimental",
-                "-Xallow-jvm-ir-dependencies",
                 "-Xjvm-default=all"
             )
 
