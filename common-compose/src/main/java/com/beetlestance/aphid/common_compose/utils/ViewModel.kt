@@ -15,11 +15,8 @@
  */
 package com.beetlestance.aphid.common_compose.utils
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ProvidableAmbient
-import androidx.compose.runtime.Providers
-import androidx.compose.runtime.staticAmbientOf
-import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.HiltViewModelFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelLazy
@@ -42,7 +39,10 @@ import androidx.savedstate.SavedStateRegistryOwner
  * @see <a href="https://github.com/google/dagger/issues/2166#issuecomment-723775543">Took from issue</a>
  * */
 
-val AmbientNavBackStackEntry: ProvidableAmbient<NavBackStackEntry> = staticAmbientOf()
+val LocalNavBackStackEntry: ProvidableCompositionLocal<NavBackStackEntry> =
+    staticCompositionLocalOf<NavBackStackEntry> {
+        error("No NavBackStackEntry is provided ")
+    }
 
 fun NavGraphBuilder.composableContent(
     route: String,
@@ -51,14 +51,16 @@ fun NavGraphBuilder.composableContent(
     content: @Composable () -> Unit
 ) {
     composable(route, arguments, deepLinks) {
-        Providers(AmbientNavBackStackEntry provides it, content = content)
+        CompositionLocalProvider(LocalNavBackStackEntry provides it) {
+            content()
+        }
     }
 }
 
 @Composable
 inline fun <reified VM : ViewModel> navViewModel(): ViewModelLazy<VM> {
-    val backStackEntry = AmbientNavBackStackEntry.current
-    val factory = HiltViewModelFactory(AmbientContext.current, backStackEntry)
+    val backStackEntry = LocalNavBackStackEntry.current
+    val factory = HiltViewModelFactory(LocalContext.current, backStackEntry)
     return ViewModelLazy(
         viewModelClass = VM::class,
         storeProducer = { backStackEntry.viewModelStore },

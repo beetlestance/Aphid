@@ -15,36 +15,12 @@
  */
 package com.beetlestance.aphid.feature_explore
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.*
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ConstraintLayout
-import androidx.compose.foundation.layout.Dimension
-import androidx.compose.foundation.layout.ExperimentalLayout
-import androidx.compose.foundation.layout.FlowCrossAxisAlignment
-import androidx.compose.foundation.layout.FlowMainAxisAlignment
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.SizeMode
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.preferredHeight
-import androidx.compose.foundation.layout.preferredWidth
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
@@ -65,8 +41,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.AmbientConfiguration
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
@@ -74,8 +53,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import com.beetlestance.aphid.common_compose.RecipeDetailedPosterCard
-import com.beetlestance.aphid.common_compose.insets.statusBarsPadding
 import com.beetlestance.aphid.common_compose.pager.Carousel
 import com.beetlestance.aphid.common_compose.pager.PageTransformation
 import com.beetlestance.aphid.common_compose.pager.Pager
@@ -84,6 +64,7 @@ import com.beetlestance.aphid.data.entities.Recipe
 import com.beetlestance.spoonacular_kotlin.SpoonacularImageHelper
 import com.beetlestance.spoonacular_kotlin.constants.SpoonacularImageSize
 import dev.chrisbanes.accompanist.coil.CoilImage
+import dev.chrisbanes.accompanist.insets.statusBarsPadding
 
 @Composable
 fun Explore(
@@ -95,10 +76,14 @@ fun Explore(
     val actions: (ExploreActions) -> Unit = { action -> viewModel.submitAction(action) }
 
     val contentPadding = PaddingValues(
-        top = if (paddingValues.top > 0.dp) paddingValues.top else EXPLORE_ITEM_SPACING,
-        start = if (paddingValues.start > 0.dp) paddingValues.start else EXPLORE_ITEM_SPACING,
-        end = if (paddingValues.end > 0.dp) paddingValues.end else EXPLORE_ITEM_SPACING,
-        bottom = if (paddingValues.bottom > 0.dp) paddingValues.bottom else EXPLORE_ITEM_SPACING
+        top = if (paddingValues.calculateTopPadding() > 0.dp) paddingValues.calculateTopPadding() else EXPLORE_ITEM_SPACING,
+        start = if (paddingValues.calculateStartPadding(LocalLayoutDirection.current) > 0.dp) paddingValues.calculateStartPadding(
+            LocalLayoutDirection.current
+        ) else EXPLORE_ITEM_SPACING,
+        end = if (paddingValues.calculateEndPadding(LocalLayoutDirection.current) > 0.dp) paddingValues.calculateEndPadding(
+            LocalLayoutDirection.current
+        ) else EXPLORE_ITEM_SPACING,
+        bottom = if (paddingValues.calculateBottomPadding() > 0.dp) paddingValues.calculateBottomPadding() else EXPLORE_ITEM_SPACING
     )
 
     Explore(
@@ -136,7 +121,7 @@ private fun Explore(
         ) {
             item {
 
-                Spacer(modifier = Modifier.preferredHeight(0.dp))
+                Spacer(modifier = Modifier.height(0.dp))
 
                 SearchBar(modifier = Modifier.padding(horizontal = 8.dp))
 
@@ -230,7 +215,7 @@ fun SearchBar(
                 )
                 .padding(8.dp)
                 .align(Alignment.CenterVertically),
-            imageVector = vectorResource(id = R.drawable.ic_filter),
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_filter),
             tint = Color.Gray,
             contentDescription = "Search Recipes"
         )
@@ -279,7 +264,7 @@ fun BreakFastWithHeader(
             title = recipe.title ?: "",
             subTitle = "2 Serving • 40 Min • 331 Cal",
             description =
-                "A unique experience of taste  and delicious ingredients prepared for you. Liven up your life with nutrition."
+            "A unique experience of taste  and delicious ingredients prepared for you. Liven up your life with nutrition."
         ) {
             markRecipeAsFavourite(recipe, it)
         }
@@ -323,7 +308,7 @@ fun MoodContent() {
                     width = Dimension.percent(0.2f)
                 }
                 .aspectRatio(1f),
-            imageVector = vectorResource(id = R.drawable.ic_cookie),
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_cookie),
             contentDescription = "Cookies"
         )
     }
@@ -347,10 +332,10 @@ fun Cuisine() {
 
 @Composable
 fun CuisineContent() {
-    val itemWidth = (AmbientConfiguration.current.screenWidthDp * 0.3f).dp
+    val itemWidth = (LocalConfiguration.current.screenWidthDp * 0.3f).dp
     Column(
         modifier = Modifier
-            .preferredWidth(itemWidth)
+            .width(itemWidth)
             .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(
             space = 4.dp,
@@ -378,7 +363,7 @@ fun CuisineCard() {
                 .fillMaxWidth()
                 .clipToBounds()
                 .aspectRatio(1f),
-            bitmap = imageResource(id = R.drawable.temp_brownie),
+            bitmap = ImageBitmap.imageResource(id = R.drawable.temp_brownie),
             contentScale = ContentScale.Crop,
             contentDescription = "Available Cuisines"
         )
@@ -434,7 +419,7 @@ fun PlanYourMealAheadWithHeader() {
                     .align(Alignment.Bottom)
                     .weight(0.6f)
                     .padding(top = 16.dp),
-                imageVector = vectorResource(id = R.drawable.ic_plan_your_meal),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_plan_your_meal),
                 contentScale = ContentScale.Crop,
                 contentDescription = "Meal Planner"
             )
@@ -534,37 +519,37 @@ fun RecentlyViewedRecipesWithHeader(
     }
 }
 
-@OptIn(ExperimentalLayout::class)
+
 @Composable
 fun FoodCardContentsDetails(
     contentTags: String,
     rating: String,
     name: String
 ) {
-    FlowRow(
-        mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween,
-        mainAxisSize = SizeMode.Expand,
-        crossAxisAlignment = FlowCrossAxisAlignment.Center,
-        crossAxisSpacing = 4.dp
-    ) {
-        Text(
-            text = contentTags,
-            style = MaterialTheme.typography.body2,
-            color = colorResource(id = com.beetlestance.aphid.base_android.R.color.grey_700)
-        )
-
-        Text(
-            modifier = Modifier
-                .background(
-                    color = colorResource(id = com.beetlestance.aphid.base_android.R.color.deep_orange_a200),
-                    shape = RoundedCornerShape(10.dp)
-                )
-                .padding(horizontal = 12.dp, vertical = 2.dp),
-            text = rating,
-            style = MaterialTheme.typography.subtitle2,
-            color = MaterialTheme.colors.surface
-        )
-    }
+//    FlowRow(
+//        mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween,
+//        mainAxisSize = SizeMode.Expand,
+//        crossAxisAlignment = FlowCrossAxisAlignment.Center,
+//        crossAxisSpacing = 4.dp
+//    ) {
+//        Text(
+//            text = contentTags,
+//            style = MaterialTheme.typography.body2,
+//            color = colorResource(id = com.beetlestance.aphid.base_android.R.color.grey_700)
+//        )
+//
+//        Text(
+//            modifier = Modifier
+//                .background(
+//                    color = colorResource(id = com.beetlestance.aphid.base_android.R.color.deep_orange_a200),
+//                    shape = RoundedCornerShape(10.dp)
+//                )
+//                .padding(horizontal = 12.dp, vertical = 2.dp),
+//            text = rating,
+//            style = MaterialTheme.typography.subtitle2,
+//            color = MaterialTheme.colors.surface
+//        )
+//    }
 
     Text(
         text = name,
