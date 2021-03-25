@@ -54,13 +54,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import coil.ImageLoader
 import coil.decode.SvgDecoder
 import com.beetlestance.aphid.common_compose.RecipeDetailedPosterCard
 import com.beetlestance.aphid.common_compose.pager.Pager
 import com.beetlestance.aphid.common_compose.pager.PagerState
 import com.beetlestance.aphid.common_compose.pager.rememberPagerState
-import com.beetlestance.aphid.common_compose.utils.navViewModel
 import com.beetlestance.aphid.data.entities.Recipe
 import com.beetlestance.aphid.dicebar_kotlin.DiceBarAvatarHelper
 import com.beetlestance.aphid.dicebar_kotlin.sprites.avataar.AvataaarTop
@@ -80,7 +80,7 @@ fun Profile(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues = PaddingValues()
 ) {
-    val viewModel: ProfileViewModel by navViewModel()
+    val viewModel: ProfileViewModel = hiltNavGraphViewModel()
     val state by viewModel.liveData.observeAsState(initial = viewModel.currentState())
     val actions: (ProfileActions) -> Unit = { action -> viewModel.submitAction(action) }
 

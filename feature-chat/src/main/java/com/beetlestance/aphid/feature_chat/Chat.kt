@@ -53,8 +53,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import com.beetlestance.aphid.base.CHAT_MESSAGE_ANSWER
-import com.beetlestance.aphid.common_compose.utils.navViewModel
 import com.beetlestance.aphid.data.entities.Chat
 import com.google.accompanist.coil.CoilImage
 import com.google.accompanist.insets.LocalWindowInsets
@@ -66,7 +66,7 @@ fun Chat(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues = PaddingValues()
 ) {
-    val viewModel: ChatViewModel by navViewModel()
+    val viewModel: ChatViewModel = hiltNavGraphViewModel()
     val state by viewModel.liveData.observeAsState(initial = viewModel.currentState())
     val action: (ChatActions) -> Unit = { action -> viewModel.submitAction(action) }
 

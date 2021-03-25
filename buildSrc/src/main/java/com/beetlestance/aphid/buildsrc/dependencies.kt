@@ -99,7 +99,7 @@ object Libs {
         object Hilt {
             private const val version = "1.0.0-beta01"
             const val work: String = "androidx.hilt:hilt-work:$version"
-            const val navigation: String = "androidx.hilt:hilt-navigation:$version"
+            const val navigation: String = "androidx.hilt:hilt-navigation-compose:1.0.0-alpha01"
             const val compiler: String = "androidx.hilt:hilt-compiler:$version"
         }
     }
