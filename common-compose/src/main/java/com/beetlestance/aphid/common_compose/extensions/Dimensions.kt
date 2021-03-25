@@ -16,34 +16,33 @@
 package com.beetlestance.aphid.common_compose.extensions
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.AmbientConfiguration
-import androidx.compose.ui.platform.AmbientDensity
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlin.math.roundToInt
 
 @Composable
 fun widthPercentage(fraction: Float, excludeRootPadding: Dp): Dp {
-    return with(AmbientConfiguration.current) {
+    return with(LocalConfiguration.current) {
         (screenWidthDp * fraction).dp - excludeRootPadding.times(2)
     }
 }
 
 @Composable
 fun heightPercentage(fraction: Float, excludeRootPadding: Dp): Dp {
-    return with(AmbientConfiguration.current) {
+    return with(LocalConfiguration.current) {
         (screenHeightDp * fraction).dp - excludeRootPadding.times(2)
     }
 }
 
 @Composable
-fun Dp.toPx(): Float = with(AmbientDensity.current) { this@toPx.toPx() }
+fun Dp.toPx(): Float = with(LocalDensity.current) { this@toPx.toPx() }
 
 @Composable
-fun Dp.toIntPx(): Int = this.toPx().roundToInt()
+fun Dp.toIntPx(): Int = this.toPx().toInt()
 
-@Composable
-fun Float.toDp(): Dp = with(AmbientDensity.current) { this@toDp.toDp() }
+fun Dp.toPx(density: Density): Float = with(density) { this@toPx.toPx() }
 
-@Composable
-fun Int.toDp(): Dp = this.toFloat().toDp()
+fun Dp.toIntPx(density: Density): Int = this.toPx(density).toInt()

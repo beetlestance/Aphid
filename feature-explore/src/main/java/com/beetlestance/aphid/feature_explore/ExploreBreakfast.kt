@@ -20,38 +20,29 @@ import androidx.annotation.FloatRange
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ConstraintLayout
-import androidx.compose.foundation.layout.Dimension
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.preferredHeight
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.AmbientContentAlpha
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.Icon
-import androidx.compose.material.IconToggleButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.Providers
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.core.graphics.blue
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.green
@@ -89,7 +80,7 @@ fun ExploreBreakfastCard(
         color.contrastAgainst(surfaceColor) >= MinContrastOfPrimaryVsSurface
     }
 
-    val context = AmbientContext.current
+    val context = LocalContext.current
     val drawable: MutableState<Drawable?> = rememberMutableState { null }
     LaunchedEffect(key1 = imageSrc) {
         drawable.value = getBitmap(context, imageSrc)
@@ -160,7 +151,7 @@ fun ExploreBreakfastCard(
 
                 Spacer(
                     modifier = Modifier
-                        .preferredHeight(56.dp)
+                        .height(56.dp)
                         .constrainAs(spacerDetail) {
                             linkTo(top = image.bottom, bottom = bottomGuideline, bias = 0f)
                         }
@@ -188,7 +179,7 @@ fun FavIcon(
     isFavourite: Boolean,
     onMarkFavourite: (Boolean) -> Unit
 ) {
-    Providers(AmbientContentAlpha provides ContentAlpha.high) {
+    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
         IconToggleButton(
             modifier = modifier
                 .background(
@@ -197,7 +188,7 @@ fun FavIcon(
                 ),
             content = {
                 Icon(
-                    imageVector = vectorResource(id = R.drawable.ic_like),
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_like),
                     tint = animateColorAsState(
                         targetValue = colorResource(if (isFavourite) R.color.deep_orange_a200 else R.color.white)
                     ).value,
@@ -226,7 +217,7 @@ fun BreakfastDescription(
             style = MaterialTheme.typography.h6
         )
 
-        Spacer(modifier = Modifier.preferredHeight(8.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         Text(
             text = subTitle,
@@ -235,7 +226,7 @@ fun BreakfastDescription(
             style = MaterialTheme.typography.subtitle1
         )
 
-        Spacer(modifier = Modifier.preferredHeight(24.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         Text(
             text = description,

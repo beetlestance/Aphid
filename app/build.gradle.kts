@@ -70,7 +70,7 @@ android {
         }
     }
 
-    lintOptions {
+    lint {
         // Disable lintVital. Not needed since lint is run on CI
         isCheckReleaseBuilds = false
         // Allow lint to check dependencies
@@ -132,4 +132,5 @@ dependencies {
     implementation(Libs.OkHttp.okhttp)
     implementation(Libs.OkHttp.loggingInterceptor)
     implementation(Libs.OkHttp.urlConnection)
+
 }

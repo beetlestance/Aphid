@@ -82,6 +82,7 @@ object Libs {
         object Compose {
             const val version: String = "1.0.0-beta01"
 
+            const val constraintLayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha03"
             const val compiler: String = "androidx.compose.compiler:compiler:$version"
 
             const val runtime: String = "androidx.compose.runtime:runtime:$version"

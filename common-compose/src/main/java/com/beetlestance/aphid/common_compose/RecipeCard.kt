@@ -26,17 +26,15 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.AmbientContentAlpha
-import androidx.compose.material.Card
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.Icon
-import androidx.compose.material.IconToggleButton
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
@@ -92,7 +90,7 @@ fun RecipePosterCard(
 
             content()
 
-            Providers(AmbientContentAlpha provides ContentAlpha.high) {
+            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
                 MarkFavouriteButton(
                     modifier = Modifier.align(Alignment.TopEnd),
                     isFavourite = isFavourite,
@@ -118,7 +116,7 @@ fun MarkFavouriteButton(
             ),
         content = {
             Icon(
-                imageVector = vectorResource(id = R.drawable.ic_like),
+                imageVector = ImageVector.vectorResource(R.drawable.ic_like),
                 tint = animateColorAsState(
                     targetValue = colorResource(if (isFavourite) R.color.deep_orange_a200 else R.color.white)
                 ).value,

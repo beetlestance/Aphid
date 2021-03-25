@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.PathOperation
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.addOutline
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
 import com.beetlestance.aphid.common_compose.utils.square
 import kotlin.math.sqrt
 
@@ -41,13 +42,17 @@ class CutOutShape(
     private val smoothEdge: Boolean = true
 ) : Shape {
 
-    override fun createOutline(size: Size, density: Density): Outline {
+    override fun createOutline(
+        size: Size,
+        layoutDirection: LayoutDirection,
+        density: Density
+    ): Outline {
         val boundingRectangle = Path().apply {
             addRect(Rect(0f, 0f, size.width, size.height))
         }
 
         val path = Path().apply {
-            addCutoutShape(density)
+            addCutoutShape(layoutDirection, density)
             // Subtract this path from the bounding rectangle
             op(boundingRectangle, this, PathOperation.difference)
         }
@@ -56,6 +61,7 @@ class CutOutShape(
     }
 
     private fun Path.addCutoutShape(
+        layoutDirection: LayoutDirection,
         density: Density
     ) {
         // The gap on all sides between the FAB and the cutout
@@ -74,7 +80,7 @@ class CutOutShape(
         // cut into the app bar
         val cutoutStartY = -cutoutRadius
 
-        addOutline(cutOutShape.createOutline(cutoutSize, density))
+        addOutline(cutOutShape.createOutline(cutoutSize, layoutDirection, density))
         translate(Offset(cutoutStartX, cutoutStartY))
 
         if (smoothEdge) {
@@ -192,4 +198,6 @@ class CutOutShape(
     ): Float {
         return -sqrt(square(cutoutRadius) - square(verticalOffset))
     }
+
+
 }

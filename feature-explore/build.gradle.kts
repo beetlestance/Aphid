@@ -43,6 +43,10 @@ dependencies {
 
     // AndroidX
     implementation(Libs.AndroidX.coreKtx)
+
+    // Compose
+    implementation(Libs.AndroidX.Compose.constraintLayout)
+
     // Testing
     testImplementation(Libs.Test.junit)
     androidTestImplementation(Libs.AndroidX.Test.junit)

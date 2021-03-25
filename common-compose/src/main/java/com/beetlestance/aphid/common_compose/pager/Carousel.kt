@@ -15,46 +15,40 @@
  */
 package com.beetlestance.aphid.common_compose.pager
 
-import androidx.compose.animation.core.AnimationClockObservable
 import androidx.compose.animation.core.AnimationEndReason
-import androidx.compose.animation.core.fling
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.AmbientAnimationClock
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.zIndex
+import kotlinx.coroutines.CoroutineScope
 import kotlin.math.roundToInt
 
 class CarouselState(
-    clock: AnimationClockObservable,
     currentPage: Int = 0,
     minPage: Int = 0,
     maxPage: Int = 0
-) : PagerState(clock, currentPage, minPage, maxPage) {
+) : PagerState(currentPage, minPage, maxPage) {
 
-    override fun selectPage(pageOffset: Int) {
-        val page = currentPage - pageOffset
+    override suspend fun selectPage() {
+        val page = (currentPage - currentPageOffset).toInt()
         currentPage = if (page > maxPage) minPage else if (page < minPage) maxPage else page
-        currentPageOffset = 0f
+        snapToValue(0f)
         selectionState = SelectionState.Selected
     }
 
-    override fun snapToValue(value: Float) {
+    override suspend fun snapToValue(value: Float) {
         _currentPageOffset.snapTo(value)
     }
 
-    override fun fling(velocity: Float) {
-        _currentPageOffset.fling(velocity) { reason, _, _ ->
-            if (reason != AnimationEndReason.Interrupted) {
-                _currentPageOffset.animateTo(currentPageOffset.roundToInt().toFloat()) { _, _ ->
-                    selectPage(currentPageOffset.roundToInt())
-                }
-            }
-        }
+    override suspend fun fling(velocity: Float) {
+        selectionState = SelectionState.Undecided
+        _currentPageOffset.animateTo(currentPageOffset.roundToInt().toFloat())
+        selectPage()
     }
 
     override fun offset(page: Int): Float = pageOffsetWithCurrent(
@@ -68,14 +62,12 @@ class CarouselState(
 
 @Composable
 fun rememberCarouselState(
-    clock: AnimationClockObservable = AmbientAnimationClock.current,
     currentPage: Int = 0,
     minPage: Int = 0,
     maxPage: Int = 0
 ): CarouselState {
-    val state = remember(clock) {
+    val state = remember {
         CarouselState(
-            clock = clock,
             currentPage = currentPage,
             minPage = minPage,
             maxPage = maxPage
@@ -116,7 +108,7 @@ fun <T> Carousel(
                 }
 
                 val pageData = PageData(index)
-                val scope = CarouselScope(state, index)
+                val scope = CarouselScope(state, index, rememberCoroutineScope())
                 key(pageData) {
                     Box(
                         contentAlignment = Alignment.Center,
@@ -137,8 +129,9 @@ fun <T> Carousel(
 
 class CarouselScope(
     carouselState: CarouselState,
-    page: Int
-) : PagerScope(carouselState, page)
+    page: Int,
+    coroutineScope: CoroutineScope
+) : PagerScope(carouselState, coroutineScope, page)
 
 internal fun pageOffsetWithCurrent(
     currentPage: Int,
