@@ -53,7 +53,7 @@ import com.beetlestance.aphid.feature_chat.Chat
 import com.beetlestance.aphid.feature_explore.Explore
 import com.beetlestance.aphid.feature_profile.Profile
 import dagger.hilt.android.AndroidEntryPoint
-import dev.chrisbanes.accompanist.insets.navigationBarsPadding
+import com.google.accompanist.insets.navigationBarsPadding
 
 /**
  * Use component activity once there is no use of [AppCompatDelegate]

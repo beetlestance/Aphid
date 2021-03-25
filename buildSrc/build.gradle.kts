@@ -19,10 +19,6 @@ plugins {
     `kotlin-dsl`
 }
 
-kotlinDslPluginOptions {
-    experimentalWarning.set(false)
-}
-
 @Suppress("UnstableApiUsage")
 java {
     toolchain {

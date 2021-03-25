@@ -45,7 +45,7 @@ dependencies {
     implementation(Libs.AndroidX.coreKtx)
 
     // Compose
-    implementation(Libs.AndroidX.Compose.constraintLayout)
+    implementation(Libs.AndroidX.constraintLayout)
 
     // Testing
     testImplementation(Libs.Test.junit)
