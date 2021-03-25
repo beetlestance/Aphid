@@ -16,7 +16,7 @@ object Aphid {
 
 object Libs {
 
-    const val androidGradlePlugin: String = "com.android.tools.build:gradle:7.0.0-alpha08"
+    const val androidGradlePlugin: String = "com.android.tools.build:gradle:7.0.0-alpha11"
 
     const val leakCanary: String = "com.squareup.leakcanary:leakcanary-android:2.2"
 
