@@ -56,7 +56,6 @@ dependencies {
 
     // Hilt
     implementation(Libs.Hilt.library)
-    implementation(Libs.AndroidX.Hilt.viewmodel)
     kapt(Libs.AndroidX.Hilt.compiler)
     kapt(Libs.Hilt.compiler)
 
