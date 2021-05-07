@@ -13,12 +13,12 @@ kapt {
 }
 
 android {
-    compileSdkVersion(Aphid.compileSdkVersion)
+    compileSdk = Aphid.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion(Aphid.minSdkVersion)
+        minSdk = Aphid.minSdkVersion
 
-        testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
