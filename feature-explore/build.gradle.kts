@@ -45,7 +45,7 @@ dependencies {
     implementation(Libs.AndroidX.coreKtx)
 
     // Compose
-    implementation(Libs.AndroidX.Compose.constraintLayout)
+    implementation(Libs.AndroidX.constraintLayout)
 
     // Testing
     testImplementation(Libs.Test.junit)
@@ -60,8 +60,6 @@ dependencies {
 
     // Hilt
     implementation(Libs.Hilt.library)
-    implementation(Libs.AndroidX.Hilt.viewmodel)
-    implementation(Libs.AndroidX.Hilt.navigation)
     kapt(Libs.AndroidX.Hilt.compiler)
     kapt(Libs.Hilt.compiler)
 }

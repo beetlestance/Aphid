@@ -29,15 +29,12 @@ object Libs {
     }
 
     object AndroidX {
-        const val androidAnnotation: String = "androidx.annotation:annotation:1.2.0-rc01"
-        const val appcompat: String = "androidx.appcompat:appcompat:1.3.0-beta01"
-        const val coreKtx: String = "androidx.core:core-ktx:1.5.0-beta02"
+        const val annotation: String = "androidx.annotation:annotation:1.3.0-alpha01"
+        const val appcompat: String = "androidx.appcompat:appcompat:1.3.0-rc01"
+        const val coreKtx: String = "androidx.core:core-ktx:1.6.0-alpha01"
         const val palette: String = "androidx.palette:palette-ktx:1.0.0"
-
-        object Fragment {
-            private const val version = "1.3.0-beta02"
-            const val fragmentKtx: String = "androidx.fragment:fragment-ktx:$version"
-        }
+        const val constraintLayout =
+            "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha05"
 
         object Test {
             private const val version = "1.3.0"
@@ -49,7 +46,7 @@ object Libs {
         }
 
         object Lifecycle {
-            private const val version = "2.3.0"
+            private const val version = "2.4.0-alpha01"
             const val viewmodelKtx: String = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
             const val livedataKtx: String = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
             const val compiler: String = "androidx.lifecycle:lifecycle-compiler:$version"
@@ -57,7 +54,7 @@ object Libs {
         }
 
         object Room {
-            private const val version = "2.3.0-beta02"
+            private const val version = "2.3.0-rc01"
             const val common: String = "androidx.room:room-common:$version"
             const val runtime: String = "androidx.room:room-runtime:$version"
             const val compiler: String = "androidx.room:room-compiler:$version"
@@ -75,14 +72,13 @@ object Libs {
         }
 
         object Navigation {
-            private const val version = "1.0.0-alpha08"
+            private const val version = "1.0.0-alpha09"
             const val navigation: String = "androidx.navigation:navigation-compose:$version"
         }
 
         object Compose {
-            const val version: String = "1.0.0-beta01"
+            const val version: String = "1.0.0-beta03"
 
-            const val constraintLayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha03"
             const val compiler: String = "androidx.compose.compiler:compiler:$version"
 
             const val runtime: String = "androidx.compose.runtime:runtime:$version"
@@ -101,10 +97,9 @@ object Libs {
         }
 
         object Hilt {
-            private const val version = "1.0.0-alpha03"
+            private const val version = "1.0.0-beta01"
             const val work: String = "androidx.hilt:hilt-work:$version"
-            const val navigation: String = "androidx.hilt:hilt-navigation:$version"
-            const val viewmodel: String = "androidx.hilt:hilt-lifecycle-viewmodel:$version"
+            const val navigation: String = "androidx.hilt:hilt-navigation-compose:1.0.0-alpha01"
             const val compiler: String = "androidx.hilt:hilt-compiler:$version"
         }
     }
@@ -119,7 +114,14 @@ object Libs {
         object Mdc {
             const val material: String = "com.google.android.material:material:1.4.0-alpha01"
             const val composeThemeAdapter: String =
-                "com.google.android.material:compose-theme-adapter:1.0.0-beta01"
+                "com.google.android.material:compose-theme-adapter:1.0.0-beta03"
+        }
+
+        object Accompanist {
+            private const val version = "0.7.0"
+            const val coil: String = "com.google.accompanist:accompanist-coil:$version"
+            const val insets: String = "com.google.accompanist:accompanist-insets:$version"
+            const val flowlayout: String = "com.google.accompanist:accompanist-flowlayout:$version"
         }
 
         object PlayServices {
@@ -146,12 +148,6 @@ object Libs {
         const val svgCoil: String = "io.coil-kt:coil-svg:$version"
     }
 
-    object Accompanist {
-        private const val version = "0.6.1"
-        const val coil: String = "dev.chrisbanes.accompanist:accompanist-coil:$version"
-        const val insets: String = "dev.chrisbanes.accompanist:accompanist-insets:$version"
-    }
-
     object Dagger {
         private const val version = "2.33"
         const val dagger: String = "com.google.dagger:dagger:$version"
@@ -167,7 +163,7 @@ object Libs {
     }
 
     object Kotlin {
-        const val version: String = "1.4.30"
+        const val version: String = "1.4.31"
         const val stdlib: String = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val reflect: String = "org.jetbrains.kotlin:kotlin-reflect:$version"
         const val gradlePlugin: String = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
@@ -188,7 +184,7 @@ object Libs {
     }
 
     object OkHttp {
-        private const val version = "4.9.0"
+        private const val version = "4.9.1"
         const val okhttp: String = "com.squareup.okhttp3:okhttp:$version"
         const val loggingInterceptor: String = "com.squareup.okhttp3:logging-interceptor:$version"
         const val urlConnection: String = "com.squareup.okhttp3:okhttp-urlconnection:$version"

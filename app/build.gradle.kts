@@ -124,9 +124,6 @@ dependencies {
 
     // Hilt
     implementation(Libs.Hilt.library)
-    implementation(Libs.AndroidX.Hilt.viewmodel)
-    // key to use viewModel in compose
-    implementation(Libs.AndroidX.Hilt.navigation)
     kapt(Libs.AndroidX.Hilt.compiler)
     kapt(Libs.Hilt.compiler)
 

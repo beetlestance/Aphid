@@ -63,12 +63,11 @@ dependencies {
     api(Libs.AndroidX.Compose.livedata)
 
     // Accompanist
-    api(Libs.Accompanist.coil)
-    api(Libs.Accompanist.insets)
+    api(Libs.Google.Accompanist.coil)
+    api(Libs.Google.Accompanist.insets)
+    api(Libs.Google.Accompanist.flowlayout)
 
-    // Remove once hilt support saved state registry owner for compose
-    implementation(Libs.AndroidX.Navigation.navigation)
-    implementation(Libs.AndroidX.Hilt.viewmodel)
-    implementation(Libs.AndroidX.Hilt.navigation)
+    // Hilt Nav ViewModel
+    api(Libs.AndroidX.Hilt.navigation)
 
 }

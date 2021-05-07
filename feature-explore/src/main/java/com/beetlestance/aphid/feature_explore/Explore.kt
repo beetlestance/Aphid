@@ -55,23 +55,27 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import com.beetlestance.aphid.common_compose.RecipeDetailedPosterCard
 import com.beetlestance.aphid.common_compose.pager.Carousel
 import com.beetlestance.aphid.common_compose.pager.PageTransformation
 import com.beetlestance.aphid.common_compose.pager.Pager
-import com.beetlestance.aphid.common_compose.utils.navViewModel
 import com.beetlestance.aphid.data.entities.Recipe
 import com.beetlestance.spoonacular_kotlin.SpoonacularImageHelper
 import com.beetlestance.spoonacular_kotlin.constants.SpoonacularImageSize
-import dev.chrisbanes.accompanist.coil.CoilImage
-import dev.chrisbanes.accompanist.insets.statusBarsPadding
+import com.google.accompanist.coil.CoilImage
+import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
+import com.google.accompanist.flowlayout.FlowMainAxisAlignment
+import com.google.accompanist.flowlayout.FlowRow
+import com.google.accompanist.flowlayout.SizeMode
+import com.google.accompanist.insets.statusBarsPadding
 
 @Composable
 fun Explore(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues = PaddingValues()
 ) {
-    val viewModel: ExploreViewModel by navViewModel()
+    val viewModel: ExploreViewModel  = hiltNavGraphViewModel()
     val state by viewModel.liveData.observeAsState(initial = viewModel.currentState())
     val actions: (ExploreActions) -> Unit = { action -> viewModel.submitAction(action) }
 
@@ -526,30 +530,30 @@ fun FoodCardContentsDetails(
     rating: String,
     name: String
 ) {
-//    FlowRow(
-//        mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween,
-//        mainAxisSize = SizeMode.Expand,
-//        crossAxisAlignment = FlowCrossAxisAlignment.Center,
-//        crossAxisSpacing = 4.dp
-//    ) {
-//        Text(
-//            text = contentTags,
-//            style = MaterialTheme.typography.body2,
-//            color = colorResource(id = com.beetlestance.aphid.base_android.R.color.grey_700)
-//        )
-//
-//        Text(
-//            modifier = Modifier
-//                .background(
-//                    color = colorResource(id = com.beetlestance.aphid.base_android.R.color.deep_orange_a200),
-//                    shape = RoundedCornerShape(10.dp)
-//                )
-//                .padding(horizontal = 12.dp, vertical = 2.dp),
-//            text = rating,
-//            style = MaterialTheme.typography.subtitle2,
-//            color = MaterialTheme.colors.surface
-//        )
-//    }
+    FlowRow(
+        mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween,
+        mainAxisSize = SizeMode.Expand,
+        crossAxisAlignment = FlowCrossAxisAlignment.Center,
+        crossAxisSpacing = 4.dp
+    ) {
+        Text(
+            text = contentTags,
+            style = MaterialTheme.typography.body2,
+            color = colorResource(id = com.beetlestance.aphid.base_android.R.color.grey_700)
+        )
+
+        Text(
+            modifier = Modifier
+                .background(
+                    color = colorResource(id = com.beetlestance.aphid.base_android.R.color.deep_orange_a200),
+                    shape = RoundedCornerShape(10.dp)
+                )
+                .padding(horizontal = 12.dp, vertical = 2.dp),
+            text = rating,
+            style = MaterialTheme.typography.subtitle2,
+            color = MaterialTheme.colors.surface
+        )
+    }
 
     Text(
         text = name,

@@ -19,7 +19,7 @@ package com.beetlestance.aphid.common_compose
 
 import androidx.compose.runtime.Composable
 import com.google.android.material.composethemeadapter.MdcTheme
-import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
+import com.google.accompanist.insets.ProvideWindowInsets
 
 @Composable
 inline fun AphidContent(

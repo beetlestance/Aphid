@@ -19,7 +19,6 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.TweenSpec
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -54,22 +53,25 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import coil.ImageLoader
 import coil.decode.SvgDecoder
 import com.beetlestance.aphid.common_compose.RecipeDetailedPosterCard
 import com.beetlestance.aphid.common_compose.pager.Pager
 import com.beetlestance.aphid.common_compose.pager.PagerState
 import com.beetlestance.aphid.common_compose.pager.rememberPagerState
-import com.beetlestance.aphid.common_compose.utils.navViewModel
 import com.beetlestance.aphid.data.entities.Recipe
 import com.beetlestance.aphid.dicebar_kotlin.DiceBarAvatarHelper
 import com.beetlestance.aphid.dicebar_kotlin.sprites.avataar.AvataaarTop
 import com.beetlestance.aphid.dicebar_kotlin.sprites.avataar.AvataaarsConfig
 import com.beetlestance.aphid.dicebar_kotlin.sprites.avataar.AvataaarsSprite
-import dev.chrisbanes.accompanist.coil.CoilImage
-import dev.chrisbanes.accompanist.insets.statusBarsPadding
+import com.google.accompanist.coil.CoilImage
+import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
+import com.google.accompanist.flowlayout.FlowMainAxisAlignment
+import com.google.accompanist.flowlayout.FlowRow
+import com.google.accompanist.flowlayout.SizeMode
+import com.google.accompanist.insets.statusBarsPadding
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
@@ -78,7 +80,7 @@ fun Profile(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues = PaddingValues()
 ) {
-    val viewModel: ProfileViewModel by navViewModel()
+    val viewModel: ProfileViewModel = hiltNavGraphViewModel()
     val state by viewModel.liveData.observeAsState(initial = viewModel.currentState())
     val actions: (ProfileActions) -> Unit = { action -> viewModel.submitAction(action) }
 
@@ -512,30 +514,30 @@ private fun RecipeDetails(
     rating: String,
     contentTags: String
 ) {
-//    FlowRow(
-//        mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween,
-//        mainAxisSize = SizeMode.Expand,
-//        crossAxisAlignment = FlowCrossAxisAlignment.Center,
-//        crossAxisSpacing = 4.dp
-//    ) {
-//        Text(
-//            text = contentTags,
-//            style = MaterialTheme.typography.body2,
-//            color = contentColorFor(color = MaterialTheme.colors.surface).copy(alpha = 0.7f)
-//        )
-//
-//        Text(
-//            modifier = Modifier
-//                .background(
-//                    color = MaterialTheme.colors.primarySurface,
-//                    shape = RoundedCornerShape(10.dp)
-//                )
-//                .padding(horizontal = 12.dp, vertical = 2.dp),
-//            text = rating,
-//            style = MaterialTheme.typography.subtitle2,
-//            color = contentColorFor(color = MaterialTheme.colors.primarySurface)
-//        )
-//    }
+    FlowRow(
+        mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween,
+        mainAxisSize = SizeMode.Expand,
+        crossAxisAlignment = FlowCrossAxisAlignment.Center,
+        crossAxisSpacing = 4.dp
+    ) {
+        Text(
+            text = contentTags,
+            style = MaterialTheme.typography.body2,
+            color = contentColorFor(backgroundColor = MaterialTheme.colors.surface).copy(alpha = 0.7f)
+        )
+
+        Text(
+            modifier = Modifier
+                .background(
+                    color = MaterialTheme.colors.primarySurface,
+                    shape = RoundedCornerShape(10.dp)
+                )
+                .padding(horizontal = 12.dp, vertical = 2.dp),
+            text = rating,
+            style = MaterialTheme.typography.subtitle2,
+            color = contentColorFor(backgroundColor = MaterialTheme.colors.primarySurface)
+        )
+    }
 
     Text(
         text = name,
