@@ -20,23 +20,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.preferredHeight
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -54,36 +45,36 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.node.Ref
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.SoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import com.beetlestance.aphid.base.CHAT_MESSAGE_ANSWER
-import com.beetlestance.aphid.common_compose.insets.AmbientWindowInsets
-import com.beetlestance.aphid.common_compose.insets.imePadding
-import com.beetlestance.aphid.common_compose.insets.statusBarsPadding
-import com.beetlestance.aphid.common_compose.utils.navViewModel
 import com.beetlestance.aphid.data.entities.Chat
-import dev.chrisbanes.accompanist.coil.CoilImage
+import com.google.accompanist.coil.CoilImage
+import com.google.accompanist.insets.LocalWindowInsets
+import com.google.accompanist.insets.imePadding
+import com.google.accompanist.insets.statusBarsPadding
 
 @Composable
 fun Chat(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues = PaddingValues()
 ) {
-    val viewModel: ChatViewModel by navViewModel()
+    val viewModel: ChatViewModel = hiltNavGraphViewModel()
     val state by viewModel.liveData.observeAsState(initial = viewModel.currentState())
     val action: (ChatActions) -> Unit = { action -> viewModel.submitAction(action) }
 
-    val isImeVisible = AmbientWindowInsets.current.ime.isVisible
+    val isImeVisible = LocalWindowInsets.current.ime.isVisible
 
     val transformedPadding = if (isImeVisible) PaddingValues(bottom = 16.dp) else paddingValues
 
+    LazyRow(content = { /*TODO*/ })
     Chat(
         paddingValues = transformedPadding,
         state = state,
@@ -206,8 +197,9 @@ fun AskedQuestionsItem(question: Chat) {
                 // TODO: Load user image here
                 CoilImage(
                     data = "",
+                    contentDescription = "User Avatar",
                     modifier = Modifier
-                        .preferredHeight(64.dp)
+                        .height(64.dp)
                         .aspectRatio(1 / 1f)
                         .padding(8.dp)
                         .border(
@@ -238,8 +230,9 @@ fun ReplyItem(answer: Chat) {
 
                 CoilImage(
                     data = R.drawable.ic_chat_bot,
+                    contentDescription = "Chat Bot",
                     modifier = Modifier
-                        .preferredHeight(64.dp)
+                        .height(64.dp)
                         .padding(16.dp)
                 )
 
@@ -254,6 +247,7 @@ fun ReplyItem(answer: Chat) {
                 if (answer.image.isNullOrBlank().not()) {
                     CoilImage(
                         data = answer.image ?: "",
+                        contentDescription = "Image Result For Given Query",
                         modifier = Modifier
                             .fillMaxHeight()
                             .align(Alignment.CenterVertically)
@@ -277,7 +271,8 @@ fun EmptyChat(
                 .weight(1f)
         ) {
             Image(
-                imageVector = vectorResource(id = R.drawable.ic_chat_empty),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_chat_empty),
+                contentDescription = "No Chat History",
                 modifier = Modifier
                     .padding(top = 32.dp)
                     .align(Alignment.TopCenter)
@@ -305,9 +300,11 @@ fun EmptyChatHint(
     ) {
         Row {
             Image(
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier
+                    .padding(16.dp)
                     .size(48.dp),
-                imageVector = vectorResource(id = R.drawable.ic_chat_bot),
+                contentDescription = "Chat Bot",
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_chat_bot),
                 alignment = Alignment.Center
             )
 
@@ -334,21 +331,17 @@ private fun ChatInput(
     state: InputState = rememberInputState(),
     onQuerySubmit: (String) -> Unit
 ) {
-    // reference for the keyboard
-    // to be used for hiding key board
-    val keyboardController: Ref<SoftwareKeyboardController> = remember { Ref() }
-
     Surface(
         shape = RoundedCornerShape(
-            topLeftPercent = 50,
-            topRightPercent = 50,
-            bottomLeftPercent = 50,
-            bottomRightPercent = 0
+            topStartPercent = 50,
+            topEndPercent = 50,
+            bottomStartPercent = 50,
+            bottomEndPercent = 0
         ),
         elevation = 4.dp,
         modifier = modifier
             .fillMaxWidth()
-            .preferredHeight(56.dp)
+            .height(56.dp)
     ) {
         Box(
             modifier = Modifier.fillMaxWidth(),
@@ -387,20 +380,17 @@ private fun ChatInput(
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Next
                     ),
-                    onImeActionPerformed = {
+                    keyboardActions = KeyboardActions(onNext = {
                         // Change: Find out why state clear is not working here
                         // Theory: Composable is recomposing which is resulting in state side effects
-                        keyboardController.value?.hideSoftwareKeyboard()
-                    },
-                    onTextInputStarted = {
-                        keyboardController.value = it
-                    },
+                        //keyboardController.value?.hideSoftwareKeyboard()
+                    }),
                     modifier = Modifier
                         .weight(1f)
                 )
 
                 Icon(
-                    imageVector = vectorResource(id = R.drawable.ic_chat_input_send),
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_chat_input_send),
                     modifier = Modifier
                         .clip(CircleShape)
                         .clickable(
@@ -409,7 +399,8 @@ private fun ChatInput(
                                 state.clear()
                             }
                         )
-                        .padding(8.dp)
+                        .padding(8.dp),
+                    contentDescription = "Submit Query"
                 )
             }
         }
@@ -440,15 +431,15 @@ class InputState(
 }
 
 val circleShapeWithTopRightCorner: RoundedCornerShape = RoundedCornerShape(
-    topLeft = 0.dp,
-    topRight = 32.dp,
-    bottomLeft = 32.dp,
-    bottomRight = 32.dp
+    topStart = 0.dp,
+    topEnd = 32.dp,
+    bottomStart = 32.dp,
+    bottomEnd = 32.dp
 )
 
 val circleShapeWithBottomRightCorner: RoundedCornerShape = RoundedCornerShape(
-    topLeft = 32.dp,
-    topRight = 32.dp,
-    bottomLeft = 32.dp,
-    bottomRight = 0.dp
+    topStart = 32.dp,
+    topEnd = 32.dp,
+    bottomStart = 32.dp,
+    bottomEnd = 0.dp
 )

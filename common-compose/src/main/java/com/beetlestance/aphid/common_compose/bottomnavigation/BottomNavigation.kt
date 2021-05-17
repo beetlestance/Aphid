@@ -17,9 +17,9 @@ package com.beetlestance.aphid.common_compose.bottomnavigation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.animate
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
@@ -28,7 +28,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.FloatingActionButton
@@ -52,10 +51,13 @@ import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.SubcomposeLayout
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.beetlestance.aphid.common_compose.extensions.toIntPx
 import com.beetlestance.aphid.common_compose.extensions.toPx
 import com.beetlestance.aphid.common_compose.theme.shapes.CutOutShape
 
@@ -81,6 +83,7 @@ fun CurveCutNavBar(
 ) {
 
     val state = remember { CurveCutNavBarState(selectedItem) }
+    val density = LocalDensity.current
 
     val scope = CurveCutNavBarScope(state)
 
@@ -96,11 +99,11 @@ fun CurveCutNavBar(
 
         val looseConstraints = constraints.copy(minWidth = 0, minHeight = 0)
 
-        val navOffsetY = constraints.maxHeight - BottomNavigationHeight.toIntPx()
+        val navOffsetY = constraints.maxHeight - BottomNavigationHeight.toIntPx(density)
 
-        val fabFabOffsetY = constraints.maxHeight - CurveCutBottomNavigationHeight.toIntPx()
+        val fabFabOffsetY = constraints.maxHeight - CurveCutBottomNavigationHeight.toIntPx(density)
 
-        val fabOffsetX = menuItemCenterOffsetX - FabRadius.toIntPx()
+        val fabOffsetX = menuItemCenterOffsetX - FabRadius.toIntPx(density)
 
         layout(constraints.maxWidth, constraints.maxHeight) {
 
@@ -173,8 +176,7 @@ fun CurveCutNavBarScope.CurveCutMenuItem(
     } else {
         modifier.selectable(
             selected = selected,
-            onClick = onClick,
-            indication = null
+            onClick = onClick
         )
     }
     Box(
@@ -217,7 +219,9 @@ private fun CurveCutBottomNavBar(
     content: @Composable CurveCutNavBarScope.() -> Unit
 ) {
     Surface(
-        modifier = modifier.preferredHeight(BottomNavigationHeight).zIndex(1f),
+        modifier = modifier
+            .height(BottomNavigationHeight)
+            .zIndex(1f),
         color = backgroundColor,
         contentColor = contentColor,
         elevation = elevation,
@@ -239,10 +243,10 @@ private fun curveCutShape(offsetX: Dp, cutOutWidth: Float): CutOutShape {
     return CutOutShape(
         cutOutShape = BottomNavBarCutOutShape(),
         cutOutShapeMargin = FabMargin.toPx(),
-        cutoutStartOffset = animate(
-            target = offsetX,
-            animSpec = CurveCutBezierEasing
-        ).toPx() - CutOutHorizontalMargin.div(2).toPx(),
+        cutoutStartOffset = animateDpAsState(
+            targetValue = offsetX,
+            animationSpec = CurveCutBezierEasing
+        ).value.toPx() - CutOutHorizontalMargin.div(2).toPx(),
         cutOutShapeSize = Size(
             width = cutOutWidth + CutOutHorizontalMargin.toPx(),
             height = FabRadius.times(2).toPx() + CutOutDepthMargin.toPx()
@@ -282,10 +286,16 @@ private fun animateBounce(
     depth: Dp
 ): FabPlacement {
 
-    val pathCovered = animate(target = startOffset, CurveCutBezierEasing)
+    val pathCovered = animateDpAsState(
+        targetValue = startOffset,
+        animationSpec = CurveCutBezierEasing
+    ).value
 
     val offsetY: Dp = if (pathCovered == startOffset) peak else depth
-    val heightOffset = animate(target = offsetY, CurveCutBezierEasing)
+    val heightOffset = animateDpAsState(
+        targetValue = offsetY,
+        animationSpec = CurveCutBezierEasing
+    ).value
 
     return FabPlacement(
         isDocked = offsetY == peak,
@@ -296,7 +306,11 @@ private fun animateBounce(
 
 private class BottomNavBarCutOutShape : Shape {
 
-    override fun createOutline(size: Size, density: Density): Outline {
+    override fun createOutline(
+        size: Size,
+        layoutDirection: LayoutDirection,
+        density: Density
+    ): Outline {
         val path = Path().apply {
             addCutOutShape(size)
         }

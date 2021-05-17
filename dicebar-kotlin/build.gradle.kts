@@ -16,7 +16,7 @@ dependencies {
     testImplementation(Libs.Test.junit)
 
     //Annotations
-    implementation(Libs.AndroidX.androidAnnotation)
+    implementation(Libs.AndroidX.annotation)
 
     // Kotlin
     implementation(Libs.Kotlin.stdlib)

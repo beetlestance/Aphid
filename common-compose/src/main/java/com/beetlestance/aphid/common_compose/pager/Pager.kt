@@ -15,12 +15,12 @@
  */
 package com.beetlestance.aphid.common_compose.pager
 
-import androidx.compose.animation.AnimatedFloatModel
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.AnimationClockObservable
-import androidx.compose.animation.core.AnimationEndReason
-import androidx.compose.animation.core.fling
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -34,17 +34,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.ParentDataModifier
 import androidx.compose.ui.layout.Placeable
-import androidx.compose.ui.platform.AmbientAnimationClock
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.beetlestance.aphid.common_compose.extensions.toIntPx
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.math.sign
@@ -56,7 +58,6 @@ import kotlin.math.sign
  *     </a>
  */
 open class PagerState(
-    val clock: AnimationClockObservable,
     currentPage: Int = 0,
     minPage: Int = 0,
     maxPage: Int = 0
@@ -88,59 +89,51 @@ open class PagerState(
 
     var selectionState: SelectionState by mutableStateOf(SelectionState.Selected)
 
-    inline fun <R> selectPage(block: PagerState.() -> R): R = try {
+    suspend inline fun <R> selectPage(block: PagerState.() -> R): R = try {
         selectionState = SelectionState.Undecided
         block()
     } finally {
-        selectPage(currentPageOffset.roundToInt())
+        selectPage()
     }
 
-    open fun selectPage(pageOffset: Int) {
-        currentPage -= pageOffset
-        currentPageOffset = 0f
+    open suspend fun selectPage() {
+        currentPage -= currentPageOffset.roundToInt()
+        snapToValue(0f)
         selectionState = SelectionState.Selected
     }
 
-    protected var _currentPageOffset: AnimatedFloatModel =
-        AnimatedFloatModel(0f, clock = clock).apply {
-            setBounds(-1f, 1f)
-        }
+    protected var _currentPageOffset = Animatable(0f).apply {
+        updateBounds(-1f, 1f)
+    }
 
     open fun offset(page: Int): Float = page - (currentPage - currentPageOffset)
 
-    var currentPageOffset: Float
+    val currentPageOffset: Float
         get() = _currentPageOffset.value
-        set(value) {
-            snapToValue(value)
-        }
 
-    protected open fun snapToValue(value: Float) {
+
+    open suspend fun snapToValue(value: Float) {
         val max = if (currentPage == minPage) 0f else 1f
         val min = if (currentPage == maxPage) 0f else -1f
         // sets offset to provided value immediately without any animation
         _currentPageOffset.snapTo(value.coerceIn(min, max))
     }
 
-    fun nextPage(velocity: Float = 5f) {
+    suspend fun nextPage(velocity: Float = 5f) {
         fling(-velocity)
     }
 
-    fun previousPage(velocity: Float = 5f) {
+    suspend fun previousPage(velocity: Float = 5f) {
         fling(velocity)
     }
 
-    open fun fling(velocity: Float) {
+    open suspend fun fling(velocity: Float) {
         selectionState = SelectionState.Undecided
         if (velocity < 0 && currentPage == maxPage) return
         if (velocity > 0 && currentPage == minPage) return
 
-        _currentPageOffset.fling(velocity) { reason, _, _ ->
-            if (reason != AnimationEndReason.Interrupted) {
-                _currentPageOffset.animateTo(currentPageOffset.roundToInt().toFloat()) { _, _ ->
-                    selectPage(currentPageOffset.roundToInt())
-                }
-            }
-        }
+        _currentPageOffset.animateTo(currentPageOffset.roundToInt().toFloat())
+        selectPage()
     }
 
     fun updateState(
@@ -153,7 +146,7 @@ open class PagerState(
     }
 
     override fun toString(): String = "PagerState{minPage=$minPage, maxPage=$maxPage, " +
-        "currentPage=$currentPage, currentPageOffset=$currentPageOffset}"
+            "currentPage=$currentPage, currentPageOffset=$currentPageOffset}"
 }
 
 @Immutable
@@ -166,14 +159,12 @@ private val Measurable.page: Int
 
 @Composable
 fun rememberPagerState(
-    clock: AnimationClockObservable = AmbientAnimationClock.current,
     currentPage: Int = 0,
     minPage: Int = 0,
     maxPage: Int = 0
 ): PagerState {
-    val state = remember(clock) {
+    val state = remember {
         PagerState(
-            clock = clock,
             currentPage = currentPage,
             minPage = minPage,
             maxPage = maxPage
@@ -204,7 +195,7 @@ fun Pager(
         content = {
             for (page in minPage..maxPage) {
                 val pageData = PageData(page)
-                val scope = PagerScope(state, page)
+                val scope = PagerScope(state, rememberCoroutineScope(), page)
                 key(pageData) {
                     Box(
                         contentAlignment = Alignment.Center,
@@ -238,6 +229,8 @@ fun PageLayout(
     content: @Composable () -> Unit
 ) {
     var pageSize by remember { mutableStateOf(0) }
+    val coroutineScope = rememberCoroutineScope()
+    val density = LocalDensity.current
 
     Layout(
         content = content,
@@ -249,21 +242,28 @@ fun PageLayout(
                     state.selectionState = PagerState.SelectionState.Undecided
                 },
                 onDragStopped = { velocity ->
-                    // Velocity is in pixels per second, but we deal in percentage offsets, so we
-                    // need to scale the velocity to match
-                    state.fling(velocity / pageSize)
+                    coroutineScope.launch {
+                        // Velocity is in pixels per second, but we deal in percentage offsets, so we
+                        // need to scale the velocity to match
+                        state.fling(velocity / pageSize)
+                    }
+                },
+                state = rememberDraggableState { dy ->
+                    coroutineScope.launch {
+                        with(state) {
+                            val pos = pageSize * currentPageOffset
+                            val maxDragSize = pageSize * offscreenLimit
+                            val minDragSize = -pageSize * offscreenLimit
+                            val max =
+                                if (currentPage == minPage && isCarousel.not()) 0 else maxDragSize
+                            val min =
+                                if (currentPage == maxPage && isCarousel.not()) 0 else minDragSize
+                            val newPos = (pos + dy).coerceIn(min.toFloat(), max.toFloat())
+                            snapToValue(newPos / pageSize)
+                        }
+                    }
                 }
-            ) { dy ->
-                with(state) {
-                    val pos = pageSize * currentPageOffset
-                    val maxDragSize = pageSize * offscreenLimit
-                    val minDragSize = -pageSize * offscreenLimit
-                    val max = if (currentPage == minPage && isCarousel.not()) 0 else maxDragSize
-                    val min = if (currentPage == maxPage && isCarousel.not()) 0 else minDragSize
-                    val newPos = (pos + dy).coerceIn(min.toFloat(), max.toFloat())
-                    currentPageOffset = newPos / pageSize
-                }
-            }
+            )
     ) { measurables, constraints ->
 
         var layoutHeight = constraints.maxHeight
@@ -289,7 +289,7 @@ fun PageLayout(
                 pageSize = placeable.width
             }
 
-            layoutHeight = placeable.height + PageContentVerticalPadding.times(2).toIntPx()
+            layoutHeight = placeable.height + PageContentVerticalPadding.times(2).toIntPx(density)
             placeables[index] = placeable
         }
 
@@ -304,7 +304,7 @@ fun PageLayout(
                 val verticalSpacingForChildren = layoutHeight - placeable.height
 
                 val hint =
-                    sign(itemScrollXOffset).toInt() * (pageHint.toIntPx() * itemScrollXOffset.absoluteValue).toInt()
+                    sign(itemScrollXOffset).toInt() * (pageHint.toIntPx(density) * itemScrollXOffset.absoluteValue).toInt()
                         .coerceAtMost(horizontalSpacingForChildren.div(2))
 
                 val xCenterOffset =
@@ -324,6 +324,7 @@ fun PageLayout(
  */
 open class PagerScope(
     private val state: PagerState,
+    private val coroutineScope: CoroutineScope,
     val page: Int
 ) {
     /**
@@ -347,9 +348,15 @@ open class PagerScope(
     val isSelectedPage: Boolean
         get() = currentPage == page
 
-    fun nextPage(velocity: Float): Unit = state.nextPage(velocity)
+    fun nextPage(velocity: Float): Unit {
+        coroutineScope.launch { state.nextPage(velocity) }
+    }
 
-    fun previousPage(velocity: Float): Unit = state.previousPage(velocity)
+    fun previousPage(velocity: Float): Unit {
+        coroutineScope.launch {
+            state.previousPage(velocity)
+        }
+    }
 
     /**
      * Modifier which scales pager items according to their offset position. Similar in effect

@@ -15,19 +15,21 @@
  */
 package com.beetlestance.aphid.feature_chat
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.beetlestance.aphid.base_android.AphidViewModel
 import com.beetlestance.aphid.domain.executors.SendMessage
 import com.beetlestance.aphid.domain.invoke
 import com.beetlestance.aphid.domain.observers.ObserveChat
 import com.beetlestance.aphid.domain.watchStatus
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ChatViewModel @ViewModelInject constructor(
+@HiltViewModel
+class ChatViewModel @Inject constructor(
     observeChat: ObserveChat,
     private val fetchMessage: SendMessage
 ) : AphidViewModel<ChatViewState>(ChatViewState()) {

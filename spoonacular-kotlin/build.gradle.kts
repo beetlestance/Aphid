@@ -22,7 +22,7 @@ dependencies {
     testImplementation(Libs.Google.truth)
 
     //Annotations
-    implementation(Libs.AndroidX.androidAnnotation)
+    implementation(Libs.AndroidX.annotation)
 
     // Kotlin
     implementation(Libs.Kotlin.stdlib)

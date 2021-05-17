@@ -16,11 +16,11 @@ kapt {
 val useReleaseKeystore = rootProject.file("release/app-release.jks").exists()
 
 android {
-    compileSdkVersion(Aphid.compileSdkVersion)
+    compileSdk = Aphid.compileSdkVersion
 
     defaultConfig {
         applicationId = Aphid.applicationId
-        minSdkVersion(Aphid.minSdkVersion)
+        minSdk = Aphid.minSdkVersion
         targetSdkVersion(Aphid.targetSdkVersion)
         versionCode = Aphid.versionCode
         versionName = Aphid.versionName
@@ -31,7 +31,7 @@ android {
             value = "\"" + (project.findProperty("SPOONACULAR_API_KEY") ?: "") + "\""
         )
 
-        testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
@@ -62,7 +62,9 @@ android {
         getByName("release") {
             signingConfig = signingConfigs.getByName(if (useReleaseKeystore) "release" else "debug")
             isMinifyEnabled = true
-            isShrinkResources = true
+            // Re-Enable once agp 7 beta 01 released
+            // https://issuetracker.google.com/issues/186806256
+            // isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -70,12 +72,11 @@ android {
         }
     }
 
-    lintOptions {
+    lint {
         // Disable lintVital. Not needed since lint is run on CI
         isCheckReleaseBuilds = false
         // Allow lint to check dependencies
-        // TODO: re-enable this once https://issuetracker.google.com/issues/159733104 is fixed
-        isCheckDependencies = false
+        isCheckDependencies = true
         // Ignore any tests
         isIgnoreTestSources = true
     }
@@ -85,7 +86,6 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerVersion = Libs.AndroidX.Compose.ktVersion
         kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
     }
 }
@@ -124,7 +124,6 @@ dependencies {
 
     // Hilt
     implementation(Libs.Hilt.library)
-    implementation(Libs.AndroidX.Hilt.viewmodel)
     kapt(Libs.AndroidX.Hilt.compiler)
     kapt(Libs.Hilt.compiler)
 
@@ -132,4 +131,5 @@ dependencies {
     implementation(Libs.OkHttp.okhttp)
     implementation(Libs.OkHttp.loggingInterceptor)
     implementation(Libs.OkHttp.urlConnection)
+
 }

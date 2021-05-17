@@ -13,12 +13,12 @@ kapt {
 }
 
 android {
-    compileSdkVersion(Aphid.compileSdkVersion)
+    compileSdk = Aphid.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion(Aphid.minSdkVersion)
+        minSdk = Aphid.minSdkVersion
 
-        testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
@@ -27,7 +27,6 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerVersion = Libs.AndroidX.Compose.ktVersion
         kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
     }
 }
@@ -57,7 +56,6 @@ dependencies {
 
     // Hilt
     implementation(Libs.Hilt.library)
-    implementation(Libs.AndroidX.Hilt.viewmodel)
     kapt(Libs.AndroidX.Hilt.compiler)
     kapt(Libs.Hilt.compiler)
 }

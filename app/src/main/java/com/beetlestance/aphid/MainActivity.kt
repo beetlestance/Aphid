@@ -18,7 +18,7 @@ package com.beetlestance.aphid
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.viewModels
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Box
@@ -35,11 +35,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.KEY_ROUTE
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
@@ -47,13 +49,10 @@ import com.beetlestance.aphid.common_compose.AndroidIcon
 import com.beetlestance.aphid.common_compose.AphidContent
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutMenuItem
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutNavBar
-import com.beetlestance.aphid.common_compose.insets.navigationBarsPadding
-import com.beetlestance.aphid.common_compose.utils.composableContent
-import com.beetlestance.aphid.common_compose.utils.setUpWithViewModel
 import com.beetlestance.aphid.feature_chat.Chat
-import com.beetlestance.aphid.feature_chat.ChatViewModel
 import com.beetlestance.aphid.feature_explore.Explore
 import com.beetlestance.aphid.feature_profile.Profile
+import com.google.accompanist.insets.navigationBarsPadding
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -84,7 +83,7 @@ class MainActivity : AppCompatActivity() {
 
         resources.configuration.uiMode = Configuration.UI_MODE_NIGHT_NO
 
-        setUpWithViewModel {
+        setContent {
             AphidContent {
                 AphidHome()
             }
@@ -115,7 +114,11 @@ class MainActivity : AppCompatActivity() {
                             content = {
                                 val resId = screen.iconOutlined
                                 val color = MaterialTheme.colors.background
-                                Icon(imageVector = vectorResource(id = resId), tint = color)
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(id = resId),
+                                    contentDescription = "SelectedItem",
+                                    tint = color
+                                )
                             },
                             index = index,
                             selected = currentRoute == screen.route,
@@ -139,11 +142,11 @@ class MainActivity : AppCompatActivity() {
             }
         ) { navBarPadding ->
             NavHost(navController, startDestination = Screen.Explore.route) {
-                composableContent(Screen.Chat.route) { Chat(paddingValues = navBarPadding) }
-                composableContent(Screen.Explore.route) { Explore(paddingValues = navBarPadding) }
-                composableContent(Screen.MealPlanner.route) { Dummy() }
-                composableContent(Screen.Grocery.route) { Dummy() }
-                composableContent(Screen.Profile.route) { Profile(paddingValues = navBarPadding) }
+                composable(Screen.Chat.route) { Chat(paddingValues = navBarPadding) }
+                composable(Screen.Explore.route) { Explore(paddingValues = navBarPadding) }
+                composable(Screen.MealPlanner.route) { Dummy() }
+                composable(Screen.Grocery.route) { Dummy() }
+                composable(Screen.Profile.route) { Profile(paddingValues = navBarPadding) }
             }
         }
     }

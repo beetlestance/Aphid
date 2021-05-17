@@ -18,7 +18,7 @@ package com.beetlestance.aphid.common_compose
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.collection.LruCache
-import androidx.compose.animation.animate
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.material.MaterialTheme
@@ -30,7 +30,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.graphics.drawable.toBitmap
 import androidx.palette.graphics.Palette
 import coil.Coil
@@ -46,21 +46,21 @@ fun DynamicThemePrimaryColorsFromImage(
     content: @Composable () -> Unit
 ) {
     val colors = MaterialTheme.colors.copy(
-        primary = animate(
-            dominantColorState.color,
-            spring(stiffness = Spring.StiffnessLow)
-        ),
-        onPrimary = animate(
-            dominantColorState.onColor.copy(0.7f),
-            spring(stiffness = Spring.StiffnessLow)
-        )
+        primary = animateColorAsState(
+            targetValue = dominantColorState.color,
+            animationSpec = spring(stiffness = Spring.StiffnessLow)
+        ).value,
+        onPrimary = animateColorAsState(
+            targetValue = dominantColorState.onColor.copy(0.7f),
+            animationSpec = spring(stiffness = Spring.StiffnessLow)
+        ).value
     )
     MaterialTheme(colors = colors, content = content)
 }
 
 @Composable
 fun rememberDominantColorState(
-    context: Context = AmbientContext.current,
+    context: Context = LocalContext.current,
     defaultColor: Color = MaterialTheme.colors.primary,
     defaultOnColor: Color = MaterialTheme.colors.onPrimary,
     cacheSize: Int = 12,

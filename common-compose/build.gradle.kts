@@ -13,12 +13,12 @@ kapt {
 }
 
 android {
-    compileSdkVersion(Aphid.compileSdkVersion)
+    compileSdk = Aphid.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion(Aphid.minSdkVersion)
+        minSdk = Aphid.minSdkVersion
 
-        testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
@@ -27,7 +27,6 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerVersion = Libs.AndroidX.Compose.ktVersion
         kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
     }
 }
@@ -64,10 +63,11 @@ dependencies {
     api(Libs.AndroidX.Compose.livedata)
 
     // Accompanist
-    api(Libs.Accompanist.coil)
+    api(Libs.Google.Accompanist.coil)
+    api(Libs.Google.Accompanist.insets)
+    api(Libs.Google.Accompanist.flowlayout)
 
-    // Remove once hilt support saved state registry owner for compose
-    implementation(Libs.AndroidX.Navigation.navigation)
-    implementation(Libs.AndroidX.Hilt.viewmodel)
+    // Hilt Nav ViewModel
+    api(Libs.AndroidX.Hilt.navigation)
 
 }
