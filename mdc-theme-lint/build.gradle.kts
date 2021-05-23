@@ -1,5 +1,3 @@
-import com.beetlestance.aphid.buildsrc.Libs
-
 plugins {
     id("kotlin")
     id("com.android.lint")
@@ -22,10 +20,8 @@ lintOptions {
 dependencies {
 
     // Kotlin
-    compileOnly(Libs.Kotlin.stdlib)
+    compileOnly(libs.kotlin.stdlib.jdk8)
 
-    compileOnly(Libs.Lint.api)
-    compileOnly(Libs.Lint.checks)
-    compileOnly(Libs.Lint.layoutlib)
-    compileOnly(Libs.Lint.sdkCommon)
+    // Lint
+    compileOnly(libs.bundles.android.tools.lint)
 }

@@ -1,5 +1,4 @@
 import com.beetlestance.aphid.buildsrc.Aphid
-import com.beetlestance.aphid.buildsrc.Libs
 
 plugins {
     id("com.android.library")
@@ -27,35 +26,27 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
+        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.get()
     }
 }
 
 dependencies {
 
     // Local projects
-    implementation(project(":base"))
-    implementation(project(":base-android"))
-    implementation(project(":common-compose"))
-    implementation(project(":data"))
-    implementation(project(":domain"))
-    implementation(project(":spoonacular-kotlin"))
+    implementation(projects.base)
+    implementation(projects.baseAndroid)
+    implementation(projects.commonCompose)
+    implementation(projects.data)
+    implementation(projects.domain)
+    implementation(projects.spoonacularKotlin)
 
     // Testing
-    testImplementation(Libs.Test.junit)
-    androidTestImplementation(Libs.AndroidX.Test.Ext.junit)
-    androidTestImplementation(Libs.AndroidX.Test.espressoCore)
-
-    // Core
-    implementation(Libs.AndroidX.coreKtx)
-
-    // Lifecycle
-    implementation(Libs.AndroidX.Lifecycle.viewmodelKtx)
-
-    implementation(Libs.AndroidX.Lifecycle.livedataKtx)
+    testImplementation(libs.test.junit.core)
+    androidTestImplementation(libs.androidx.test.Ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 
     // Hilt
-    implementation(Libs.Hilt.library)
-    kapt(Libs.AndroidX.Hilt.compiler)
-    kapt(Libs.Hilt.compiler)
+    implementation(libs.google.hilt.android)
+    kapt(libs.androidx.hilt.compiler)
+    kapt(libs.google.hilt.compiler)
 }

@@ -1,5 +1,3 @@
-import com.beetlestance.aphid.buildsrc.Libs
-
 plugins {
     id("kotlin")
     kotlin("kapt")
@@ -13,20 +11,18 @@ kapt {
 dependencies {
 
     // Testing
-    testImplementation(Libs.Test.junit)
+    testImplementation(libs.test.junit.core)
 
     //Annotations
-    implementation(Libs.AndroidX.annotation)
+    implementation(libs.androidx.annotation)
 
     // Kotlin
-    implementation(Libs.Kotlin.stdlib)
+    implementation(libs.kotlin.stdlib.jdk8)
 
     //Moshi
-    implementation(Libs.Moshi.moshi)
-    implementation(Libs.Moshi.moshiKotlin)
-    implementation(Libs.Moshi.moshiAdapters)
+    implementation(libs.bundles.moshi)
 
     // Ok-Http
-    implementation(Libs.OkHttp.okhttp)
-    implementation(Libs.OkHttp.urlConnection)
+    implementation(libs.okhttp.core)
+    implementation(libs.okhttp.url.connection)
 }

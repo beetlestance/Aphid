@@ -1,5 +1,4 @@
 import com.beetlestance.aphid.buildsrc.Aphid
-import com.beetlestance.aphid.buildsrc.Libs
 
 plugins {
     id("com.android.library")
@@ -36,27 +35,27 @@ android {
 
 dependencies {
     // Local projects
-    implementation(project(":base"))
-    implementation(project(":data"))
-    implementation(project(":base-android"))
+    implementation(projects.base)
+    implementation(projects.data)
+    implementation(projects.baseAndroid)
 
     // Testing
-    testImplementation(Libs.Test.junit)
-    androidTestImplementation(Libs.AndroidX.Test.Ext.junit)
-    androidTestImplementation(Libs.AndroidX.Test.espressoCore)
+    testImplementation(libs.test.junit.core)
+    androidTestImplementation(libs.androidx.test.Ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 
     // Room
-    api(Libs.AndroidX.Room.runtime)
-    implementation(Libs.AndroidX.Room.ktx)
-    kapt(Libs.AndroidX.Room.compiler)
+    api(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    kapt(libs.androidx.room.compiler)
 
     // Room Migration
-    implementation(Libs.Roomigrant.library)
-    kapt(Libs.Roomigrant.compiler)
+    implementation(libs.roomigrant.core)
+    kapt(libs.roomigrant.compiler)
 
     // Hilt
-    implementation(Libs.Hilt.library)
-    kapt(Libs.AndroidX.Hilt.compiler)
-    kapt(Libs.Hilt.compiler)
+    implementation(libs.google.hilt.android)
+    kapt(libs.androidx.hilt.compiler)
+    kapt(libs.google.hilt.compiler)
 
 }

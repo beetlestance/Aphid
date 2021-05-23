@@ -25,6 +25,10 @@ java {
         // set jvm to 15
         languageVersion.set(JavaLanguageVersion.of(15))
     }
+
+    consistentResolution {
+        useCompileClasspathVersions()
+    }
 }
 
 repositories {

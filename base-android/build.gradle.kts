@@ -1,5 +1,4 @@
 import com.beetlestance.aphid.buildsrc.Aphid
-import com.beetlestance.aphid.buildsrc.Libs
 
 plugins {
     id("com.android.library")
@@ -26,18 +25,18 @@ android {
 dependencies {
 
     // Local projects
-    implementation(project(":base"))
-    implementation(project(":data"))
+    implementation(projects.base)
+    implementation(projects.data)
 
     // Testing
-    testImplementation(Libs.Test.junit)
-    androidTestImplementation(Libs.AndroidX.Test.Ext.junit)
-    androidTestImplementation(Libs.AndroidX.Test.espressoCore)
+    testImplementation(libs.test.junit.core)
+    androidTestImplementation(libs.androidx.test.Ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 
     // AndroidX
-    implementation(Libs.AndroidX.Lifecycle.viewmodelKtx)
-    implementation(Libs.AndroidX.Lifecycle.livedataKtx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
 
     // Material Design
-    implementation(Libs.Google.Mdc.material)
+    implementation(libs.google.material.core)
 }
