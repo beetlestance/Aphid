@@ -53,10 +53,10 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltNavGraphViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.beetlestance.aphid.base.CHAT_MESSAGE_ANSWER
 import com.beetlestance.aphid.data.entities.Chat
-import com.google.accompanist.coil.CoilImage
+import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.imePadding
 import com.google.accompanist.insets.statusBarsPadding
@@ -66,7 +66,7 @@ fun Chat(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues = PaddingValues()
 ) {
-    val viewModel: ChatViewModel = hiltNavGraphViewModel()
+    val viewModel: ChatViewModel = hiltViewModel()
     val state by viewModel.liveData.observeAsState(initial = viewModel.currentState())
     val action: (ChatActions) -> Unit = { action -> viewModel.submitAction(action) }
 
@@ -195,8 +195,8 @@ fun AskedQuestionsItem(question: Chat) {
                 )
 
                 // TODO: Load user image here
-                CoilImage(
-                    data = "",
+                Image(
+                    painter = rememberCoilPainter(request = ""),
                     contentDescription = "User Avatar",
                     modifier = Modifier
                         .height(64.dp)
@@ -228,8 +228,8 @@ fun ReplyItem(answer: Chat) {
                 modifier = Modifier
             ) {
 
-                CoilImage(
-                    data = R.drawable.ic_chat_bot,
+                Image(
+                    painter = rememberCoilPainter(request = R.drawable.ic_chat_bot),
                     contentDescription = "Chat Bot",
                     modifier = Modifier
                         .height(64.dp)
@@ -245,8 +245,8 @@ fun ReplyItem(answer: Chat) {
                 )
 
                 if (answer.image.isNullOrBlank().not()) {
-                    CoilImage(
-                        data = answer.image ?: "",
+                    Image(
+                        painter = rememberCoilPainter(request = answer.image ?: ""),
                         contentDescription = "Image Result For Given Query",
                         modifier = Modifier
                             .fillMaxHeight()

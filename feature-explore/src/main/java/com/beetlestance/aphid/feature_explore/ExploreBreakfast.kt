@@ -53,7 +53,7 @@ import com.beetlestance.aphid.common_compose.extensions.contrastAgainst
 import com.beetlestance.aphid.common_compose.extensions.getBitmap
 import com.beetlestance.aphid.common_compose.extensions.rememberMutableState
 import com.beetlestance.aphid.common_compose.rememberDominantColorState
-import com.google.accompanist.imageloading.toPainter
+import com.google.accompanist.imageloading.rememberDrawablePainter
 
 /**
  * This is the minimum amount of calculated contrast for a color to be used on top of the
@@ -130,13 +130,11 @@ fun ExploreBreakfastCard(
                     shape = RoundedCornerShape(16.dp),
                     elevation = 16.dp
                 ) {
-                    drawable.value?.let {
-                        Image(
-                            painter = it.toPainter(),
-                            contentScale = ContentScale.Crop,
-                            contentDescription = "BreakFastCard"
-                        )
-                    }
+                    Image(
+                        painter = rememberDrawablePainter(drawable = drawable.value),
+                        contentScale = ContentScale.Crop,
+                        contentDescription = "BreakFastCard"
+                    )
                 }
 
                 FavIcon(

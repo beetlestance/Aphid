@@ -34,7 +34,7 @@ object Libs {
         const val coreKtx: String = "androidx.core:core-ktx:1.5.0"
         const val palette: String = "androidx.palette:palette-ktx:1.0.0"
         const val constraintLayout =
-            "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha05"
+            "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha07"
 
         object Test {
             private const val version = "1.3.0"
@@ -99,7 +99,7 @@ object Libs {
         object Hilt {
             private const val version = "1.0.0"
             const val work: String = "androidx.hilt:hilt-work:$version"
-            const val navigation: String = "androidx.hilt:hilt-navigation-compose:1.0.0-alpha01"
+            const val navigation: String = "androidx.hilt:hilt-navigation-compose:1.0.0-alpha02"
             const val compiler: String = "androidx.hilt:hilt-compiler:$version"
         }
     }
@@ -114,11 +114,11 @@ object Libs {
         object Mdc {
             const val material: String = "com.google.android.material:material:1.4.0-beta01"
             const val composeThemeAdapter: String =
-                "com.google.android.material:compose-theme-adapter:1.0.0-beta03"
+                "com.google.android.material:compose-theme-adapter:1.0.0-beta07"
         }
 
         object Accompanist {
-            private const val version = "0.7.0"
+            private const val version = "0.10.0"
             const val coil: String = "com.google.accompanist:accompanist-coil:$version"
             const val insets: String = "com.google.accompanist:accompanist-insets:$version"
             const val flowlayout: String = "com.google.accompanist:accompanist-flowlayout:$version"

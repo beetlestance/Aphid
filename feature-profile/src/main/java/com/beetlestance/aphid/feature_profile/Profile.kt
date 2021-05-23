@@ -20,6 +20,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
@@ -54,7 +55,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltNavGraphViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.ImageLoader
 import coil.decode.SvgDecoder
 import com.beetlestance.aphid.common_compose.RecipeDetailedPosterCard
@@ -66,7 +67,7 @@ import com.beetlestance.aphid.dicebar_kotlin.DiceBarAvatarHelper
 import com.beetlestance.aphid.dicebar_kotlin.sprites.avataar.AvataaarTop
 import com.beetlestance.aphid.dicebar_kotlin.sprites.avataar.AvataaarsConfig
 import com.beetlestance.aphid.dicebar_kotlin.sprites.avataar.AvataaarsSprite
-import com.google.accompanist.coil.CoilImage
+import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
@@ -80,7 +81,7 @@ fun Profile(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues = PaddingValues()
 ) {
-    val viewModel: ProfileViewModel = hiltNavGraphViewModel()
+    val viewModel: ProfileViewModel = hiltViewModel()
     val state by viewModel.liveData.observeAsState(initial = viewModel.currentState())
     val actions: (ProfileActions) -> Unit = { action -> viewModel.submitAction(action) }
 
@@ -189,13 +190,15 @@ private fun ProfileAvatar(
         shape = CircleShape,
         elevation = PROFILE_SHAPE_ELEVATION
     ) {
-        CoilImage(
+        Image(
+            painter = rememberCoilPainter(
+                request = avatarUrl,
+                fadeIn = true,
+                imageLoader = svgImageLoader()
+            ),
             modifier = Modifier
                 .fillMaxSize()
                 .clipToBounds(),
-            data = avatarUrl,
-            fadeIn = true,
-            imageLoader = svgImageLoader(),
             contentScale = ContentScale.Crop,
             contentDescription = "User Avatar"
         )
@@ -406,10 +409,12 @@ private fun SavedRecipeCard(
         isFavourite = recipe.isFavourite ?: false,
         onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
         posterImage = {
-            CoilImage(
+            Image(
+                painter = rememberCoilPainter(
+                    request = recipe.imageUrl ?: EMPTY_URL,
+                    fadeIn = true
+                ),
                 modifier = Modifier.aspectRatio(1.46f),
-                data = recipe.imageUrl ?: EMPTY_URL,
-                fadeIn = true,
                 contentScale = ContentScale.Crop,
                 contentDescription = "Saved Recipes"
             )
@@ -488,10 +493,12 @@ private fun FavouriteRecipeCard(
         isFavourite = recipe.isFavourite ?: false,
         onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
         posterImage = {
-            CoilImage(
+            Image(
+                painter = rememberCoilPainter(
+                    request = recipe.imageUrl ?: EMPTY_URL,
+                    fadeIn = true,
+                ),
                 modifier = Modifier.aspectRatio(0.7f),
-                data = recipe.imageUrl ?: EMPTY_URL,
-                fadeIn = true,
                 contentScale = ContentScale.Crop,
                 contentDescription = "Favourite Recipes"
             )
