@@ -85,6 +85,12 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.androidx.compose.get()
     }
+
+    packagingOptions {
+        // A failure occurred while executing com.android.build.gradle.internal.tasks.MergeJavaResWorkAction
+        // https://github.com/Kotlin/kotlinx.coroutines/issues/2023
+        resources.excludes.addAll(listOf("META-INF/AL2.0", "META-INF/LGPL2.1"))
+    }
 }
 
 dependencies {
