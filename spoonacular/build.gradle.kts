@@ -1,5 +1,3 @@
-import com.beetlestance.aphid.buildsrc.Libs
-
 plugins {
     id("kotlin")
     kotlin("kapt")
@@ -13,14 +11,14 @@ kapt {
 dependencies {
 
     // Local projects
-    implementation(project(":base"))
-    implementation(project(":spoonacular-kotlin"))
+    implementation(projects.base)
+    implementation(projects.spoonacularKotlin)
 
     // Dagger
-    kapt(Libs.Dagger.compiler)
+    kapt(libs.google.dagger.compiler)
 
     // Ok-Http
-    implementation(Libs.OkHttp.okhttp)
-    implementation(Libs.OkHttp.loggingInterceptor)
-    implementation(Libs.OkHttp.urlConnection)
+    implementation(libs.okhttp.core)
+    implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.okhttp.url.connection)
 }

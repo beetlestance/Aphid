@@ -1,5 +1,4 @@
 import com.beetlestance.aphid.buildsrc.Aphid
-import com.beetlestance.aphid.buildsrc.Libs
 
 plugins {
     id("com.android.application")
@@ -28,7 +27,7 @@ android {
         buildConfigField(
             type = "String",
             name = "SpoonacularApiKey",
-            value = "\"" + (project.findProperty("SPOONACULAR_API_KEY") ?: "") + "\""
+            value = project.findProperty("SPOONACULAR_API_KEY").asString()
         )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -62,9 +61,7 @@ android {
         getByName("release") {
             signingConfig = signingConfigs.getByName(if (useReleaseKeystore) "release" else "debug")
             isMinifyEnabled = true
-            // Re-Enable once agp 7 beta 01 released
-            // https://issuetracker.google.com/issues/186806256
-            // isShrinkResources = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -86,50 +83,52 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
+        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.get()
     }
 }
 
 dependencies {
 
     // Local projects
-    implementation(project(":base"))
-    implementation(project(":base-android"))
-    implementation(project(":common-compose"))
-    implementation(project(":data"))
-    implementation(project(":data-android"))
-    implementation(project(":domain"))
-    implementation(project(":feature-explore"))
-    implementation(project(":feature-chat"))
-    implementation(project(":feature-profile"))
-    implementation(project(":spoonacular"))
-    implementation(project(":spoonacular-kotlin"))
+    implementation(projects.base)
+    implementation(projects.baseAndroid)
+    implementation(projects.commonCompose)
+    implementation(projects.data)
+    implementation(projects.dataAndroid)
+    implementation(projects.domain)
+    implementation(projects.featureExplore)
+    implementation(projects.featureChat)
+    implementation(projects.featureProfile)
+    implementation(projects.spoonacular)
+    implementation(projects.spoonacularKotlin)
 
     // Testing
-    testImplementation(Libs.Test.junit)
-    androidTestImplementation(Libs.AndroidX.Test.junit)
-    androidTestImplementation(Libs.AndroidX.Test.espressoCore)
+    testImplementation(libs.test.junit.core)
+    androidTestImplementation(libs.androidx.test.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 
     // AndroidX
-    implementation(Libs.AndroidX.appcompat)
-    implementation(Libs.AndroidX.coreKtx)
-    implementation(Libs.AndroidX.Navigation.navigation)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.navigation.compose)
 
     // Material Design
-    implementation(Libs.Google.Mdc.material)
-    implementation(Libs.Google.Mdc.composeThemeAdapter)
+    implementation(libs.google.material.core)
+    implementation(libs.google.material.compose.theme.adapter)
 
     // Lifecycle
-    implementation(Libs.AndroidX.Lifecycle.viewmodelKtx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     // Hilt
-    implementation(Libs.Hilt.library)
-    kapt(Libs.AndroidX.Hilt.compiler)
-    kapt(Libs.Hilt.compiler)
+    implementation(libs.google.hilt.android)
+    kapt(libs.androidx.hilt.compiler)
+    kapt(libs.google.hilt.compiler)
 
     // Ok-Http
-    implementation(Libs.OkHttp.okhttp)
-    implementation(Libs.OkHttp.loggingInterceptor)
-    implementation(Libs.OkHttp.urlConnection)
+    implementation(libs.okhttp.core)
+    implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.okhttp.url.connection)
 
 }
+
+fun Any?.asString(): String = "\"${this ?: ""}\""

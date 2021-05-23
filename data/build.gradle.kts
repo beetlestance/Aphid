@@ -1,5 +1,3 @@
-import com.beetlestance.aphid.buildsrc.Libs
-
 plugins {
     id("kotlin")
     kotlin("kapt")
@@ -13,9 +11,9 @@ kapt {
 dependencies {
 
     // Local projects
-    implementation(project(":base"))
-    implementation(project(":spoonacular-kotlin"))
+    implementation(projects.base)
+    implementation(projects.spoonacularKotlin)
 
     // Room
-    api(Libs.AndroidX.Room.common)
+    api(libs.androidx.room.common)
 }

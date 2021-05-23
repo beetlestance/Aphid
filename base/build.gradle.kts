@@ -1,5 +1,3 @@
-import com.beetlestance.aphid.buildsrc.Libs
-
 plugins {
     id("kotlin")
     kotlin("kapt")
@@ -13,17 +11,17 @@ kapt {
 dependencies {
 
     // Kotlin
-    api(Libs.Kotlin.stdlib)
+    api(libs.kotlin.stdlib.jdk8)
 
     // Co-Routines
-    api(Libs.Coroutines.core)
+    api(libs.kotlinx.coroutines.core)
 
     // Dagger
-    api(Libs.Dagger.dagger)
+    api(libs.google.dagger.core)
 
     // Retrofit
-    api(Libs.Retrofit.retrofit)
+    api(libs.retrofit.core)
 
     // Timber
-    api(Libs.timber)
+    api(libs.timber)
 }

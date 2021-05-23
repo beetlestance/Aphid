@@ -1,5 +1,4 @@
 import com.beetlestance.aphid.buildsrc.Aphid
-import com.beetlestance.aphid.buildsrc.Libs
 
 plugins {
     id("com.android.library")
@@ -26,14 +25,14 @@ android {
 dependencies {
 
     // Local projects
-    implementation(project(":base"))
-    implementation(project(":data"))
-    implementation(project(":base-android"))
-    implementation(project(":data-android"))
-    implementation(project(":spoonacular-kotlin"))
+    implementation(projects.base)
+    implementation(projects.baseAndroid)
+    implementation(projects.data)
+    implementation(projects.dataAndroid)
+    implementation(projects.spoonacularKotlin)
 
     // Testing
-    testImplementation(Libs.Test.junit)
-    androidTestImplementation(Libs.AndroidX.Test.junit)
-    androidTestImplementation(Libs.AndroidX.Test.espressoCore)
+    testImplementation(libs.test.junit.core)
+    androidTestImplementation(libs.androidx.test.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 }

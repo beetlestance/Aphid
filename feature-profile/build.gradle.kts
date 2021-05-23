@@ -1,5 +1,4 @@
 import com.beetlestance.aphid.buildsrc.Aphid
-import com.beetlestance.aphid.buildsrc.Libs
 
 plugins {
     id("com.android.library")
@@ -27,36 +26,33 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
+        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.get()
     }
 }
 
 dependencies {
 
     // Local projects
-    implementation(project(":base"))
-    implementation(project(":base-android"))
-    implementation(project(":common-compose"))
-    implementation(project(":data"))
-    implementation(project(":domain"))
-    implementation(project(":dicebar-kotlin"))
-
-    // AndroidX
-    implementation(Libs.AndroidX.coreKtx)
-
-    // Lifecycle
-    implementation(Libs.AndroidX.Lifecycle.viewmodelKtx)
-
-    // Hilt
-    implementation(Libs.Hilt.library)
-    kapt(Libs.AndroidX.Hilt.compiler)
-    kapt(Libs.Hilt.compiler)
+    implementation(projects.base)
+    implementation(projects.baseAndroid)
+    implementation(projects.commonCompose)
+    implementation(projects.data)
+    implementation(projects.domain)
+    implementation(projects.dicebarKotlin)
 
     // Testing
-    testImplementation(Libs.Test.junit)
-    androidTestImplementation(Libs.AndroidX.Test.junit)
-    androidTestImplementation(Libs.AndroidX.Test.espressoCore)
+    testImplementation(libs.test.junit.core)
+    androidTestImplementation(libs.androidx.test.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
+
+    // Compose
+    implementation(libs.androidx.constraintlayout.compose)
+
+    // Hilt
+    implementation(libs.google.hilt.android)
+    kapt(libs.androidx.hilt.compiler)
+    kapt(libs.google.hilt.compiler)
 
     // Coil
-    implementation(Libs.Coil.svgCoil)
+    implementation(libs.coil.svg)
 }

@@ -7,9 +7,14 @@ buildscript {
     }
 
     dependencies {
-        classpath(com.beetlestance.aphid.buildsrc.Libs.androidGradlePlugin)
-        classpath(com.beetlestance.aphid.buildsrc.Libs.Kotlin.gradlePlugin)
-        classpath(com.beetlestance.aphid.buildsrc.Libs.Hilt.gradlePlugin)
+        @Suppress("UnstableApiUsage")
+        // https://github.com/gradle/gradle/issues/16958
+        val libs = project.extensions.getByType<VersionCatalogsExtension>()
+            .named("libs") as org.gradle.accessors.dm.LibrariesForLibs
+
+        classpath(libs.android.gradle.plugin)
+        classpath(libs.kotlin.gradle.plugin)
+        classpath(libs.google.hilt.gradle.plugin)
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle.kts files
@@ -32,7 +37,7 @@ subprojects {
             targetExclude("$buildDir/**/*.kt")
             targetExclude("bin/**/*.kt")
 
-            ktlint(com.beetlestance.aphid.buildsrc.Versions.ktlint)
+            ktlint(libs.versions.ktlint.get())
                 // Disable paren-spacing rule for NonParenthesizedAnnotationsOnFunctionalTypes
                 .userData(mapOf("disabled_rules" to "paren-spacing"))
             /* ./gradlew spotlessApply */
@@ -57,7 +62,7 @@ subprojects {
         kotlinOptions {
             // Treat all Kotlin warnings as errors
             gradle.taskGraph.whenReady {
-//                allWarningsAsErrors = hasTask(":app:assembleDebug").not()
+                // allWarningsAsErrors = hasTask(":app:assembleDebug").not()
                 allWarningsAsErrors = false
             }
 

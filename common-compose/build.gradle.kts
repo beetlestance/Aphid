@@ -1,5 +1,4 @@
 import com.beetlestance.aphid.buildsrc.Aphid
-import com.beetlestance.aphid.buildsrc.Libs
 
 plugins {
     id("com.android.library")
@@ -27,47 +26,38 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Libs.AndroidX.Compose.version
+        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.get()
     }
 }
 
 dependencies {
 
     // Local projects
-    implementation(project(":base"))
-    implementation(project(":base-android"))
+    implementation(projects.base)
+    implementation(projects.baseAndroid)
 
-    implementation(Libs.AndroidX.palette)
+    implementation(libs.androidx.palette)
 
     // Testing
-    testImplementation(Libs.Test.junit)
-    androidTestImplementation(Libs.AndroidX.Test.junit)
-    androidTestImplementation(Libs.AndroidX.Test.espressoCore)
+    testImplementation(libs.test.junit.core)
+    androidTestImplementation(libs.androidx.test.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 
     // Remove when animated vector drawable support
-    implementation(Libs.AndroidX.appcompat)
-    implementation(Libs.AndroidX.coreKtx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.core.ktx)
 
     // Material Design
-    implementation(Libs.Google.Mdc.material)
-    implementation(Libs.Google.Mdc.composeThemeAdapter)
+    implementation(libs.google.material.core)
+    implementation(libs.google.material.compose.theme.adapter)
 
     // Compose
-    api(Libs.AndroidX.Compose.runtime)
-    api(Libs.AndroidX.Compose.foundation)
-    api(Libs.AndroidX.Compose.ui)
-    api(Libs.AndroidX.Compose.layout)
-    api(Libs.AndroidX.Compose.material)
-    api(Libs.AndroidX.Compose.animation)
-    api(Libs.AndroidX.Compose.tooling)
-    api(Libs.AndroidX.Compose.livedata)
+    api(libs.bundles.androidx.compose)
 
     // Accompanist
-    api(Libs.Google.Accompanist.coil)
-    api(Libs.Google.Accompanist.insets)
-    api(Libs.Google.Accompanist.flowlayout)
+    api(libs.bundles.google.accompanist)
 
     // Hilt Nav ViewModel
-    api(Libs.AndroidX.Hilt.navigation)
+    api(libs.androidx.hilt.navigation.compose)
 
 }
