@@ -17,7 +17,7 @@ tasks.test {
 dependencies {
     // Testing
     testImplementation(libs.test.junit.core)
-    testImplementation(Libs.Google.truth)
+    testImplementation(libs.google.truth)
 
     //Annotations
     implementation(libs.androidx.annotation)
