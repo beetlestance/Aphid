@@ -21,7 +21,7 @@ android {
     defaultConfig {
         applicationId = Aphid.applicationId
         minSdk = Aphid.minSdkVersion
-        targetSdkVersion(Aphid.targetSdkVersion)
+        targetSdk = Aphid.targetSdkVersion
         versionCode = Aphid.versionCode
         versionName = Aphid.versionName
 

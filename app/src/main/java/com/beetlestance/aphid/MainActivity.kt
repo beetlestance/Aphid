@@ -39,11 +39,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
-import androidx.navigation.compose.KEY_ROUTE
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.beetlestance.aphid.common_compose.AndroidIcon
 import com.beetlestance.aphid.common_compose.AphidContent
@@ -108,7 +106,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 ) {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
-                    val currentRoute = navBackStackEntry?.arguments?.getString(KEY_ROUTE)
+                    val currentRoute = navBackStackEntry?.destination?.route
                     navItems.forEachIndexed { index, screen ->
                         CurveCutMenuItem(
                             content = {
@@ -128,7 +126,7 @@ class MainActivity : AppCompatActivity() {
                                 if (currentRoute != screen.route) {
                                     // This is the equivalent to popUpTo the start destination
                                     navController.popBackStack(
-                                        navController.graph.startDestination,
+                                        navController.graph.startDestinationId,
                                         false
                                     )
                                     if (screen.route != Screen.Explore.route) {

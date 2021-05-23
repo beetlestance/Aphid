@@ -55,7 +55,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.hilt.navigation.compose.hiltNavGraphViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.beetlestance.aphid.common_compose.RecipeDetailedPosterCard
 import com.beetlestance.aphid.common_compose.pager.Carousel
 import com.beetlestance.aphid.common_compose.pager.PageTransformation
@@ -63,7 +63,7 @@ import com.beetlestance.aphid.common_compose.pager.Pager
 import com.beetlestance.aphid.data.entities.Recipe
 import com.beetlestance.spoonacular_kotlin.SpoonacularImageHelper
 import com.beetlestance.spoonacular_kotlin.constants.SpoonacularImageSize
-import com.google.accompanist.coil.CoilImage
+import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
@@ -75,7 +75,7 @@ fun Explore(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues = PaddingValues()
 ) {
-    val viewModel: ExploreViewModel  = hiltNavGraphViewModel()
+    val viewModel: ExploreViewModel = hiltViewModel()
     val state by viewModel.liveData.observeAsState(initial = viewModel.currentState())
     val actions: (ExploreActions) -> Unit = { action -> viewModel.submitAction(action) }
 
@@ -449,10 +449,12 @@ fun QuickRecipesWithHeader(
             isFavourite = recipe.isFavourite ?: false,
             onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
             posterImage = {
-                CoilImage(
+                Image(
+                    painter = rememberCoilPainter(
+                        request = recipe.imageUrl ?: EMPTY_URL,
+                        fadeIn = true
+                    ),
                     modifier = Modifier.aspectRatio(1.5f),
-                    data = recipe.imageUrl ?: EMPTY_URL,
-                    fadeIn = true,
                     contentScale = ContentScale.Crop,
                     contentDescription = "Quick Recipe"
                 )
@@ -492,10 +494,12 @@ fun RecentlyViewedRecipesWithHeader(
             isFavourite = recipe.isFavourite ?: false,
             onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
             posterImage = {
-                CoilImage(
+                Image(
+                    painter = rememberCoilPainter(
+                        request = recipe.imageUrl ?: EMPTY_URL,
+                        fadeIn = true,
+                    ),
                     modifier = Modifier.aspectRatio(1.5f),
-                    data = recipe.imageUrl ?: EMPTY_URL,
-                    fadeIn = true,
                     contentScale = ContentScale.Crop,
                     contentDescription = "Recently Viewed Recipe"
                 )

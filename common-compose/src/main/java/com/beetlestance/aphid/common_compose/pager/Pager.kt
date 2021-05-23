@@ -15,9 +15,8 @@
  */
 package com.beetlestance.aphid.common_compose.pager
 
-import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.animateContentSize
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -28,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.structuralEqualityPolicy
 import androidx.compose.ui.Alignment
@@ -348,11 +348,11 @@ open class PagerScope(
     val isSelectedPage: Boolean
         get() = currentPage == page
 
-    fun nextPage(velocity: Float): Unit {
+    fun nextPage(velocity: Float) {
         coroutineScope.launch { state.nextPage(velocity) }
     }
 
-    fun previousPage(velocity: Float): Unit {
+    fun previousPage(velocity: Float) {
         coroutineScope.launch {
             state.previousPage(velocity)
         }
