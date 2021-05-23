@@ -16,7 +16,7 @@ object Aphid {
 
 object Libs {
 
-    const val androidGradlePlugin: String = "com.android.tools.build:gradle:7.0.0-alpha15"
+    const val androidGradlePlugin: String = "com.android.tools.build:gradle:7.0.0-beta02"
 
     const val leakCanary: String = "com.squareup.leakcanary:leakcanary-android:2.2"
 
@@ -30,8 +30,8 @@ object Libs {
 
     object AndroidX {
         const val annotation: String = "androidx.annotation:annotation:1.3.0-alpha01"
-        const val appcompat: String = "androidx.appcompat:appcompat:1.3.0-rc01"
-        const val coreKtx: String = "androidx.core:core-ktx:1.6.0-alpha01"
+        const val appcompat: String = "androidx.appcompat:appcompat:1.3.0"
+        const val coreKtx: String = "androidx.core:core-ktx:1.5.0"
         const val palette: String = "androidx.palette:palette-ktx:1.0.0"
         const val constraintLayout =
             "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha05"
@@ -54,7 +54,7 @@ object Libs {
         }
 
         object Room {
-            private const val version = "2.3.0-rc01"
+            private const val version = "2.3.0"
             const val common: String = "androidx.room:room-common:$version"
             const val runtime: String = "androidx.room:room-runtime:$version"
             const val compiler: String = "androidx.room:room-compiler:$version"
@@ -72,12 +72,12 @@ object Libs {
         }
 
         object Navigation {
-            private const val version = "1.0.0-alpha09"
+            private const val version = "1.0.0-alpha10"
             const val navigation: String = "androidx.navigation:navigation-compose:$version"
         }
 
         object Compose {
-            const val version: String = "1.0.0-beta03"
+            const val version: String = "1.0.0-beta07"
 
             const val compiler: String = "androidx.compose.compiler:compiler:$version"
 
@@ -97,7 +97,7 @@ object Libs {
         }
 
         object Hilt {
-            private const val version = "1.0.0-beta01"
+            private const val version = "1.0.0"
             const val work: String = "androidx.hilt:hilt-work:$version"
             const val navigation: String = "androidx.hilt:hilt-navigation-compose:1.0.0-alpha01"
             const val compiler: String = "androidx.hilt:hilt-compiler:$version"
@@ -112,7 +112,7 @@ object Libs {
             "com.google.android.gms:play-services-oss-licenses:17.0.0"
 
         object Mdc {
-            const val material: String = "com.google.android.material:material:1.4.0-alpha01"
+            const val material: String = "com.google.android.material:material:1.4.0-beta01"
             const val composeThemeAdapter: String =
                 "com.google.android.material:compose-theme-adapter:1.0.0-beta03"
         }
@@ -143,19 +143,19 @@ object Libs {
     }
 
     object Coil {
-        private const val version = "1.1.1"
+        private const val version = "1.2.1"
         const val coil: String = "io.coil-kt:coil:$version"
         const val svgCoil: String = "io.coil-kt:coil-svg:$version"
     }
 
     object Dagger {
-        private const val version = "2.33"
+        private const val version = "2.35.1"
         const val dagger: String = "com.google.dagger:dagger:$version"
         const val compiler: String = "com.google.dagger:dagger-compiler:$version"
     }
 
     object Hilt {
-        private const val version = "2.33-beta"
+        private const val version = "2.35.1"
         const val library: String = "com.google.dagger:hilt-android:$version"
         const val compiler: String = "com.google.dagger:hilt-android-compiler:$version"
         const val testing: String = "com.google.dagger:hilt-android-testing:$version"
@@ -163,7 +163,7 @@ object Libs {
     }
 
     object Kotlin {
-        const val version: String = "1.4.31"
+        const val version: String = "1.4.32"
         const val stdlib: String = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val reflect: String = "org.jetbrains.kotlin:kotlin-reflect:$version"
         const val gradlePlugin: String = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
@@ -176,7 +176,7 @@ object Libs {
     }
 
     object Moshi {
-        private const val version = "1.11.0"
+        private const val version = "1.12.0"
         const val moshi: String = "com.squareup.moshi:moshi:$version"
         const val moshiKotlin: String = "com.squareup.moshi:moshi-kotlin:$version"
         const val moshiAdapters: String = "com.squareup.moshi:moshi-adapters:$version"
