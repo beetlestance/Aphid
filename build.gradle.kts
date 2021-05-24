@@ -1,3 +1,6 @@
+import com.beetlestance.aphid.buildsrc.DependencyUpdates
+import com.beetlestance.aphid.buildsrc.ReleaseType
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
 
@@ -84,6 +87,23 @@ subprojects {
             // now org.objectweb.asm.ClassReader has major opt code 12
             jvmTarget = "11"
         }
+    }
+}
+
+/**
+ * Update dependencyUpdates task to reject versions which are more 'unstable' than our
+ * current version.
+ */
+tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask> {
+    rejectVersionIf {
+        val current = DependencyUpdates.versionToRelease(currentVersion)
+        // If we're using a SNAPSHOT, ignore since we must be doing so for a reason.
+        if (current == ReleaseType.SNAPSHOT) return@rejectVersionIf true
+
+        // Otherwise we reject if the candidate is more 'unstable' than our version
+        val candidate = DependencyUpdates.versionToRelease(candidate.version)
+
+        return@rejectVersionIf candidate.isLessStableThan(current)
     }
 }
 
