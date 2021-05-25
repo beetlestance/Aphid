@@ -58,8 +58,5 @@ dependencyResolutionManagement {
         maven {
             url = java.net.URI("https://kotlin.bintray.com/kotlinx")
         }
-
-        // Used for Roomigrant
-        maven { url = java.net.URI("https://jitpack.io") }
     }
 }

@@ -20,7 +20,6 @@ import androidx.room.RoomDatabase
 import com.beetlestance.aphid.data.AphidDatabase
 import com.beetlestance.aphid.data.entities.Chat
 import com.beetlestance.aphid.data.entities.Recipe
-import dev.matrix.roomigrant.GenerateRoomMigrations
 
 @Database(
     entities = [
@@ -29,5 +28,4 @@ import dev.matrix.roomigrant.GenerateRoomMigrations
     ],
     version = 1
 )
-@GenerateRoomMigrations
 abstract class AphidRoomDatabase : RoomDatabase(), AphidDatabase

@@ -22,7 +22,6 @@ import com.beetlestance.aphid.data.AphidDatabase
 import com.beetlestance.aphid.data.daos.ChatDao
 import com.beetlestance.aphid.data.daos.RecipeDao
 import com.beetlestance.aphid.data_android.AphidRoomDatabase
-import com.beetlestance.aphid.data_android.AphidRoomDatabase_Migrations
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -40,8 +39,7 @@ object RoomDatabaseModule {
         @ApplicationContext context: Context
     ): AphidRoomDatabase {
         val builder = Room.databaseBuilder(context, AphidRoomDatabase::class.java, "aphid.db")
-            .addMigrations(*AphidRoomDatabase_Migrations.build())
-            .fallbackToDestructiveMigration()
+
         if (Debug.isDebuggerConnected()) {
             builder.allowMainThreadQueries()
         }

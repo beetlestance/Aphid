@@ -49,10 +49,6 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     kapt(libs.androidx.room.compiler)
 
-    // Room Migration
-    implementation(libs.roomigrant.core)
-    kapt(libs.roomigrant.compiler)
-
     // Hilt
     implementation(libs.google.hilt.android)
     kapt(libs.androidx.hilt.compiler)
