@@ -17,8 +17,10 @@ package com.beetlestance.aphid.feature_profile
 
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -86,14 +88,14 @@ fun Profile(
     val actions: (ProfileActions) -> Unit = { action -> viewModel.submitAction(action) }
 
     val contentPadding = PaddingValues(
-        top = if (paddingValues.calculateTopPadding() > 0.dp) paddingValues.calculateTopPadding() else RECIPE_ITEM_SPACING,
-        start = if (paddingValues.calculateStartPadding(LocalLayoutDirection.current) > 0.dp) paddingValues.calculateStartPadding(
-            LocalLayoutDirection.current
-        ) else RECIPE_ITEM_SPACING,
-        end = if (paddingValues.calculateEndPadding(LocalLayoutDirection.current) > 0.dp) paddingValues.calculateEndPadding(
-            LocalLayoutDirection.current
-        ) else RECIPE_ITEM_SPACING,
-        bottom = if (paddingValues.calculateBottomPadding() > 0.dp) paddingValues.calculateBottomPadding() else RECIPE_ITEM_SPACING
+        top = if (paddingValues.calculateTopPadding() > 0.dp)
+            paddingValues.calculateTopPadding() else RECIPE_ITEM_SPACING,
+        start = if (paddingValues.calculateStartPadding(LocalLayoutDirection.current) > 0.dp)
+            paddingValues.calculateStartPadding(LocalLayoutDirection.current) else RECIPE_ITEM_SPACING,
+        end = if (paddingValues.calculateEndPadding(LocalLayoutDirection.current) > 0.dp)
+            paddingValues.calculateEndPadding(LocalLayoutDirection.current) else RECIPE_ITEM_SPACING,
+        bottom = if (paddingValues.calculateBottomPadding() > 0.dp)
+            paddingValues.calculateBottomPadding() else RECIPE_ITEM_SPACING
     )
 
     Profile(
@@ -350,7 +352,7 @@ private fun RecipePager(
 private const val EMPTY_URL = ""
 private val RECIPE_ITEM_SPACING = 16.dp
 private val RECIPE_CARD_TRANSITION = TweenSpec<Float>(
-    durationMillis = 400, delay = 100, easing = LinearOutSlowInEasing
+    durationMillis = 400, delay = 50, easing = LinearEasing
 )
 
 @Composable
@@ -368,16 +370,20 @@ private fun SavedRecipes(
         content = {
             itemsIndexed(savedRecipes) { index, recipe ->
                 val coroutineScope = rememberCoroutineScope()
-                val offsetValue = Animatable(initialValue = if (index in animatedSet) 0F else 150F)
-                val alphaValue = Animatable(initialValue = if (index in animatedSet) 1F else 0F)
+                val offsetValue = remember {
+                    Animatable(initialValue = if (index in animatedSet) 0F else 150F)
+                }
+                val alphaValue = remember {
+                    Animatable(initialValue = if (index in animatedSet) 1F else 0F)
+                }
 
-                LaunchedEffect(recipe) {
+                LaunchedEffect(recipe.id) {
                     offsetValue.animateTo(0F, animationSpec = RECIPE_CARD_TRANSITION)
                     alphaValue.animateTo(1F, animationSpec = RECIPE_CARD_TRANSITION)
                     animatedSet.add(index)
                 }
 
-                DisposableEffect(recipe) {
+                DisposableEffect(recipe.id) {
                     onDispose {
                         coroutineScope.launch {
                             offsetValue.snapTo(0F)
@@ -451,16 +457,20 @@ private fun FavouriteRecipes(
         content = {
             itemsIndexed(favouriteRecipes) { index, recipe ->
                 val coroutineScope = rememberCoroutineScope()
-                val offsetValue = Animatable(initialValue = if (index in animatedSet) 0F else 150F)
-                val alphaValue = Animatable(initialValue = if (index in animatedSet) 1F else 0F)
+                val offsetValue = remember {
+                    Animatable(initialValue = if (index in animatedSet) 0F else 150F)
+                }
+                val alphaValue = remember {
+                    Animatable(initialValue = if (index in animatedSet) 1F else 0F)
+                }
 
-                LaunchedEffect(recipe) {
+                LaunchedEffect(recipe.id) {
                     offsetValue.animateTo(0F, animationSpec = RECIPE_CARD_TRANSITION)
                     alphaValue.animateTo(1F, animationSpec = RECIPE_CARD_TRANSITION)
                     animatedSet.add(index)
                 }
 
-                DisposableEffect(recipe) {
+                DisposableEffect(recipe.id) {
                     onDispose {
                         coroutineScope.launch {
                             offsetValue.snapTo(0F)
