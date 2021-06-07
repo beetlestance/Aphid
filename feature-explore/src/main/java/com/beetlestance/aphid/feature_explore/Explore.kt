@@ -23,6 +23,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -53,14 +54,23 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.constraintlayout.compose.Dimension.Companion
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.beetlestance.aphid.common_compose.RecipeDetailedPosterCard
 import com.beetlestance.aphid.common_compose.pager.Carousel
 import com.beetlestance.aphid.common_compose.pager.PageTransformation
 import com.beetlestance.aphid.common_compose.pager.Pager
 import com.beetlestance.aphid.data.entities.Recipe
+import com.beetlestance.aphid.feature_explore.ExploreItems.BREAKFAST
+import com.beetlestance.aphid.feature_explore.ExploreItems.CUISINE
+import com.beetlestance.aphid.feature_explore.ExploreItems.MOOD
+import com.beetlestance.aphid.feature_explore.ExploreItems.PLAN_YOUR_MEAL
+import com.beetlestance.aphid.feature_explore.ExploreItems.QUICK_RECIPES
+import com.beetlestance.aphid.feature_explore.ExploreItems.RECENTLY_VIEWED
+import com.beetlestance.aphid.feature_explore.ExploreItems.SEARCH_BAR
 import com.beetlestance.spoonacular_kotlin.SpoonacularImageHelper
 import com.beetlestance.spoonacular_kotlin.constants.SpoonacularImageSize
 import com.google.accompanist.coil.rememberCoilPainter
@@ -101,6 +111,8 @@ fun Explore(
 
 private val EXPLORE_ITEM_SPACING = 16.dp
 
+private val EXPLORE_ITEMS = ExploreItems.values().toList()
+
 @Composable
 private fun Explore(
     modifier: Modifier = Modifier,
@@ -119,51 +131,61 @@ private fun Explore(
                 .animateContentSize(),
             contentPadding = paddingValues,
             verticalArrangement = Arrangement.spacedBy(
-                space = 24.dp,
+                space = EXPLORE_ITEM_SPACING,
                 alignment = Alignment.Top
             )
         ) {
-            item {
+            items(EXPLORE_ITEMS) { item ->
 
-                Spacer(modifier = Modifier.height(0.dp))
-
-                SearchBar(modifier = Modifier.padding(horizontal = 8.dp))
-
-                if (state.breakfastRecipes.isNotEmpty()) {
-                    BreakFastWithHeader(
-                        breakfastRecipes = state.breakfastRecipes,
-                        markRecipeAsFavourite = { recipe, isFavourite ->
-                            actions(MarkFavourite(recipe, isFavourite))
+                when (item) {
+                    SEARCH_BAR -> SearchBar(modifier = Modifier.padding(horizontal = 8.dp))
+                    BREAKFAST -> {
+                        if (state.breakfastRecipes.isNotEmpty()) {
+                            BreakFastWithHeader(
+                                breakfastRecipes = state.breakfastRecipes,
+                                markRecipeAsFavourite = { recipe, isFavourite ->
+                                    actions(MarkFavourite(recipe, isFavourite))
+                                }
+                            )
                         }
-                    )
-                }
-
-                MoodContent()
-
-                Cuisine()
-
-                PlanYourMealAheadWithHeader()
-
-                if (state.readyInTimeRecipes.isNotEmpty()) {
-                    QuickRecipesWithHeader(
-                        quickRecipes = state.readyInTimeRecipes,
-                        markRecipeAsFavourite = { recipe, isFavourite ->
-                            actions(MarkFavourite(recipe, isFavourite))
+                    }
+                    MOOD -> MoodContent()
+                    CUISINE -> Cuisine()
+                    PLAN_YOUR_MEAL -> PlanYourMealAheadWithHeader()
+                    QUICK_RECIPES -> {
+                        if (state.readyInTimeRecipes.isNotEmpty()) {
+                            QuickRecipesWithHeader(
+                                quickRecipes = state.readyInTimeRecipes,
+                                markRecipeAsFavourite = { recipe, isFavourite ->
+                                    actions(MarkFavourite(recipe, isFavourite))
+                                }
+                            )
                         }
-                    )
-                }
-
-                if (state.recentlyViewedRecipes.isNotEmpty()) {
-                    RecentlyViewedRecipesWithHeader(
-                        recentlyViewedRecipes = state.recentlyViewedRecipes,
-                        markRecipeAsFavourite = { recipe, isFavourite ->
-                            actions(MarkFavourite(recipe, isFavourite))
+                    }
+                    RECENTLY_VIEWED -> {
+                        if (state.recentlyViewedRecipes.isNotEmpty()) {
+                            RecentlyViewedRecipesWithHeader(
+                                recentlyViewedRecipes = state.recentlyViewedRecipes,
+                                markRecipeAsFavourite = { recipe, isFavourite ->
+                                    actions(MarkFavourite(recipe, isFavourite))
+                                }
+                            )
                         }
-                    )
+                    }
                 }
             }
         }
     }
+}
+
+private enum class ExploreItems {
+    SEARCH_BAR,
+    BREAKFAST,
+    MOOD,
+    CUISINE,
+    PLAN_YOUR_MEAL,
+    QUICK_RECIPES,
+    RECENTLY_VIEWED
 }
 
 private val ExposeSearchBarShape = CircleShape
@@ -238,14 +260,8 @@ fun BreakFastWithHeader(
         modifier = Modifier.padding(horizontal = 16.dp)
     )
 
-    val items = if (breakfastRecipes.any { it.isFavourite == true }) {
-        breakfastRecipes.take(4)
-    } else {
-        breakfastRecipes
-    }
-
     Carousel(
-        items = items,
+        items = breakfastRecipes,
         offscreenLimit = 2,
         pageHint = 24.dp,
         drawSelectedPageAtLast = true
@@ -283,23 +299,33 @@ fun MoodContent() {
             .padding(horizontal = 16.dp)
     ) {
 
-        val (text, image) = createRefs()
+        val (box, text, image) = createRefs()
 
         val endGuideline = createGuidelineFromEnd(fraction = 0.05f)
 
         val topGuideline = createGuidelineFromTop(fraction = 0.15f)
 
-        Text(
+        Box(
             modifier = Modifier
-                .constrainAs(text) {
+                .constrainAs(box) {
                     linkTo(start = parent.start, end = endGuideline)
                     linkTo(top = topGuideline, bottom = parent.bottom)
                     width = Dimension.fillToConstraints
+                    height = Dimension.fillToConstraints
                 }
                 .background(
                     color = colorResource(id = com.beetlestance.aphid.base_android.R.color.amber_500),
                     shape = RoundedCornerShape(16.dp)
                 )
+        )
+
+        Text(
+            modifier = Modifier
+                .constrainAs(text) {
+                    linkTo(start = parent.start, end = image.start)
+                    linkTo(top = topGuideline, bottom = parent.bottom)
+                    width = Dimension.fillToConstraints
+                }
                 .padding(16.dp),
             text = "What Are You In Mood For Today ?",
             style = MaterialTheme.typography.h5
@@ -311,6 +337,7 @@ fun MoodContent() {
                     linkTo(start = parent.start, end = parent.end, bias = 1f)
                     width = Dimension.percent(0.2f)
                 }
+                .zIndex(1f)
                 .aspectRatio(1f),
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_cookie),
             contentDescription = "Cookies"
@@ -324,7 +351,9 @@ fun Cuisine() {
     Text(
         text = stringResource(id = R.string.explore_cuisine_header),
         style = MaterialTheme.typography.h6,
-        modifier = Modifier.padding(horizontal = 16.dp)
+        modifier = Modifier
+            .padding(bottom = 16.dp)
+            .padding(horizontal = 16.dp)
     )
 
     LazyRow {
@@ -390,7 +419,9 @@ fun PlanYourMealAheadWithHeader() {
     Text(
         text = stringResource(id = R.string.explore_plan_your_meal_ahead),
         style = MaterialTheme.typography.h6,
-        modifier = Modifier.padding(horizontal = 16.dp)
+        modifier = Modifier
+            .padding(bottom = 16.dp)
+            .padding(horizontal = 16.dp)
     )
 
     Card(
@@ -468,7 +499,7 @@ fun QuickRecipesWithHeader(
                 )
 
                 // Item Spacing
-                Spacer(modifier = Modifier.height(16.dp))
+                // Spacer(modifier = Modifier.height(16.dp))
             }
         )
     }
@@ -521,7 +552,7 @@ fun RecentlyViewedRecipesWithHeader(
                 }
 
                 // Item Spacing
-                Spacer(modifier = Modifier.height(16.dp))
+                // Spacer(modifier = Modifier.height(16.dp))
             }
         )
     }
