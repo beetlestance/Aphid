@@ -49,8 +49,8 @@ digraph {
   ":data-android" -> ":base-android" [style=dotted]
   ":domain" -> ":domain"
   ":domain" -> ":base" [style=dotted]
-  ":domain" -> ":data" [style=dotted]
   ":domain" -> ":base-android" [style=dotted]
+  ":domain" -> ":data" [style=dotted]
   ":domain" -> ":data-android" [style=dotted]
   ":domain" -> ":spoonacular-kotlin" [style=dotted]
   ":feature-chat" -> ":feature-chat"
