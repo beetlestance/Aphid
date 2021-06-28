@@ -71,6 +71,9 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git fetch origin ${{ steps.new_branch_name.outputs.branch }}:${{ steps.new_branch_name.outputs.branch }}
+          git reset --hard ${{ steps.new_branch_name.outputs.branch }}
         with:
           branch: ${{ steps.new_branch_name.outputs.branch }}
           title: Refactored code for branch name ${{ steps.new_branch_name.outputs.branch }}
