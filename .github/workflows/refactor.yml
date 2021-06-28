@@ -48,7 +48,7 @@ jobs:
           branch: ${{ steps.new_branch_name.outputs.branch }}-refactored
 
       - name: Update branch with base branch
-        run: git fetch origin ${{ steps.new_branch_name.outputs.branch }}:${{ steps.new_branch_name.outputs.branch }}--refactored
+        run: git fetch origin ${{ steps.new_branch_name.outputs.branch }}:${{ steps.new_branch_name.outputs.branch }}-refactored
 
       - name: Reformat Code
         run: ./gradlew spotlessApply
