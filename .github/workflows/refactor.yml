@@ -35,20 +35,23 @@ jobs:
       - name: Copy CI gradle.properties
         run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
 
-      - name: Reformat Code
-        run: ./gradlew spotlessApply
-
-      - name: Create branch name
+      - name: Current branch name
         shell: bash
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
         id: new_branch_name
 
-      - name: Create github branch
+      - name: Create new github branch
         uses: peterjgrainger/action-create-branch@v2.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           branch: ${{ steps.new_branch_name.outputs.branch }}-refactored
+
+      - name: Update branch with base branch
+        run: git pull origin/${{ steps.new_branch_name.outputs.branch }}
+
+      - name: Reformat Code
+        run: ./gradlew spotlessApply
 
       - name: Commit refactored code
         uses: stefanzweifel/git-auto-commit-action@v4
