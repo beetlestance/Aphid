@@ -52,6 +52,9 @@ jobs:
 
       - name: Commit refactored code
         uses: stefanzweifel/git-auto-commit-action@v4
+        id: auto-commit-action
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           branch: ${{ steps.new_branch_name.outputs.branch }}-refactored
           commit_message: Spotless Applied, Code Reformatted
@@ -61,6 +64,8 @@ jobs:
       - name: Create Pull Request if changes have been detected
         if: steps.auto-commit-action.outputs.changes_detected == 'true'
         uses: peter-evans/create-pull-request@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           branch: ${{ steps.new_branch_name.outputs.branch }}-refactored
           title: Refactored code for branch name github.head_ref
