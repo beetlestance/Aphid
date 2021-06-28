@@ -57,7 +57,6 @@ jobs:
           commit_message: Spotless Applied, Code Reformatted
           commit_user_name: GitHub Actions
           commit_user_email: actions@github.com
-          commit_author: actions@github.com
 
       - name: Create Pull Request if changes have been detected
         if: steps.auto-commit-action.outputs.changes_detected == 'true'
