@@ -47,6 +47,11 @@ jobs:
         with:
           branch: ${{ steps.new_branch_name.outputs.branch }}-refactored
 
+      - name: Checkout to new branch
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ steps.new_branch_name.outputs.branch }}-refactored
+
       - name: Update branch with base branch
         run: git fetch origin ${{ steps.new_branch_name.outputs.branch }}:${{ steps.new_branch_name.outputs.branch }}-refactored
 
