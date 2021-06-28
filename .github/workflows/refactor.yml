@@ -68,8 +68,8 @@ jobs:
 
       - name: Reset base branch
         run: |
-          git fetch origin ${{ steps.new_branch_name.outputs.branch }}:${{ steps.new_branch_name.outputs.branch }}
-          git reset --hard ${{ steps.new_branch_name.outputs.branch }}
+          git fetch --update-head-ok
+          git pull
 
       - name: Create Pull Request if changes have been detected
         if: steps.auto-commit-action.outputs.changes_detected == 'true'
