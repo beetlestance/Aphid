@@ -61,6 +61,11 @@ jobs:
           commit_user_name: GitHub Actions
           commit_user_email: actions@github.com
 
+      - name: Checkout to base branch
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ steps.new_branch_name.outputs.branch }}
+
       - name: Create Pull Request if changes have been detected
         if: steps.auto-commit-action.outputs.changes_detected == 'true'
         uses: peter-evans/create-pull-request@v3
@@ -68,5 +73,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           branch: ${{ steps.new_branch_name.outputs.branch }}-refactored
-          title: Refactored code for branch name github.head_ref
+          title: Refactored code for branch name ${{ steps.new_branch_name.outputs.branch }}
           body: This is an auto refactored code.
