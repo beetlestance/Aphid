@@ -55,29 +55,10 @@ jobs:
       - name: Reformat Code
         run: ./gradlew spotlessApply
 
-      - name: Commit refactored code
-        uses: stefanzweifel/git-auto-commit-action@v4
-        id: auto-commit-action
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          branch: ${{ steps.new_branch_name.outputs.branch }}-refactored
-          commit_message: Spotless Applied, Code Reformatted
-          commit_user_name: GitHub Actions
-          commit_user_email: actions@github.com
-
-      - name: Reset base branch
-        run: |
-          git fetch origin ${{ steps.new_branch_name.outputs.branch }}:${{ steps.new_branch_name.outputs.branch }}
-          git reset --hard ${{ steps.new_branch_name.outputs.branch }}
-
       - name: Create Pull Request if changes have been detected
-        if: steps.auto-commit-action.outputs.changes_detected == 'true'
         uses: peter-evans/create-pull-request@v3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           branch: ${{ steps.new_branch_name.outputs.branch }}
-          commit-message: Create auto PR for code reformatted
+          commit-message: Spotless Applied, Code Reformatted
           title: Refactored code for branch name ${{ steps.new_branch_name.outputs.branch }}
           body: This is an auto refactored code.
