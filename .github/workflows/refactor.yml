@@ -38,10 +38,15 @@ jobs:
       - name: Reformat Code
         run: ./gradlew spotlessApply
 
+      - name: Create branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: new_branch_name
+
       - name: Commit refactored code
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          branch: github.head_ref-refactored
+          branch: ${{ steps.new_branch_name.outputs.branch }}-refactored
           commit_message: Spotless Applied, Code Reformatted
           commit_user_name: GitHub Actions
           commit_user_email: actions@github.com
@@ -51,6 +56,6 @@ jobs:
         if: steps.auto-commit-action.outputs.changes_detected == 'true'
         uses: peter-evans/create-pull-request@v3
         with:
-          branch: github.head_ref-refactored
+          branch: ${{ steps.new_branch_name.outputs.branch }}-refactored
           title: Refactored code for branch name github.head_ref
           body: This is an auto refactored code.
