@@ -15,7 +15,10 @@
  */
 package com.beetlestance.aphid.common_compose.extensions
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 
 @Composable
 fun <T> rememberMutableState(init: () -> T): MutableState<T> =

@@ -15,9 +15,8 @@
  */
 package com.beetlestance.spoonacular_kotlin
 
-import org.junit.Test
 import com.google.common.truth.Truth.assertThat
-import com.google.common.truth.Truth.assertWithMessage
+import org.junit.Test
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -34,5 +33,4 @@ class ExampleUnitTest {
         assertThat(firstNumberToAdd + secondNumberToAdd)
             .isEqualTo(4)
     }
-
 }

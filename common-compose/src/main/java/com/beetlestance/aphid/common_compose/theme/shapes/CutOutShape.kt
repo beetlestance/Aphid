@@ -198,6 +198,4 @@ class CutOutShape(
     ): Float {
         return -sqrt(square(cutoutRadius) - square(verticalOffset))
     }
-
-
 }

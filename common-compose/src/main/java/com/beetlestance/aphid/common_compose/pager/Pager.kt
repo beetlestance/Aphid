@@ -111,7 +111,6 @@ open class PagerState(
     val currentPageOffset: Float
         get() = _currentPageOffset.value
 
-
     open suspend fun snapToValue(value: Float) {
         val max = if (currentPage == minPage) 0f else 1f
         val min = if (currentPage == maxPage) 0f else -1f
@@ -146,7 +145,7 @@ open class PagerState(
     }
 
     override fun toString(): String = "PagerState{minPage=$minPage, maxPage=$maxPage, " +
-            "currentPage=$currentPage, currentPageOffset=$currentPageOffset}"
+        "currentPage=$currentPage, currentPageOffset=$currentPageOffset}"
 }
 
 @Immutable
