@@ -58,7 +58,7 @@ jobs:
       - name: Create Pull Request if changes have been detected
         uses: peter-evans/create-pull-request@v3
         with:
-          branch: ${{ steps.new_branch_name.outputs.branch }}
+          branch: ${{ steps.new_branch_name.outputs.branch }}-refactored
           commit-message: Spotless Applied, Code Reformatted
           title: Refactored code for branch name ${{ steps.new_branch_name.outputs.branch }}
           body: This is an auto refactored code.
