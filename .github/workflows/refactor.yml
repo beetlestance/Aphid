@@ -51,9 +51,12 @@ jobs:
         run: |
           git fetch origin ${{ steps.new_branch_name.outputs.branch }}:${{ steps.new_branch_name.outputs.branch }}-refactored
           git checkout ${{ steps.new_branch_name.outputs.branch }}-refactored
+          git push origin ${{ steps.new_branch_name.outputs.branch }}-refactored
 
       - name: Reformat Code
-        run: ./gradlew spotlessApply
+        run: |
+          ./gradlew spotlessApply
+          git checkout ${{ steps.new_branch_name.outputs.branch }}
 
       - name: Create Pull Request if changes have been detected
         uses: peter-evans/create-pull-request@v3
