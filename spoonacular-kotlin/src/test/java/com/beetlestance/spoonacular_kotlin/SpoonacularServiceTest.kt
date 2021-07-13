@@ -25,6 +25,6 @@ class SpoonacularServiceTest {
     }
 
     companion object {
-        val API_KEY_PARAM = "TEST_API_KEY"
+        const val API_KEY_PARAM = "TEST_API_KEY"
     }
 }

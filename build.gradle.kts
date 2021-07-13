@@ -25,8 +25,8 @@ buildscript {
 }
 
 plugins {
-    id("com.diffplug.spotless") version "5.12.5"
-    // gradlew dependencyUpdates
+    id("com.diffplug.spotless") version "5.14.1"
+    // gradlew l
     id("com.github.ben-manes.versions") version "0.39.0"
 }
 

@@ -20,7 +20,6 @@ import com.beetlestance.aphid.base_android.AphidViewModel
 import com.beetlestance.aphid.domain.executors.SendMessage
 import com.beetlestance.aphid.domain.invoke
 import com.beetlestance.aphid.domain.observers.ObserveChat
-import com.beetlestance.aphid.domain.watchStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
@@ -31,7 +30,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ChatViewModel @Inject constructor(
     observeChat: ObserveChat,
-    private val fetchMessage: SendMessage
+    private val sendMessage: SendMessage
 ) : AphidViewModel<ChatViewState>(ChatViewState()) {
 
     private val pendingActions = Channel<ChatActions>(Channel.BUFFERED)
@@ -56,16 +55,14 @@ class ChatViewModel @Inject constructor(
 
     private fun sendMessage(action: ChatActions.SendMessage) {
         viewModelScope.launch {
-            fetchMessage(action.message).watchStatus {
-            }
+            sendMessage(action.message)
         }
     }
 
     fun submitAction(action: ChatActions) {
         viewModelScope.launch {
-            if (!pendingActions.isClosedForSend) {
-                pendingActions.send(action)
-            }
+            if (pendingActions.isClosedForSend) return@launch
+            pendingActions.send(action)
         }
     }
 }
