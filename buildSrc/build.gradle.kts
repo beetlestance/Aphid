@@ -22,8 +22,8 @@ plugins {
 @Suppress("UnstableApiUsage")
 java {
     toolchain {
-        // set jvm to 15
-        languageVersion.set(JavaLanguageVersion.of(15))
+        // set jvm to 11
+        languageVersion.set(JavaLanguageVersion.of(11))
     }
 
     consistentResolution {
