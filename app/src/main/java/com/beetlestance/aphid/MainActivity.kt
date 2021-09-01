@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
             bottomBar = {
                 CurveCutNavBar(
                     modifier = Modifier.navigationBarsPadding(),
-                    backgroundColor = MaterialTheme.colors.surface,
+                    backgroundColor = MaterialTheme.colors.background,
                     fabBackgroundColor = MaterialTheme.colors.primarySurface,
                     selectedItem = navItems.indexOf(Screen.Explore),
                     maxItems = navItems.size,
