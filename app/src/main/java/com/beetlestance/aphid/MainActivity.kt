@@ -33,6 +33,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -48,6 +49,7 @@ import com.beetlestance.aphid.common_compose.AndroidIcon
 import com.beetlestance.aphid.common_compose.AphidContent
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutMenuItem
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutNavBar
+import com.beetlestance.aphid.common_compose.theme.AphidTheme
 import com.beetlestance.aphid.feature_chat.Chat
 import com.beetlestance.aphid.feature_explore.Explore
 import com.beetlestance.aphid.feature_profile.Profile
@@ -96,13 +98,13 @@ class MainActivity : AppCompatActivity() {
             bottomBar = {
                 CurveCutNavBar(
                     modifier = Modifier.navigationBarsPadding(),
-                    backgroundColor = MaterialTheme.colors.background,
-                    fabBackgroundColor = MaterialTheme.colors.primarySurface,
+                    backgroundColor = AphidTheme.colors.background,
+                    fabBackgroundColor = AphidTheme.colors.primary,
                     selectedItem = navItems.indexOf(Screen.Explore),
                     maxItems = navItems.size,
                     fabIcon = {
                         val resId = navItems.elementAt(selectedId).iconFilled
-                        val color = MaterialTheme.colors.surface
+                        val color = AphidTheme.colors.surface
                         AndroidIcon(drawableId = resId, tint = color)
                     }
                 ) {
@@ -112,7 +114,7 @@ class MainActivity : AppCompatActivity() {
                         CurveCutMenuItem(
                             content = {
                                 val resId = screen.iconOutlined
-                                val color = MaterialTheme.colors.background
+                                val color = AphidTheme.colors.background
                                 Icon(
                                     imageVector = ImageVector.vectorResource(id = resId),
                                     contentDescription = "SelectedItem",
