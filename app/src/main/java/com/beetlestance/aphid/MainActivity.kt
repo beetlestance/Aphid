@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
             bottomBar = {
                 CurveCutNavBar(
                     modifier = Modifier.navigationBarsPadding(),
-                    backgroundColor = AphidTheme.colors.background,
+                    backgroundColor = MaterialTheme.colors.background,
                     fabBackgroundColor = AphidTheme.colors.primary,
                     selectedItem = navItems.indexOf(Screen.Explore),
                     maxItems = navItems.size,
@@ -114,11 +114,9 @@ class MainActivity : AppCompatActivity() {
                         CurveCutMenuItem(
                             content = {
                                 val resId = screen.iconOutlined
-                                val color = AphidTheme.colors.background
                                 Icon(
                                     imageVector = ImageVector.vectorResource(id = resId),
-                                    contentDescription = "SelectedItem",
-                                    tint = color
+                                    contentDescription = "SelectedItem"
                                 )
                             },
                             index = index,

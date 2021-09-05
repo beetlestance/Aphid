@@ -1,5 +1,6 @@
 package com.beetlestance.aphid.common_compose.theme
 
+import androidx.compose.material.Colors
 import androidx.compose.material.LocalContentColor
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
@@ -79,6 +80,9 @@ class AphidColors(
     var themeStyle by mutableStateOf(themeStyle)
         private set
 
+
+    private fun darkTheme() = themeStyle != AphidThemeStyles.ORIGINAL
+
     fun update(other: AphidColors) {
         primary = other.primary
         primaryVariant = other.primaryVariant
@@ -110,6 +114,22 @@ class AphidColors(
         onError = onError,
         themeStyle = themeStyle
     )
+
+    fun materialColors() = Colors(
+        primary = primary,
+        primaryVariant = primaryVariant,
+        secondary = secondary,
+        secondaryVariant = secondaryVariant,
+        background = background,
+        surface = surface,
+        error = error,
+        onPrimary = onPrimary,
+        onSecondary = onSecondary,
+        onBackground = onBackground,
+        onSurface = onSurface,
+        onError = onError,
+        isLight = darkTheme()
+    )
 }
 
 fun AphidColors.contentColorFor(backgroundColor: Color): Color {
@@ -129,29 +149,6 @@ fun AphidColors.contentColorFor(backgroundColor: Color): Color {
 fun contentColorFor(backgroundColor: Color): Color {
     return AphidTheme.colors.contentColorFor(backgroundColor)
         .takeOrElse { LocalContentColor.current }
-}
-
-@Composable
-fun ProvideAphidColors(
-    themeStyles: AphidThemeStyles,
-    content: @Composable () -> Unit
-) {
-    val colors = when (themeStyles) {
-        AphidThemeStyles.ORIGINAL -> OriginalColorPalette
-    }
-    val rememberedColors = remember {
-        // Explicitly creating a new object here so we don't mutate the initial [colors]
-        // provided, and overwrite the values set in it.
-        colors.copy()
-    }.apply {
-        update(colors)
-    }
-
-    CompositionLocalProvider(
-        LocalAphidColors provides rememberedColors
-    ) {
-        content()
-    }
 }
 
 val LocalAphidColors = staticCompositionLocalOf<AphidColors> {

@@ -26,11 +26,13 @@ import com.google.android.material.composethemeadapter.MdcTheme
 inline fun AphidContent(
     noinline content: @Composable () -> Unit
 ) {
-    // Provides theme
-    AphidTheme {
-        // Provides window insets
-        ProvideWindowInsets {
+
+    // Provides window insets
+    ProvideWindowInsets {
+        // Provides theme
+        AphidTheme {
             content()
         }
     }
+
 }
