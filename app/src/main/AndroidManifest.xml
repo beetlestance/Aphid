@@ -14,6 +14,7 @@
         android:theme="@style/Theme.Aphid">
         <activity
             android:name=".MainActivity"
+            android:exported="false"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

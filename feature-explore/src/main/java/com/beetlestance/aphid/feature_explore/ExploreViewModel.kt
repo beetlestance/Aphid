@@ -16,7 +16,7 @@
 package com.beetlestance.aphid.feature_explore
 
 import androidx.lifecycle.viewModelScope
-import com.beetlestance.aphid.base_android.AphidViewModel
+import com.beetlestance.aphid.base_android.ReduxStateViewModel
 import com.beetlestance.aphid.domain.executors.FetchRecipes
 import com.beetlestance.aphid.domain.executors.MarkRecipeAsFavourite
 import com.beetlestance.aphid.domain.invoke
@@ -39,7 +39,7 @@ internal class ExploreViewModel @Inject constructor(
     observeQuickRecipes: ObserveRecipesWithReadyTime,
     observeRecentlyViewed: ObserveRecentlyViewed,
     private val markRecipeAsFavourite: MarkRecipeAsFavourite
-) : AphidViewModel<ExploreViewState>(ExploreViewState()) {
+) : ReduxStateViewModel<ExploreViewState>(ExploreViewState()) {
 
     private val pendingActions = Channel<ExploreActions>(Channel.BUFFERED)
 

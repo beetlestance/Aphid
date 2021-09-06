@@ -51,8 +51,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -75,6 +75,8 @@ import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import com.beetlestance.aphid.common_compose.RecipeDetailedPosterCard
 import com.beetlestance.aphid.common_compose.pager.Carousel
 import com.beetlestance.aphid.common_compose.pager.PageTransformation
@@ -89,7 +91,6 @@ import com.beetlestance.aphid.feature_explore.ExploreItems.RECENTLY_VIEWED
 import com.beetlestance.aphid.feature_explore.ExploreItems.SEARCH_BAR
 import com.beetlestance.spoonacular_kotlin.SpoonacularImageHelper
 import com.beetlestance.spoonacular_kotlin.constants.SpoonacularImageSize
-import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
@@ -102,7 +103,7 @@ fun Explore(
     paddingValues: PaddingValues = PaddingValues()
 ) {
     val viewModel: ExploreViewModel = hiltViewModel()
-    val state by viewModel.liveData.observeAsState(initial = viewModel.currentState())
+    val state by viewModel.state.collectAsState()
     val actions: (ExploreActions) -> Unit = { action -> viewModel.submitAction(action) }
 
     val contentPadding = PaddingValues(
@@ -241,7 +242,7 @@ fun SearchBar(
             )
 
             Text(
-                text = if (text.isEmpty()) "Search for food" else text,
+                text = text.ifEmpty { "Search for food" },
                 modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = 8.dp),
@@ -300,7 +301,7 @@ fun BreakFastWithHeader(
             title = recipe.title ?: "",
             subTitle = "2 Serving • 40 Min • 331 Cal",
             description =
-                "A unique experience of taste  and delicious ingredients prepared for you. Liven up your life with nutrition."
+            "A unique experience of taste  and delicious ingredients prepared for you. Liven up your life with nutrition."
         ) {
             markRecipeAsFavourite(recipe, it)
         }
@@ -478,6 +479,7 @@ fun PlanYourMealAheadWithHeader() {
     }
 }
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun QuickRecipesWithHeader(
     quickRecipes: List<Recipe>,
@@ -497,9 +499,9 @@ fun QuickRecipesWithHeader(
             onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
             posterImage = {
                 Image(
-                    painter = rememberCoilPainter(
-                        request = recipe.imageUrl ?: EMPTY_URL,
-                        fadeIn = true
+                    painter = rememberImagePainter(
+                        data = recipe.imageUrl ?: EMPTY_URL,
+                        builder = { crossfade(true) }
                     ),
                     modifier = Modifier.aspectRatio(1.5f),
                     contentScale = ContentScale.Crop,
@@ -521,7 +523,7 @@ fun QuickRecipesWithHeader(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalCoilApi::class)
 @Composable
 fun RecentlyViewedRecipesWithHeader(
     recentlyViewedRecipes: List<Recipe>,
@@ -542,9 +544,9 @@ fun RecentlyViewedRecipesWithHeader(
             onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
             posterImage = {
                 Image(
-                    painter = rememberCoilPainter(
-                        request = recipe.imageUrl ?: EMPTY_URL,
-                        fadeIn = true,
+                    painter = rememberImagePainter(
+                        data = recipe.imageUrl ?: EMPTY_URL,
+                        builder = { crossfade(true) },
                     ),
                     modifier = Modifier.aspectRatio(1.5f),
                     contentScale = ContentScale.Crop,

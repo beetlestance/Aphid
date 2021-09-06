@@ -60,8 +60,8 @@ import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -77,6 +77,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.ImageLoader
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import coil.decode.SvgDecoder
 import com.beetlestance.aphid.common_compose.RecipeDetailedPosterCard
 import com.beetlestance.aphid.common_compose.pager.Pager
@@ -87,7 +89,6 @@ import com.beetlestance.aphid.dicebar_kotlin.DiceBarAvatarHelper
 import com.beetlestance.aphid.dicebar_kotlin.sprites.avataar.AvataaarTop
 import com.beetlestance.aphid.dicebar_kotlin.sprites.avataar.AvataaarsConfig
 import com.beetlestance.aphid.dicebar_kotlin.sprites.avataar.AvataaarsSprite
-import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
@@ -102,7 +103,7 @@ fun Profile(
     paddingValues: PaddingValues = PaddingValues()
 ) {
     val viewModel: ProfileViewModel = hiltViewModel()
-    val state by viewModel.liveData.observeAsState(initial = viewModel.currentState())
+    val state by viewModel.state.collectAsState()
     val actions: (ProfileActions) -> Unit = { action -> viewModel.submitAction(action) }
 
     val contentPadding = PaddingValues(
@@ -199,6 +200,7 @@ private fun svgImageLoader(): ImageLoader {
         .build()
 }
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 private fun ProfileAvatar(
     modifier: Modifier = Modifier,
@@ -210,9 +212,9 @@ private fun ProfileAvatar(
         elevation = PROFILE_SHAPE_ELEVATION
     ) {
         Image(
-            painter = rememberCoilPainter(
-                request = avatarUrl,
-                fadeIn = true,
+            painter = rememberImagePainter(
+                data = avatarUrl,
+                builder = { crossfade(true) },
                 imageLoader = svgImageLoader()
             ),
             modifier = Modifier
@@ -421,6 +423,7 @@ private fun SavedRecipes(
     )
 }
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 private fun SavedRecipeCard(
     modifier: Modifier = Modifier,
@@ -433,9 +436,9 @@ private fun SavedRecipeCard(
         onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
         posterImage = {
             Image(
-                painter = rememberCoilPainter(
-                    request = recipe.imageUrl ?: EMPTY_URL,
-                    fadeIn = true
+                painter = rememberImagePainter(
+                    data = recipe.imageUrl ?: EMPTY_URL,
+                    builder = { crossfade(true) }
                 ),
                 modifier = Modifier.aspectRatio(1.46f),
                 contentScale = ContentScale.Crop,
@@ -509,6 +512,7 @@ private fun FavouriteRecipes(
     )
 }
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 private fun FavouriteRecipeCard(
     modifier: Modifier = Modifier,
@@ -521,9 +525,9 @@ private fun FavouriteRecipeCard(
         onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
         posterImage = {
             Image(
-                painter = rememberCoilPainter(
-                    request = recipe.imageUrl ?: EMPTY_URL,
-                    fadeIn = true,
+                painter = rememberImagePainter(
+                    data = recipe.imageUrl ?: EMPTY_URL,
+                    builder = { crossfade(true) }
                 ),
                 modifier = Modifier.aspectRatio(0.7f),
                 contentScale = ContentScale.Crop,

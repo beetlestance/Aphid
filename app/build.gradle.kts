@@ -71,11 +71,11 @@ android {
 
     lint {
         // Disable lintVital. Not needed since lint is run on CI
-        isCheckReleaseBuilds = false
+        checkReleaseBuilds = false
         // Allow lint to check dependencies
-        isCheckDependencies = true
+        checkDependencies = true
         // Ignore any tests
-        isIgnoreTestSources = true
+        ignoreTestSources = true
     }
 
     buildFeatures {
@@ -125,9 +125,6 @@ dependencies {
     // Material Design
     implementation(libs.google.material.core)
     implementation(libs.google.material.compose.theme.adapter)
-
-    // Lifecycle
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     // Hilt
     implementation(libs.google.hilt.android)

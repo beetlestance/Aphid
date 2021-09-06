@@ -57,13 +57,14 @@ import androidx.core.graphics.blue
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.green
 import androidx.core.graphics.red
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import com.beetlestance.aphid.base_android.R
 import com.beetlestance.aphid.common_compose.DynamicThemePrimaryColorsFromImage
 import com.beetlestance.aphid.common_compose.extensions.contrastAgainst
 import com.beetlestance.aphid.common_compose.extensions.getBitmap
 import com.beetlestance.aphid.common_compose.extensions.rememberMutableState
 import com.beetlestance.aphid.common_compose.rememberDominantColorState
-import com.google.accompanist.imageloading.rememberDrawablePainter
 
 /**
  * This is the minimum amount of calculated contrast for a color to be used on top of the
@@ -72,6 +73,7 @@ import com.google.accompanist.imageloading.rememberDrawablePainter
  */
 private const val MinContrastOfPrimaryVsSurface = 3f
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun ExploreBreakfastCard(
     modifier: Modifier = Modifier,
@@ -141,7 +143,7 @@ fun ExploreBreakfastCard(
                     elevation = 16.dp
                 ) {
                     Image(
-                        painter = rememberDrawablePainter(drawable = drawable.value),
+                        painter = rememberImagePainter(data = drawable.value),
                         contentScale = ContentScale.Crop,
                         contentDescription = "BreakFastCard"
                     )

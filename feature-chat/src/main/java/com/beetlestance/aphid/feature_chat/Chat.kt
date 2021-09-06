@@ -47,8 +47,8 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -66,9 +66,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import com.beetlestance.aphid.base.CHAT_MESSAGE_ANSWER
 import com.beetlestance.aphid.data.entities.Chat
-import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.imePadding
 import com.google.accompanist.insets.statusBarsPadding
@@ -79,7 +80,7 @@ fun Chat(
     paddingValues: PaddingValues = PaddingValues()
 ) {
     val viewModel: ChatViewModel = hiltViewModel()
-    val state by viewModel.liveData.observeAsState(initial = viewModel.currentState())
+    val state by viewModel.state.collectAsState()
     val action: (ChatActions) -> Unit = { action -> viewModel.submitAction(action) }
 
     val isImeVisible = LocalWindowInsets.current.ime.isVisible
@@ -185,6 +186,7 @@ fun ChatListing(
     )
 }
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun AskedQuestionsItem(question: Chat) {
     if (question.message.isNullOrBlank()) return
@@ -208,7 +210,7 @@ fun AskedQuestionsItem(question: Chat) {
 
                 // TODO: Load user image here
                 Image(
-                    painter = rememberCoilPainter(request = ""),
+                    painter = rememberImagePainter(""),
                     contentDescription = "User Avatar",
                     modifier = Modifier
                         .height(64.dp)
@@ -229,6 +231,7 @@ fun AskedQuestionsItem(question: Chat) {
     }
 }
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun ReplyItem(answer: Chat) {
     Surface(
@@ -241,7 +244,7 @@ fun ReplyItem(answer: Chat) {
             ) {
 
                 Image(
-                    painter = rememberCoilPainter(request = R.drawable.ic_chat_bot),
+                    painter = rememberImagePainter(R.drawable.ic_chat_bot),
                     contentDescription = "Chat Bot",
                     modifier = Modifier
                         .height(64.dp)
@@ -258,7 +261,7 @@ fun ReplyItem(answer: Chat) {
 
                 if (answer.image.isNullOrBlank().not()) {
                     Image(
-                        painter = rememberCoilPainter(request = answer.image ?: ""),
+                        painter = rememberImagePainter(answer.image ?: ""),
                         contentDescription = "Image Result For Given Query",
                         modifier = Modifier
                             .fillMaxHeight()

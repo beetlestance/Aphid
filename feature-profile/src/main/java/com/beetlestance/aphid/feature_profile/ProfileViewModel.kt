@@ -16,7 +16,7 @@
 package com.beetlestance.aphid.feature_profile
 
 import androidx.lifecycle.viewModelScope
-import com.beetlestance.aphid.base_android.AphidViewModel
+import com.beetlestance.aphid.base_android.ReduxStateViewModel
 import com.beetlestance.aphid.domain.executors.MarkRecipeAsFavourite
 import com.beetlestance.aphid.domain.observers.ObserveFavouriteRecipes
 import com.beetlestance.aphid.domain.observers.ObserveSavedRecipes
@@ -32,7 +32,7 @@ internal class ProfileViewModel @Inject constructor(
     observeSavedRecipes: ObserveSavedRecipes,
     observeFavouriteRecipes: ObserveFavouriteRecipes,
     private val markRecipeAsFavourite: MarkRecipeAsFavourite
-) : AphidViewModel<ProfileViewState>(ProfileViewState()) {
+) : ReduxStateViewModel<ProfileViewState>(ProfileViewState()) {
 
     private val pendingActions = Channel<ProfileActions>(Channel.BUFFERED)
 
