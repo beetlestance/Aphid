@@ -60,4 +60,9 @@ dependencies {
     // Hilt Nav ViewModel
     api(libs.androidx.hilt.navigation.compose)
 
+    // Compose ViewModel Extensions
+    api(libs.androidx.lifecycle.viewmodel.compose)
+
+    // Coil
+    api(libs.coil.compose)
 }

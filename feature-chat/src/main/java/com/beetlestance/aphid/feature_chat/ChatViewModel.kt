@@ -16,7 +16,7 @@
 package com.beetlestance.aphid.feature_chat
 
 import androidx.lifecycle.viewModelScope
-import com.beetlestance.aphid.base_android.AphidViewModel
+import com.beetlestance.aphid.base_android.ReduxStateViewModel
 import com.beetlestance.aphid.domain.executors.SendMessage
 import com.beetlestance.aphid.domain.invoke
 import com.beetlestance.aphid.domain.observers.ObserveChat
@@ -31,7 +31,7 @@ import javax.inject.Inject
 class ChatViewModel @Inject constructor(
     observeChat: ObserveChat,
     private val sendMessage: SendMessage
-) : AphidViewModel<ChatViewState>(ChatViewState()) {
+) : ReduxStateViewModel<ChatViewState>(ChatViewState()) {
 
     private val pendingActions = Channel<ChatActions>(Channel.BUFFERED)
 

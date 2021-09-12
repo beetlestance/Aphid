@@ -15,9 +15,9 @@ buildscript {
         val libs = project.extensions.getByType<VersionCatalogsExtension>()
             .named("libs") as org.gradle.accessors.dm.LibrariesForLibs
 
-        classpath(libs.android.gradle.plugin)
-        classpath(libs.kotlin.gradle.plugin)
-        classpath(libs.google.hilt.gradle.plugin)
+        classpath(libs.android.tools.build.gradle)
+        classpath(libs.kotlin.gradle)
+        classpath(libs.google.hilt.gradle)
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle.kts files
@@ -25,7 +25,7 @@ buildscript {
 }
 
 plugins {
-    id("com.diffplug.spotless") version "5.14.1"
+    id("com.diffplug.spotless") version "5.15.0"
     // gradlew dependencyUpdates
     id("com.github.ben-manes.versions") version "0.39.0"
 }

@@ -34,8 +34,7 @@ dependencies {
     androidTestImplementation(libs.androidx.test.espresso.core)
 
     // AndroidX
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
+    api(libs.androidx.lifecycle.viewmodel.ktx)
 
     // Material Design
     implementation(libs.google.material.core)

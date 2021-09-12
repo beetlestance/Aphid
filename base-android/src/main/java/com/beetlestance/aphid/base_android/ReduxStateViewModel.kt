@@ -15,13 +15,13 @@
  */
 package com.beetlestance.aphid.base_android
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -30,35 +30,27 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlin.reflect.KProperty1
 
-abstract class AphidViewModel<S>(
+abstract class ReduxStateViewModel<S>(
     initialState: S
 ) : ViewModel() {
-    private val state = MutableStateFlow(initialState)
+    private val _state = MutableStateFlow(initialState)
     private val stateMutex = Mutex()
 
     /**
      * Returns a snapshot of the current state.
      */
-    fun currentState(): S = state.value
-
-    /**
-     * Returns state as livedata
-     */
-    val liveData: LiveData<S>
-        get() = state.asLiveData()
+    val state: StateFlow<S>
+        get() = _state.asStateFlow()
 
     /**
      * Extension function to collect and set state
      */
-    protected suspend fun <T> Flow<T>.collectAndSetState(reducer: S.(T) -> S) {
-        return collect { item -> setState { reducer(item) } }
-    }
+    protected suspend inline fun <reified T> Flow<T>.collectAndSetState(
+        crossinline reducer: suspend S.(T) -> S
+    ) = collect { item -> setState { reducer(item) } }
 
-    /**
-     * Return livedata for a specific property in state for changes
-     */
-    fun <A> selectObserve(prop1: KProperty1<S, A>): LiveData<A> {
-        return selectSubscribe(prop1).asLiveData()
+    fun <A> selectObserve(prop1: KProperty1<S, A>): Flow<A> {
+        return selectSubscribe(prop1)
     }
 
     /**
@@ -66,7 +58,7 @@ abstract class AphidViewModel<S>(
      */
     protected fun subscribe(block: (S) -> Unit) {
         viewModelScope.launch {
-            state.collect { block(it) }
+            _state.collect { block(it) }
         }
     }
 
@@ -80,23 +72,23 @@ abstract class AphidViewModel<S>(
     }
 
     private fun <A> selectSubscribe(prop1: KProperty1<S, A>): Flow<A> {
-        return state.map { prop1.get(it) }.distinctUntilChanged()
+        return _state.map { prop1.get(it) }.distinctUntilChanged()
     }
 
     /**
      * Updates the state of view model
      */
-    protected suspend fun setState(reducer: S.() -> S) {
+    protected suspend fun setState(reducer: suspend S.() -> S) {
         stateMutex.withLock {
-            state.value = reducer(state.value)
+            _state.value = reducer(_state.value)
         }
     }
 
     /**
      * Provide a launch block with state update
      */
-    protected fun CoroutineScope.launchSetState(reducer: S.() -> S) {
-        launch { this@AphidViewModel.setState(reducer) }
+    protected fun CoroutineScope.launchSetState(reducer: suspend S.() -> S) {
+        launch { this@ReduxStateViewModel.setState(reducer) }
     }
 
     /**
@@ -104,7 +96,7 @@ abstract class AphidViewModel<S>(
      */
     protected suspend fun withState(block: (S) -> Unit) {
         stateMutex.withLock {
-            block(state.value)
+            block(_state.value)
         }
     }
 
@@ -112,6 +104,6 @@ abstract class AphidViewModel<S>(
      * Scope extension to perform [block] on current state
      */
     protected fun CoroutineScope.withState(block: (S) -> Unit) {
-        launch { this@AphidViewModel.withState(block) }
+        launch { this@ReduxStateViewModel.withState(block) }
     }
 }
