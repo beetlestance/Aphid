@@ -81,6 +81,7 @@ import com.beetlestance.aphid.common_compose.RecipeDetailedPosterCard
 import com.beetlestance.aphid.common_compose.pager.Carousel
 import com.beetlestance.aphid.common_compose.pager.PageTransformation
 import com.beetlestance.aphid.common_compose.pager.Pager
+import com.beetlestance.aphid.common_compose.theme.*
 import com.beetlestance.aphid.data.entities.Recipe
 import com.beetlestance.aphid.feature_explore.ExploreItems.BREAKFAST
 import com.beetlestance.aphid.feature_explore.ExploreItems.CUISINE
@@ -331,7 +332,7 @@ fun MoodContent() {
                     height = Dimension.fillToConstraints
                 }
                 .background(
-                    color = colorResource(id = com.beetlestance.aphid.base_android.R.color.amber_500),
+                    color = Amber500,
                     shape = RoundedCornerShape(16.dp)
                 )
         )
@@ -405,7 +406,7 @@ fun CuisineCard() {
         shape = CircleShape,
         border = BorderStroke(
             2.dp,
-            colorResource(id = com.beetlestance.aphid.base_android.R.color.purple_600)
+            Purple200
         )
     ) {
         Image(
@@ -447,7 +448,7 @@ fun PlanYourMealAheadWithHeader() {
             .padding(horizontal = 16.dp),
         shape = RoundedCornerShape(16.dp),
         elevation = 4.dp,
-        backgroundColor = colorResource(id = com.beetlestance.aphid.base_android.R.color.gun_powder)
+        backgroundColor = GunPowder
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween
@@ -591,13 +592,13 @@ fun FoodCardContentsDetails(
         Text(
             text = contentTags,
             style = MaterialTheme.typography.body2,
-            color = colorResource(id = com.beetlestance.aphid.base_android.R.color.grey_700)
+            color = Grey700
         )
 
         Text(
             modifier = Modifier
                 .background(
-                    color = colorResource(id = com.beetlestance.aphid.base_android.R.color.deep_orange_a200),
+                    color = DeepOrange200,
                     shape = RoundedCornerShape(10.dp)
                 )
                 .padding(horizontal = 12.dp, vertical = 2.dp),

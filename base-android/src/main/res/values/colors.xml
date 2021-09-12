@@ -1,39 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--Color palette-->
-
-    <color name="purple_200">#bb86fc</color> <!--Color primary (dark)-->
-    <color name="deep_orange_a200">#F8673E</color> <!--Color primary (light)-->
-
-    <color name="purple_600">#4b01d0</color> <!--Color primary variant (dark)-->
-    <color name="amber_500">#FEC813</color> <!--Color primary variant (light)-->
-
-    <color name="green_a200">#52DE97</color> <!--Color secondary-->
-    <color name="teal_700">#FF018786</color> <!--Color secondary variant-->
-
-    <color name="red_200">#cf6679</color> <!--Color error (dark)-->
-    <color name="red_600">#b00020</color> <!--Color error (light)-->
-
-    <!--Color surface (light), color on error (light), -->
-    <!--color on surface (dark), color on surface (dark)-->
-    <color name="white_50">#ffffff</color>
-
-    <color name="black_800">#121212</color> <!--Color surface (dark)-->
-    <!--Color on secondary (light), color on background (light),-->
-    <!--color on surface (light)-->
-    <color name="black_900">#000000</color>
-
-
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-
-    <color name="grey_400_alpha_30">#4DC4C4C4</color>
-
-    <color name="grey_700">#696969</color>
-
-    <color name="gun_powder">#3F3D56</color>
-
     <!--
 
    100% — FF

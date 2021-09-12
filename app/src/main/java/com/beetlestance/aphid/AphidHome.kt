@@ -49,12 +49,12 @@ private fun HomeBottomNavigation(
     CurveCutNavBar(
         modifier = Modifier.navigationBarsPadding(),
         backgroundColor = MaterialTheme.colors.background,
-        fabBackgroundColor = AphidTheme.colors.primary,
+        fabBackgroundColor = MaterialTheme.colors.primary,
         selectedItem = HomeBottomNavigationItems.indexOfFirst { it.screen == currentSelectedScreen },
         maxItems = HomeBottomNavigationItems.size,
         fabIcon = {
             val resId = HomeBottomNavigationItems.elementAt(selectedId).selectedIconRes
-            val color = AphidTheme.colors.surface
+            val color = MaterialTheme.colors.surface
             AndroidIcon(drawableId = resId, tint = color)
         }
     ) {

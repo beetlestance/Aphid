@@ -43,6 +43,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.beetlestance.aphid.base_android.R
+import com.beetlestance.aphid.common_compose.theme.DeepOrange200
+import com.beetlestance.aphid.common_compose.theme.Grey400_A30
+import com.beetlestance.aphid.common_compose.theme.White
 
 @Composable
 fun RecipeDetailedPosterCard(
@@ -115,13 +118,13 @@ fun MarkFavouriteButton(
             .padding(16.dp)
             .background(
                 shape = CircleShape,
-                color = colorResource(id = R.color.grey_400_alpha_30)
+                color = Grey400_A30
             ),
         content = {
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.ic_like),
                 tint = animateColorAsState(
-                    targetValue = colorResource(if (isFavourite) R.color.deep_orange_a200 else R.color.white)
+                    targetValue = if (isFavourite) DeepOrange200 else White
                 ).value,
                 contentDescription = "Mark As Favourite Recipe"
             )

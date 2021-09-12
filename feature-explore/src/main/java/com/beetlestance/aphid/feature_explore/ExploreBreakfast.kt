@@ -65,6 +65,9 @@ import com.beetlestance.aphid.common_compose.extensions.contrastAgainst
 import com.beetlestance.aphid.common_compose.extensions.getBitmap
 import com.beetlestance.aphid.common_compose.extensions.rememberMutableState
 import com.beetlestance.aphid.common_compose.rememberDominantColorState
+import com.beetlestance.aphid.common_compose.theme.DeepOrange200
+import com.beetlestance.aphid.common_compose.theme.Grey400_A30
+import com.beetlestance.aphid.common_compose.theme.White
 
 /**
  * This is the minimum amount of calculated contrast for a color to be used on top of the
@@ -194,13 +197,13 @@ fun FavIcon(
             modifier = modifier
                 .background(
                     shape = CircleShape,
-                    color = colorResource(id = R.color.grey_400_alpha_30)
+                    color = Grey400_A30
                 ),
             content = {
                 Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_like),
                     tint = animateColorAsState(
-                        targetValue = colorResource(if (isFavourite) R.color.deep_orange_a200 else R.color.white)
+                        targetValue = if (isFavourite) DeepOrange200 else White
                     ).value,
                     contentDescription = "Mark As Favourite Recipe"
                 )
