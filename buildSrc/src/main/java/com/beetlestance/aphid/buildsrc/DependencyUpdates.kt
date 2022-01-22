@@ -1,6 +1,6 @@
 package com.beetlestance.aphid.buildsrc
 
-import java.util.*
+import java.util.Locale
 
 enum class ReleaseType(private val level: Int) {
     SNAPSHOT(0),

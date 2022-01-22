@@ -64,7 +64,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -81,7 +80,11 @@ import com.beetlestance.aphid.common_compose.RecipeDetailedPosterCard
 import com.beetlestance.aphid.common_compose.pager.Carousel
 import com.beetlestance.aphid.common_compose.pager.PageTransformation
 import com.beetlestance.aphid.common_compose.pager.Pager
-import com.beetlestance.aphid.common_compose.theme.*
+import com.beetlestance.aphid.common_compose.theme.Amber500
+import com.beetlestance.aphid.common_compose.theme.DeepOrange200
+import com.beetlestance.aphid.common_compose.theme.Grey700
+import com.beetlestance.aphid.common_compose.theme.GunPowder
+import com.beetlestance.aphid.common_compose.theme.Purple200
 import com.beetlestance.aphid.data.entities.Recipe
 import com.beetlestance.aphid.feature_explore.ExploreItems.BREAKFAST
 import com.beetlestance.aphid.feature_explore.ExploreItems.CUISINE
