@@ -78,6 +78,8 @@ android {
         checkDependencies = true
         // Ignore any tests
         ignoreTestSources = true
+        // Generate reports only
+        abortOnError = false
     }
 
     buildFeatures {
