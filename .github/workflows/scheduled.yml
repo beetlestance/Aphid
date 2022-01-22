@@ -2,7 +2,7 @@ name: Project Dependency Updates
 
 on:
   schedule:
-    - cron:  '0 0 * * SAT'
+    - cron: '0 0 * * FRI'
 
 jobs:
   build:
@@ -10,6 +10,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - with:
+          ref: develop
+
 
       - name: set up JDK 11
         uses: actions/setup-java@v1
