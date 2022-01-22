@@ -305,7 +305,7 @@ fun BreakFastWithHeader(
             title = recipe.title ?: "",
             subTitle = "2 Serving • 40 Min • 331 Cal",
             description =
-            "A unique experience of taste  and delicious ingredients prepared for you. Liven up your life with nutrition."
+                "A unique experience of taste  and delicious ingredients prepared for you. Liven up your life with nutrition."
         ) {
             markRecipeAsFavourite(recipe, it)
         }
