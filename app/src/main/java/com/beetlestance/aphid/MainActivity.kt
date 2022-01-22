@@ -19,7 +19,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.WindowCompat
 import com.beetlestance.aphid.common_compose.theme.AphidTheme
@@ -62,7 +61,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
     }
-
 }
