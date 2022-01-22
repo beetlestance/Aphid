@@ -40,8 +40,8 @@ dependencies {
 
     // Testing
     testImplementation(libs.test.junit.core)
+    testImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.androidx.test.espresso.core)
 
     // Remove when animated vector drawable support
     implementation(libs.androidx.appcompat)

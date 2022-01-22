@@ -10,14 +10,9 @@ buildscript {
     }
 
     dependencies {
-        @Suppress("UnstableApiUsage")
-        // https://github.com/gradle/gradle/issues/16958
-        val libs = project.extensions.getByType<VersionCatalogsExtension>()
-            .named("libs") as org.gradle.accessors.dm.LibrariesForLibs
-
-        classpath(libs.android.tools.build.gradle)
-        classpath(libs.kotlin.gradle)
-        classpath(libs.google.hilt.gradle)
+        classpath("com.android.tools.build:gradle:7.2.0-alpha07")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.38.1")
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle.kts files
