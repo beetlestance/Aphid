@@ -38,6 +38,13 @@ jobs:
 
       - name: Build and check
         run: ./gradlew spotlessCheck assemble bundle lintDebug testDebug --scan --stacktrace
+        
+      - name: Upload build reports
+        if: always()
+        uses: actions/upload-artifact@v1
+        with:
+          name: build-reports
+          path: app/build/reports
 
       - name: Clean secrets
         if: always()
