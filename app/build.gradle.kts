@@ -70,6 +70,7 @@ android {
     }
 
     lint {
+        baseline = file("lint-baseline.xml")
         // Disable lintVital. Not needed since lint is run on CI
         checkReleaseBuilds = false
         // Allow lint to check dependencies
