@@ -38,7 +38,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
