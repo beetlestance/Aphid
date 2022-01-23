@@ -3,11 +3,6 @@ plugins {
 }
 
 /*
-* Enable Version catalogs for centralized dependency
-*  https://docs.gradle.org/7.0.2/userguide/platforms.html#sub:central-declaration-of-dependencies
-*/
-enableFeaturePreview("VERSION_CATALOGS")
-/*
 * Enable type-safe project access
 *
     dependencies {

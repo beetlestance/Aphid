@@ -69,6 +69,11 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
     lint {
         // Disable lintVital. Not needed since lint is run on CI
         checkReleaseBuilds = false
