@@ -41,6 +41,11 @@ subprojects {
             /* ./gradlew spotlessApply */
             licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
         }
+
+        kotlinGradle {
+            target("*.gradle.kts") // default target for kotlinGradle
+            ktlint(libs.versions.ktlint.get())
+        }
     }
 
     tasks.withType<JavaCompile> {
