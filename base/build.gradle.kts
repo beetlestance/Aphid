@@ -22,7 +22,4 @@ dependencies {
 
     // Retrofit
     api(libs.retrofit.core)
-
-    // Timber
-    api(libs.timber)
 }

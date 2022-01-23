@@ -17,7 +17,7 @@ package com.beetlestance.aphid.common_compose.extensions
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import coil.Coil
+import coil.imageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 
@@ -31,7 +31,7 @@ suspend fun getBitmap(
         .allowHardware(false)
         .build()
 
-    val imageResult = Coil.execute(request)
+    val imageResult = context.imageLoader.execute(request)
 
     return if (imageResult is SuccessResult) {
         imageResult.drawable

@@ -34,6 +34,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.graphics.drawable.toBitmap
 import androidx.palette.graphics.Palette
 import coil.Coil
+import coil.imageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import coil.size.Scale
@@ -173,7 +174,7 @@ private suspend fun calculateSwatchesInImage(
         .allowHardware(false)
         .build()
 
-    val bitmap: Bitmap? = when (val result = Coil.execute(r)) {
+    val bitmap: Bitmap? = when (val result = context.imageLoader.execute(r)) {
         is SuccessResult -> result.drawable.toBitmap()
         else -> null
     }

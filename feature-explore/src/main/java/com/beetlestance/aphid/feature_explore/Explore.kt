@@ -16,7 +16,6 @@
 package com.beetlestance.aphid.feature_explore
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -63,6 +62,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
@@ -74,8 +74,8 @@ import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.beetlestance.aphid.common_compose.RecipeDetailedPosterCard
 import com.beetlestance.aphid.common_compose.pager.Carousel
 import com.beetlestance.aphid.common_compose.pager.PageTransformation
@@ -305,7 +305,7 @@ fun BreakFastWithHeader(
             title = recipe.title ?: "",
             subTitle = "2 Serving • 40 Min • 331 Cal",
             description =
-                "A unique experience of taste  and delicious ingredients prepared for you. Liven up your life with nutrition."
+            "A unique experience of taste  and delicious ingredients prepared for you. Liven up your life with nutrition."
         ) {
             markRecipeAsFavourite(recipe, it)
         }
@@ -483,7 +483,6 @@ fun PlanYourMealAheadWithHeader() {
     }
 }
 
-@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun QuickRecipesWithHeader(
     quickRecipes: List<Recipe>,
@@ -503,9 +502,11 @@ fun QuickRecipesWithHeader(
             onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
             posterImage = {
                 Image(
-                    painter = rememberImagePainter(
-                        data = recipe.imageUrl ?: EMPTY_URL,
-                        builder = { crossfade(true) }
+                    painter = rememberAsyncImagePainter(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(data = recipe.imageUrl ?: EMPTY_URL)
+                            .crossfade(true)
+                            .build()
                     ),
                     modifier = Modifier.aspectRatio(1.5f),
                     contentScale = ContentScale.Crop,
@@ -527,7 +528,6 @@ fun QuickRecipesWithHeader(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class, ExperimentalCoilApi::class)
 @Composable
 fun RecentlyViewedRecipesWithHeader(
     recentlyViewedRecipes: List<Recipe>,
@@ -548,9 +548,11 @@ fun RecentlyViewedRecipesWithHeader(
             onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
             posterImage = {
                 Image(
-                    painter = rememberImagePainter(
-                        data = recipe.imageUrl ?: EMPTY_URL,
-                        builder = { crossfade(true) },
+                    painter = rememberAsyncImagePainter(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(data = recipe.imageUrl ?: EMPTY_URL)
+                            .crossfade(true)
+                            .build()
                     ),
                     modifier = Modifier.aspectRatio(1.5f),
                     contentScale = ContentScale.Crop,

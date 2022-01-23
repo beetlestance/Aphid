@@ -8,8 +8,8 @@ buildscript {
 
     dependencies {
         classpath("com.android.tools.build:gradle:7.2.0-alpha07")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:2.38.1")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.40.5")
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle.kts files
@@ -17,9 +17,9 @@ buildscript {
 }
 
 plugins {
-    id("com.diffplug.spotless") version "5.15.0"
+    id("com.diffplug.spotless") version "6.2.0"
     // gradlew dependencyUpdates
-    id("com.github.ben-manes.versions") version "0.39.0"
+    id("com.github.ben-manes.versions") version "0.41.0"
 }
 
 subprojects {
@@ -76,6 +76,7 @@ subprojects {
 
             freeCompilerArgs = freeCompilerArgs + listOf(
                 "-Xopt-in=kotlin.Experimental",
+                "-Xopt-in=kotlin.RequiresOptIn",
                 "-Xjvm-default=all"
             )
 

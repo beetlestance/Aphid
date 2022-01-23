@@ -82,10 +82,6 @@ android {
         compose = true
     }
 
-    hilt {
-        enableAggregatingTask = true
-    }
-
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.androidx.compose.get()
     }

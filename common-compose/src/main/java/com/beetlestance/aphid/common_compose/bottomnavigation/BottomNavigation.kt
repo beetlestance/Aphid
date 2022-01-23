@@ -16,7 +16,6 @@
 package com.beetlestance.aphid.common_compose.bottomnavigation
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateDpAsState
@@ -66,7 +65,6 @@ import com.beetlestance.aphid.common_compose.theme.shapes.CutOutShape
  *  @see <a href="https://in.pinterest.com/pin/648729521319201054/">Inspired By</a>
  *  @see <a href="https://medium.com/swlh/curved-cut-out-bottom-navigation-with-animation-in-android-c630c867958c">Cut out shape reference</a>
  */
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun CurveCutNavBar(
     modifier: Modifier = Modifier,
@@ -161,7 +159,6 @@ fun CurveCutNavBar(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun CurveCutNavBarScope.CurveCutMenuItem(
     modifier: Modifier = Modifier,
@@ -280,6 +277,7 @@ private class FabPlacement(
 )
 
 @Composable
+@Suppress("SameParameterValue")
 private fun animateBounce(
     startOffset: Dp,
     peak: Dp,

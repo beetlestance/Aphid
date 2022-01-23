@@ -1,10 +1,15 @@
 plugins {
     id("kotlin")
     id("com.android.lint")
+    id("com.google.devtools.ksp").version("1.6.10-1.0.2")
     kotlin("kapt")
 }
 
 val spoonacularKey = project.findProperty("SPOONACULAR_API_KEY")
+
+ksp {
+    arg("moshi.generateProguardRules", "false")
+}
 
 kapt {
     correctErrorTypes = true
@@ -31,6 +36,7 @@ dependencies {
     implementation(libs.retrofit.converter.moshi)
 
     //Moshi
+    ksp(libs.moshi.kotlin.codegen)
     implementation(libs.bundles.moshi)
 
     // Ok-Http

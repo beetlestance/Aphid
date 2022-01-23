@@ -38,4 +38,7 @@ dependencies {
 
     // Material Design
     implementation(libs.google.material.core)
+
+    // Timber
+    api(libs.timber)
 }

@@ -66,8 +66,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import com.beetlestance.aphid.base.CHAT_MESSAGE_ANSWER
 import com.beetlestance.aphid.data.entities.Chat
 import com.google.accompanist.insets.LocalWindowInsets
@@ -133,7 +132,7 @@ private fun Chat(
                     modifier = Modifier
                         .fillMaxSize()
                 ) {
-                    if (state.messages.isNullOrEmpty()) {
+                    if (state.messages.isEmpty()) {
                         EmptyChat(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -186,7 +185,6 @@ fun ChatListing(
     )
 }
 
-@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun AskedQuestionsItem(question: Chat) {
     if (question.message.isNullOrBlank()) return
@@ -210,7 +208,7 @@ fun AskedQuestionsItem(question: Chat) {
 
                 // TODO: Load user image here
                 Image(
-                    painter = rememberImagePainter(""),
+                    painter = rememberAsyncImagePainter(""),
                     contentDescription = "User Avatar",
                     modifier = Modifier
                         .height(64.dp)
@@ -231,7 +229,6 @@ fun AskedQuestionsItem(question: Chat) {
     }
 }
 
-@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun ReplyItem(answer: Chat) {
     Surface(
@@ -244,7 +241,7 @@ fun ReplyItem(answer: Chat) {
             ) {
 
                 Image(
-                    painter = rememberImagePainter(R.drawable.ic_chat_bot),
+                    painter = rememberAsyncImagePainter(R.drawable.ic_chat_bot),
                     contentDescription = "Chat Bot",
                     modifier = Modifier
                         .height(64.dp)
@@ -261,7 +258,7 @@ fun ReplyItem(answer: Chat) {
 
                 if (answer.image.isNullOrBlank().not()) {
                     Image(
-                        painter = rememberImagePainter(answer.image ?: ""),
+                        painter = rememberAsyncImagePainter(answer.image ?: ""),
                         contentDescription = "Image Result For Given Query",
                         modifier = Modifier
                             .fillMaxHeight()
