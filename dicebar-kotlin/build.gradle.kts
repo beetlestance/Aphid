@@ -19,13 +19,13 @@ dependencies {
     // Testing
     testImplementation(libs.test.junit.core)
 
-    //Annotations
+    // Annotations
     implementation(libs.androidx.annotation)
 
     // Kotlin
     implementation(libs.kotlin.stdlib.jdk8)
 
-    //Moshi
+    // Moshi
     ksp(libs.moshi.kotlin.codegen)
     implementation(libs.bundles.moshi)
 

@@ -25,7 +25,7 @@ dependencies {
     testImplementation(libs.test.junit.core)
     testImplementation(libs.google.truth)
 
-    //Annotations
+    // Annotations
     implementation(libs.androidx.annotation)
 
     // Kotlin
@@ -35,7 +35,7 @@ dependencies {
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.converter.moshi)
 
-    //Moshi
+    // Moshi
     ksp(libs.moshi.kotlin.codegen)
     implementation(libs.bundles.moshi)
 
