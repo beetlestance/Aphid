@@ -77,9 +77,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.ImageLoader
-import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import coil.decode.SvgDecoder
+import coil.request.ImageRequest
 import com.beetlestance.aphid.common_compose.RecipeDetailedPosterCard
 import com.beetlestance.aphid.common_compose.pager.Pager
 import com.beetlestance.aphid.common_compose.pager.PagerState
@@ -194,13 +194,10 @@ private val PROFILE_SHAPE_ELEVATION = 2.dp
 @Composable
 private fun svgImageLoader(): ImageLoader {
     return ImageLoader.Builder(LocalContext.current)
-        .componentRegistry {
-            add(SvgDecoder(LocalContext.current))
-        }
+        .components { add(SvgDecoder.Factory()) }
         .build()
 }
 
-@OptIn(ExperimentalCoilApi::class)
 @Composable
 private fun ProfileAvatar(
     modifier: Modifier = Modifier,
@@ -212,9 +209,11 @@ private fun ProfileAvatar(
         elevation = PROFILE_SHAPE_ELEVATION
     ) {
         Image(
-            painter = rememberImagePainter(
-                data = avatarUrl,
-                builder = { crossfade(true) },
+            painter = rememberAsyncImagePainter(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(avatarUrl)
+                    .crossfade(true)
+                    .build(),
                 imageLoader = svgImageLoader()
             ),
             modifier = Modifier
@@ -423,7 +422,6 @@ private fun SavedRecipes(
     )
 }
 
-@OptIn(ExperimentalCoilApi::class)
 @Composable
 private fun SavedRecipeCard(
     modifier: Modifier = Modifier,
@@ -436,9 +434,11 @@ private fun SavedRecipeCard(
         onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
         posterImage = {
             Image(
-                painter = rememberImagePainter(
-                    data = recipe.imageUrl ?: EMPTY_URL,
-                    builder = { crossfade(true) }
+                painter = rememberAsyncImagePainter(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(data = recipe.imageUrl ?: EMPTY_URL)
+                        .crossfade(true)
+                        .build()
                 ),
                 modifier = Modifier.aspectRatio(1.46f),
                 contentScale = ContentScale.Crop,
@@ -512,7 +512,6 @@ private fun FavouriteRecipes(
     )
 }
 
-@OptIn(ExperimentalCoilApi::class)
 @Composable
 private fun FavouriteRecipeCard(
     modifier: Modifier = Modifier,
@@ -525,9 +524,11 @@ private fun FavouriteRecipeCard(
         onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
         posterImage = {
             Image(
-                painter = rememberImagePainter(
-                    data = recipe.imageUrl ?: EMPTY_URL,
-                    builder = { crossfade(true) }
+                painter = rememberAsyncImagePainter(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(data = recipe.imageUrl ?: EMPTY_URL)
+                        .crossfade(true)
+                        .build(),
                 ),
                 modifier = Modifier.aspectRatio(0.7f),
                 contentScale = ContentScale.Crop,

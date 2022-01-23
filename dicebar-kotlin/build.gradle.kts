@@ -1,7 +1,12 @@
 plugins {
     id("kotlin")
     id("com.android.lint")
+    id("com.google.devtools.ksp").version("1.6.10-1.0.2")
     kotlin("kapt")
+}
+
+ksp {
+    arg("moshi.generateProguardRules", "false")
 }
 
 kapt {
@@ -14,13 +19,14 @@ dependencies {
     // Testing
     testImplementation(libs.test.junit.core)
 
-    //Annotations
+    // Annotations
     implementation(libs.androidx.annotation)
 
     // Kotlin
     implementation(libs.kotlin.stdlib.jdk8)
 
-    //Moshi
+    // Moshi
+    ksp(libs.moshi.kotlin.codegen)
     implementation(libs.bundles.moshi)
 
     // Ok-Http

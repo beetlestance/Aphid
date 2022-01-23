@@ -26,6 +26,7 @@ import com.beetlestance.aphid.domain.observers.ObserveRecipesWithReadyTime
 import com.beetlestance.aphid.domain.watchStatus
 import com.beetlestance.spoonacular_kotlin.constants.MealType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
@@ -93,6 +94,7 @@ internal class ExploreViewModel @Inject constructor(
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     internal fun submitAction(action: ExploreActions) {
         viewModelScope.launch {
             if (!pendingActions.isClosedForSend) {

@@ -69,6 +69,11 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
     lint {
         // Disable lintVital. Not needed since lint is run on CI
         checkReleaseBuilds = false
@@ -80,10 +85,6 @@ android {
 
     buildFeatures {
         compose = true
-    }
-
-    hilt {
-        enableAggregatingTask = true
     }
 
     composeOptions {
@@ -135,7 +136,6 @@ dependencies {
     implementation(libs.okhttp.core)
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.okhttp.url.connection)
-
 }
 
 fun Any?.asString(): String = "\"${this ?: ""}\""

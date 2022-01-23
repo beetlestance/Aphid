@@ -1,6 +1,3 @@
-import com.beetlestance.aphid.buildsrc.DependencyUpdates
-import com.beetlestance.aphid.buildsrc.ReleaseType
-
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
 
@@ -11,8 +8,8 @@ buildscript {
 
     dependencies {
         classpath("com.android.tools.build:gradle:7.2.0-alpha07")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:2.38.1")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.40.5")
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle.kts files
@@ -20,9 +17,9 @@ buildscript {
 }
 
 plugins {
-    id("com.diffplug.spotless") version "5.15.0"
+    id("com.diffplug.spotless") version "6.2.0"
     // gradlew dependencyUpdates
-    id("com.github.ben-manes.versions") version "0.39.0"
+    id("com.github.ben-manes.versions") version "0.41.0"
 }
 
 subprojects {
@@ -40,6 +37,11 @@ subprojects {
                 .userData(mapOf("disabled_rules" to "paren-spacing"))
             /* ./gradlew spotlessApply */
             licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
+        }
+
+        kotlinGradle {
+            target("*.gradle.kts") // default target for kotlinGradle
+            ktlint(libs.versions.ktlint.get())
         }
     }
 
@@ -74,6 +76,7 @@ subprojects {
 
             freeCompilerArgs = freeCompilerArgs + listOf(
                 "-Xopt-in=kotlin.Experimental",
+                "-Xopt-in=kotlin.RequiresOptIn",
                 "-Xjvm-default=all"
             )
 
@@ -82,23 +85,6 @@ subprojects {
             // now org.objectweb.asm.ClassReader has major opt code 12
             jvmTarget = "11"
         }
-    }
-}
-
-/**
- * Update dependencyUpdates task to reject versions which are more 'unstable' than our
- * current version.
- */
-tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask> {
-    rejectVersionIf {
-        val current = DependencyUpdates.versionToRelease(currentVersion)
-        // If we're using a SNAPSHOT, ignore since we must be doing so for a reason.
-        if (current == ReleaseType.SNAPSHOT) return@rejectVersionIf true
-
-        // Otherwise we reject if the candidate is more 'unstable' than our version
-        val candidate = DependencyUpdates.versionToRelease(candidate.version)
-
-        return@rejectVersionIf candidate.isLessStableThan(current)
     }
 }
 

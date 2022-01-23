@@ -14,6 +14,11 @@ kapt {
 android {
     compileSdk = Aphid.compileSdkVersion
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
     defaultConfig {
         minSdk = Aphid.minSdkVersion
 
@@ -38,4 +43,7 @@ dependencies {
 
     // Material Design
     implementation(libs.google.material.core)
+
+    // Timber
+    api(libs.timber)
 }

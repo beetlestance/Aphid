@@ -21,6 +21,11 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
     buildFeatures {
         compose = true
     }
@@ -52,5 +57,4 @@ dependencies {
     implementation(libs.google.hilt.android)
     kapt(libs.androidx.hilt.compiler)
     kapt(libs.google.hilt.compiler)
-
 }
