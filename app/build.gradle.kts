@@ -70,16 +70,12 @@ android {
     }
 
     lint {
-        // Set baseline to show only new errors
-        baseline = file("lint-baseline.xml")
         // Disable lintVital. Not needed since lint is run on CI
         checkReleaseBuilds = false
         // Allow lint to check dependencies
         checkDependencies = true
         // Ignore any tests
         ignoreTestSources = true
-        // Generate reports only
-        abortOnError = false
     }
 
     buildFeatures {
