@@ -136,7 +136,6 @@ dependencies {
     implementation(libs.okhttp.core)
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.okhttp.url.connection)
-
 }
 
 fun Any?.asString(): String = "\"${this ?: ""}\""

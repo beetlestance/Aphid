@@ -60,5 +60,4 @@ dependencies {
     implementation(libs.google.hilt.android)
     kapt(libs.androidx.hilt.compiler)
     kapt(libs.google.hilt.compiler)
-
 }
