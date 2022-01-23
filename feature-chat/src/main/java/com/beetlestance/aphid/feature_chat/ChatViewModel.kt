@@ -21,8 +21,8 @@ import com.beetlestance.aphid.domain.executors.SendMessage
 import com.beetlestance.aphid.domain.invoke
 import com.beetlestance.aphid.domain.observers.ObserveChat
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -59,6 +59,7 @@ class ChatViewModel @Inject constructor(
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     fun submitAction(action: ChatActions) {
         viewModelScope.launch {
             if (pendingActions.isClosedForSend) return@launch
