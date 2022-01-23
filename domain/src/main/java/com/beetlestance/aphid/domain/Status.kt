@@ -16,7 +16,6 @@
 package com.beetlestance.aphid.domain
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 
 sealed class Status {
     object Started : Status()

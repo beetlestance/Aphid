@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.sync.Mutex
@@ -38,13 +37,14 @@ abstract class ReduxStateViewModel<S> constructor(initialState: S) : ViewModel()
         return _state.map { get(it) }.distinctUntilChanged()
     }
 
-    protected suspend fun setState(reducer: suspend S.() -> S) {
+    // Todo - In co-routine 1.6.0 protected api is in-accessible, fix once patch is released
+    suspend fun setState(reducer: suspend S.() -> S) {
         stateMutex.withLock {
             _state.value = reducer(_state.value)
         }
     }
 
-    protected suspend inline fun <reified T> Flow<T>.collectAndSetState(
+    suspend inline fun <reified T> Flow<T>.collectAndSetState(
         crossinline reducer: suspend S.(T) -> S
     ) = collect { item -> setState { reducer(item) } }
 }

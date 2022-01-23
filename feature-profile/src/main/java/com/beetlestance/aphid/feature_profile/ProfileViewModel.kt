@@ -21,8 +21,8 @@ import com.beetlestance.aphid.domain.executors.MarkRecipeAsFavourite
 import com.beetlestance.aphid.domain.observers.ObserveFavouriteRecipes
 import com.beetlestance.aphid.domain.observers.ObserveSavedRecipes
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -62,6 +62,7 @@ internal class ProfileViewModel @Inject constructor(
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     internal fun submitAction(action: ProfileActions) {
         viewModelScope.launch {
             if (!pendingActions.isClosedForSend) {
