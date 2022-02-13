@@ -104,7 +104,6 @@ fun Profile(
 ) {
     val viewModel: ProfileViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
-    val actions: (ProfileActions) -> Unit = { action -> viewModel.submitAction(action) }
 
     val contentPadding = PaddingValues(
         top = if (paddingValues.calculateTopPadding() > 0.dp)
@@ -121,16 +120,18 @@ fun Profile(
         modifier = modifier.fillMaxSize(),
         state = state,
         paddingValues = contentPadding,
-        actions = actions
+        markRecipeAsFavourite = { recipe, isFavourite ->
+            viewModel.markRecipeAsFavourite(recipe, isFavourite)
+        }
     )
 }
 
 @Composable
 private fun Profile(
-    modifier: Modifier = Modifier,
     state: ProfileViewState,
     paddingValues: PaddingValues,
-    actions: (ProfileActions) -> Unit
+    markRecipeAsFavourite: (Recipe, Boolean) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
@@ -157,7 +158,7 @@ private fun Profile(
             favouriteRecipes = state.favouriteRecipes,
             savedRecipes = state.savedRecipes,
             markRecipeAsFavourite = { recipe, isFavourite ->
-                actions(MarkFavourite(recipe, isFavourite))
+                markRecipeAsFavourite(recipe, isFavourite)
             }
         )
 
