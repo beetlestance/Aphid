@@ -80,7 +80,6 @@ fun Chat(
 ) {
     val viewModel: ChatViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
-    val action: (ChatActions) -> Unit = { action -> viewModel.submitAction(action) }
 
     val isImeVisible = LocalWindowInsets.current.ime.isVisible
 
@@ -90,8 +89,8 @@ fun Chat(
     Chat(
         paddingValues = transformedPadding,
         state = state,
-        action = action,
-        modifier = modifier
+        modifier = modifier,
+        onSendMessage = { viewModel.sendMessage(it) }
     )
 }
 
@@ -100,15 +99,14 @@ fun Chat(
  *
  * @param paddingValues contains padding for bottom navigation
  * @param state contains the state for the UI to draw
- * @param action is an block to perform [ChatActions]
  * @param modifier [Modifier] to apply to this layout node
  */
 @Composable
 private fun Chat(
     paddingValues: PaddingValues,
     state: ChatViewState,
-    action: (ChatActions) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onSendMessage: (message: String) -> Unit = {},
 ) {
     Surface(
         modifier = modifier,
@@ -158,7 +156,7 @@ private fun Chat(
                         .align(Alignment.BottomCenter)
                         .padding(horizontal = 16.dp),
                     onQuerySubmit = {
-                        if (it.isNotBlank()) action(ChatActions.SendMessage(it))
+                        if (it.isNotBlank()) onSendMessage(it)
                     }
                 )
             }

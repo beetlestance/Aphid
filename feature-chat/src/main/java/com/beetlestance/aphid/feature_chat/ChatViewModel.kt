@@ -21,19 +21,14 @@ import com.beetlestance.aphid.domain.executors.SendMessage
 import com.beetlestance.aphid.domain.invoke
 import com.beetlestance.aphid.domain.observers.ObserveChat
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ChatViewModel @Inject constructor(
     observeChat: ObserveChat,
-    private val sendMessage: SendMessage
+    private val sendChatMessage: SendMessage
 ) : ReduxStateViewModel<ChatViewState>(ChatViewState()) {
-
-    private val pendingActions = Channel<ChatActions>(Channel.BUFFERED)
 
     init {
         viewModelScope.launch {
@@ -43,27 +38,11 @@ class ChatViewModel @Inject constructor(
         }
 
         observeChat()
-
-        viewModelScope.launch {
-            pendingActions.consumeAsFlow().collect { action ->
-                when (action) {
-                    is ChatActions.SendMessage -> sendMessage(action)
-                }
-            }
-        }
     }
 
-    private fun sendMessage(action: ChatActions.SendMessage) {
+    fun sendMessage(message: String) {
         viewModelScope.launch {
-            sendMessage(action.message)
-        }
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    fun submitAction(action: ChatActions) {
-        viewModelScope.launch {
-            if (pendingActions.isClosedForSend) return@launch
-            pendingActions.send(action)
+            sendChatMessage(message)
         }
     }
 }
