@@ -108,7 +108,6 @@ fun Explore(
 ) {
     val viewModel: ExploreViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
-    val actions: (ExploreActions) -> Unit = { action -> viewModel.submitAction(action) }
 
     val contentPadding = PaddingValues(
         top = if (paddingValues.calculateTopPadding() > 0.dp) paddingValues.calculateTopPadding() else EXPLORE_ITEM_SPACING,
@@ -126,7 +125,9 @@ fun Explore(
             .fillMaxSize(),
         state = state,
         paddingValues = contentPadding,
-        actions = actions
+        onMarkRecipeAsFavourite = { recipe, isFavourite ->
+            viewModel.markRecipeAsFavourite(recipe, isFavourite)
+        }
     )
 }
 
@@ -139,7 +140,7 @@ private fun Explore(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues = PaddingValues(),
     state: ExploreViewState,
-    actions: (ExploreActions) -> Unit
+    onMarkRecipeAsFavourite: (recipe: Recipe, isFavourite: Boolean) -> Unit
 ) {
     Surface(
         modifier = modifier,
@@ -164,9 +165,7 @@ private fun Explore(
                         if (state.breakfastRecipes.isNotEmpty()) {
                             BreakFastWithHeader(
                                 breakfastRecipes = state.breakfastRecipes,
-                                markRecipeAsFavourite = { recipe, isFavourite ->
-                                    actions(MarkFavourite(recipe, isFavourite))
-                                }
+                                markRecipeAsFavourite = onMarkRecipeAsFavourite
                             )
                         }
                     }
@@ -177,9 +176,7 @@ private fun Explore(
                         if (state.readyInTimeRecipes.isNotEmpty()) {
                             QuickRecipesWithHeader(
                                 quickRecipes = state.readyInTimeRecipes,
-                                markRecipeAsFavourite = { recipe, isFavourite ->
-                                    actions(MarkFavourite(recipe, isFavourite))
-                                }
+                                markRecipeAsFavourite = onMarkRecipeAsFavourite
                             )
                         }
                     }
@@ -187,9 +184,7 @@ private fun Explore(
                         if (state.recentlyViewedRecipes.isNotEmpty()) {
                             RecentlyViewedRecipesWithHeader(
                                 recentlyViewedRecipes = state.recentlyViewedRecipes,
-                                markRecipeAsFavourite = { recipe, isFavourite ->
-                                    actions(MarkFavourite(recipe, isFavourite))
-                                }
+                                markRecipeAsFavourite = onMarkRecipeAsFavourite
                             )
                         }
                     }
