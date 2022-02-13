@@ -81,7 +81,6 @@ internal class ExploreViewModel @Inject constructor(
         observeRecentlyViewed(5)
     }
 
-
     fun markRecipeAsFavourite(recipe: Recipe, isFavourite: Boolean) {
         viewModelScope.launch {
             markRecipeAsFavourite.executeSync(
