@@ -22,7 +22,6 @@ import com.beetlestance.aphid.domain.executors.MarkRecipeAsFavourite
 import com.beetlestance.aphid.domain.observers.ObserveFavouriteRecipes
 import com.beetlestance.aphid.domain.observers.ObserveSavedRecipes
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -49,7 +48,6 @@ internal class ProfileViewModel @Inject constructor(
         }
 
         observeFavouriteRecipes(Unit)
-
     }
 
     fun markRecipeAsFavourite(recipe: Recipe, isFavourite: Boolean) {
