@@ -17,13 +17,11 @@ package com.beetlestance.aphid.feature_profile
 
 import androidx.lifecycle.viewModelScope
 import com.beetlestance.aphid.base_android.ReduxStateViewModel
+import com.beetlestance.aphid.data.entities.Recipe
 import com.beetlestance.aphid.domain.executors.MarkRecipeAsFavourite
 import com.beetlestance.aphid.domain.observers.ObserveFavouriteRecipes
 import com.beetlestance.aphid.domain.observers.ObserveSavedRecipes
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,8 +31,6 @@ internal class ProfileViewModel @Inject constructor(
     observeFavouriteRecipes: ObserveFavouriteRecipes,
     private val markRecipeAsFavourite: MarkRecipeAsFavourite
 ) : ReduxStateViewModel<ProfileViewState>(ProfileViewState()) {
-
-    private val pendingActions = Channel<ProfileActions>(Channel.BUFFERED)
 
     init {
         viewModelScope.launch {
@@ -52,31 +48,14 @@ internal class ProfileViewModel @Inject constructor(
         }
 
         observeFavouriteRecipes(Unit)
-
-        viewModelScope.launch {
-            pendingActions.consumeAsFlow().collect { action ->
-                when (action) {
-                    is MarkFavourite -> markRecipeAsFavourite(action)
-                }
-            }
-        }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    internal fun submitAction(action: ProfileActions) {
-        viewModelScope.launch {
-            if (!pendingActions.isClosedForSend) {
-                pendingActions.send(action)
-            }
-        }
-    }
-
-    private fun markRecipeAsFavourite(action: MarkFavourite) {
+    fun markRecipeAsFavourite(recipe: Recipe, isFavourite: Boolean) {
         viewModelScope.launch {
             markRecipeAsFavourite.executeSync(
                 params = MarkRecipeAsFavourite.MarkRecipeAsFavouriteParams(
-                    recipe = action.recipe,
-                    isFavourite = action.isFavourite
+                    recipe = recipe,
+                    isFavourite = isFavourite
                 )
             )
         }

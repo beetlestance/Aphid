@@ -17,6 +17,7 @@ package com.beetlestance.aphid.feature_explore
 
 import androidx.lifecycle.viewModelScope
 import com.beetlestance.aphid.base_android.ReduxStateViewModel
+import com.beetlestance.aphid.data.entities.Recipe
 import com.beetlestance.aphid.domain.executors.FetchRecipes
 import com.beetlestance.aphid.domain.executors.MarkRecipeAsFavourite
 import com.beetlestance.aphid.domain.invoke
@@ -26,9 +27,6 @@ import com.beetlestance.aphid.domain.observers.ObserveRecipesWithReadyTime
 import com.beetlestance.aphid.domain.watchStatus
 import com.beetlestance.spoonacular_kotlin.constants.MealType
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -40,8 +38,6 @@ internal class ExploreViewModel @Inject constructor(
     observeRecentlyViewed: ObserveRecentlyViewed,
     private val markRecipeAsFavourite: MarkRecipeAsFavourite
 ) : ReduxStateViewModel<ExploreViewState>(ExploreViewState()) {
-
-    private val pendingActions = Channel<ExploreActions>(Channel.BUFFERED)
 
     init {
         viewModelScope.launch {
@@ -83,31 +79,14 @@ internal class ExploreViewModel @Inject constructor(
         }
 
         observeRecentlyViewed(5)
-
-        viewModelScope.launch {
-            pendingActions.consumeAsFlow().collect { action ->
-                when (action) {
-                    is MarkFavourite -> markRecipeAsFavourite(action)
-                }
-            }
-        }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    internal fun submitAction(action: ExploreActions) {
-        viewModelScope.launch {
-            if (!pendingActions.isClosedForSend) {
-                pendingActions.send(action)
-            }
-        }
-    }
-
-    private fun markRecipeAsFavourite(action: MarkFavourite) {
+    fun markRecipeAsFavourite(recipe: Recipe, isFavourite: Boolean) {
         viewModelScope.launch {
             markRecipeAsFavourite.executeSync(
                 params = MarkRecipeAsFavourite.MarkRecipeAsFavouriteParams(
-                    recipe = action.recipe,
-                    isFavourite = action.isFavourite
+                    recipe = recipe,
+                    isFavourite = isFavourite
                 )
             )
         }
