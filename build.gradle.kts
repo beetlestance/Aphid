@@ -83,9 +83,15 @@ subprojects {
             // Set JVM target to 11
             // Set to 15 once intellij upgrade asm 7.0 to 9.0,
             // now org.objectweb.asm.ClassReader has major opt code 12
-            jvmTarget = "11"
-        }
+            jvmTarget = "11"        }
     }
+}
+
+tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask> {
+    checkForGradleUpdate = true
+    outputFormatter = "html,txt"
+    outputDir = "reports/dependencyUpdates"
+    reportfileName = "report"
 }
 
 apply(from = "gradle/projectDependencyGraph.gradle")
