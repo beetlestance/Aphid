@@ -73,3 +73,5 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+/reports/dependencyUpdates/report.html
+/reports/dependencyUpdates/report.txt
