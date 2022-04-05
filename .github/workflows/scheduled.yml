@@ -28,4 +28,4 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: dependency-updates
-          path: app/build/reports
+          path: ./reports/dependency-updates
