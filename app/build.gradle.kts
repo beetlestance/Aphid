@@ -15,6 +15,7 @@ kapt {
 val useReleaseKeystore = rootProject.file("release/app-release.jks").exists()
 
 android {
+    namespace = "com.beetlestance.aphid"
     compileSdk = Aphid.compileSdkVersion
 
     defaultConfig {
