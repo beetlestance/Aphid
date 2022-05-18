@@ -114,8 +114,8 @@ coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
 # Google Accompanist
-google-accompanist-insets = { module = "com.google.accompanist:accompanist-insets", version.ref = "google-accompanist" }
 google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "google-accompanist" }
+google-accompanist-system-ui-controller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "google-accompanist" }
 
 # Google Dagger
 google-dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "google-dagger" }
@@ -188,7 +188,7 @@ androidx-compose = ["androidx-compose-animation", "androidx-compose-compiler",
 androdidx-test = ["androidx-test-core", "androidx-test-ext-junit", "androidx-test-rules", "androidx-test-runner"]
 
 # Google Accompanist
-google-accompanist = ["google-accompanist-insets", "google-accompanist-flowlayout"]
+google-accompanist = ["google-accompanist-system-ui-controller", "google-accompanist-flowlayout"]
 
 # Moshi
 moshi = ["moshi-adapters", "moshi-core", "moshi-kotlin"]
