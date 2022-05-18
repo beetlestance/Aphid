@@ -49,21 +49,6 @@ import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutNavBar
 @Composable
 fun AphidHome() {
     val navController = rememberNavController()
-    // Remember a SystemUiController
-//    val systemUiController = rememberSystemUiController()
-//    val useDarkIcons = MaterialTheme.colors.isLight
-//
-//    SideEffect {
-//        systemUiController.setStatusBarColor(
-//            color = Color.Transparent,
-//            darkIcons = useDarkIcons
-//        )
-//
-//        systemUiController.setNavigationBarColor(
-//            color = if (useDarkIcons) Color.White else Color.Black,
-//            darkIcons = useDarkIcons
-//        )
-//    }
 
     Scaffold(
         bottomBar = {
