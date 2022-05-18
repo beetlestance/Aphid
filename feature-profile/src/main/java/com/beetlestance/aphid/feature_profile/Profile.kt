@@ -19,7 +19,6 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.TweenSpec
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -38,9 +37,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -461,7 +461,6 @@ private fun SavedRecipeCard(
 private const val GRID_ITEM_COUNT = 2
 private val GRID_ITEM_SPACING = 8.dp
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun FavouriteRecipes(
     modifier: Modifier = Modifier,
@@ -473,7 +472,7 @@ private fun FavouriteRecipes(
 
     LazyVerticalGrid(
         modifier = modifier,
-        cells = GridCells.Fixed(GRID_ITEM_COUNT),
+        columns = GridCells.Fixed(GRID_ITEM_COUNT),
         contentPadding = paddingValues,
         content = {
             itemsIndexed(favouriteRecipes) { index, recipe ->
