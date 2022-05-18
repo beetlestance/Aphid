@@ -19,6 +19,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -44,11 +45,26 @@ import androidx.navigation.compose.rememberNavController
 import com.beetlestance.aphid.common_compose.AndroidIcon
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutMenuItem
 import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutNavBar
-import com.google.accompanist.insets.navigationBarsPadding
 
 @Composable
 fun AphidHome() {
     val navController = rememberNavController()
+    // Remember a SystemUiController
+//    val systemUiController = rememberSystemUiController()
+//    val useDarkIcons = MaterialTheme.colors.isLight
+//
+//    SideEffect {
+//        systemUiController.setStatusBarColor(
+//            color = Color.Transparent,
+//            darkIcons = useDarkIcons
+//        )
+//
+//        systemUiController.setNavigationBarColor(
+//            color = if (useDarkIcons) Color.White else Color.Black,
+//            darkIcons = useDarkIcons
+//        )
+//    }
+
     Scaffold(
         bottomBar = {
             val currentSelectedScreen by navController.currentScreenAsState()

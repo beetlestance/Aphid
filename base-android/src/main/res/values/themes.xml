@@ -14,7 +14,7 @@
         </item>
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
         <item name="android:navigationBarDividerColor" tools:ignore="NewApi">
-            ?attr/colorControlHighlight
+            ?android:attr/colorBackground
         </item>
     </style>
 

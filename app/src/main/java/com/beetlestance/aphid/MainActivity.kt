@@ -22,7 +22,6 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.WindowCompat
 import com.beetlestance.aphid.common_compose.theme.AphidTheme
-import com.google.accompanist.insets.ProvideWindowInsets
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -55,10 +54,8 @@ class MainActivity : ComponentActivity() {
 
         // set compose as screen content
         setContent {
-            ProvideWindowInsets {
-                AphidTheme {
-                    AphidHome()
-                }
+            AphidTheme {
+                AphidHome()
             }
         }
     }
