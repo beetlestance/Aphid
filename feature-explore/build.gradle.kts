@@ -12,6 +12,7 @@ kapt {
 }
 
 android {
+    namespace = "com.beetlestance.aphid.feature_explore"
     compileSdk = Aphid.compileSdkVersion
 
     defaultConfig {

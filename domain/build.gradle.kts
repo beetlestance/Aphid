@@ -12,6 +12,7 @@ kapt {
 }
 
 android {
+    namespace = "com.beetlestance.aphid.domain"
     compileSdk = Aphid.compileSdkVersion
 
     defaultConfig {
