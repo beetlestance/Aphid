@@ -7,9 +7,9 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:7.4.0-alpha02")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:2.41")
+        classpath("com.android.tools.build:gradle:7.4.0-alpha07")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.0")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.42")
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle.kts files
@@ -17,7 +17,7 @@ buildscript {
 }
 
 plugins {
-    id("com.diffplug.spotless") version "6.6.1"
+    id("com.diffplug.spotless") version "6.8.0"
     // gradlew dependencyUpdates
     id("com.github.ben-manes.versions") version "0.42.0"
 }
@@ -69,15 +69,14 @@ subprojects {
             // Enable experimental coroutines APIs, including Flow
             if (project.name != "spoonacular-kotlin" && project.name != "dicebar-kotlin") {
                 freeCompilerArgs = freeCompilerArgs + listOf(
-                    "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                    "-Xopt-in=kotlinx.coroutines.FlowPreview"
+                    "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                    "-opt-in=kotlinx.coroutines.FlowPreview"
                 )
             }
 
             freeCompilerArgs = freeCompilerArgs + listOf(
-                "-Xopt-in=kotlin.Experimental",
-                "-Xopt-in=kotlin.RequiresOptIn",
-                "-Xjvm-default=all"
+                "-opt-in=kotlin.Experimental",
+                "-opt-in=kotlin.RequiresOptIn"
             )
 
             // Set JVM target to 11
