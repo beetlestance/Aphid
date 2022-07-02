@@ -1,6 +1,6 @@
 [versions]
 # Plugins
-ktlint = "0.45.2"
+ktlint = "0.46.1"
 spotless = "5.12.5"
 ben-manes-dependency-updates = "0.39.0"
 
