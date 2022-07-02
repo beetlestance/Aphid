@@ -24,7 +24,8 @@ import com.beetlestance.aphid.data.AphidTables
     tableName = AphidTables.CHAT_TABLE
 )
 data class Chat(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id")
+    override val id: Long = 0,
 
     @ColumnInfo(name = "type") val type: String? = null,
 

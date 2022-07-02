@@ -17,7 +17,7 @@ package com.beetlestance.aphid.data.mapper
 
 import com.beetlestance.aphid.base.CHAT_MESSAGE_ANSWER
 import com.beetlestance.aphid.data.entities.Chat
-import com.beetlestance.spoonacular_kotlin.models.response.recipe.QuickAnswer
+import com.beetlestance.aphid.spoonacular.kotlin.models.response.recipe.QuickAnswer
 import javax.inject.Inject
 import javax.inject.Singleton
 

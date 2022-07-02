@@ -18,8 +18,8 @@ package com.beetlestance.aphid.data
 import com.beetlestance.aphid.base.result.Failure
 import com.beetlestance.aphid.base.result.Result
 import com.beetlestance.aphid.base.result.Success
-import com.beetlestance.spoonacular_kotlin.models.SpoonacularApiResponse
-import com.beetlestance.spoonacular_kotlin.models.Success as SpoonacularSuccess
+import com.beetlestance.aphid.spoonacular.kotlin.models.SpoonacularApiResponse
+import com.beetlestance.aphid.spoonacular.kotlin.models.Success as SpoonacularSuccess
 
 fun <T> SpoonacularApiResponse<T>.toResult(): Result<T> = try {
     when (this) {

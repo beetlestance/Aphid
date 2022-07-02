@@ -21,7 +21,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.WindowCompat
-import com.beetlestance.aphid.common_compose.theme.AphidTheme
+import com.beetlestance.aphid.common.compose.theme.AphidTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 /**

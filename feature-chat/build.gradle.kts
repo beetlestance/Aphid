@@ -12,7 +12,7 @@ kapt {
 }
 
 android {
-    namespace = "com.beetlestance.aphid.feature_chat"
+    namespace = "com.beetlestance.aphid.feature.chat"
     compileSdk = Aphid.compileSdkVersion
 
     defaultConfig {

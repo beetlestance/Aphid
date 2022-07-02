@@ -15,7 +15,7 @@
  */
 package com.beetlestance.aphid.spoonacular
 
-import com.beetlestance.spoonacular_kotlin.Spoonacular
+import com.beetlestance.aphid.spoonacular.kotlin.Spoonacular
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
