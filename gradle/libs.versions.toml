@@ -1,38 +1,39 @@
 [versions]
 # Plugins
-ktlint = "0.45.2"
-spotless = "5.12.5"
-ben-manes-dependency-updates = "0.39.0"
+ktlint = "0.46.1"
+spotless = "6.8.0"
+ben-manes-dependency-updates = "0.42.0"
 
 # Android
-android-gradle-plugin = "7.2.0-alpha07"
+android-gradle-plugin = "7.4.0-alpha07"
 android-lint = "30.0.2"
 
 # Android X
-androidx-compose = "1.2.0-beta01"
-androidx-lifecycle = "2.5.0-beta01"
-androidx-room = "2.5.0-alpha01"
+androidx-compose = "1.3.0-alpha01"
+androidx-compose-kotlin-compiler = "1.2.0"
+androidx-lifecycle = "2.6.0-alpha01"
+androidx-room = "2.5.0-alpha02"
 androidx-test = "1.3.0"
 androidx-hilt = "1.0.0"
 
 #Coil
-coil = "2.0.0"
+coil = "2.1.0"
 
 # Google
-google-accompanist = "0.24.8-beta"
+google-accompanist = "0.24.13-rc"
 google-dagger = "2.42"
 
 # Kotlin
-kotlin = "1.6.21"
+kotlin = "1.7.0"
 
 # Kotlin Coroutines
-kotlinx-coroutines = "1.6.1"
+kotlinx-coroutines = "1.6.3"
 
 # Moshi
 moshi = "1.13.0"
 
 # OkHttp
-okhttp = "5.0.0-alpha.7"
+okhttp = "5.0.0-alpha.10"
 
 # Retrofit
 retrofit = "2.9.0"
@@ -55,10 +56,10 @@ android-tools-lint-checks = { module = "com.android.tools.lint:lint-checks", ver
 android-tools-sdk-common = { module = "com.android.tools:sdk-common", version.ref = "android-lint" }
 
 # AndroidX
-androidx-annotation = { module = "androidx.annotation:annotation", version = "1.4.0-alpha02" }
-androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.6.0-alpha01" }
-androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version = "1.0.0" }
-androidx-core-ktx = { module = "androidx.core:core-ktx", version = "1.9.0-alpha01" }
+androidx-annotation = { module = "androidx.annotation:annotation", version = "1.4.0" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.6.0-alpha05" }
+androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version = "1.1.0-alpha03" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version = "1.9.0-alpha05" }
 androidx-palette = { module = "androidx.palette:palette-ktx", version = "1.0.0" }
 
 # AndroidX Compose
@@ -88,7 +89,7 @@ androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
 
 # AndroidX Navigation
-androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version = "2.5.0-alpha03" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version = "2.5.0" }
 
 # AndroidX Room
 androidx-room-common = { module = "androidx.room:room-common", version.ref = "androidx-room" }
@@ -100,8 +101,8 @@ androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "
 
 # AndroidX Test
 androidx-test-core = { module = "androidx.test:core", version.ref = "androidx-test" }
-androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version = "3.5.0-alpha04" }
-androidx-test-ext-junit = { module = "androidx.test.ext:junit", version = "1.1.4-alpha04" }
+androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version = "3.5.0-alpha07" }
+androidx-test-ext-junit = { module = "androidx.test.ext:junit", version = "1.1.4-alpha07" }
 androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidx-test" }
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx-test" }
 
@@ -128,8 +129,8 @@ google-hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", 
 google-hilt-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "google-dagger" }
 
 # Google Material Theme
-google-material-compose-theme-adapter = { module = "com.google.android.material:compose-theme-adapter", version = "1.1.9" }
-google-material-core = { module = "com.google.android.material:material", version = "1.6.0" }
+google-material-compose-theme-adapter = { module = "com.google.android.material:compose-theme-adapter", version = "1.1.14" }
+google-material-core = { module = "com.google.android.material:material", version = "1.7.0-alpha02" }
 
 # Google Firebase
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version = "18.2.10" }
@@ -179,7 +180,7 @@ android-tools-lint = ["android-tools-layoutlib-api", "android-tools-lint-api",
     "android-tools-lint-checks", "android-tools-sdk-common"]
 
 # AndroidX Compose
-androidx-compose = ["androidx-compose-animation", "androidx-compose-compiler",
+androidx-compose = ["androidx-compose-animation",
     "androidx-compose-foundation", "androidx-compose-layout", "androidx-compose-livedata",
     "androidx-compose-material", "androidx-compose-runtime", "androidx-compose-ui-core",
     "androidx-compose-ui-test", "androidx-compose-ui-tooling"]

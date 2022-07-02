@@ -46,8 +46,8 @@ inline fun <reified T> Response.toSpoonacularApiResponse(): SpoonacularApiRespon
         isRedirect -> Redirection(code, headers.toMultimap())
         isInformational -> Informational(message, code, headers.toMultimap())
         isSuccessful -> Success(body as T, code, headers.toMultimap())
-        isClientError -> ClientError(body?.string(), code, headers.toMultimap())
-        isServerError -> ServerError(null, body?.string(), code, headers.toMultimap())
+        isClientError -> ClientError(body.string(), code, headers.toMultimap())
+        isServerError -> ServerError(null, body.string(), code, headers.toMultimap())
         else -> throw IllegalStateException("Unknown error code $code")
     }
 }
