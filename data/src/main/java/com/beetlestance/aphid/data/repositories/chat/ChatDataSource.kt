@@ -20,7 +20,7 @@ import com.beetlestance.aphid.base.extensions.toResult
 import com.beetlestance.aphid.base.result.Result
 import com.beetlestance.aphid.data.entities.Chat
 import com.beetlestance.aphid.data.mapper.QuickAnswerToChat
-import com.beetlestance.spoonacular_kotlin.services.RecipesService
+import com.beetlestance.aphid.spoonacular.kotlin.services.RecipesService
 import javax.inject.Inject
 
 class ChatDataSource @Inject constructor(

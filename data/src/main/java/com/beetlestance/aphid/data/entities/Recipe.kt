@@ -29,7 +29,8 @@ import com.beetlestance.aphid.data.AphidTables
 )
 data class Recipe(
 
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id")
+    override val id: Long = 0,
 
     @ColumnInfo(name = "recipe_id") val recipeId: Int? = 0,
 

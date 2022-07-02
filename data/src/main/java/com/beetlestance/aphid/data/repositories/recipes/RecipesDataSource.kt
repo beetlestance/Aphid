@@ -21,10 +21,10 @@ import com.beetlestance.aphid.data.entities.Recipe
 import com.beetlestance.aphid.data.mapper.RecipeInformationToRecipe
 import com.beetlestance.aphid.data.mapper.forLists
 import com.beetlestance.aphid.data.toResult
-import com.beetlestance.spoonacular_kotlin.models.response.recipe.RecipeInformation
-import com.beetlestance.spoonacular_kotlin.services.RecipesService
-import com.beetlestance.spoonacular_kotlin.utils.serializedCopy
-import com.beetlestance.spoonacular_kotlin.utils.toSpoonacularApiResponse
+import com.beetlestance.aphid.spoonacular.kotlin.models.response.recipe.RecipeInformation
+import com.beetlestance.aphid.spoonacular.kotlin.services.RecipesService
+import com.beetlestance.aphid.spoonacular.kotlin.utils.serializedCopy
+import com.beetlestance.aphid.spoonacular.kotlin.utils.toSpoonacularApiResponse
 import javax.inject.Inject
 
 class RecipesDataSource @Inject constructor(

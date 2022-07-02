@@ -20,9 +20,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.beetlestance.aphid.feature_chat.Chat
-import com.beetlestance.aphid.feature_explore.Explore
-import com.beetlestance.aphid.feature_profile.Profile
+import com.beetlestance.aphid.feature.chat.Chat
+import com.beetlestance.aphid.feature.explore.Explore
+import com.beetlestance.aphid.feature.profile.Profile
 
 sealed class Screen(val route: String) {
     object Chat : Screen(route = "chat")

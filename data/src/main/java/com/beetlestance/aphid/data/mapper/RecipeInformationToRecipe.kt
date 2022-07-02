@@ -16,7 +16,7 @@
 package com.beetlestance.aphid.data.mapper
 
 import com.beetlestance.aphid.data.entities.Recipe
-import com.beetlestance.spoonacular_kotlin.models.response.recipe.RecipeInformation
+import com.beetlestance.aphid.spoonacular.kotlin.models.response.recipe.RecipeInformation
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -15,11 +15,11 @@
  */
 package com.beetlestance.aphid.spoonacular
 
-import com.beetlestance.spoonacular_kotlin.Spoonacular
-import com.beetlestance.spoonacular_kotlin.services.FoodService
-import com.beetlestance.spoonacular_kotlin.services.MealPlannerService
-import com.beetlestance.spoonacular_kotlin.services.RecipesService
-import com.beetlestance.spoonacular_kotlin.services.UserService
+import com.beetlestance.aphid.spoonacular.kotlin.Spoonacular
+import com.beetlestance.aphid.spoonacular.kotlin.services.FoodService
+import com.beetlestance.aphid.spoonacular.kotlin.services.MealPlannerService
+import com.beetlestance.aphid.spoonacular.kotlin.services.RecipesService
+import com.beetlestance.aphid.spoonacular.kotlin.services.UserService
 import dagger.Module
 import dagger.Provides
 

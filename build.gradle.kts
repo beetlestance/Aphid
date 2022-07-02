@@ -17,6 +17,7 @@ buildscript {
 }
 
 plugins {
+    // gradlew spotlessApply
     id("com.diffplug.spotless") version "6.8.0"
     // gradlew dependencyUpdates
     id("com.github.ben-manes.versions") version "0.42.0"
@@ -33,9 +34,10 @@ subprojects {
             targetExclude("bin/**/*.kt")
 
             ktlint(libs.versions.ktlint.get())
-                // Disable paren-spacing rule for NonParenthesizedAnnotationsOnFunctionalTypes
-                .userData(mapOf("disabled_rules" to "paren-spacing"))
-            /* ./gradlew spotlessApply */
+                .setUseExperimental(true)
+                // Allow extensions file with single function by disabling rule "filename" where
+                // files containing only one top level domain should be named according to function.
+                .editorConfigOverride(mapOf("disabled_rules" to "filename"))
             licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
         }
 
@@ -82,7 +84,8 @@ subprojects {
             // Set JVM target to 11
             // Set to 15 once intellij upgrade asm 7.0 to 9.0,
             // now org.objectweb.asm.ClassReader has major opt code 12
-            jvmTarget = "11"        }
+            jvmTarget = "11"
+        }
     }
 }
 

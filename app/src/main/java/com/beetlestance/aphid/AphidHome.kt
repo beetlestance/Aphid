@@ -42,9 +42,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
-import com.beetlestance.aphid.common_compose.AndroidIcon
-import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutMenuItem
-import com.beetlestance.aphid.common_compose.bottomnavigation.CurveCutNavBar
+import com.beetlestance.aphid.common.compose.AndroidIcon
+import com.beetlestance.aphid.common.compose.bottomnavigation.CurveCutMenuItem
+import com.beetlestance.aphid.common.compose.bottomnavigation.CurveCutNavBar
 
 @Composable
 fun AphidHome() {
