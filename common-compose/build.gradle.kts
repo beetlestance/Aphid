@@ -68,6 +68,7 @@ dependencies {
 
     // Compose ViewModel Extensions
     api(libs.androidx.lifecycle.viewmodel.compose)
+    api(libs.androidx.lifecycle.runtime.compose)
 
     // Coil
     api(libs.coil.compose)
