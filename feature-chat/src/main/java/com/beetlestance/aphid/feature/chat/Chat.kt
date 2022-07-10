@@ -51,7 +51,6 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -70,27 +69,29 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.beetlestance.aphid.base.CHAT_MESSAGE_ANSWER
 import com.beetlestance.aphid.data.entities.Chat
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalLifecycleComposeApi::class)
 @Composable
 fun Chat(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues = PaddingValues()
 ) {
     val viewModel: ChatViewModel = hiltViewModel()
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     val isImeVisible = WindowInsets.isImeVisible
 
     val transformedPadding = if (isImeVisible) PaddingValues(bottom = 16.dp) else paddingValues
 
     Chat(
-        paddingValues = transformedPadding,
         state = state,
         modifier = modifier,
+        paddingValues = transformedPadding,
         onSendMessage = { viewModel.sendMessage(it) }
     )
 }
@@ -104,9 +105,9 @@ fun Chat(
  */
 @Composable
 private fun Chat(
-    paddingValues: PaddingValues,
     state: ChatViewState,
     modifier: Modifier = Modifier,
+    paddingValues: PaddingValues = PaddingValues(),
     onSendMessage: (message: String) -> Unit = {}
 ) {
     Surface(

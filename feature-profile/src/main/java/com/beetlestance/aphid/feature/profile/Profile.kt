@@ -61,7 +61,6 @@ import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -77,6 +76,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.SvgDecoder
@@ -97,13 +98,14 @@ import com.google.accompanist.flowlayout.SizeMode
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun Profile(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues = PaddingValues()
 ) {
     val viewModel: ProfileViewModel = hiltViewModel()
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     val contentPadding = PaddingValues(
         top = when {
