@@ -27,15 +27,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -70,7 +67,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -83,9 +79,6 @@ import coil.compose.rememberAsyncImagePainter
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.beetlestance.aphid.common.compose.RecipeDetailedPosterCard
-import com.beetlestance.aphid.common.compose.pager.Pager
-import com.beetlestance.aphid.common.compose.pager.PagerState
-import com.beetlestance.aphid.common.compose.pager.rememberPagerState
 import com.beetlestance.aphid.data.entities.Recipe
 import com.beetlestance.aphid.dicebar.kotlin.DiceBarAvatarHelper
 import com.beetlestance.aphid.dicebar.kotlin.sprites.avataar.AvataaarTop
@@ -95,8 +88,14 @@ import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.PagerState
+import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 import kotlin.math.abs
+
+private val PROFILE_CONTENT_PADDING = 16.dp
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
@@ -107,31 +106,10 @@ fun Profile(
     val viewModel: ProfileViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    val contentPadding = PaddingValues(
-        top = when {
-            paddingValues.calculateTopPadding() > 0.dp -> paddingValues.calculateTopPadding()
-            else -> RECIPE_ITEM_SPACING
-        },
-        start = when {
-            paddingValues.calculateStartPadding(LocalLayoutDirection.current) > 0.dp ->
-                paddingValues.calculateStartPadding(LocalLayoutDirection.current)
-            else -> RECIPE_ITEM_SPACING
-        },
-        end = when {
-            paddingValues.calculateEndPadding(LocalLayoutDirection.current) > 0.dp ->
-                paddingValues.calculateEndPadding(LocalLayoutDirection.current)
-            else -> RECIPE_ITEM_SPACING
-        },
-        bottom = when {
-            paddingValues.calculateBottomPadding() > 0.dp -> paddingValues.calculateBottomPadding()
-            else -> RECIPE_ITEM_SPACING
-        }
-    )
-
     Profile(
         modifier = modifier.fillMaxSize(),
         state = state,
-        paddingValues = contentPadding,
+        contentPadding = paddingValues,
         markRecipeAsFavourite = { recipe, isFavourite ->
             viewModel.markRecipeAsFavourite(recipe, isFavourite)
         }
@@ -141,19 +119,14 @@ fun Profile(
 @Composable
 private fun Profile(
     state: ProfileViewState,
-    paddingValues: PaddingValues,
+    contentPadding: PaddingValues,
     markRecipeAsFavourite: (Recipe, Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .background(MaterialTheme.colors.surface.copy(alpha = 0.95f))
-    ) {
+    Column(modifier = modifier) {
         Surface(modifier = Modifier.fillMaxWidth(), elevation = 4.dp) {
             ProfileSection(
-                modifier = Modifier
-                    .padding(PROFILE_LAYOUT_MARGIN)
-                    .statusBarsPadding(),
+                modifier = Modifier.padding(PROFILE_CONTENT_PADDING),
                 avatarUrl = DiceBarAvatarHelper.createAvatarUrl(
                     sprite = AvataaarsSprite(),
                     seed = "Male",
@@ -166,15 +139,13 @@ private fun Profile(
         }
 
         ProfileRecipesTabLayout(
-            paddingValues = paddingValues,
+            paddingValues = contentPadding,
             favouriteRecipes = state.favouriteRecipes,
             savedRecipes = state.savedRecipes,
             markRecipeAsFavourite = { recipe, isFavourite ->
                 markRecipeAsFavourite(recipe, isFavourite)
             }
         )
-
-        Spacer(modifier = modifier.padding(paddingValues))
     }
 }
 
@@ -275,6 +246,7 @@ private enum class RecipesTabs(@StringRes val resId: Int) {
     FAVOURITE(R.string.profile_tab_favourite_recipe)
 }
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 private fun ProfileRecipesTabLayout(
     modifier: Modifier = Modifier,
@@ -284,10 +256,7 @@ private fun ProfileRecipesTabLayout(
     markRecipeAsFavourite: (Recipe, Boolean) -> Unit
 ) {
     val tabsResId = remember { RecipesTabs.values().map { it.resId } }
-    val pagerState = rememberPagerState(
-        currentPage = RecipesTabs.SAVED.ordinal,
-        maxPage = tabsResId.lastIndex
-    )
+    val pagerState = rememberPagerState(initialPage = RecipesTabs.SAVED.ordinal)
 
     RecipeTab(modifier = modifier, pagerState = pagerState, tabsResId = tabsResId)
 
@@ -300,6 +269,7 @@ private fun ProfileRecipesTabLayout(
     )
 }
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 private fun RecipeTab(
     modifier: Modifier,
@@ -338,9 +308,8 @@ private fun RecipeTab(
             Tab(
                 selected = index == pagerState.currentPage,
                 onClick = {
-                    when {
-                        index > pagerState.currentPage -> coroutineScope.launch { pagerState.nextPage() }
-                        index < pagerState.currentPage -> coroutineScope.launch { pagerState.previousPage() }
+                    coroutineScope.launch {
+                        pagerState.animateScrollToPage(index)
                     }
                 },
                 text = { Text(text = stringResource(resId)) }
@@ -349,6 +318,7 @@ private fun RecipeTab(
     }
 }
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 private fun RecipePager(
     modifier: Modifier = Modifier,
@@ -358,16 +328,21 @@ private fun RecipePager(
     markRecipeAsFavourite: (Recipe, Boolean) -> Unit,
     state: PagerState
 ) {
-    Pager(
+    val animatedSet = remember { mutableSetOf<Int>() }
+
+    HorizontalPager(
         modifier = modifier,
-        lastPage = state.maxPage,
+        count = savedRecipes.size,
         state = state,
-        offscreenLimit = 1
-    ) {
+        contentPadding = PaddingValues(PROFILE_CONTENT_PADDING),
+        itemSpacing = 16.dp,
+        key = { index -> savedRecipes[index].recipeId },
+    ) { page ->
         when (page) {
             RecipesTabs.SAVED.ordinal -> SavedRecipes(
                 savedRecipes = savedRecipes,
                 paddingValues = paddingValues,
+                animatedCards = animatedSet,
                 markRecipeAsFavourite = markRecipeAsFavourite
             )
             RecipesTabs.FAVOURITE.ordinal -> FavouriteRecipes(
@@ -380,7 +355,6 @@ private fun RecipePager(
 }
 
 private const val EMPTY_URL = ""
-private val RECIPE_ITEM_SPACING = 16.dp
 private val RECIPE_CARD_TRANSITION = TweenSpec<Float>(
     durationMillis = 400,
     delay = 50,
@@ -392,27 +366,30 @@ private fun SavedRecipes(
     modifier: Modifier = Modifier,
     savedRecipes: List<Recipe>,
     paddingValues: PaddingValues,
+    animatedCards: MutableSet<Int>,
     markRecipeAsFavourite: (Recipe, Boolean) -> Unit
 ) {
-    val animatedSet = remember { mutableSetOf<Int>() }
 
     LazyColumn(
         modifier = modifier,
         contentPadding = paddingValues,
         content = {
-            itemsIndexed(savedRecipes) { index, recipe ->
+            itemsIndexed(
+                items = savedRecipes,
+                key = { _, item -> item.recipeId }
+            ) { index, recipe ->
                 val coroutineScope = rememberCoroutineScope()
                 val offsetValue = remember {
-                    Animatable(initialValue = if (index in animatedSet) 0F else 150F)
+                    Animatable(initialValue = if (index in animatedCards) 0F else 150F)
                 }
                 val alphaValue = remember {
-                    Animatable(initialValue = if (index in animatedSet) 1F else 0F)
+                    Animatable(initialValue = if (index in animatedCards) 1F else 0F)
                 }
 
                 LaunchedEffect(recipe.id) {
                     offsetValue.animateTo(0F, animationSpec = RECIPE_CARD_TRANSITION)
                     alphaValue.animateTo(1F, animationSpec = RECIPE_CARD_TRANSITION)
-                    animatedSet.add(index)
+                    animatedCards.add(index)
                 }
 
                 DisposableEffect(recipe.id) {
@@ -454,7 +431,7 @@ private fun SavedRecipeCard(
                         .crossfade(true)
                         .build()
                 ),
-                modifier = Modifier.aspectRatio(1.46f),
+                modifier = Modifier.aspectRatio(1.5f),
                 contentScale = ContentScale.Crop,
                 contentDescription = "Saved Recipes"
             )
@@ -599,5 +576,3 @@ private fun RecipeDetails(
         maxLines = 1
     )
 }
-
-private val PROFILE_LAYOUT_MARGIN = 16.dp
