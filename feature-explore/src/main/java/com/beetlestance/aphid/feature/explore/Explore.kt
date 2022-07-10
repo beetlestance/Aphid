@@ -297,14 +297,14 @@ fun BreakFastRecipies(
         itemSpacing = 4.dp,
         key = { index ->
             val recipe = recipeFor(index)
-            return@HorizontalPager "${recipe.id}_$index"
+            return@HorizontalPager "${recipe.recipeId}_$index"
         },
         contentPadding = PaddingValues(horizontal = 48.dp, vertical = 16.dp)
     ) { index ->
         val recipe = recipeFor(index)
-        val recipeImageUrl: String? = run {
+        val recipeImageUrl: String = run {
             return@run SpoonacularImageHelper.generateRecipeImageUrl(
-                id = recipe.recipeId?.toLong() ?: return@run null,
+                id = recipe.recipeId.toLong(),
                 imageSize = SpoonacularImageSize.Recipe.ULTRA_HIGH_QUALITY,
                 imageType = recipe.imageType
             )
@@ -335,7 +335,7 @@ fun BreakFastRecipies(
                         fraction = 1f - pageOffset.coerceIn(0f, 1f)
                     )
                 },
-            imageSrc = recipeImageUrl ?: recipe.imageUrl ?: "",
+            imageSrc = recipeImageUrl,
             isFavourite = recipe.isFavourite ?: false,
             title = recipe.title ?: "",
             subTitle = "2 Serving • 40 Min • 331 Cal",
@@ -501,7 +501,7 @@ fun QuickRecipes(
     HorizontalPager(
         count = quickRecipes.size,
         state = rememberPagerState(initialPage = quickRecipes.size / 2),
-        key = { index -> quickRecipes[index].id },
+        key = { index -> quickRecipes[index].recipeId },
         contentPadding = when {
             quickRecipes.size > 1 -> PaddingValues(horizontal = 32.dp)
             else -> PaddingValues(0.dp)
@@ -568,7 +568,7 @@ fun RecentlyViewedRecipes(
     HorizontalPager(
         count = recentlyViewedRecipes.size,
         state = rememberPagerState(initialPage = recentlyViewedRecipes.size / 2),
-        key = { index -> recentlyViewedRecipes[index].id },
+        key = { index -> recentlyViewedRecipes[index].recipeId },
         contentPadding = PaddingValues(
             horizontal = animateDpAsState(
                 targetValue = if (recentlyViewedRecipes.size > 1) 32.dp else 0.dp

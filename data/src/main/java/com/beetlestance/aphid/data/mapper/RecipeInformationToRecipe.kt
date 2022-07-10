@@ -25,7 +25,7 @@ class RecipeInformationToRecipe @Inject constructor() : Mapper<RecipeInformation
 
     override suspend fun map(from: RecipeInformation): Recipe = Recipe(
         id = 0,
-        recipeId = from.id,
+        recipeId = requireNotNull(from.id),
         title = from.title,
         rating = from.spoonacularScore,
         serving = from.servings,

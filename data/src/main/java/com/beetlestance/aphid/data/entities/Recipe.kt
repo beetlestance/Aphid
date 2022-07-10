@@ -32,7 +32,7 @@ data class Recipe(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id")
     override val id: Long = 0,
 
-    @ColumnInfo(name = "recipe_id") val recipeId: Int? = 0,
+    @ColumnInfo(name = "recipe_id") val recipeId: Int = 0,
 
     @ColumnInfo(name = "title") val title: String? = null,
 
