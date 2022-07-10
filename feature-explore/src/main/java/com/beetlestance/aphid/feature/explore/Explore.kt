@@ -15,11 +15,8 @@
  */
 package com.beetlestance.aphid.feature.explore
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -30,23 +27,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
@@ -59,17 +53,18 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.lerp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -79,9 +74,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.beetlestance.aphid.common.compose.RecipeDetailedPosterCard
-import com.beetlestance.aphid.common.compose.pager.Carousel
-import com.beetlestance.aphid.common.compose.pager.PageTransformation
-import com.beetlestance.aphid.common.compose.pager.Pager
 import com.beetlestance.aphid.common.compose.theme.Amber500
 import com.beetlestance.aphid.common.compose.theme.DeepOrange200
 import com.beetlestance.aphid.common.compose.theme.Grey700
@@ -101,6 +93,11 @@ import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.calculateCurrentOffsetForPage
+import com.google.accompanist.pager.rememberPagerState
+import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
@@ -111,22 +108,10 @@ fun Explore(
     val viewModel: ExploreViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    val contentPadding = PaddingValues(
-        top = if (paddingValues.calculateTopPadding() > 0.dp) paddingValues.calculateTopPadding() else EXPLORE_ITEM_SPACING,
-        start = if (paddingValues.calculateStartPadding(LocalLayoutDirection.current) > 0.dp) paddingValues.calculateStartPadding(
-            LocalLayoutDirection.current
-        ) else EXPLORE_ITEM_SPACING,
-        end = if (paddingValues.calculateEndPadding(LocalLayoutDirection.current) > 0.dp) paddingValues.calculateEndPadding(
-            LocalLayoutDirection.current
-        ) else EXPLORE_ITEM_SPACING,
-        bottom = if (paddingValues.calculateBottomPadding() > 0.dp) paddingValues.calculateBottomPadding() else EXPLORE_ITEM_SPACING
-    )
-
     Explore(
-        modifier = modifier
-            .fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
+        contentPadding = paddingValues,
         state = state,
-        paddingValues = contentPadding,
         onMarkRecipeAsFavourite = { recipe, isFavourite ->
             viewModel.markRecipeAsFavourite(recipe, isFavourite)
         }
@@ -135,66 +120,15 @@ fun Explore(
 
 private val EXPLORE_ITEM_SPACING = 16.dp
 
-private val EXPLORE_ITEMS = ExploreItems.values().toList()
-
-@Composable
-private fun Explore(
-    modifier: Modifier = Modifier,
-    paddingValues: PaddingValues = PaddingValues(),
-    state: ExploreViewState,
-    onMarkRecipeAsFavourite: (recipe: Recipe, isFavourite: Boolean) -> Unit
-) {
-    Surface(
-        modifier = modifier,
-        color = MaterialTheme.colors.surface
-    ) {
-        LazyColumn(
-            modifier = Modifier
-                .statusBarsPadding()
-                .fillMaxSize()
-                .animateContentSize(),
-            contentPadding = paddingValues,
-            verticalArrangement = Arrangement.spacedBy(
-                space = EXPLORE_ITEM_SPACING,
-                alignment = Alignment.Top
-            )
-        ) {
-            items(EXPLORE_ITEMS) { item ->
-
-                when (item) {
-                    SEARCH_BAR -> SearchBar(modifier = Modifier.padding(horizontal = 8.dp))
-                    BREAKFAST -> {
-                        if (state.breakfastRecipes.isNotEmpty()) {
-                            BreakFastWithHeader(
-                                breakfastRecipes = state.breakfastRecipes,
-                                markRecipeAsFavourite = onMarkRecipeAsFavourite
-                            )
-                        }
-                    }
-                    MOOD -> MoodContent()
-                    CUISINE -> Cuisine()
-                    PLAN_YOUR_MEAL -> PlanYourMealAheadWithHeader()
-                    QUICK_RECIPES -> {
-                        if (state.readyInTimeRecipes.isNotEmpty()) {
-                            QuickRecipesWithHeader(
-                                quickRecipes = state.readyInTimeRecipes,
-                                markRecipeAsFavourite = onMarkRecipeAsFavourite
-                            )
-                        }
-                    }
-                    RECENTLY_VIEWED -> {
-                        if (state.recentlyViewedRecipes.isNotEmpty()) {
-                            RecentlyViewedRecipesWithHeader(
-                                recentlyViewedRecipes = state.recentlyViewedRecipes,
-                                markRecipeAsFavourite = onMarkRecipeAsFavourite
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
+private val EXPLORE_ITEMS = listOf(
+    SEARCH_BAR,
+    BREAKFAST,
+    MOOD,
+    CUISINE,
+    PLAN_YOUR_MEAL,
+    QUICK_RECIPES,
+    RECENTLY_VIEWED
+)
 
 private enum class ExploreItems {
     SEARCH_BAR,
@@ -204,6 +138,73 @@ private enum class ExploreItems {
     PLAN_YOUR_MEAL,
     QUICK_RECIPES,
     RECENTLY_VIEWED
+}
+
+@Composable
+private fun Explore(
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(),
+    state: ExploreViewState,
+    onMarkRecipeAsFavourite: (recipe: Recipe, isFavourite: Boolean) -> Unit
+) {
+    Scaffold(modifier = modifier) { paddingValues ->
+        LazyColumn(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+                .animateContentSize(),
+            contentPadding = contentPadding,
+            verticalArrangement = Arrangement.spacedBy(
+                space = EXPLORE_ITEM_SPACING,
+                alignment = Alignment.Top
+            )
+        ) {
+            // Using index as key, because items are pre-filled immutable list
+            itemsIndexed(
+                items = EXPLORE_ITEMS, key = { index, _ -> index }
+            ) { _, item ->
+                when (item) {
+                    SEARCH_BAR -> SearchBar()
+                    BREAKFAST -> {
+                        if (state.breakfastRecipes.isNotEmpty()) {
+                            ExploreSectionHeader(R.string.explore_breaksfast_header)
+                            BreakFastRecipies(
+                                breakfastRecipes = state.breakfastRecipes,
+                                markRecipeAsFavourite = onMarkRecipeAsFavourite
+                            )
+                        }
+                    }
+                    MOOD -> MoodContent()
+                    CUISINE -> {
+                        ExploreSectionHeader(R.string.explore_cuisine_header)
+                        Cuisine()
+                    }
+                    PLAN_YOUR_MEAL -> {
+                        ExploreSectionHeader(R.string.explore_plan_your_meal_ahead)
+                        PlanYourMealAhead()
+                    }
+                    QUICK_RECIPES -> {
+                        if (state.readyInTimeRecipes.isNotEmpty()) {
+                            ExploreSectionHeader(R.string.explore_quick_recipes_header)
+                            QuickRecipes(
+                                quickRecipes = state.readyInTimeRecipes,
+                                markRecipeAsFavourite = onMarkRecipeAsFavourite
+                            )
+                        }
+                    }
+                    RECENTLY_VIEWED -> {
+                        if (state.recentlyViewedRecipes.isNotEmpty()) {
+                            ExploreSectionHeader(R.string.explore_recently_viewed_recipes_header)
+                            RecentlyViewedRecipes(
+                                recentlyViewedRecipes = state.recentlyViewedRecipes,
+                                markRecipeAsFavourite = onMarkRecipeAsFavourite
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 private val ExposeSearchBarShape = CircleShape
@@ -216,7 +217,7 @@ fun SearchBar(
     filterClick: () -> Unit = {}
 ) {
     Row(
-        modifier = modifier
+        modifier = modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
     ) {
         Row(
             modifier = Modifier
@@ -267,22 +268,40 @@ fun SearchBar(
 }
 
 @Composable
-fun BreakFastWithHeader(
+fun ExploreSectionHeader(resId: Int) {
+    Text(
+        text = stringResource(id = resId),
+        style = MaterialTheme.typography.h6,
+        modifier = Modifier.padding(16.dp)
+    )
+}
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun BreakFastRecipies(
     breakfastRecipes: List<Recipe>,
     markRecipeAsFavourite: (Recipe, Boolean) -> Unit
 ) {
-    Text(
-        text = stringResource(id = R.string.explore_breaksfast_header),
-        style = MaterialTheme.typography.h6,
-        modifier = Modifier.padding(horizontal = 16.dp)
-    )
+    val pageCount = breakfastRecipes.size
+    val startIndex = Int.MAX_VALUE / 2
+    val pagerState = rememberPagerState(initialPage = startIndex)
 
-    Carousel(
-        items = breakfastRecipes,
-        offscreenLimit = 2,
-        pageHint = 24.dp,
-        drawSelectedPageAtLast = true
-    ) { recipe ->
+    val recipeFor: (Int) -> Recipe = { index ->
+        val pageIndex = (index - startIndex).mod(pageCount)
+        breakfastRecipes[pageIndex]
+    }
+
+    HorizontalPager(
+        count = Int.MAX_VALUE,
+        state = pagerState,
+        itemSpacing = 4.dp,
+        key = { index ->
+            val recipe = recipeFor(index)
+            return@HorizontalPager "${recipe.id}_$index"
+        },
+        contentPadding = PaddingValues(horizontal = 48.dp, vertical = 16.dp)
+    ) { index ->
+        val recipe = recipeFor(index)
         val recipeImageUrl: String? = run {
             return@run SpoonacularImageHelper.generateRecipeImageUrl(
                 id = recipe.recipeId?.toLong() ?: return@run null,
@@ -293,18 +312,36 @@ fun BreakFastWithHeader(
 
         ExploreBreakfastCard(
             modifier = Modifier
-                .fillMaxWidth(0.8f)
-                .aspectRatio(13 / 20f)
-                .transformPage(PageTransformation.SCALE_TRANSFORM),
+                .graphicsLayer {
+                    // Calculate the absolute offset for the current page from the
+                    // scroll position. We use the absolute value which allows us to mirror
+                    // any effects for both directions
+                    val pageOffset = calculateCurrentOffsetForPage(index).absoluteValue
+
+                    // We animate the scaleX + scaleY, between 85% and 100%
+                    lerp(
+                        start = 0.85f,
+                        stop = 1f,
+                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                    ).also { scale ->
+                        scaleX = scale
+                        scaleY = scale
+                    }
+
+                    // We animate the alpha, between 50% and 100%
+                    alpha = lerp(
+                        start = 0.5f,
+                        stop = 1f,
+                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                    )
+                },
             imageSrc = recipeImageUrl ?: recipe.imageUrl ?: "",
             isFavourite = recipe.isFavourite ?: false,
             title = recipe.title ?: "",
             subTitle = "2 Serving • 40 Min • 331 Cal",
             description =
             "A unique experience of taste  and delicious ingredients prepared for you. Liven up your life with nutrition."
-        ) {
-            markRecipeAsFavourite(recipe, it)
-        }
+        ) { isLiked -> markRecipeAsFavourite(recipe, isLiked) }
     }
 }
 
@@ -363,14 +400,6 @@ fun MoodContent() {
 
 @Composable
 fun Cuisine() {
-    Text(
-        text = stringResource(id = R.string.explore_cuisine_header),
-        style = MaterialTheme.typography.h6,
-        modifier = Modifier
-            .padding(bottom = 16.dp)
-            .padding(horizontal = 16.dp)
-    )
-
     LazyRow {
         items(8) {
             CuisineContent()
@@ -400,10 +429,7 @@ fun CuisineContent() {
 fun CuisineCard() {
     Card(
         shape = CircleShape,
-        border = BorderStroke(
-            2.dp,
-            Purple200
-        )
+        border = BorderStroke(2.dp, Purple200)
     ) {
         Image(
             modifier = Modifier
@@ -428,15 +454,7 @@ fun CuisineDetails() {
 }
 
 @Composable
-fun PlanYourMealAheadWithHeader() {
-    Text(
-        text = stringResource(id = R.string.explore_plan_your_meal_ahead),
-        style = MaterialTheme.typography.h6,
-        modifier = Modifier
-            .padding(bottom = 16.dp)
-            .padding(horizontal = 16.dp)
-    )
-
+fun PlanYourMealAhead() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -474,21 +492,47 @@ fun PlanYourMealAheadWithHeader() {
     }
 }
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
-fun QuickRecipesWithHeader(
+fun QuickRecipes(
     quickRecipes: List<Recipe>,
     markRecipeAsFavourite: (Recipe, Boolean) -> Unit
 ) {
-    Text(
-        text = stringResource(id = R.string.explore_quick_recipes_header),
-        style = MaterialTheme.typography.h6,
-        modifier = Modifier.padding(horizontal = 16.dp)
-    )
-
-    Pager(lastPage = quickRecipes.lastIndex) {
-        val recipe = quickRecipes.getOrNull(page) ?: return@Pager
+    HorizontalPager(
+        count = quickRecipes.size,
+        state = rememberPagerState(initialPage = quickRecipes.size / 2),
+        key = { index -> quickRecipes[index].id },
+        contentPadding = when {
+            quickRecipes.size > 1 -> PaddingValues(horizontal = 32.dp)
+            else -> PaddingValues(0.dp)
+        }
+    ) { index ->
+        val recipe = quickRecipes.getOrNull(index) ?: return@HorizontalPager
         RecipeDetailedPosterCard(
-            modifier = Modifier.transformPage(PageTransformation.SCALE_TRANSFORM),
+            modifier = Modifier
+                .graphicsLayer {
+                    // Calculate the absolute offset for the current page from the
+                    // scroll position. We use the absolute value which allows us to mirror
+                    // any effects for both directions
+                    val pageOffset = calculateCurrentOffsetForPage(index).absoluteValue
+
+                    // We animate the scaleX + scaleY, between 85% and 100%
+                    lerp(
+                        start = 0.85f,
+                        stop = 1f,
+                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                    ).also { scale ->
+                        scaleX = scale
+                        scaleY = scale
+                    }
+
+                    // We animate the alpha, between 50% and 100%
+                    alpha = lerp(
+                        start = 0.5f,
+                        stop = 1f,
+                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                    )
+                },
             isFavourite = recipe.isFavourite ?: false,
             onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
             posterImage = {
@@ -510,29 +554,53 @@ fun QuickRecipesWithHeader(
                     contentTags = "1 Serving • 20 Min • 205 Cal",
                     rating = "4.4"
                 )
-
-                // Item Spacing
-                // Spacer(modifier = Modifier.height(16.dp))
             }
         )
     }
 }
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
-fun RecentlyViewedRecipesWithHeader(
+fun RecentlyViewedRecipes(
     recentlyViewedRecipes: List<Recipe>,
     markRecipeAsFavourite: (Recipe, Boolean) -> Unit
 ) {
-    Text(
-        text = stringResource(id = R.string.explore_recently_viewed_recipes_header),
-        style = MaterialTheme.typography.h6,
-        modifier = Modifier.padding(horizontal = 16.dp)
-    )
-
-    Pager(lastPage = recentlyViewedRecipes.lastIndex) {
-        val recipe = recentlyViewedRecipes.getOrNull(page) ?: return@Pager
+    HorizontalPager(
+        count = recentlyViewedRecipes.size,
+        state = rememberPagerState(initialPage = recentlyViewedRecipes.size / 2),
+        key = { index -> recentlyViewedRecipes[index].id },
+        contentPadding = PaddingValues(
+            horizontal = animateDpAsState(
+                targetValue = if (recentlyViewedRecipes.size > 1) 32.dp else 0.dp
+            ).value
+        )
+    ) { index ->
+        val recipe = recentlyViewedRecipes.getOrNull(index) ?: return@HorizontalPager
         RecipeDetailedPosterCard(
-            modifier = Modifier.transformPage(PageTransformation.SCALE_TRANSFORM),
+            modifier = Modifier
+                .graphicsLayer {
+                    // Calculate the absolute offset for the current page from the
+                    // scroll position. We use the absolute value which allows us to mirror
+                    // any effects for both directions
+                    val pageOffset = calculateCurrentOffsetForPage(index).absoluteValue
+
+                    // We animate the scaleX + scaleY, between 85% and 100%
+                    lerp(
+                        start = 0.85f,
+                        stop = 1f,
+                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                    ).also { scale ->
+                        scaleX = scale
+                        scaleY = scale
+                    }
+
+                    // We animate the alpha, between 50% and 100%
+                    alpha = lerp(
+                        start = 0.5f,
+                        stop = 1f,
+                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                    )
+                },
             isFavourite = recipe.isFavourite ?: false,
             onCheckedChange = { isChecked -> markRecipeAsFavourite(recipe, isChecked) },
             posterImage = {
@@ -549,22 +617,13 @@ fun RecentlyViewedRecipesWithHeader(
                 )
             },
             posterDetails = {
-                AnimatedVisibility(
-                    visible = page == currentPage,
-                    enter = fadeIn() + expandVertically(),
-                    exit = fadeOut()
-                ) {
-                    Column {
-                        FoodCardContentsDetails(
-                            name = recipe.title ?: "",
-                            contentTags = "1 Serving • 20 Min • 205 Cal",
-                            rating = "4.4"
-                        )
-                    }
+                Column {
+                    FoodCardContentsDetails(
+                        name = recipe.title ?: "",
+                        contentTags = "1 Serving • 20 Min • 205 Cal",
+                        rating = "4.4"
+                    )
                 }
-
-                // Item Spacing
-                // Spacer(modifier = Modifier.height(16.dp))
             }
         )
     }
