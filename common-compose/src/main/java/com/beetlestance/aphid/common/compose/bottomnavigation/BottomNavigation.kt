@@ -109,10 +109,7 @@ fun CurveCutNavBar(
             val bottomNavBarPlaceables = subcompose(CurveCutSlots.BOTTOM_NAV_BAR) {
                 CurveCutBottomNavBar(
                     scope = scope,
-                    shape = curveCutShape(
-                        offsetX = fabOffsetX.toDp(),
-                        cutOutWidth = (FabRadius.times(2)).toPx()
-                    ),
+                    shape = curveCutShape(offsetX = fabOffsetX.toDp()),
                     backgroundColor = backgroundColor,
                     contentColor = contentColor,
                     elevation = elevation,
@@ -246,7 +243,8 @@ private fun CurveCutBottomNavBar(
 private enum class CurveCutSlots { FAB, BOTTOM_NAV_BAR }
 
 @Composable
-private fun curveCutShape(offsetX: Dp, cutOutWidth: Float): CutOutShape {
+private fun curveCutShape(offsetX: Dp): CutOutShape {
+    val fabDiameter = FabRadius.times(2).toPx()
     return CutOutShape(
         cutOutShape = BottomNavBarCutOutShape,
         cutOutShapeMargin = FabMargin.toPx(),
@@ -255,9 +253,10 @@ private fun curveCutShape(offsetX: Dp, cutOutWidth: Float): CutOutShape {
             animationSpec = CurveCutBezierEasing
         ).value.toPx(),
         cutOutShapeSize = Size(
-            width = cutOutWidth,
-            height = FabRadius.times(2).toPx() + CutOutDepthMargin.toPx()
+            width = fabDiameter,
+            height = fabDiameter
         ),
+        cutOutDepth = CutOutDepthMargin.toPx(),
         cutOutEdgeRadius = 4f,
         smoothEdge = false
     )
@@ -332,16 +331,17 @@ private val BottomNavBarCutOutShape = object : Shape {
         // To create bottomNavigation curve cutout shape, we will divide curve in two halves
         // curve size contains width of each curve, and curve height is the depth of cutout.
         // i.e half of the total size
-        val curve = size.div(2f)
+        val curveWidth = size.width / 2
+        val curveDepth = size.height / 2
 
         // Offsets for Control points
-        val topControlPoint = Offset(curve.width.div(2), curve.height)
-        val bottomControlPoint = Offset(curve.width.div(2), 0f)
+        val topControlPoint = Offset(curveWidth, curveDepth)
+        val bottomControlPoint = Offset(curveWidth, 0f)
 
         // FirstCurve start and end points, starting point is the curve topLeft co-ordinate
         // end point is the depth of curve and the start point for second curve
-        val firstCurveStart = Offset(x = 0f, y = curve.height) // P1
-        val firstCurveEnd = Offset(x = curve.width, y = size.height) // P2
+        val firstCurveStart = Offset(x = 0f, y = curveDepth) // P1
+        val firstCurveEnd = Offset(x = curveWidth, y = size.height) // P2
 
         // Control points for first curve
         val firstCurveControlPoint1 = Offset(
@@ -358,7 +358,7 @@ private val BottomNavBarCutOutShape = object : Shape {
         val secondCurveStart = Offset(firstCurveEnd.x, firstCurveEnd.y) // P2
         val secondCurveEnd = Offset(
             x = size.width,
-            y = curve.height
+            y = curveDepth
         ) // P3
 
         // Control points for second curve
@@ -386,7 +386,7 @@ private val BottomNavBarCutOutShape = object : Shape {
 
         quadraticBezierTo(
             x1 = 0f,
-            y1 = curve.height,
+            y1 = curveDepth,
             x2 = secondCurveStart.x,
             y2 = secondCurveStart.y
         )
@@ -420,7 +420,7 @@ private val FabDepthMargin = 12.dp
 
 private val CurveCutBottomNavigationHeight = BottomNavigationHeight + FabRadius + FabMargin
 
-private val CutOutDepthMargin = 8.dp
+private val CutOutDepthMargin = 4.dp
 
 private val BottomNavigationElevation = 4.dp
 
