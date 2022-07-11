@@ -21,6 +21,7 @@ import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -49,12 +50,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.lerp
 import androidx.compose.ui.zIndex
 import com.beetlestance.aphid.common.compose.extensions.toIntPx
 import com.beetlestance.aphid.common.compose.extensions.toPx
@@ -79,7 +82,7 @@ fun CurveCutNavBar(
     fabIcon: @Composable CurveCutNavBarScope.() -> Unit,
     menuItems: @Composable CurveCutNavBarScope.() -> Unit
 ) {
-    val state = remember { CurveCutNavBarState(selectedItem) }
+    val state = remember { CurveCutNavBarState(selectedItem, maxItems) }
     val density = LocalDensity.current
 
     val scope = CurveCutNavBarScope(state)
@@ -115,9 +118,7 @@ fun CurveCutNavBar(
                     elevation = elevation,
                     content = menuItems
                 )
-            }.map {
-                it.measure(looseConstraints)
-            }
+            }.map { it.measure(looseConstraints) }
 
             val fabPlaceables = subcompose(CurveCutSlots.FAB) {
                 val fabPlacement = animateBounce(
@@ -170,12 +171,23 @@ fun CurveCutNavBarScope.CurveCutMenuItem(
         modifier
     } else {
         modifier.selectable(
-            selected = selected,
-            onClick = onClick
+            selected = false,
+            onClick = onClick,
+            interactionSource = MutableInteractionSource(),
+            indication = null
         )
     }
+
     Box(
-        modifier = itemModifier.size(48.dp),
+        modifier = itemModifier
+            .size(48.dp)
+            .graphicsLayer {
+                alpha = lerp(
+                    start = if (selected) 1f else 0f,
+                    stop = if (selected) 0f else 1f,
+                    fraction = (state.maxItems - index).toFloat()
+                )
+            },
         contentAlignment = Alignment.Center,
         content = { content() }
     )
@@ -252,7 +264,8 @@ private fun curveCutShape(offsetX: Dp, cutOutWidth: Float): CutOutShape {
 
 @Stable
 class CurveCutNavBarState(
-    defaultSelectedItem: Int = 0
+    defaultSelectedItem: Int = 0,
+    val maxItems: Int
 ) {
     // state to remember selected item
     private var _selectedItem by mutableStateOf(defaultSelectedItem)
@@ -410,7 +423,7 @@ private val CutOutDepthMargin = 10.dp
 
 private val CutOutHorizontalMargin = 32.dp
 
-private val BottomNavigationElevation = 8.dp
+private val BottomNavigationElevation = 4.dp
 
 private val FabElevation = 12.dp
 

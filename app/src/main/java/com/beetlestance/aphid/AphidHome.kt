@@ -46,6 +46,7 @@ import androidx.navigation.compose.rememberNavController
 import com.beetlestance.aphid.common.compose.AndroidIcon
 import com.beetlestance.aphid.common.compose.bottomnavigation.CurveCutMenuItem
 import com.beetlestance.aphid.common.compose.bottomnavigation.CurveCutNavBar
+import com.beetlestance.aphid.common.compose.theme.DeepOrange200
 
 @Composable
 fun AphidHome() {
@@ -75,7 +76,7 @@ private fun HomeBottomNavigation(
 ) {
     CurveCutNavBar(
         modifier = Modifier.navigationBarsPadding(),
-        backgroundColor = MaterialTheme.colors.background,
+        backgroundColor = DeepOrange200,
         fabBackgroundColor = MaterialTheme.colors.primary,
         selectedItem = HomeBottomNavigationItems.indexOfFirst { it.screen == currentSelectedScreen },
         maxItems = HomeBottomNavigationItems.size,
