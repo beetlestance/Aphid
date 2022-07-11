@@ -258,6 +258,7 @@ private fun curveCutShape(offsetX: Dp, cutOutWidth: Float): CutOutShape {
             width = cutOutWidth,
             height = FabRadius.times(2).toPx() + CutOutDepthMargin.toPx()
         ),
+        cutOutEdgeRadius = 4f,
         smoothEdge = false
     )
 }
@@ -340,7 +341,7 @@ private val BottomNavBarCutOutShape = object : Shape {
         // FirstCurve start and end points, starting point is the curve topLeft co-ordinate
         // end point is the depth of curve and the start point for second curve
         val firstCurveStart = Offset(x = 0f, y = curve.height) // P1
-        val firstCurveEnd = Offset(x = curve.width, y = size.height) // P3
+        val firstCurveEnd = Offset(x = curve.width, y = size.height) // P2
 
         // Control points for first curve
         val firstCurveControlPoint1 = Offset(
@@ -354,11 +355,11 @@ private val BottomNavBarCutOutShape = object : Shape {
 
         // SecondCurve start and end points, starting point is the endpoint of first curve and
         // end point is the topRight co-ordinate
-        val secondCurveStart = Offset(firstCurveEnd.x, firstCurveEnd.y) // P3
+        val secondCurveStart = Offset(firstCurveEnd.x, firstCurveEnd.y) // P2
         val secondCurveEnd = Offset(
             x = size.width,
             y = curve.height
-        ) // P4
+        ) // P3
 
         // Control points for second curve
         val secondCurveControlPoint1 = Offset(
@@ -373,7 +374,7 @@ private val BottomNavBarCutOutShape = object : Shape {
         // Start point of curve
         moveTo(x = firstCurveStart.x, y = firstCurveStart.y)
 
-        // First bezier curve with (P1, C1, C2, P3)
+        // First bezier curve with (P1, C1, C2, P2)
         cubicTo(
             x1 = firstCurveControlPoint1.x,
             y1 = firstCurveControlPoint1.y,
@@ -390,7 +391,7 @@ private val BottomNavBarCutOutShape = object : Shape {
             y2 = secondCurveStart.y
         )
 
-        // Second bezier curve with (P3, C4, C3, P4)
+        // Second bezier curve with (P2, C4, C3, P3)
         cubicTo(
             x1 = secondCurveControlPoint1.x,
             y1 = secondCurveControlPoint1.y,
