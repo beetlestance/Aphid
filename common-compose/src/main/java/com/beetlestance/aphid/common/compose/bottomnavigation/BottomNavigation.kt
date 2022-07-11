@@ -110,8 +110,8 @@ fun CurveCutNavBar(
                 CurveCutBottomNavBar(
                     scope = scope,
                     shape = curveCutShape(
-                        offsetX = menuItemStartOffsetX.toDp(),
-                        cutOutWidth = menuItemWidth.toFloat()
+                        offsetX = fabOffsetX.toDp(),
+                        cutOutWidth = (FabRadius.times(2)).toPx()
                     ),
                     backgroundColor = backgroundColor,
                     contentColor = contentColor,
@@ -236,7 +236,7 @@ private fun CurveCutBottomNavBar(
     ) {
         Row(
             modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.SpaceAround,
+            horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically,
             content = { scope.content() }
         )
@@ -248,14 +248,14 @@ private enum class CurveCutSlots { FAB, BOTTOM_NAV_BAR }
 @Composable
 private fun curveCutShape(offsetX: Dp, cutOutWidth: Float): CutOutShape {
     return CutOutShape(
-        cutOutShape = BottomNavBarCutOutShape(),
+        cutOutShape = BottomNavBarCutOutShape,
         cutOutShapeMargin = FabMargin.toPx(),
         cutoutStartOffset = animateDpAsState(
             targetValue = offsetX,
             animationSpec = CurveCutBezierEasing
-        ).value.toPx() - CutOutHorizontalMargin.div(2).toPx(),
+        ).value.toPx(),
         cutOutShapeSize = Size(
-            width = cutOutWidth + CutOutHorizontalMargin.toPx(),
+            width = cutOutWidth,
             height = FabRadius.times(2).toPx() + CutOutDepthMargin.toPx()
         ),
         smoothEdge = false
@@ -312,7 +312,7 @@ private fun animateBounce(
     )
 }
 
-private class BottomNavBarCutOutShape : Shape {
+private val BottomNavBarCutOutShape = object : Shape {
 
     override fun createOutline(
         size: Size,
@@ -419,9 +419,7 @@ private val FabDepthMargin = 12.dp
 
 private val CurveCutBottomNavigationHeight = BottomNavigationHeight + FabRadius + FabMargin
 
-private val CutOutDepthMargin = 10.dp
-
-private val CutOutHorizontalMargin = 32.dp
+private val CutOutDepthMargin = 8.dp
 
 private val BottomNavigationElevation = 4.dp
 
