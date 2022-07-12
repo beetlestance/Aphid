@@ -118,10 +118,10 @@ fun CurveCutNavBar(
             }.map { it.measure(looseConstraints) }
 
             val fabPlaceables = subcompose(CurveCutSlots.FAB) {
-                val fabPlacement = animateBounce(
+                val fabPlacement = animateEmerge(
                     startOffset = fabOffsetX.toDp(),
-                    peak = FabDepthMargin,
-                    depth = CurveCutBottomNavigationHeight
+                    emergedDepth = FabDepth,
+                    subMergedDepth = CurveCutBottomNavigationHeight
                 )
                 CurveCutFab(
                     modifier = Modifier.offset(
@@ -289,24 +289,24 @@ private class FabPlacement(
 
 @Composable
 @Suppress("SameParameterValue")
-private fun animateBounce(
+private fun animateEmerge(
     startOffset: Dp,
-    peak: Dp,
-    depth: Dp
+    emergedDepth: Dp,
+    subMergedDepth: Dp
 ): FabPlacement {
     val pathCovered = animateDpAsState(
         targetValue = startOffset,
         animationSpec = CurveCutBezierEasing
     ).value
 
-    val offsetY: Dp = if (pathCovered == startOffset) peak else depth
+    val offsetY: Dp = if (pathCovered == startOffset) emergedDepth else subMergedDepth
     val heightOffset = animateDpAsState(
         targetValue = offsetY,
         animationSpec = CurveCutBezierEasing
     ).value
 
     return FabPlacement(
-        isDocked = offsetY == peak,
+        isDocked = offsetY == emergedDepth,
         offsetX = pathCovered,
         offsetY = heightOffset
     )
@@ -350,7 +350,7 @@ private val BottomNavBarCutOutShape = object : Shape {
 
         // Control points for first curve
         val firstCurveControlPoint1 = Offset(
-            x = firstCurveStart.x + topControlPoint.x,
+            x = firstCurveStart.x + topControlPoint.x + startOffset.div(2),
             y = topControlPoint.y
         ) // C1
         val firstCurveControlPoint2 = Offset(
@@ -369,7 +369,7 @@ private val BottomNavBarCutOutShape = object : Shape {
             y = secondCurveStart.y - bottomControlPoint.y
         ) // C4
         val secondCurveControlPoint2 = Offset(
-            x = secondCurveEnd.x - topControlPoint.x,
+            x = secondCurveEnd.x - topControlPoint.x + endOffset.div(2),
             y = topControlPoint.y
         ) // C3
 
@@ -411,11 +411,11 @@ private val FabRadius = 56.dp.div(2)
 
 private val FabMargin = 8.dp
 
-private val FabDepthMargin = 12.dp
+private val FabDepth = 16.dp
 
 private val CurveCutBottomNavigationHeight = BottomNavigationHeight + FabRadius + FabMargin
 
-private val CutOutDepthMargin = 4.dp
+private val CutOutDepthMargin = 6.dp
 
 private val BottomNavigationElevation = 4.dp
 
