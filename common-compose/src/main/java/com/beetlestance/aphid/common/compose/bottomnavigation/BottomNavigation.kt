@@ -334,13 +334,18 @@ private val BottomNavBarCutOutShape = object : Shape {
         val curveWidth = size.width / 2
         val curveDepth = size.height / 2
 
+        // Shift start and end offset, to avoid overlapping cutout shape with fab
+        // because to smooth the drop in curve it will draw towards the fab.
+        val startOffset = -curveWidth / 2
+        val endOffset = curveWidth / 2
+
         // Offsets for Control points
         val topControlPoint = Offset(curveWidth, curveDepth)
         val bottomControlPoint = Offset(curveWidth, 0f)
 
         // FirstCurve start and end points, starting point is the curve topLeft co-ordinate
         // end point is the depth of curve and the start point for second curve
-        val firstCurveStart = Offset(x = 0f, y = curveDepth) // P1
+        val firstCurveStart = Offset(x = startOffset, y = curveDepth) // P1
         val firstCurveEnd = Offset(x = curveWidth, y = size.height) // P2
 
         // Control points for first curve
@@ -356,10 +361,7 @@ private val BottomNavBarCutOutShape = object : Shape {
         // SecondCurve start and end points, starting point is the endpoint of first curve and
         // end point is the topRight co-ordinate
         val secondCurveStart = Offset(firstCurveEnd.x, firstCurveEnd.y) // P2
-        val secondCurveEnd = Offset(
-            x = size.width,
-            y = curveDepth
-        ) // P3
+        val secondCurveEnd = Offset(x = size.width + endOffset, y = curveDepth) // P3
 
         // Control points for second curve
         val secondCurveControlPoint1 = Offset(
@@ -382,13 +384,6 @@ private val BottomNavBarCutOutShape = object : Shape {
             y2 = firstCurveControlPoint2.y,
             x3 = firstCurveEnd.x,
             y3 = firstCurveEnd.y
-        )
-
-        quadraticBezierTo(
-            x1 = 0f,
-            y1 = curveDepth,
-            x2 = secondCurveStart.x,
-            y2 = secondCurveStart.y
         )
 
         // Second bezier curve with (P2, C4, C3, P3)
