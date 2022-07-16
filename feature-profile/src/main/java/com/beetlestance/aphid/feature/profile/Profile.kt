@@ -336,7 +336,7 @@ private fun RecipePager(
         state = state,
         contentPadding = PaddingValues(PROFILE_CONTENT_PADDING),
         itemSpacing = 16.dp,
-        key = { index -> savedRecipes[index].recipeId },
+        key = { index -> savedRecipes[index].recipeId }
     ) { page ->
         when (page) {
             RecipesTabs.SAVED.ordinal -> SavedRecipes(
@@ -369,7 +369,6 @@ private fun SavedRecipes(
     animatedCards: MutableSet<Int>,
     markRecipeAsFavourite: (Recipe, Boolean) -> Unit
 ) {
-
     LazyColumn(
         modifier = modifier,
         contentPadding = paddingValues,

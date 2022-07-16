@@ -161,7 +161,8 @@ private fun Explore(
         ) {
             // Using index as key, because items are pre-filled immutable list
             itemsIndexed(
-                items = EXPLORE_ITEMS, key = { index, _ -> index }
+                items = EXPLORE_ITEMS,
+                key = { index, _ -> index }
             ) { _, item ->
                 when (item) {
                     SEARCH_BAR -> SearchBar()
