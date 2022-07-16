@@ -45,7 +45,7 @@ fun DynamicThemePrimaryColorsFromImage(
 ) {
     val colors = MaterialTheme.colors.copy(
         primary = dominantColorState.color,
-        onPrimary = dominantColorState.onColor.copy(0.7f),
+        onPrimary = dominantColorState.onColor.copy(0.7f)
     )
     MaterialTheme(colors = colors, content = content)
 }
@@ -124,7 +124,6 @@ class DominantColorState(
                     ?: palette.swatches
                         .filter { swatch -> isColorValid(Color(swatch.rgb)) }
                         .maxByOrNull { swatch -> swatch.population }
-
             }
             // If we found a valid swatch, wrap it in a [DominantColors]
             ?.let { swatch ->
