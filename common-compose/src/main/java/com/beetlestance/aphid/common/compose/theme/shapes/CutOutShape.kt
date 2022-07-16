@@ -37,6 +37,7 @@ class CutOutShape(
     private val cutOutShape: Shape,
     private val cutOutShapeSize: Size,
     @Px private val cutOutShapeMargin: Float,
+    @Px private val cutOutDepth: Float,
     @Px private val cutoutStartOffset: Float,
     @Px private val cutOutEdgeRadius: Float = 0f,
     private val smoothEdge: Boolean = true
@@ -69,7 +70,7 @@ class CutOutShape(
 
         val cutoutSize = Size(
             width = cutOutShapeSize.width + (cutoutOffset * 2),
-            height = cutOutShapeSize.height + (cutoutOffset * 2)
+            height = cutOutShapeSize.height + (cutoutOffset + cutOutDepth) * 2
         )
 
         val cutoutStartX = cutoutStartOffset - cutoutOffset
