@@ -11,11 +11,6 @@ ksp {
     arg("moshi.generateProguardRules", "false")
 }
 
-kapt {
-    correctErrorTypes = true
-    useBuildCache = true
-}
-
 tasks.test {
     if (spoonacularKey != null) environment("TEST_API_KEY", spoonacularKey)
 }

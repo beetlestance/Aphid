@@ -9,11 +9,6 @@ ksp {
     arg("moshi.generateProguardRules", "false")
 }
 
-kapt {
-    correctErrorTypes = true
-    useBuildCache = true
-}
-
 dependencies {
 
     // Testing

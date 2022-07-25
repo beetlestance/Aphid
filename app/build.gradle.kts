@@ -5,11 +5,6 @@ plugins {
     id("dagger.hilt.android.plugin")
 }
 
-kapt {
-    correctErrorTypes = true
-    useBuildCache = true
-}
-
 val useReleaseKeystore = rootProject.file("release/app-release.jks").exists()
 
 android {

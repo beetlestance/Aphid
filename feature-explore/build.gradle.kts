@@ -4,11 +4,6 @@ plugins {
     id("aphid.android.feature")
 }
 
-kapt {
-    correctErrorTypes = true
-    useBuildCache = true
-}
-
 android {
     namespace = "com.beetlestance.aphid.feature.explore"
 

@@ -4,11 +4,6 @@ plugins {
     kotlin("kapt")
 }
 
-kapt {
-    correctErrorTypes = true
-    useBuildCache = true
-}
-
 android {
     namespace = "com.beetlestance.aphid.common.compose"
 
