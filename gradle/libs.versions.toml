@@ -64,6 +64,7 @@ androidx-palette = { module = "androidx.palette:palette-ktx", version = "1.0.0" 
 
 # AndroidX Compose
 androidx-compose-ui-core = { module = "androidx.compose.ui:ui", version.ref = "androidx-compose" }
+androidx-compose-ui-util = { module = "androidx.compose.ui:ui-util", version.ref = "androidx-compose" }
 # Tooling support (Previews, etc.)
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "androidx-compose" }
 # Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
@@ -117,6 +118,7 @@ coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
 # Google Accompanist
+google-accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "google-accompanist" }
 google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "google-accompanist" }
 google-accompanist-system-ui-controller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "google-accompanist" }
 
@@ -188,13 +190,16 @@ android-tools-lint = ["android-tools-layoutlib-api", "android-tools-lint-api",
 androidx-compose = ["androidx-compose-animation",
     "androidx-compose-foundation", "androidx-compose-layout", "androidx-compose-livedata",
     "androidx-compose-material", "androidx-compose-runtime", "androidx-compose-ui-core",
-    "androidx-compose-ui-test", "androidx-compose-ui-tooling"]
+    "androidx-compose-ui-test", "androidx-compose-ui-tooling", "androidx-compose-ui-util"]
 
 # AndroidX Test
 androdidx-test = ["androidx-test-core", "androidx-test-ext-junit", "androidx-test-rules", "androidx-test-runner"]
 
 # Google Accompanist
-google-accompanist = ["google-accompanist-system-ui-controller", "google-accompanist-flowlayout"]
+google-accompanist = ["google-accompanist-system-ui-controller",
+    "google-accompanist-flowlayout",
+    "google-accompanist-pager"
+]
 
 # Moshi
 moshi = ["moshi-adapters", "moshi-core", "moshi-kotlin"]

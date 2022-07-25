@@ -18,9 +18,6 @@ package com.beetlestance.aphid.common.compose
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.collection.LruCache
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -47,14 +44,8 @@ fun DynamicThemePrimaryColorsFromImage(
     content: @Composable () -> Unit
 ) {
     val colors = MaterialTheme.colors.copy(
-        primary = animateColorAsState(
-            targetValue = dominantColorState.color,
-            animationSpec = spring(stiffness = Spring.StiffnessLow)
-        ).value,
-        onPrimary = animateColorAsState(
-            targetValue = dominantColorState.onColor.copy(0.7f),
-            animationSpec = spring(stiffness = Spring.StiffnessLow)
-        ).value
+        primary = dominantColorState.color,
+        onPrimary = dominantColorState.onColor.copy(0.7f)
     )
     MaterialTheme(colors = colors, content = content)
 }
@@ -107,17 +98,16 @@ class DominantColorState(
         if (cached != null) return cached
 
         return bitmap.dominantColorOrNull()
-            .sortedByDescending { swatch -> swatch.population }
-            .firstOrNull { swatch -> isColorValid(Color(swatch.rgb)) }
-            ?.let { swatch ->
+            .let { palette ->
+                palette.vibrantSwatch?.takeIf { swatch -> isColorValid(Color(swatch.rgb)) }
+                    ?: palette.swatches.filter { swatch -> isColorValid(Color(swatch.rgb)) }
+                        .maxByOrNull { swatch -> swatch.population }
+            }?.let { swatch ->
                 DominantColors(
                     color = Color(swatch.rgb),
                     onColor = Color(swatch.bodyTextColor)
                 )
-            }
-            ?.also { result ->
-                cache?.put(hash, result)
-            }
+            }?.also { result -> cache?.put(hash, result) }
     }
 
     private suspend fun calculateDominantColor(url: Any): DominantColors? {
@@ -129,10 +119,12 @@ class DominantColorState(
 
         // Otherwise we calculate the swatches in the image, and return the first valid color
         return calculateSwatchesInImage(context, url)
-            // First we want to sort the list by the color's population
-            .sortedByDescending { swatch -> swatch.population }
-            // Then we want to find the first valid color
-            .firstOrNull { swatch -> isColorValid(Color(swatch.rgb)) }
+            ?.let { palette ->
+                palette.vibrantSwatch?.takeIf { swatch -> isColorValid(Color(swatch.rgb)) }
+                    ?: palette.swatches
+                        .filter { swatch -> isColorValid(Color(swatch.rgb)) }
+                        .maxByOrNull { swatch -> swatch.population }
+            }
             // If we found a valid swatch, wrap it in a [DominantColors]
             ?.let { swatch ->
                 DominantColors(
@@ -165,7 +157,7 @@ private data class DominantColors(
 private suspend fun calculateSwatchesInImage(
     context: Context,
     imageUrl: Any
-): List<Palette.Swatch> {
+): Palette? {
     val r = ImageRequest.Builder(context)
         .data(imageUrl)
         // We scale the image to cover 128px x 128px (i.e. min dimension == 128px)
@@ -181,25 +173,23 @@ private suspend fun calculateSwatchesInImage(
 
     return bitmap?.let {
         withContext(Dispatchers.Default) {
-            val palette = Palette.Builder(bitmap)
+            return@withContext Palette.Builder(bitmap)
+                // We reduce the maximum color count down to 32
+                .maximumColorCount(8)
                 // Disable any bitmap resizing in Palette. We've already loaded an appropriately
                 // sized bitmap through Coil
                 .resizeBitmapArea(0)
                 // Clear any built-in filters. We want the unfiltered dominant color
                 .clearFilters()
-                // We reduce the maximum color count down to 8
-                .maximumColorCount(8)
                 .generate()
-
-            palette.swatches
         }
-    } ?: emptyList()
+    }
 }
 
-internal fun Bitmap.dominantColorOrNull(): List<Palette.Swatch> {
+internal fun Bitmap.dominantColorOrNull(): Palette {
     return Palette.Builder(this)
+        .maximumColorCount(8)
         .resizeBitmapArea(0)
         .clearFilters()
-        .maximumColorCount(16)
-        .generate().swatches
+        .generate()
 }

@@ -23,6 +23,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.CircleShape
@@ -41,7 +42,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -107,19 +107,9 @@ fun ExploreBreakfastCard(
     ) {
         Surface(
             modifier = modifier
-                .aspectRatio(13 / 20f)
-                .graphicsLayer(
-                    shadowElevation = 32f,
-                    shape = RoundedCornerShape(32.dp),
-                    clip = true
-                )
+                .fillMaxSize()
                 .clip(RoundedCornerShape(32.dp)),
-            color = dominantColorState.color
-                .moveTo(
-                    targetColor = Color.White,
-                    percent = 0.8f,
-                    blueOffset = 0.05f
-                )
+            color = dominantColorState.color.copy(alpha = 0.3f)
         ) {
             ConstraintLayout {
                 val (image, favIcon, spacerDetail, detail) = createRefs()
@@ -243,6 +233,8 @@ fun BreakfastDescription(
             overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.body2
         )
+
+        Spacer(modifier = Modifier.height(8.dp))
     }
 }
 

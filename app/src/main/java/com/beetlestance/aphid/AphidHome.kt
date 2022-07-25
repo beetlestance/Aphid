@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
@@ -51,6 +52,7 @@ fun AphidHome() {
     val navController = rememberNavController()
 
     Scaffold(
+        modifier = Modifier.statusBarsPadding(),
         bottomBar = {
             val currentSelectedScreen by navController.currentScreenAsState()
             HomeBottomNavigation(
@@ -73,7 +75,7 @@ private fun HomeBottomNavigation(
 ) {
     CurveCutNavBar(
         modifier = Modifier.navigationBarsPadding(),
-        backgroundColor = MaterialTheme.colors.background,
+        backgroundColor = MaterialTheme.colors.surface,
         fabBackgroundColor = MaterialTheme.colors.primary,
         selectedItem = HomeBottomNavigationItems.indexOfFirst { it.screen == currentSelectedScreen },
         maxItems = HomeBottomNavigationItems.size,
