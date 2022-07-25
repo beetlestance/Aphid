@@ -1,16 +1,16 @@
+pluginManagement {
+    includeBuild("build-logic")
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
 plugins {
     id("com.gradle.enterprise").version("3.5")
 }
 
-/*
-* Enable type-safe project access
-*
-    dependencies {
-     type-safe alternative to project(":client")
-       implementation projects.client
-    }
-*/
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "Aphid"
 
@@ -39,8 +39,6 @@ gradleEnterprise {
 
 @Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
-
-    defaultLibrariesExtensionName.set("libs")
 
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
 

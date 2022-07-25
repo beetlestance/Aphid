@@ -1,4 +1,4 @@
-package com.beetlestance.aphid.buildsrc
+package dependencyupdates
 
 import java.util.Locale
 

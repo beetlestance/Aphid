@@ -1,38 +1,16 @@
-import com.beetlestance.aphid.buildsrc.Aphid
-
 plugins {
-    id("com.android.library")
-    kotlin("android")
-    kotlin("kapt")
-}
-
-kapt {
-    correctErrorTypes = true
-    useBuildCache = true
+    id("aphid.android.library")
+    id("aphid.android.library.compose")
+    id("aphid.android.feature")
+    id("aphid.spotless")
 }
 
 android {
     namespace = "com.beetlestance.aphid.feature.chat"
-    compileSdk = Aphid.compileSdkVersion
 
     defaultConfig {
-        minSdk = Aphid.minSdkVersion
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.kotlin.compiler.get()
     }
 }
 

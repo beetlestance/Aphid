@@ -2,11 +2,7 @@ plugins {
     id("kotlin")
     id("com.android.lint")
     kotlin("kapt")
-}
-
-kapt {
-    correctErrorTypes = true
-    useBuildCache = true
+    id("aphid.spotless")
 }
 
 dependencies {
