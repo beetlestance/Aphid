@@ -12,12 +12,6 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 apply("org.jetbrains.kotlin.android")
                 apply("org.jetbrains.kotlin.kapt")
             }
-
-            val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
-
-            dependencies {
-
-            }
         }
     }
 }
