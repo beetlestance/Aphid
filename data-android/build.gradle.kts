@@ -2,6 +2,7 @@ plugins {
     id("aphid.android.library")
     id("com.google.devtools.ksp").version("1.7.0-1.0.6")
     kotlin("kapt")
+    id("aphid.spotless")
 }
 
 android {

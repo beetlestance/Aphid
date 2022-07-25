@@ -2,6 +2,7 @@ plugins {
     id("kotlin")
     id("com.android.lint")
     kotlin("kapt")
+    id("aphid.spotless")
 }
 
 dependencies {

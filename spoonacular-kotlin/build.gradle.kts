@@ -3,6 +3,7 @@ plugins {
     id("com.android.lint")
     id("com.google.devtools.ksp").version("1.7.0-1.0.6")
     kotlin("kapt")
+    id("aphid.spotless")
 }
 
 val spoonacularKey = project.findProperty("SPOONACULAR_API_KEY")

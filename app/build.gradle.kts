@@ -3,6 +3,7 @@ plugins {
     id("aphid.android.application.compose")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
+    id("aphid.spotless")
 }
 
 val useReleaseKeystore = rootProject.file("release/app-release.jks").exists()

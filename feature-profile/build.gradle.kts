@@ -2,6 +2,7 @@ plugins {
     id("aphid.android.library")
     id("aphid.android.library.compose")
     id("aphid.android.feature")
+    id("aphid.spotless")
 }
 
 android {
