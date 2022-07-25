@@ -1,8 +1,5 @@
-import com.beetlestance.aphid.buildsrc.Aphid
-
 plugins {
-    id("com.android.library")
-    kotlin("android")
+    id("aphid.android.library")
     kotlin("kapt")
 }
 
@@ -13,18 +10,10 @@ kapt {
 
 android {
     namespace = "com.beetlestance.aphid.domain"
-    compileSdk = Aphid.compileSdkVersion
 
     defaultConfig {
-        minSdk = Aphid.minSdkVersion
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
     }
 }
 

@@ -1,9 +1,6 @@
-import com.beetlestance.aphid.buildsrc.Aphid
-
 plugins {
-    id("com.android.library")
+    id("aphid.android.library")
     id("com.google.devtools.ksp").version("1.7.0-1.0.6")
-    kotlin("android")
     kotlin("kapt")
 }
 
@@ -14,11 +11,8 @@ kapt {
 
 android {
     namespace = "com.beetlestance.aphid.data.android"
-    compileSdk = Aphid.compileSdkVersion
 
     defaultConfig {
-        minSdk = Aphid.minSdkVersion
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
@@ -33,11 +27,6 @@ android {
                 )
             }
         }
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
     }
 }
 

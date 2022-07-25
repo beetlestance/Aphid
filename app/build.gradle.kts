@@ -1,8 +1,6 @@
-import com.beetlestance.aphid.buildsrc.Aphid
-
 plugins {
-    id("com.android.application")
-    kotlin("android")
+    id("aphid.android.application")
+    id("aphid.android.application.compose")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
 }
@@ -16,14 +14,11 @@ val useReleaseKeystore = rootProject.file("release/app-release.jks").exists()
 
 android {
     namespace = "com.beetlestance.aphid"
-    compileSdk = Aphid.compileSdkVersion
 
     defaultConfig {
-        applicationId = Aphid.applicationId
-        minSdk = Aphid.minSdkVersion
-        targetSdk = Aphid.targetSdkVersion
-        versionCode = Aphid.versionCode
-        versionName = Aphid.versionName
+        applicationId = "com.beetlestance.aphid"
+        versionCode = 1
+        versionName = "0.1"
 
         buildConfigField(
             type = "String",
@@ -70,11 +65,6 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
     lint {
         // Disable lintVital. Not needed since lint is run on CI
         checkReleaseBuilds = false
@@ -82,14 +72,6 @@ android {
         checkDependencies = true
         // Ignore any tests
         ignoreTestSources = true
-    }
-
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.kotlin.compiler.get()
     }
 
     packagingOptions {
