@@ -16,6 +16,9 @@ class SpotlessConventionPlugin : Plugin<Project> {
                     target("**/*.kt")
                     targetExclude("**/build/**/*.kt")
                     ktlint(libs.findVersion("ktlint").get().toString())
+                        // Allow extensions file with single function by disabling rule "filename" where
+                        // files containing only one top level domain should be named according to function.
+                        .editorConfigOverride(mapOf("disabled_rules" to "filename"))
                     licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
                 }
             }
