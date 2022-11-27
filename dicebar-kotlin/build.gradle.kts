@@ -3,15 +3,11 @@ plugins {
     id("com.android.lint")
     id("com.google.devtools.ksp").version("1.7.0-1.0.6")
     kotlin("kapt")
+    id("aphid.spotless")
 }
 
 ksp {
     arg("moshi.generateProguardRules", "false")
-}
-
-kapt {
-    correctErrorTypes = true
-    useBuildCache = true
 }
 
 dependencies {
