@@ -27,7 +27,7 @@ google-dagger = "2.42"
 kotlin = "1.7.0"
 
 # Kotlin Coroutines
-kotlinx-coroutines = "1.6.3"
+kotlinx-coroutines = "1.6.4"
 
 # Moshi
 moshi = "1.13.0"
