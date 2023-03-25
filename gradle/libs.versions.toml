@@ -30,7 +30,7 @@ kotlin = "1.8.10"
 kotlinx-coroutines = "1.6.4"
 
 # Moshi
-moshi = "1.13.0"
+moshi = "1.14.0"
 
 # OkHttp
 okhttp = "5.0.0-alpha.10"
