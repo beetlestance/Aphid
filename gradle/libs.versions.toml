@@ -133,8 +133,8 @@ google-hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", 
 google-hilt-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "google-dagger" }
 
 # Google Material Theme
-google-material-compose-theme-adapter = { module = "com.google.android.material:compose-theme-adapter", version = "1.1.14" }
-google-material-core = { module = "com.google.android.material:material", version = "1.7.0-alpha02" }
+google-material-compose-theme-adapter = { module = "com.google.android.material:compose-theme-adapter", version = "1.2.1" }
+google-material-core = { module = "com.google.android.material:material", version = "1.8.0" }
 
 # Google Firebase
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version = "18.2.10" }
