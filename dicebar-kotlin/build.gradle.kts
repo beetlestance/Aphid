@@ -1,7 +1,7 @@
 plugins {
     id("kotlin")
     id("com.android.lint")
-    id("com.google.devtools.ksp").version("1.7.0-1.0.6")
+    id("com.google.devtools.ksp").version("1.8.10-1.0.9")
     kotlin("kapt")
 }
 
