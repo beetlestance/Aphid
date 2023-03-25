@@ -33,7 +33,7 @@ kotlinx-coroutines = "1.6.4"
 moshi = "1.14.0"
 
 # OkHttp
-okhttp = "5.0.0-alpha.10"
+okhttp = "5.0.0-alpha.11"
 
 # Retrofit
 retrofit = "2.9.0"
