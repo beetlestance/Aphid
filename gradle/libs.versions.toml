@@ -30,10 +30,10 @@ kotlin = "1.8.10"
 kotlinx-coroutines = "1.6.4"
 
 # Moshi
-moshi = "1.13.0"
+moshi = "1.14.0"
 
 # OkHttp
-okhttp = "5.0.0-alpha.10"
+okhttp = "5.0.0-alpha.11"
 
 # Retrofit
 retrofit = "2.9.0"
@@ -172,7 +172,7 @@ retrofit-core = { module = "com.squareup.retrofit2:retrofit", version.ref = "ret
 # Test
 test-junit-core = { module = "junit:junit", version = "4.13.2" }
 test-mock-core = { module = "io.mockk:mockk", version = "1.13.4" }
-test-robolectric-core = { module = "org.robolectric:robolectric", version = "4.3.1" }
+test-robolectric-core = { module = "org.robolectric:robolectric", version = "4.9.2" }
 
 # Timber
 timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
