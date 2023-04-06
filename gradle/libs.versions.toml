@@ -110,7 +110,7 @@ androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidx-
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx-test" }
 
 # AndroidX Work
-androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version = "2.8.0-alpha02" }
+androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version = "2.8.1" }
 
 # Coil
 coil-core = { module = "io.coil-kt:coil", version.ref = "coil" }
