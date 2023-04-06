@@ -5,7 +5,7 @@ spotless = "6.8.0"
 ben-manes-dependency-updates = "0.42.0"
 
 # Android
-android-gradle-plugin = "7.4.2"
+android-gradle-plugin = "8.1.0-alpha11"
 android-lint = "30.0.2"
 
 # Android X
