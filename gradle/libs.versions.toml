@@ -6,7 +6,7 @@ ben-manes-dependency-updates = "0.42.0"
 
 # Android
 android-gradle-plugin = "7.4.2"
-android-lint = "30.0.2"
+android-lint = "30.4.2"
 
 # Android X
 androidx-compose = "1.4.4"
