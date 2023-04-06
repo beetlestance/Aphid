@@ -17,7 +17,7 @@ jobs:
         shell: bash
         run: |
           echo "name=BUILD_NUMBER::$(expr $GITHUB_RUN_NUMBER + 5200)" >> GITHUB_ENV
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
