@@ -171,7 +171,7 @@ retrofit-core = { module = "com.squareup.retrofit2:retrofit", version.ref = "ret
 
 # Test
 test-junit-core = { module = "junit:junit", version = "4.13.2" }
-test-mock-core = { module = "io.mockk:mockk", version = "1.13.4" }
+test-mock-core = { module = "io.mockk:mockk", version = "1.13.5" }
 test-robolectric-core = { module = "org.robolectric:robolectric", version = "4.9.2" }
 
 # Timber
