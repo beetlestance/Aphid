@@ -20,7 +20,7 @@ androidx-hilt = "1.0.0"
 coil = "2.3.0"
 
 # Google
-google-accompanist = "0.24.13-rc"
+google-accompanist = "0.31.2-alpha"
 google-dagger = "2.45"
 
 # Kotlin
