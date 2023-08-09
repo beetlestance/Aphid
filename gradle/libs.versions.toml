@@ -58,7 +58,7 @@ android-tools-sdk-common = { module = "com.android.tools:sdk-common", version.re
 # AndroidX
 androidx-annotation = { module = "androidx.annotation:annotation", version = "1.4.0" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.6.1" }
-androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version = "1.1.0-alpha09" }
+androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version = "1.1.0-alpha12" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version = "1.9.0" }
 androidx-palette = { module = "androidx.palette:palette-ktx", version = "1.0.0" }
 
