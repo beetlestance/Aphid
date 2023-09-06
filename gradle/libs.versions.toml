@@ -56,7 +56,7 @@ android-tools-lint-checks = { module = "com.android.tools.lint:lint-checks", ver
 android-tools-sdk-common = { module = "com.android.tools:sdk-common", version.ref = "android-lint" }
 
 # AndroidX
-androidx-annotation = { module = "androidx.annotation:annotation", version = "1.4.0" }
+androidx-annotation = { module = "androidx.annotation:annotation", version = "1.7.0" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.6.1" }
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version = "1.1.0-alpha09" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version = "1.9.0" }
