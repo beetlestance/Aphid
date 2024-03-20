@@ -2,7 +2,7 @@ import com.beetlestance.aphid.buildsrc.Aphid
 
 plugins {
     id("com.android.library")
-    id("com.google.devtools.ksp").version("1.8.10-1.0.9")
+    id("com.google.devtools.ksp").version("1.9.23-1.0.19")
     kotlin("android")
     kotlin("kapt")
 }
