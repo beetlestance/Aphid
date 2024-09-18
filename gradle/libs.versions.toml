@@ -11,7 +11,7 @@ android-lint = "30.4.2"
 # Android X
 androidx-compose = "1.4.4"
 androidx-compose-kotlin-compiler = "1.2.0"
-androidx-lifecycle = "2.6.1"
+androidx-lifecycle = "2.8.6"
 androidx-room = "2.5.1"
 androidx-test = "1.5.0"
 androidx-hilt = "1.0.0"
